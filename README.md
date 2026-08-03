@@ -10,7 +10,7 @@
 
 </div>
 
----
+***
 
 ## 简介
 
@@ -23,65 +23,65 @@
 - **统一规范** — 所有 skill 遵循相同的接口契约、文档标准和版本管控
 - **工具无关** — 不绑定特定 AI 工具，任何支持 skill 加载的系统均可使用
 
----
+***
 
 ## 技能目录
 
 ### 核心
 
-| 名称 | 描述 |
-|------|------|
+| 名称                        | 描述                                 |
+| ------------------------- | ---------------------------------- |
 | [tri-intent](tri-intent/) | 意图识别与路由。分析用户需求，确定最佳执行路径，调度下游 skill |
 
 ### 编码
 
-| 名称 | 描述 |
-|------|------|
-| [tri-coding](tri-coding/) | 按任务要点执行代码编写，遵循最小化原则 |
+| 名称                        | 描述                         |
+| ------------------------- | -------------------------- |
+| [tri-coding](tri-coding/) | 按任务要点执行代码编写，遵循最小化原则        |
 | [tri-review](tri-review/) | 代码审查与质量评估，覆盖正确性、安全、性能、可维护性 |
-| [tri-fix](tri-fix/) | 定位并修复问题，精准修改根因 |
-| [tri-plan](tri-plan/) | 需求分析、风险评估与分步实施规划 |
+| [tri-fix](tri-fix/)       | 定位并修复问题，精准修改根因             |
+| [tri-plan](tri-plan/)     | 需求分析、风险评估与分步实施规划           |
 
 ### 内容
 
-| 名称 | 描述 |
-|------|------|
-| [tri-content](tri-content/) | 通用内容生成，按任务要点输出结构化内容 |
-| [tri-article](tri-article/) | 文章撰写与编辑，支持多种文体和风格 |
-| [tri-translate](tri-translate/) | 翻译，遵循信达雅原则 |
-| [tri-html](tri-html/) | 可视化图表，HTML 生成，支持现代 CSS 和响应式设计 |
+| 名称                              | 描述                            |
+| ------------------------------- | ----------------------------- |
+| [tri-content](tri-content/)     | 通用内容生成，按任务要点输出结构化内容           |
+| [tri-article](tri-article/)     | 文章撰写与编辑，支持多种文体和风格             |
+| [tri-translate](tri-translate/) | 翻译，遵循信达雅原则                    |
+| [tri-html](tri-html/)           | 可视化图表，HTML 生成，支持现代 CSS 和响应式设计 |
 
 ### 交互
 
-| 名称 | 描述 |
-|------|------|
-| [tri-ask](tri-ask/) | 苏格拉底式反问与需求澄清，通过结构化提问明确需求 |
-| [tri-bs](tri-bs/) | 头脑风暴与创意生成，多角度发散思考 |
-| [tri-express](tri-express/) | 表达与呈现，将信息转换为清晰优雅的表达 |
+| 名称                          | 描述                       |
+| --------------------------- | ------------------------ |
+| [tri-ask](tri-ask/)         | 苏格拉底式反问与需求澄清，通过结构化提问明确需求 |
+| [tri-bs](tri-bs/)           | 头脑风暴与创意生成，多角度发散思考        |
+| [tri-express](tri-express/) | 表达与呈现，将信息转换为清晰优雅的表达      |
 
 ### 流程
 
-| 名称 | 描述 |
-|------|------|
-| [tri-loop](tri-loop/) | 迭代循环控制，管理与执行重复性任务 |
+| 名称                            | 描述                          |
+| ----------------------------- | --------------------------- |
+| [tri-loop](tri-loop/)         | 迭代循环控制，管理与执行重复性任务           |
 | [tri-workflow](tri-workflow/) | 工作流编排，将多个 skill 编排为 DAG 工作流 |
-| [tri-sdlc](tri-sdlc/) | SDLC 全流程管理，覆盖 12 阶段项目生命周期 |
-| [tri-action](tri-action/) | 操作执行，在限定范围内执行指定操作 |
+| [tri-sdlc](tri-sdlc/)         | SDLC 全流程管理，覆盖 12 阶段项目生命周期   |
+| [tri-action](tri-action/)     | 操作执行，在限定范围内执行指定操作           |
 
 ### 工具
 
-| 名称 | 描述 |
-|------|------|
-| [tri-checklist](tri-checklist/) | 检查清单生成，确保过程完整可追溯 |
-| [tri-cache](tri-cache/) | 缓存复用，指纹去重 + 新鲜度标记 |
-| [tri-evolve](tri-evolve/) | 自我进化，从交互中提取模式并沉淀为 skill |
-| [tri-god](tri-god/) | 全视角综合评估，多维度分析评审 |
-| [tri-meta](tri-meta/) | 元技能管理，管理 skill 自身的生命周期 |
-| [tri-mm](tri-mm/) | 多媒体生成 |
-| [tri-music](tri-music/) | 音乐生成，AI 驱动的音乐创作 |
-| [tri-true](tri-true/) | 真值验证与断言，验证事实与逻辑一致性 |
+| 名称                              | 描述                      |
+| ------------------------------- | ----------------------- |
+| [tri-checklist](tri-checklist/) | 检查清单生成，确保过程完整可追溯        |
+| [tri-cache](tri-cache/)         | 缓存复用，指纹去重 + 新鲜度标记       |
+| [tri-evolve](tri-evolve/)       | 自我进化，从交互中提取模式并沉淀为 skill |
+| [tri-god](tri-god/)             | 全视角综合评估，多维度分析评审         |
+| [tri-meta](tri-meta/)           | 元技能管理，管理 skill 自身的生命周期  |
+| [tri-mm](tri-mm/)               | 多媒体生成                   |
+| [tri-music](tri-music/)         | 音乐生成，AI 驱动的音乐创作         |
+| [tri-true](tri-true/)           | 真值验证与断言，验证事实与逻辑一致性      |
 
----
+***
 
 ## 快速开始
 
@@ -95,18 +95,15 @@
 #### 方式一：克隆仓库
 
 ```bash
-git clone https://github.com/your-username/tri-skills.git
+git clone https://github.com/TrisighT-Bingo/tri-skills.git
 cd tri-skills
 ```
 
-#### 方式二：SkillHub 安装（如环境支持）
+#### 方式二：SkillHub prompt方式安装（如环境支持）
 
 ```bash
-# 安装全部 skill
-skillhub install tri-skills
-
 # 安装单个 skill
-skillhub install tri-skills/tri-coding
+请根据 https://skillhub.cn/install/skillhub.md，安装 tri-intent。
 ```
 
 ### 使用
@@ -120,7 +117,7 @@ skillhub install tri-skills/tri-coding
 → tri-review 执行代码审查 → 输出结构化的审查报告
 ```
 
----
+***
 
 ## 项目结构
 
@@ -159,7 +156,7 @@ tri-skills/
 └── .gitignore               # Git 忽略规则
 ```
 
----
+***
 
 ## 版本管控
 
@@ -167,7 +164,7 @@ tri-skills/
 
 全局版本变更记录见 [CHANGELOG.md](CHANGELOG.md)，各 skill 的详细变更记录见各自目录下的 `CHANGELOG.md`。
 
----
+***
 
 ## 贡献指南
 
@@ -177,29 +174,30 @@ tri-skills/
 - 如何提交 PR
 - 编码规范与 skill 开发标准
 
-同时请遵守 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。
+同时请遵守 [CODE\_OF\_CONDUCT.md](CODE_OF_CONDUCT.md)。
 
----
+***
 
 ## 安全策略
 
 发现安全漏洞？请参阅 [SECURITY.md](SECURITY.md) 了解如何报告。
 
----
+***
 
 ## 许可证
 
 本项目采用 MIT 许可证 — 详见 [LICENSE](LICENSE) 文件。
 
----
+***
 
 ## 联系
 
-- 项目主页：https://github.com/your-username/tri-skills
-- 作者：tribro-agent
+- 项目主页：<https://github.com/TrisighT-Bingo/tri-skills>
+- 作者：TrisighT
+- 邮箱：<hg.wb.zheng@gmail.com>
 
----
+***
 
 <div align="center">
-  <sub>Built with ❤️ by tribro-agent</sub>
+  <sub>Built with ❤️ by TrisighT</sub>
 </div>
