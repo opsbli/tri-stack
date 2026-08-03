@@ -95,7 +95,7 @@
 #### 方式一：克隆仓库
 
 ```bash
-git clone https://github.com/TrisighT-Bingo/tri-skills.git
+git clone https://github.com/TrisighT9527/tri-skills.git
 cd tri-skills
 ```
 
@@ -192,7 +192,7 @@ tri-skills/
 
 ## 联系
 
-- 项目主页：<https://github.com/TrisighT-Bingo/tri-skills>
+- 项目主页：<https://github.com/TrisighT9527/tri-skills.git>
 - 作者：TrisighT
 - 邮箱：<hg.wb.zheng@gmail.com>
 
