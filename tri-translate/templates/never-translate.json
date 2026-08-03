@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "description": "tri-translate 默认不译规则集（19 类预置）。隔离区提取算法按本规则集顺序扫描原文，提取不译要素为占位符。",
+  "rules": [
+    {
+      "id": "CODE_FENCED",
+      "name": "围栏代码块",
+      "pattern": "```[\\s\\S]*?```",
+      "placeholder": "__CODEBLOCK_{N}__",
+      "description": "Markdown 围栏代码块（最优先识别，避免内容被翻译）",
+      "preserve": true
+    },
+    {
+      "id": "CODE_INLINE",
+      "name": "行内代码",
+      "pattern": "`[^`]+`",
+      "placeholder": "__CODE_{N}__",
+      "description": "Markdown 行内代码",
+      "preserve": true
+    },
+    {
+      "id": "URL",
+      "name": "URL",
+      "pattern": "https?://[^\\s)]+",
+      "placeholder": "__URL_{N}__",
+      "description": "http/https URL（先于域名识别）",
+      "preserve": true
+    },
+    {
+      "id": "API_ENDPOINT",
+      "name": "API 端点",
+      "pattern": "(GET|POST|PUT|DELETE|PATCH)\\s+/[^\\s]+",
+      "placeholder": "__API_{N}__",
+      "description": "HTTP 方法的 API 端点",
+      "preserve": true
+    },
+    {
+      "id": "EMAIL",
+      "name": "邮箱",
+      "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+      "placeholder": "__EMAIL_{N}__",
+      "description": "邮箱地址",
+      "preserve": true
+    },
+    {
+      "id": "PATH_ABS",
+      "name": "绝对路径",
+      "pattern": "/[a-zA-Z]?:?\\\\?[^/\\s]+[/\\\\][^/\\s]+",
+      "placeholder": "__PATH_{N}__",
+      "description": "Unix/Windows 绝对路径",
+      "preserve": true
+    },
+    {
+      "id": "PATH_REL",
+      "name": "相对路径",
+      "pattern": "(\\.\\./|\\./)[^\\s]+",
+      "placeholder": "__PATH_{N}__",
+      "description": "相对路径（../ 或 ./）",
+      "preserve": true
+    },
+    {
+      "id": "CMD_LINE",
+      "name": "命令行",
+      "pattern": "^[$>]\\s+\\w+|^\\s*\\$\\s+",
+      "placeholder": "__CMD_{N}__",
+      "description": "Shell 命令行（行首 $ 或 >）",
+      "preserve": true
+    },
+    {
+      "id": "ENV_VAR",
+      "name": "环境变量",
+      "pattern": "\\$[A-Z_][A-Z0-9_]*|\\$\\{[A-Z_]+\\}",
+      "placeholder": "__ENV_{N}__",
+      "description": "环境变量（$VAR 或 ${VAR}）",
+      "preserve": true
+    },
+    {
+      "id": "VERSION",
+      "name": "版本号",
+      "pattern": "v?\\d+\\.\\d+(\\.\\d+)?",
+      "placeholder": "__VERSION_{N}__",
+      "description": "版本号（如 v1.0.0, 2.5）",
+      "preserve": true
+    },
+    {
+      "id": "SHA_HASH",
+      "name": "SHA/哈希",
+      "pattern": "\\b[0-9a-f]{7,40}\\b",
+      "placeholder": "__SHA_{N}__",
+      "description": "Git SHA 或哈希（7-40 位十六进制）",
+      "preserve": true
+    },
+    {
+      "id": "NUMBER_UNIT",
+      "name": "数字与单位",
+      "pattern": "\\d+(\\.\\d+)?\\s?(GB|MB|KB|TB|GHz|MHz|ms|s|px|pt|%|core|cores)\\b",
+      "placeholder": "__NUM_{N}__",
+      "description": "带单位的数字（2GB, 5.0GHz, 100ms）",
+      "preserve": true
+    },
+    {
+      "id": "DATETIME",
+      "name": "日期时间",
+      "pattern": "\\d{4}-\\d{2}-\\d{2}([T\\s]\\d{2}:\\d{2}(:\\d{2})?)?|\\d{2}/\\d{2}/\\d{4}",
+      "placeholder": "__DATE_{N}__",
+      "description": "ISO 8601 或文档约定日期时间",
+      "preserve": true
+    },
+    {
+      "id": "BRAND_NAME",
+      "name": "品牌名/产品名",
+      "pattern": "<from glossary.json Priority A>",
+      "placeholder": "__BRAND_{N}__",
+      "description": "术语表 Priority A 品牌名（运行时从 glossary 注入）",
+      "preserve": true
+    },
+    {
+      "id": "TRADEMARK",
+      "name": "商标",
+      "pattern": "[™®]",
+      "placeholder": "__TM_{N}__",
+      "description": "商标符号",
+      "preserve": true
+    },
+    {
+      "id": "ACRONYM",
+      "name": "首字母缩写",
+      "pattern": "\\b[A-Z]{2,}\\b",
+      "placeholder": "__ACR_{N}__",
+      "description": "首字母缩写（2+ 大写字母，非全大写单词）",
+      "preserve": true
+    },
+    {
+      "id": "TECH_IDENTIFIER",
+      "name": "技术标识符",
+      "pattern": "\\b[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*\\b|\\b[a-z]+_[a-z_]+\\b",
+      "placeholder": "__ID_{N}__",
+      "description": "驼峰或下划线变量/函数/类名",
+      "preserve": true
+    },
+    {
+      "id": "CONFIG_KEY",
+      "name": "配置键",
+      "pattern": "^\\s*\\w+:(?!//)|\"\\w+\":",
+      "placeholder": "__KEY_{N}__",
+      "description": "YAML/JSON 配置键名",
+      "preserve": true
+    },
+    {
+      "id": "DOMAIN",
+      "name": "域名",
+      "pattern": "\\b[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\\.[a-zA-Z]{2,}\\b",
+      "placeholder": "__DOMAIN_{N}__",
+      "description": "域名（最后识别，依赖上下文区分普通词）",
+      "preserve": true
+    }
+  ]
+}

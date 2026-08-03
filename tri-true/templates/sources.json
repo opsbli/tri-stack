@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "description": "tri-true 默认信源库。含 T1-T4 四级分级 + 可信度权重，覆盖 medical/financial/legal/technical/general 五大领域。运行时可由用户自定义信源库覆盖。",
+  "sources": [
+    {
+      "url": "https://www.iso.org/standard.html",
+      "title": "ISO 国际标准",
+      "tier": "T1",
+      "domain": "all",
+      "credibility_score": 1.0,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "国际标准化组织（ISO）发布的标准文档，权威事实类信源",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T1 权威事实类：ISO 标准"
+    },
+    {
+      "url": "https://www.gov.cn/zhengce/",
+      "title": "中国政府网政策法规",
+      "tier": "T1",
+      "domain": "legal",
+      "credibility_score": 1.0,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "中国政府网发布的法律法规、政策文件",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T1 权威事实类：法律法规"
+    },
+    {
+      "url": "https://openai.com/research/",
+      "title": "OpenAI 官方研究与技术报告",
+      "tier": "T1",
+      "domain": "technical",
+      "credibility_score": 1.0,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "OpenAI 官方发布的研究论文与技术报告（如 GPT-4 Technical Report）",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T1 权威事实类：官方技术文档"
+    },
+    {
+      "url": "https://platform.openai.com/docs/",
+      "title": "OpenAI 官方 API 文档",
+      "tier": "T1",
+      "domain": "technical",
+      "credibility_score": 1.0,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "OpenAI 平台官方 API 文档",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T1 权威事实类：官方 API 文档"
+    },
+    {
+      "url": "https://www.who.int/",
+      "title": "世界卫生组织（WHO）",
+      "tier": "T1",
+      "domain": "medical",
+      "credibility_score": 1.0,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "WHO 发布的全球卫生指南、疾病分类、药物信息",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T1 权威事实类：医疗权威"
+    },
+    {
+      "url": "https://www.ncbi.nlm.nih.gov/pubmed/",
+      "title": "PubMed 生物医学文献库",
+      "tier": "T2",
+      "domain": "medical",
+      "credibility_score": 0.8,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "NIH 维护的同行评议生物医学文献数据库",
+      "access_method": "api",
+      "access_config": {
+        "api_key_env": "PUBMED_API_KEY",
+        "rate_limit": 10
+      },
+      "status": "active",
+      "notes": "T2 权威观点类：同行评议论文"
+    },
+    {
+      "url": "https://arxiv.org/",
+      "title": "arXiv 预印本论文库",
+      "tier": "T2",
+      "domain": "technical",
+      "credibility_score": 0.8,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "arXiv 预印本论文（部分经同行评议，需结合引用情况判断）",
+      "access_method": "api",
+      "access_config": {
+        "api_key_env": "",
+        "rate_limit": 3
+      },
+      "status": "active",
+      "notes": "T2 权威观点类：预印本（注意未经正式同行评议的部分）"
+    },
+    {
+      "url": "https://developer.mozilla.org/",
+      "title": "MDN Web Docs",
+      "tier": "T2",
+      "domain": "technical",
+      "credibility_score": 0.8,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "Mozilla 维护的 Web 技术文档，社区+官方审核",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T2 权威观点类：技术文档"
+    },
+    {
+      "url": "https://www.sec.gov/",
+      "title": "美国证券交易委员会（SEC）",
+      "tier": "T1",
+      "domain": "financial",
+      "credibility_score": 1.0,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "SEC 发布的金融法规、上市公司公告",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T1 权威事实类：金融法规"
+    },
+    {
+      "url": "https://www.court.gov.cn/",
+      "title": "中国裁判文书网",
+      "tier": "T1",
+      "domain": "legal",
+      "credibility_score": 1.0,
+      "freshness_score": 0.9,
+      "last_verified_at": null,
+      "description": "最高人民法院发布的裁判文书",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T1 权威事实类：司法裁判"
+    },
+    {
+      "url": "https://ieeexplore.ieee.org/",
+      "title": "IEEE Xplore 数字图书馆",
+      "tier": "T2",
+      "domain": "technical",
+      "credibility_score": 0.8,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "IEEE 同行评议论文与标准",
+      "access_method": "api",
+      "access_config": {
+        "api_key_env": "IEEE_API_KEY",
+        "rate_limit": 5
+      },
+      "status": "active",
+      "notes": "T2 权威观点类：同行评议论文"
+    },
+    {
+      "url": "https://dl.acm.org/",
+      "title": "ACM Digital Library",
+      "tier": "T2",
+      "domain": "technical",
+      "credibility_score": 0.8,
+      "freshness_score": 1.0,
+      "last_verified_at": null,
+      "description": "ACM 同行评议论文",
+      "access_method": "api",
+      "access_config": {
+        "api_key_env": "ACM_API_KEY",
+        "rate_limit": 5
+      },
+      "status": "active",
+      "notes": "T2 权威观点类：同行评议论文"
+    },
+    {
+      "url": "https://medium.com/",
+      "title": "Medium 技术博客",
+      "tier": "T3",
+      "domain": "technical",
+      "credibility_score": 0.5,
+      "freshness_score": 0.8,
+      "last_verified_at": null,
+      "description": "Medium 平台技术博客（未经严格评议，需交叉验证）",
+      "access_method": "crawl",
+      "access_config": {},
+      "status": "active",
+      "notes": "T3 一般参考类：技术博客"
+    },
+    {
+      "url": "https://stackoverflow.com/",
+      "title": "Stack Overflow",
+      "tier": "T3",
+      "domain": "technical",
+      "credibility_score": 0.5,
+      "freshness_score": 0.7,
+      "last_verified_at": null,
+      "description": "Stack Overflow 技术问答（高赞回答较可信，低赞需谨慎）",
+      "access_method": "api",
+      "access_config": {
+        "api_key_env": "SO_API_KEY",
+        "rate_limit": 10
+      },
+      "status": "active",
+      "notes": "T3 一般参考类：社区问答，按投票数加权"
+    },
+    {
+      "url": "https://en.wikipedia.org/",
+      "title": "Wikipedia 英文维基百科",
+      "tier": "T3",
+      "domain": "all",
+      "credibility_score": 0.5,
+      "freshness_score": 0.9,
+      "last_verified_at": null,
+      "description": "维基百科（需追溯引用源，本身仅作参考）",
+      "access_method": "api",
+      "access_config": {
+        "api_key_env": "",
+        "rate_limit": 5
+      },
+      "status": "active",
+      "notes": "T3 一般参考类：百科，须追溯引用源"
+    },
+    {
+      "url": "https://www.reddit.com/",
+      "title": "Reddit 论坛",
+      "tier": "T4",
+      "domain": "all",
+      "credibility_score": 0.2,
+      "freshness_score": 0.8,
+      "last_verified_at": null,
+      "description": "Reddit 论坛讨论（匿名内容，仅作线索参考）",
+      "access_method": "api",
+      "access_config": {
+        "api_key_env": "REDDIT_API_KEY",
+        "rate_limit": 5
+      },
+      "status": "active",
+      "notes": "T4 待验证类：匿名论坛内容"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>代码合规自查小卡片</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;background:#f4f1ea;color:#2b2b2b;padding:28px 16px;line-height:1.55}
+  .card{max-width:720px;margin:0 auto;background:#fff;border:1px solid #e3dccb;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.08);overflow:hidden}
+  .head{background:linear-gradient(135deg,#1f6f54,#2e9e78);color:#fff;padding:22px 26px 18px}
+  .head h1{font-size:22px;letter-spacing:.5px}
+  .head p{font-size:13px;opacity:.92;margin-top:6px}
+  .body{padding:22px 26px 26px}
+  .sec{margin-bottom:20px}
+  .sec-title{font-size:14px;font-weight:700;color:#1f6f54;border-left:4px solid #1f6f54;padding-left:10px;margin-bottom:10px}
+  .check{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:14px}
+  .box{flex:0 0 18px;width:18px;height:18px;margin-top:2px;border:2px solid #1f6f54;border-radius:4px;background:#fff}
+  .check small{color:#888;font-size:12px;display:block}
+  ol.steps{list-style:none;counter-reset:s}
+  ol.steps li{counter-increment:s;position:relative;padding:7px 0 7px 34px;font-size:14px;border-bottom:1px dashed #eee}
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:7px;width:22px;height:22px;background:#1f6f54;color:#fff;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.steps li b{color:#1f6f54}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+  th,td{border:1px solid #e3dccb;padding:7px 8px;text-align:left;vertical-align:top}
+  th{background:#eef7f2;color:#1f6f54;font-weight:700}
+  .note{background:#eef7f2;border:1px solid #cfe7dc;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#3a534a}
+  .emergency{font-size:13px;background:#f0f7f4;border:1px solid #cfe7dc;border-radius:10px;padding:12px 14px}
+  .emergency b{color:#1f6f54}
+  .foot{text-align:center;font-size:11.5px;color:#aaa;padding:14px;border-top:1px solid #eee}
+</style></head><body>
+  <div class="card"><div class="head">
+    <h1>💻 代码合规自查小卡片</h1>
+    <p>AI 代码提交/发布前 · 30 秒过一遍 ｜ 硬红线，不过则不出</p>
+  </div><div class="body">
+    <div class="sec"><div class="sec-title">合规提交/发布底线（五条全过才可提交/发布）</div>
+      <div class="check"><span class="box"></span><div>原创不照搬<small>无整段复制他人代码、无剥离其 LICENSE/署名</small></div></div>
+      <div class="check"><span class="box"></span><div>代码原创<small>无仿写闭源商业代码；复用开源须完整保留 LICENSE 与版权声明</small></div></div>
+      <div class="check"><span class="box"></span><div>依赖已授权<small>无未授权/来源不明依赖或私有付费包</small></div></div>
+      <div class="check"><span class="box"></span><div>披露到位<small>按项目/平台/雇主要求标注"AI 生成"</small></div></div>
+      <div class="check"><span class="box"></span><div>LICENSE 已声明<small>按目标仓库许可证声明生成代码的许可</small></div></div>
+    </div>
+    <div class="sec"><div class="sec-title">提交/发布前 6 步自检</div>
+      <ol class="steps">
+        <li>是否复制他人代码而未保留其 LICENSE/署名？ → 是则<b>补回或改原创</b></li>
+        <li>是否引入与目标仓库许可证不兼容的依赖？ → 是则<b>替换</b></li>
+        <li>是否使用未授权/来源不明的依赖或私有包？ → 是则<b>替换</b></li>
+        <li>代码是否与某闭源/商业代码高度雷同（疑似仿写）？ → <b>重写</b>（最易漏！）</li>
+        <li>是否按政策标注了 AI 生成 / disclosures？ → 按需<b>标注</b></li>
+        <li>生成代码的许可证是否已声明？ → 未声明则<b>补</b></li>
+      </ol>
+    </div>
+    <div class="sec"><div class="sec-title">四类风险速查</div>
+      <table>
+        <tr><th>风险</th><th>说明</th><th>预防</th></tr>
+        <tr><td>代码版权/署名</td><td>复制他人代码不保留 LICENSE，或仿写闭源</td><td>只写原创；复用开源保留 LICENSE 不剥离</td></tr>
+        <tr><td>许可证冲突</td><td>在 GPL 仓库引入不兼容许可导致传染</td><td>遵循目标仓库许可证，不引不兼容依赖</td></tr>
+        <tr><td>依赖/供应链</td><td>未授权、来源不明或私有付费包</td><td>仅用可商用可信依赖，记录版本来源</td></tr>
+        <tr><td>标识/披露</td><td>政策要求披露 AI 代码却未标注</td><td>提交前确认政策，按需标注 AI 生成</td></tr>
+      </table>
+    </div>
+    <div class="sec"><div class="sec-title">平台提示</div>
+      <div class="note">GitHub/GitLab/工蜂等：AI 生成代码通常可提交，但组织/雇主政策可能要求披露；开源发布须自带兼容 LICENSE。各平台与组织条款会更新，<b>提交与商用前务必查阅最新官方规则</b>。本卡片仅为方向提示，<b>不构成法律意见</b>。</div>
+    </div>
+    <div class="sec"><div class="emergency"><b>应急一句话：</b>若收到 DMCA/下架/投诉 → 先撤回 → 核对权属 → 凭存证申诉（误用）或替换致歉（确属侵权）；全程保留生成日志与依赖来源记录作证据链。</div></div>
+  </div><div class="foot">配套详见 SKILL.md · 代码版权与许可证合规 ｜ 截图保存，提交/发布前过一遍</div></div>
+</body></html>

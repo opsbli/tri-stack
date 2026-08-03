@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "description": "tri-translate 运行时配置模板。首次运行时复制到 .tribro/translate/meta.json，可按需调整。",
+  "config": {
+    "config_default_target_lang": "zh-CN",
+    "config_default_source_lang": "auto",
+    "config_default_register": "formal",
+    "config_default_doc_type": "technical_doc",
+    "config_default_audience": "developer",
+    "config_quality_threshold": {
+      "accuracy_critical_max": 0,
+      "accuracy_major_max": 0,
+      "design_critical_max": 0,
+      "design_major_max": 0,
+      "hallucination_critical_max": 0,
+      "fluency_major_max": 2,
+      "terminology_major_max": 1
+    },
+    "config_enable_translation_memory": false,
+    "config_tm_max_entries": 1000,
+    "config_tm_min_hit_count": 3,
+    "config_glossary_path": "glossary.json",
+    "config_never_translate_path": "never-translate.json",
+    "config_style_examples_dir": "style-examples/",
+    "config_max_input_chars": 50000,
+    "config_retry_on_critical": true,
+    "config_max_retries": 2,
+    "config_preserve_paragraph_alignment": true,
+    "config_preserve_markdown_structure": true,
+    "config_strict_term_consistency": true
+  },
+  "stats": {
+    "total_translations": 0,
+    "total_chars_translated": 0,
+    "avg_mqm_score": 0,
+    "pass_rate": 0,
+    "fail_retry_count": 0,
+    "tm_hit_count": 0,
+    "last_translation_at": null
+  }
+}
