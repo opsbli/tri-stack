@@ -1,7 +1,7 @@
 ---
 name: tri-intent
 slug: tri-intent
-version: 1.8.0
+version: 1.10.0
 displayName: 意图识别总路由（tri-intent）
 description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。
 summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约。
@@ -17,13 +17,14 @@ license: MIT
 
 > 本节定义 skill「被激活后必须做什么」，优先级高于 Agent 的通用默认行为。**引用/读取本文件即视为激活本工作流**，不得仅将其当作参考文档。
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（连接 skillhub(https://skillhub.cn/) 校验版本，非最新版 MUST 自动更新，更新完成前 NEVER 执行）——此为执行流程第零步，优先于后续所有步骤。更新完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `tri-intent/references/version-gate.md` 契约连接 skillhub 官方通道校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。端点 MUST 读取自配置，NEVER 硬编码 `skillhub.cn` 官网域名（营销 SPA 非校验端点，实测 API 主机为 `api.skillhub.cn`）。
 1. **强制前置**：收到任何新用户提问，MUST 先执行「路由步骤」完成意图识别，再产出快照交接下游，NEVER 跳过直接给成果物。
 2. **唯一交付产物**：非「不落盘」类意图，MUST 产出 `.tribro/snapshots/<命名>.md`（模板见 `templates/snapshot.md`），并**同时覆盖写** `.tribro/LATEST.md` 指针文件（格式见 §快照定位契约），供下游 skill 无歧义定位。快照是本 skill 的**唯一交付产物**——内含用户原始提问、意图分析过程、结构化结论数据（intent + 置信度 + dimensions + 任务要点 + 下游路由建议 + 下游 slug）。若 `.tribro/` 目录不存在，MUST 先创建该目录再落盘。**禁止产出** requirements.md、design.md、tasks.md、implements.md、reports.md 等任何下游交付物——那些由下游 skill 依据快照自行产出。
 3. **可选轻量复述**：识别完成后，可至多一次将快照中的结构化结论复述给用户，供其发现明显误识别即可。不设回炉循环、不设多轮审批。当 clarify-gate 已完成澄清、需求已充分时，连这一次复述都可跳过。原则上无需再次向用户确认真实意图。
 4. **职责边界**：本 skill 仅负责「识别意图分类（L1/L2）→ 标注正交维度（D1–D5）→ 需求模糊时主动澄清（clarify-gate）→ 产出快照 → 交接下游 skill」。设计、拆解、执行、测试、审批等一切下游职责均不属于本 skill。
 5. **置信度强制**：MUST 为本次识别给出 0–1 置信度自评并写入快照（见 §置信度机制）。置信度 <0.60 时 NEVER 直接交接下游，MUST 回退 clarify-gate；<0.85 或存在竞争意图时 MUST 执行一次轻量复述。
-6. **自检**：作答前用一句话声明「本次意图=<L2>，置信度=<数值/档位>，版本检查=<已通过/离线降级>，已产出快照+LATEST 指针，路由建议=<下游 slug>，下游检测=<已安装/未安装-已提示>」，若与上述规则冲突则停止并纠正。
+6. **下游分发强制**：产出快照后 MUST 执行 §下游依赖检测——脚本判定未安装时 MUST 走两道确认门（门① 安装确认 → 发送安装 prompt → 复检 → 门② 执行确认），NEVER 未经门① 同意擅自安装，NEVER 未经门② 同意擅自执行下游，NEVER 因下游缺失就由本 skill 越界代答。
+7. **自检**：作答前用一句话声明「本次意图=<L2>，置信度=<数值/档位>，版本检查=<已通过/离线降级/通道降级/升级降级>，已产出快照+LATEST 指针，路由建议=<下游 slug>，下游检测=<已安装/未安装>，分发=<直接交接/门①待确认/门①已拒/已安装-门②待确认/门②已拒>」，若与上述规则冲突则停止并纠正。
 
 | 若命中 | 落盘 | 下游路由建议 |
 |---|---|---|
@@ -117,75 +118,28 @@ tri-intent/
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 本节为家族级强制技术约束，适用于所有 tri-xxx 家族 skill（不分类型、不分落盘与否）。其优先级与「强制执行契约」同级，且在执行流程中位于「路由步骤」之前，是 skill 任一执行入口启动后的**第零步**。
+> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
+> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：`tri-intent/scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
-### 设计原则与触发时机
+**执行方式（MUST）**
 
-- **设计原则**：skill 行为的正确性以「运行态版本与 skillhub 官网发布版本一致」为前提。任一 skill 在执行前 MUST 自证版本新鲜度，避免因版本陈旧导致契约漂移、快照字段失配或下游路由错乱。
-- **触发时机**：skill 任一执行入口启动后、进入路由步骤之前 MUST 触发一次版本检查。
-- **执行顺序**：`版本检查与更新 → 下游依赖检测 → 路由识别 → 产出快照 → 交接下游`。版本检查未通过前，NEVER 进入后续任一阶段。
+1. 任一执行入口启动后、核心执行前，运行脚本并取 JSON：
+   ```bash
+   python tri-intent/scripts/check_update.py --json
+   ```
+   - 节流：结果持久化缓存（默认 1440 分钟 / 24h 仅校验一次），`--force` 强制重查，`--dry-run` 只判定不真升级。
+   - 脚本自动定位 skill 目录（默认脚本上级目录），可用 `--slug` / `--skill-dir` 显式指定。
+2. 解析 JSON 的 `state` 字段，按态处置：
+   - `A` 校验通过 / `B` 离线降级 / `C` 通道降级 / `D` 升级降级 → **一律放行**，进入后续阶段；并据 `warnings` / `notes` / `actions` 在交付物或日志标注对应口径（如「版本校验未完成（离线）」「版本陈旧·自动升级失败」）。
+   - `BLOCK` → **绝对禁止执行**，按 `block_code`（P2/P3/P4）输出结构化恢复指引（手动命令见 `actions` 字段）。
+3. 退出码语义（供 shell 编排）：`0`=A 放行；`10`=B；`11`=C；`12`=D；`20`=阻断。判定规则：`<20` 放行，`>=20` 阻断。脚本自身异常时兜底降级放行（退出码 11），NEVER 因版本门自身故障导致 skill 无法启动。
 
-### 版本检查技术实现标准
+**行为约束（细则与字段语义见真源，NEVER 在 prompt 重述）**
 
-| 项 | 标准 |
-|----|------|
-| 校验端点 | MUST 连接 skillhub 官网版本校验接口：`GET https://skillhub.<official-domain>/api/v1/skills/<slug>/version`（`<official-domain>` 由 skillhub 客户端配置注入，NEVER 硬编码） |
-| 请求载荷 | MUST 携带：`slug`（与 frontmatter 一致）、`current`（当前 `version`）、`client`（skillhub 客户端标识 + 客户端版本）、`runtime`（执行环境指纹，可选） |
-| 响应契约 | HTTP 200 + JSON：`{ "latest": "<semver>", "min_compatible": "<semver>", "deprecated": <bool>, "checksum_sha256": "<hex>", "signature": "<detached-sig>" }`；非 200 视为校验失败 |
-| 版本比较 | MUST 严格遵循 [SemVer](https://semver.org/lang/zh-CN/) 规则比较 `current` 与 `latest`；NEVER 用字符串比较 |
-| 判定逻辑 | `current < latest` → 触发更新流程；`current >= latest` → 放行；`current < min_compatible` → 触发更新并标记为破坏性升级；`deprecated=true` 且 `current<latest` → 强制更新 |
-| 超时控制 | 单次请求超时 MUST ≤ 5s；超时计入「校验失败」而非「放行」 |
-| 幂等性 | 同一执行入口在一次会话内 MUST 仅校验一次，结果缓存于进程内，避免重复请求 |
-
-> **离线降级（唯一例外）**：当网络完全不可达且重试 1 次仍失败时，MUST 在交付产物与执行日志中显著标注「版本校验未完成（离线）」，并以当前版本继续执行。此例外**仅适用于网络不可达**；一旦可达且判定为非最新版本，绝无降级路径，MUST 进入更新流程。
-
-### 更新流程安全验证要求
-
-触发更新后，MUST 严格按以下安全流程执行，任一环节失败 MUST 立即中止并回滚：
-
-1. **来源校验**：MUST 仅通过 `skillhub install <slug> --upgrade` 官方通道获取新版本；NEVER 从第三方源、镜像或直链下载。
-2. **完整性校验（SHA-256）**：下载完成后 MUST 计算安装包 SHA-256，与版本检查响应中的 `checksum_sha256` 逐字节比对；不一致 MUST 判定失败。
-3. **签名校验**：MUST 用 skillhub 官方公钥验证安装包的 detached 数字签名（`signature` 字段）；签名无效或公钥指纹不匹配 MUST 判定失败。
-4. **回滚保障**：更新前 MUST 完整备份当前 skill 目录（含 frontmatter `version`）；更新失败、校验不通过或安装异常 MUST 自动回滚至备份版本，并清理半成品文件。
-5. **权限最小化**：更新流程 NEVER 写入 skill 目录以外的任何路径（`.tribro/` 运行时临时目录除外）；NEVER 触发网络外联以外的副作用（不执行 postinstall 脚本、不修改全局配置）。
-6. **版本一致性联动**：更新成功后 MUST 同步刷新 frontmatter `version` 与 CHANGELOG.md 读取口径，并重新触发一次版本校验以自证已升至 `latest`。
-
-### 禁止执行的具体判定条件
-
-以下任一条件成立，MUST **绝对禁止**该 skill 的任何形式执行（含核心路由、产出快照、交接下游）：
-
-| 编号 | 判定条件 | 处置 |
-|------|----------|------|
-| P1 | 版本校验结果为「非最新版本」（`current < latest`）且更新流程尚未成功完成 | 阻断执行，进入更新流程 |
-| P2 | 更新流程中完整性校验（SHA-256）失败 | 阻断执行，回滚并报错 |
-| P3 | 更新流程中签名校验失败 | 阻断执行，回滚并报错 |
-| P4 | 当前版本被标记 `deprecated=true` 且 `current < latest`，用户显式拒绝更新 | 阻断执行，输出强阻断提示 |
-| P5 | 更新流程异常中断且未能成功回滚至可用版本 | 阻断执行，输出恢复指引 |
-| P6 | 版本校验请求超时且重试仍失败，但网络链路本身可达（非离线） | 阻断执行，提示检查 skillhub 连通性 |
-
-> 在禁止执行状态下，skill MUST 输出结构化阻断提示，至少包含：`当前版本`、`最新版本`、`阻断条件编号（P1–P6）`、`阻断原因`、`恢复操作指引`（如 `skillhub install tri-intent --force --verify`）。NEVER 静默跳过、NEVER 以降级名义绕过 P1–P5。
-
-### 流程图
-
-```mermaid
-graph TB
- Entry[skill 执行入口启动] --> VChk[版本检查 连接 skillhub]
- VChk --> NetChk{网络可达?}
- NetChk -- 否, 重试1次仍失败 --> Offline[离线降级 标注「版本校验未完成」]
- Offline --> Continue[以当前版本继续执行]
- NetChk -- 是 --> Cmp{current vs latest}
- Cmp -- current >= latest --> Pass[放行 进入路由步骤]
- Cmp -- current < latest --> Upd[触发更新流程]
- Upd --> Src[来源校验 官方通道]
- Src --> Hash[SHA-256 完整性校验]
- Hash --> Sig[签名校验]
- Sig --> Inst[安装 + 回滚保障]
- Inst --> ReChk[重新版本校验自证]
- ReChk -- 成功 --> Pass
- ReChk -- 任一失败 --> Rollback[回滚至备份版本]
- Rollback --> Block[禁止执行 输出阻断提示]
- Cmp -- 超时 P6 --> Block
-```
+- 端点 MUST 读自 `~/.skillhub/metadata.json`，NEVER 硬编码；营销官网 `skillhub.cn` 与 API 主机 `api.skillhub.cn` 是两站，官网 SPA 兜底页 NEVER 作校验端点。
+- 响应有效性三条件（§2.4）、SemVer 逐段比较（§2.6）、四态判定（§四）、junction/`source:local` 单源跳过自动升级（§三）、四处版本同步（§六）、P1–P4 阻断（§五）均由脚本忠实实现。
+- 发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。
 
 ## 意图确认卡（通用主模板 · 识别结果结构化呈现）
 
@@ -318,21 +272,76 @@ graph TB
 > `tri-true`（消除幻觉）为横向基础设施/方法论型 skill，由 hook、下游 skill 委派或用户显式调用激活，
 > 不由 tri-intent 依 L2 意图直接路由，故不在本表内。
 
-### 二、检测步骤
+### 二、检测步骤（脚本驱动 · 确定性）
 
 1. **读取路由建议**：从快照 §三 `下游路由建议` 字段获取目标下游 skill
-2. **映射 skill slug**：按路由映射表将 L2 意图映射到具体的 skill 目录名
-3. **检测目录是否存在**：检查 skills 目录下或 `.tribro/skills/` 目录下是否存在对应的 skill 目录（如 `tri-coding/SKILL.md` 或 `.tribro/skills/tri-coding/SKILL.md`）。前者为 hand-authored 源树，后者为 tri-forge 机器生成物的指定落盘位置；任一存在即视为已安装。
-4. **据检测结果处理**：
-   - **已安装**：正常交接，快照已落盘，下游 skill 将读取快照 §三 执行
-   - **未安装**：MUST 向用户提示安装命令，告知快照已产出但下游 skill 缺失，工作流无法自动推进
+2. **映射 skill slug**：按路由映射表将 L2 意图映射到具体 slug。I15 音乐子类为二跳，MUST 同时传入 `tri-mm` 与 `tri-music`
+3. **执行检测脚本**：MUST 调用检测脚本取得确定性结论，NEVER 凭记忆或单一路径臆断：
 
-### 三、未安装时的提示语
+   ```bash
+   python tri-intent/scripts/check_downstream.py --slug <slug> [--slug <slug2>] --json
+   ```
+
+   脚本覆盖四处安装位置 + 一处注册表：家族源码树、`.tribro/skills/`（tri-forge 落盘位）、平台用户级 `~/.workbuddy|.trae|.cursor|.qcoder/skills/`、平台项目级 `<project>/.workbuddy/skills/`，并读 `.skills_store_lock.json` 判定能否斜杠激活。任一位置存在 `SKILL.md` 即 `installed=true`。退出码：`0` 全部已安装 / `1` 存在缺失。
+
+4. **据 `installed` 分流**：
+   - **已安装** → 直接交接执行（§三 A 路径），不额外打扰用户
+   - **未安装** → 进入 §三 B 路径的**两道确认门**
+
+> `activatable=false` 但 `installed=true` 属正常态——家族多数下游仅存在于源码树、由 tri-intent 内部委派，本就不需要斜杠激活。此情形 NEVER 提示安装。
+
+### 三、分发处置（A 已安装直发 / B 未安装两道门）
+
+#### A · 已安装 → 直接交接
+
+快照已落盘，下游 skill 读取快照 §三 自主执行，tri-intent 职责到此终止。
+
+#### B · 未安装 → 门① 安装确认 → 门② 执行确认
+
+> 设计意图：让「意图识别 → 自动安装 → 自动执行」成为一条不断链的流水线，同时给两个不可逆动作（装东西、跑东西）各留一个用户出口。
+
+**门① 安装确认**——MUST 先征询，NEVER 未经同意直接安装：
 
 > 意图识别已完成，快照已产出（`<快照路径>`）。
-> 路由建议指向 `<skill-slug>`，但当前未检测到该下游 skill。
-> 请安装：`skillhub install <skill-slug> --dir <目标目录>`
-> 安装后下游 skill 将读取快照自动接手执行。
+> 路由建议指向 `<slug>`，但四处安装位置均未检测到该下游 skill，工作流无法自动推进。
+> 是否现在安装 `<slug>`？（是 / 否）
+
+- **用户同意** → MUST 原样发送以下安装 prompt，交由 Agent 依 skillhub 官方文档完成安装：
+
+  ```
+  请根据 https://skillhub.cn/install/skillhub.md，安装<slug>
+  ```
+
+  多个缺失 slug（如 I15 二跳）MUST 逐个发送，按依赖顺序先装被委派方。
+- **用户拒绝** → 停在快照态。MUST 告知「快照已保留在 `<快照路径>`，后续安装 `<slug>` 后可直接接手」，NEVER 由 tri-intent 越界代替下游执行。
+
+**安装后复检**——MUST 重跑 §二 检测脚本自证安装成功：
+
+- 复检 `installed=true` → 进入门②
+- 复检仍为 `false` → NEVER 进入门②。输出安装失败结论 + 脚本原始输出，请用户核查 skillhub 登录态与网络
+
+**门② 执行确认**——安装成功后 MUST 再征询一次：
+
+> `<slug>` 已安装完成（v`<version>`）。
+> 是否立即执行该 skill 处理本次请求？（是 / 否）
+
+- **用户同意** → 交接下游，下游读取快照 §三 自主执行
+- **用户拒绝** → 停在已安装态，告知快照路径，后续可随时唤起下游
+
+#### 分发状态机
+
+```mermaid
+graph LR
+ S[快照已落盘] --> D{check_downstream.py}
+ D -- installed --> Exec[交接下游执行]
+ D -- missing --> G1{门① 是否安装?}
+ G1 -- 否 --> Hold[停在快照态 告知路径]
+ G1 -- 是 --> P[发送安装 prompt] --> R{复检 installed?}
+ R -- 否 --> Fail[报安装失败 输出脚本原文]
+ R -- 是 --> G2{门② 是否立即执行?}
+ G2 -- 否 --> Hold2[停在已安装态]
+ G2 -- 是 --> Exec
+```
 
 ### 四、与下游 skill 上游检测的对称关系
 

@@ -1,6 +1,25 @@
 # tri-workflow 变更日志
 
 
+## [1.2.2] - 2026-08-14
+
+### 变更
+
+- **description 补全「支持独立安装」声明**：frontmatter description 追加「支持独立安装，含上游依赖检测三态逻辑」字样，满足 compliance-checklist 第 2 条字面要求（MECE 审计 F5）
+- frontmatter version `1.2.1` → `1.2.2`
+
+## [1.2.1] - 2026-08-05
+
+### 修复
+
+- **版本门自动升级死命令**（P0）：`skillhub install <slug> --upgrade` 实测报 `unrecognized arguments: --upgrade`，改为正确命令 `skillhub upgrade <slug>`，并补 CLI 回退路径 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`
+
+### 变更
+
+- **版本检查三态判定 → 四态判定**：新增 D 态（升级通道不可用降级），升级失败时标注降级继续而非死锁
+- 版本检查节命令细则收敛为指向唯一真源 `tri-intent/references/version-gate.md`，消除各 skill 内的重复表述
+- frontmatter version `1.2.0` → `1.2.1`
+
 ## [1.2.0] - 2026-08-03
 
 ### 新增

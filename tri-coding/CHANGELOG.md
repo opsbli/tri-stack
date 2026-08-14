@@ -4,8 +4,23 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
-### 
+## [1.5.2] - 2026-08-06
 
+### 新增
+
+- **`## 质量标准` 独立章节**（合规修复）：补齐编码类 skill 必备的 `## 质量标准` H2 节，以可验证表格固化需求可追溯/设计合规/测试门禁/审批门/代码规范/变更范围/版权合规/落盘完整 八维验收标准，对齐家族 §3.10 规范。
+
+## [1.5.1] - 2026-08-05
+
+### 修复
+
+- **版本门自动升级死命令**（P0）：`skillhub install <slug> --upgrade` 实测报 `unrecognized arguments: --upgrade`，改为正确命令 `skillhub upgrade <slug>`，并补 CLI 回退路径 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`
+
+### 变更
+
+- **版本检查三态判定 → 四态判定**：新增 D 态（升级通道不可用降级），升级失败时标注降级继续而非死锁
+- 版本检查节命令细则收敛为指向唯一真源 `tri-intent/references/version-gate.md`，消除各 skill 内的重复表述
+- frontmatter version `1.5.0` → `1.5.1`
 
 ## [1.5.0] - 2026-08-03
 

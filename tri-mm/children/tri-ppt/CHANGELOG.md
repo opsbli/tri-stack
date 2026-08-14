@@ -4,6 +4,35 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.0] - 2026-08-11
+
+### 新增（全流程自动化升级）
+
+- **阶段一 · 全网素材采集**：从用户提问/主题出发，用 WebSearch/WebFetch 采集文字与图表数据、用 ImageGen 生成主题配图，整理为 `materials.md` + 机器可读 `materials.json`（模板见 `references/materials-template.md`）
+- **审计门① · 素材审计**：素材库提交用户审计，通过/补充/剔除后方可进入设计
+- **阶段二 · 大纲 + 逐页动效方案设计**：在既有 8 维设计基础上新增「逐页动效（转场）方案」，素材映射每页，产出 `design.md` + `design.json`（模板见 `references/design-template.md`，含动效目录表）
+- **审计门② · 设计审计**：大纲 + 动效方案提交用户审计，支持多轮迭代直至通过
+- **阶段三 · 确定性生成**：新增 `scripts/build_pptx.py`（python-pptx），按 design.json + materials.json 生成精美 PPTX，支持 9 种版式、主题色、原生图表、逐页转场（oxml 注入）
+- **版权安全**：外采图片 MUST 可商用，否则改 ImageGen 生成；来源全程可追溯
+
+### 变更
+
+- SKILL.md 升级为全流水线结构（两态上游依赖检测不变，仍为 I15·PPT 子SKILL，MECE 零冲突）
+- 大块模板/目录表移 `references/`（素材模板、设计+动效模板），正文仅留指针
+- frontmatter version `1.1.1` → `1.2.0`
+
+## [1.1.1] - 2026-08-05
+
+### 修复
+
+- **版本门自动升级死命令**（P0）：`skillhub install <slug> --upgrade` 实测报 `unrecognized arguments: --upgrade`，改为正确命令 `skillhub upgrade <slug>`，并补 CLI 回退路径 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`
+
+### 变更
+
+- **版本检查三态判定 → 四态判定**：新增 D 态（升级通道不可用降级），升级失败时标注降级继续而非死锁
+- 版本检查节命令细则收敛为指向唯一真源 `tri-intent/references/version-gate.md`，消除各 skill 内的重复表述
+- frontmatter version `1.1.0` → `1.1.1`
+
 ## [1.1.0] - 2026-08-03
 
 ### 新增

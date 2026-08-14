@@ -1,7 +1,7 @@
 ---
 name: tri-image
 slug: tri-image
-version: 1.1.0
+version: 1.1.1
 displayName: 图片生成（tri-image · tri-mm 子SKILL）
 description: 图片生成子SKILL。读取 tri-mm 转交的 I15 多媒体任务（快照§三 + 媒体类型=图片），对位图/矢量图/图表三类意图做多维度详细设计，产出设计方案交用户确认后生成。当 tri-mm 路由建议指向本子SKILL时激活。作为 tri-mm 子SKILL随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: 图片类多维设计专家，覆盖主题/风格/构图/色彩/光影/画幅等维度，先出设计方案确认再生成。
@@ -17,7 +17,7 @@ license: MIT
 
 ## 强制执行契约（Execution Contract · 最高优先级）
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（连接 skillhub 校验版本，非最新版 MUST 自动更新，更新完成前 NEVER 执行）——此为执行流程第零步，优先于后续所有步骤。更新完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（连接 skillhub 校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
 1. **强制前置**：收到 tri-mm 转交任务 MUST 先读取快照 §三，校验 `intent.L2_核心意图 = I15` 且媒体类型 ∈ {图片}；NEVER 跳过校验直接生成。独立使用（未经 tri-mm 路由）MUST 先走 §上游依赖检测 判定模式。
 2. **多维设计先于生成**：MUST 先完成 §图片设计方法论 的全部维度分析，产出 `design.md` 设计方案，NEVER 在未经用户确认前直接调用生成工具。
@@ -124,76 +124,24 @@ license: MIT
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 本节为家族级强制技术约束，适用于所有 tri-xxx 家族 skill（不分类型、不分落盘与否）。其优先级与「强制执行契约」同级，且在执行流程中位于「核心处理」之前，是 skill 任一执行入口启动后的**第零步**。
+> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
+> **细则唯一真源**：`tri-intent/references/version-gate.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
 
-### 设计原则与触发时机
+**执行要点**
 
-- **设计原则**：skill 行为的正确性以「运行态版本与 skillhub 官网发布版本一致」为前提。任一 skill 在执行前 MUST 自证版本新鲜度，避免因版本陈旧导致契约漂移、快照字段失配或下游路由错乱。
-- **触发时机**：skill 任一执行入口启动后、进入核心处理之前 MUST 触发一次版本检查。
-- **执行顺序**：`版本检查与更新 → 上游依赖检测 → 读取快照 §三 → 核心执行`。版本检查未通过前，NEVER 进入后续任一阶段。
-
-### 版本检查技术实现标准
-
-| 项 | 标准 |
-|----|------|
-| 校验端点 | MUST 连接 skillhub 官网版本校验接口：`GET https://skillhub.<official-domain>/api/v1/skills/tri-image/version`（`<official-domain>` 由 skillhub 客户端配置注入，NEVER 硬编码） |
-| 请求载荷 | MUST 携带：`slug`（与 frontmatter 一致）、`current`（当前 `version`）、`client`（skillhub 客户端标识 + 客户端版本）、`runtime`（执行环境指纹，可选） |
-| 响应契约 | HTTP 200 + JSON：`{ "latest": "<semver>", "min_compatible": "<semver>", "deprecated": <bool>, "checksum_sha256": "<hex>", "signature": "<detached-sig>" }`；非 200 视为校验失败 |
-| 版本比较 | MUST 严格遵循 [SemVer](https://semver.org/lang/zh-CN/) 规则比较 `current` 与 `latest`；NEVER 用字符串比较 |
-| 判定逻辑 | `current < latest` → 触发更新流程；`current >= latest` → 放行；`current < min_compatible` → 触发更新并标记为破坏性升级；`deprecated=true` 且 `current<latest` → 强制更新 |
-| 超时控制 | 单次请求超时 MUST ≤ 5s；超时计入「校验失败」而非「放行」 |
-| 幂等性 | 同一执行入口在一次会话内 MUST 仅校验一次，结果缓存于进程内，避免重复请求 |
-
-> **离线降级（唯一例外）**：当网络完全不可达且重试 1 次仍失败时，MUST 在交付产物与执行日志中显著标注「版本校验未完成（离线）」，并以当前版本继续执行。此例外**仅适用于网络不可达**；一旦可达且判定为非最新版本，绝无降级路径，MUST 进入更新流程。
-
-### 更新流程安全验证要求
-
-触发更新后，MUST 严格按以下安全流程执行，任一环节失败 MUST 立即中止并回滚：
-
-1. **来源校验**：MUST 仅通过 `skillhub install tri-image --upgrade` 官方通道获取新版本；NEVER 从第三方源、镜像或直链下载。
-2. **完整性校验（SHA-256）**：下载完成后 MUST 计算安装包 SHA-256，与版本检查响应中的 `checksum_sha256` 逐字节比对；不一致 MUST 判定失败。
-3. **签名校验**：MUST 用 skillhub 官方公钥验证安装包的 detached 数字签名（`signature` 字段）；签名无效或公钥指纹不匹配 MUST 判定失败。
-4. **回滚保障**：更新前 MUST 完整备份当前 skill 目录（含 frontmatter `version`）；更新失败、校验不通过或安装异常 MUST 自动回滚至备份版本，并清理半成品文件。
-5. **权限最小化**：更新流程 NEVER 写入 skill 目录以外的任何路径（`.tribro/` 运行时临时目录除外）；NEVER 触发网络外联以外的副作用（不执行 postinstall 脚本、不修改全局配置）。
-6. **版本一致性联动**：更新成功后 MUST 同步刷新 frontmatter `version` 与 CHANGELOG.md 读取口径，并重新触发一次版本校验以自证已升至 `latest`。
-
-### 禁止执行的具体判定条件
-
-以下任一条件成立，MUST **绝对禁止**该 skill 的任何形式执行（含核心执行、降级执行、链路文档落盘）：
-
-| 编号 | 判定条件 | 处置 |
-|------|----------|------|
-| P1 | 版本校验结果为「非最新版本」（`current < latest`）且更新流程尚未成功完成 | 阻断执行，进入更新流程 |
-| P2 | 更新流程中完整性校验（SHA-256）失败 | 阻断执行，回滚并报错 |
-| P3 | 更新流程中签名校验失败 | 阻断执行，回滚并报错 |
-| P4 | 当前版本被标记 `deprecated=true` 且 `current < latest`，用户显式拒绝更新 | 阻断执行，输出强阻断提示 |
-| P5 | 更新流程异常中断且未能成功回滚至可用版本 | 阻断执行，输出恢复指引 |
-| P6 | 版本校验请求超时且重试仍失败，但网络链路本身可达（非离线） | 阻断执行，提示检查 skillhub 连通性 |
-
-> 在禁止执行状态下，skill MUST 输出结构化阻断提示，至少包含：`当前版本`、`最新版本`、`阻断条件编号（P1–P6）`、`阻断原因`、`恢复操作指引`（如 `skillhub install tri-image --force --verify`）。NEVER 静默跳过、NEVER 以降级名义绕过 P1–P5。
-
-### 流程图
-
-```mermaid
-graph TB
- Entry[skill 执行入口启动] --> VChk[版本检查 连接 skillhub]
- VChk --> NetChk{网络可达?}
- NetChk -- 否, 重试1次仍失败 --> Offline[离线降级 标注「版本校验未完成」]
- Offline --> Continue[以当前版本继续执行]
- NetChk -- 是 --> Cmp{current vs latest}
- Cmp -- current >= latest --> Pass[放行 进入核心处理]
- Cmp -- current < latest --> Upd[触发更新流程]
- Upd --> Src[来源校验 官方通道]
- Src --> Hash[SHA-256 完整性校验]
- Hash --> Sig[签名校验]
- Sig --> Inst[安装 + 回滚保障]
- Inst --> ReChk[重新版本校验自证]
- ReChk -- 成功 --> Pass
- ReChk -- 任一失败 --> Rollback[回滚至备份版本]
- Rollback --> Block[禁止执行 输出阻断提示]
- Cmp -- 超时 P6 --> Block
-```
-
+1. **端点取自配置**：API 主机 MUST 读自 `~/.skillhub/metadata.json`，NEVER 硬编码域名。营销官网 `skillhub.cn` 与 API 主机 `api.skillhub.cn` 是两个站点——官网对任意路径都返回 `200 + HTML` 兜底页，绝不可作校验端点。读不到配置即判通道不可用。
+2. **校验请求**：`GET {api_host}/api/v1/skills/{slug}`，超时 ≤ 5s，失败重试 1 次，会话内仅校验一次。
+3. **最新版取值**：`latestVersion.version`，缺失时回退 `skill.tags.latest`。平台**不提供** `min_compatible` / `deprecated` / `checksum_sha256` / `signature`，NEVER 依赖这些字段。
+4. **响应有效性**（三条件同时成立）：HTTP 200 **且** `Content-Type` 含 `application/json` **且** 能解析出版本字段。仅看状态码会被 SPA 兜底页击穿。
+5. **版本比较**：按 [SemVer](https://semver.org/lang/zh-CN/) 逐段整数比较，NEVER 字符串比较。
+6. **四态判定**：
+   - **A 校验通过**（响应有效且 `current >= latest`）→ 放行。
+   - **B 离线降级**（网络不可达）→ 标注「版本校验未完成（离线）」后以当前版本继续。
+   - **C 通道降级**（可达但响应无效 / 404 / 405 / 读不到配置）→ 标注「版本校验未完成（通道不可用）」+ 输出通道异常告警后继续。
+   - **D 升级降级**（陈旧且已真实尝试自动升级但未完成）→ 标注「版本陈旧·自动升级失败」+ 输出手动升级指引后继续。
+   - 四态 NEVER 用于绕过「已检出陈旧却不尝试升级」——MUST 先真实执行一次自动升级，失败方可落 D 态。
+7. **更新通道（自动执行）**：检出陈旧 MUST 自动执行 `skillhub upgrade <slug>` → `skillhub verify <slug>`，升级前备份、签名明确不一致则回滚。CLI 不在 PATH 时回退 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`；CLI 缺失或升级失败 → 落 D 态降级继续，NEVER 阻断。以 junction 指向源码树的 `source: local` skill 跳过自动更新，改为提示维护者手动同步。命令细则、CLI 定位顺序与已知陷阱见真源。
+8. **阻断条件 P1–P4** 与四处版本同步点见真源；发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。
 
 ## 处理流程
 

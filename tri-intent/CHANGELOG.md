@@ -4,6 +4,26 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.10.0] - 2026-08-05
+
+> 下游分发闭环版本。将「意图识别 → 下游安装 → 下游执行」串成不断链的流水线，并修复版本门自动升级的死命令。
+
+### 新增
+
+- **下游分发两道确认门**（SKILL.md §下游依赖检测 三、分发处置）：未安装下游时走门① 安装确认 → 发送安装 prompt → 复检 → 门② 执行确认，两个不可逆动作各留一个用户出口，含 mermaid 分发状态机
+- **`scripts/check_downstream.py`**：确定性检测下游 skill 安装状态，覆盖四处安装位置（家族源码树 / `.tribro/skills/` / 平台用户级 / 平台项目级）+ `.skills_store_lock.json` 注册表，输出 `installed`/`activatable`，退出码 0=全装 / 1=有缺
+- **强制执行契约第 6 条（下游分发强制）**：未安装时 MUST 走两道门，NEVER 擅自安装、NEVER 擅自执行、NEVER 越界代答
+
+### 修复
+
+- **版本门自动升级死命令**（P0）：`skillhub install <slug> --upgrade` 实测报 `unrecognized arguments: --upgrade`，全量改为 `skillhub upgrade <slug>`，并补 CLI 回退路径 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`
+
+### 变更
+
+- **版本门三态判定 → 四态判定**：新增 D 态（升级通道不可用降级），P1 由「终态阻断」改为「过程阻断」（先触发自动升级，失败才降级）
+- **契约第 7 条自检句**：扩充为含版本检查四态与下游分发状态
+- frontmatter version `1.9.0` → `1.10.0`
+
 ## [1.9.0] - 2026-08-03
 
 > 版本检查前置硬门版本。依据《tri-skill-规范与生成指南.md》§3.14 全 skill 强制约束，新增版本检查与更新机制作为执行流程第零步。

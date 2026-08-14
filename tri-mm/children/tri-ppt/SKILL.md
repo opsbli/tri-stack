@@ -1,37 +1,38 @@
 ---
 name: tri-ppt
 slug: tri-ppt
-version: 1.1.0
-displayName: 演示文稿生成（tri-ppt · tri-mm 子SKILL）
-description: 演示文稿子SKILL。读取 tri-mm 转交的 I15 多媒体任务（快照§三 + 媒体类型=PPT），对演示文稿意图做多维度详细设计（主题受众/结构页数/每页大纲/版式/配色字体/图表图示/动画转场/交付格式），产出大纲设计方案交用户确认后生成。当 tri-mm 路由建议指向本子SKILL时激活。作为 tri-mm 子SKILL随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
-summary: 演示文稿多维设计专家，覆盖结构/版式/配色/图表/动画等维度，先出大纲方案确认再生成 PPTX。
-tags: [ppt, presentation, slide, design-plan, tri-mm-child]
+version: 1.2.0
+displayName: 演示文稿全流程自动化（tri-ppt · tri-mm 子SKILL）
+description: 演示文稿全流程自动化子SKILL。从 tri-mm 接收 I15·PPT 任务后，先「从全网采集文字/图片/图表素材」→ 提交素材审计 → 据已审计素材设计大纲与逐页动效方案 → 提交设计审计（可多轮迭代）→ 全部通过后生成精美 PPTX。当 tri-mm 路由建议指向本子SKILL时激活。作为 tri-mm 子SKILL随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
+summary: 演示文稿端到端自动化：全网采集 → 双审计门 → 生成可直接下载的 PPTX。
+tags: [ppt, presentation, slide, web-research, design-plan, animation, tri-mm-child]
 license: MIT
 ---
 
-# 演示文稿生成（tri-mm 子SKILL · PPT）
+# 演示文稿全流程自动化（tri-ppt · tri-mm 子SKILL · PPT）
 
-> 本 skill 是 tri-mm 在 I15 多媒体生成下的**演示文稿类子 SKILL**，依据 tri-mm 转交的媒体任务（快照 `snapshot.md` §三 + 媒体类型=PPT）做多维度详细设计，先产出**大纲设计方案**交用户确认，再生成演示文稿产物。
+> 本 skill 是 tri-mm 在 I15 多媒体生成下的**演示文稿类子 SKILL**，并升级为**端到端全自动流水线**：收到 PPT 任务后，先根据用户提问从全网采集文字/图片/图表素材 → 提交**素材审计** → 据已通过审计的素材设计每页大纲与逐页动效方案 → 提交**设计审计**（可多轮迭代）→ 全部通过后生成设计精美、可直接下载的 PPTX。
 >
-> 用户心智：把 AI 当"懂信息架构的幻灯片设计师"，期望先把结构、每页版式、配色定清楚，再生成 PPTX，避免"生成一堆排版混乱的幻灯片再逐页改"。
+> 用户心智：把 AI 当"从选题到成片的全案幻灯片工作室"——你只给主题，它搜素材、出方案、过两道审计门、交付可下载的 PPTX，全程不黑箱。
 
 ## 强制执行契约（Execution Contract · 最高优先级）
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（连接 skillhub 校验版本，非最新版 MUST 自动更新，更新完成前 NEVER 执行）——此为执行流程第零步，优先于后续所有步骤。更新完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
+> 本节定义 skill「被激活后必须做什么」，优先级高于 Agent 的通用默认行为。**tri-mm 依 I15 委派且媒体类型=PPT 即视为激活本子SKILL，不得仅当参考文档。**
 
-1. **强制前置**：收到 tri-mm 转交任务 MUST 先读取快照 §三，校验 `intent.L2_核心意图 = I15` 且媒体类型 ∈ {PPT}；NEVER 跳过校验直接生成。独立使用 MUST 先走 §上游依赖检测。
-2. **多维设计先于生成**：MUST 先完成 §演示文稿设计方法论 全部维度分析，产出大纲 `design.md` 设计方案，NEVER 在未经用户确认前调用生成工具。
-3. **确认门不可跳**：大纲 `design.md` MUST 呈现用户确认；未确认 NEVER 进入生成。修改 → 修订回确认；取消 → 终止。
-4. **子类型识别**：MUST 识别演示文稿场景（汇报/教学/路演/发布会），据此调整结构深度。
-5. **产物落盘**：生成演示文稿 MUST 落盘工作区并返回可访问路径（PPTX/PDF），NEVER 仅对话内联。
-6. **参数可复现**：MUST 记录版式/配色/字体等设计参数。
-7. **自检句**：作答前声明「本次意图=I15·PPT，已读取快照，场景=<汇报/教学/...>，设计方案已交付确认=<是/否>」；与快照冲突 MUST 停止纠正。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（见该章 STUB 指向的 `tri-intent/references/version-gate.md` 真源）；升级通道不可用则标注 C 态降级继续。版本检查完成前 NEVER 进入后续步骤。
+1. **强制前置**：收到 tri-mm 转交任务 MUST 先读取快照 §三，校验 `intent.L2_核心意图 = I15` 且媒体类型 ∈ {PPT}；NEVER 跳过校验直接执行。独立使用 MUST 先走 §上游依赖检测。
+2. **采集先于设计**：MUST 先完成 §全流程方法论 阶段一（全网素材采集 + 整理），产出 `materials.md` 素材库，NEVER 在素材审计通过前进入大纲设计。
+3. **双审计门不可跳**：素材库 MUST 经**审计门①**通过后方可设计；大纲 + 动效方案 MUST 经**审计门②**通过后方可生成。任一未通过 NEVER 进入下一阶段。
+4. **子类型识别**：MUST 识别演示场景（汇报/教学/路演/发布会），据此调整结构深度与采集广度。
+5. **产物落盘**：生成演示文稿 MUST 落盘工作区并返回可访问路径（PPTX，必要时 PDF），NEVER 仅对话内联。
+6. **参数可复现**：MUST 记录版式/配色/字体/动效等设计参数与素材来源，使产物可重生成。
+7. **自检句**：作答前声明「本次意图=I15·PPT，已读取快照，场景=<...>，素材审计通过=<是/否>，设计审计通过=<是/否>」；与快照冲突 MUST 停止纠正。
 
 ## 触发时机
 
 - tri-mm 媒体类型识别为「PPT」后路由至本子SKILL
 - 意图范围：I15 多媒体生成 · 演示文稿类
-- 关键词（任一）：PPT/幻灯片/演示/汇报/路演/课件
+- 关键词（任一）：PPT/幻灯片/演示/汇报/路演/课件/从零做 PPT
 
 ## 上游依赖检测（独立使用时）
 
@@ -51,204 +52,153 @@ license: MIT
 | 媒体类型（tri-mm 标注） | MUST = PPT |
 | `dimensions.D1_任务领域` | 演示主题/行业语境 |
 | `dimensions.D2_输入形态` | 是否有素材/数据/参考 |
-| `dimensions.D4_输出期望` | 格式（PPTX/PDF） |
-| `任务要点` | 产物硬约束（页数/风格/配色） |
+| `dimensions.D4_输出期望` | 格式（PPTX/PDF）、比例（默认 16:9） |
+| `任务要点` | 产物硬约束（页数/风格/配色/受众） |
 | `交付预期` | 用户期望交付物 |
 
 > 若快照 `澄清门状态=待澄清`，不应激活。
 
 ## 职责边界
 
-- **负责**：演示文稿类（大纲/版式/配色/图表/动画）的多维设计 + 生成
-- **不负责**：音乐（tri-music）、图片（tri-image）、视频（tri-video）、纯文本（tri-content）、编码（tri-coding）
-- 与 tri-mm：tri-mm 负责意图识别与媒体路由；本子SKILL 负责演示文稿专业设计与执行
+- **负责**：① 全网素材采集与整理；② 素材审计；③ 大纲 + 逐页动效方案设计；④ 设计审计；⑤ PPTX 生成与落盘。
+- **不负责**：音乐（tri-music）、图片独立生成（tri-image）、视频（tri-video）、纯文本（tri-content）、业务代码（tri-coding）。
+- 与 tri-mm：tri-mm 负责意图识别与媒体路由；本子SKILL 负责 PPT 全流程专业执行。
+- **MECE 说明**：本 skill 仅增强 I15·PPT 既有子 SKILL 能力，不新增任何 L2/L3 意图认领，与家族路由零冲突。
 
-## 演示文稿设计方法论（核心能力 · 可扩展）
+## 全流程方法论（核心能力 · 可扩展）
 
-> 先设计、再生成。每个维度 MUST 在 design.md 中显式填充。
+> 五阶段串行 + 双审计门。每个阶段产物 MUST 落盘后再进入下一阶段。
 
-### 多维设计维度
+### 阶段一 · 全网素材采集
 
-| # | 维度 | 说明 | 常见取值 |
-|---|------|------|----------|
-| 1 | 主题与受众 | 主题、听众背景、目标 | 汇报/教学/路演 |
-| 2 | 结构与页数 | 封面/目录/章节/正文/结尾、页数 | 10/15/20 页 |
-| 3 | 每页大纲 | 每页标题/要点/图示 | 要点式/图表式 |
-| 4 | 版式 | 每页布局类型 | 标题版/左右图文/全图/数据版/对比版 |
-| 5 | 配色与字体 | 主色/辅助色、中英文字体、字号层级 | 商务蓝/科技黑 |
-| 6 | 图表与图示 | 类型、数据来源 | 柱状/饼图/流程图/SWOT |
-| 7 | 动画与转场 | 出现/强调/切换 | 淡入/擦除/平滑 |
-| 8 | 交付格式 | 输出格式与比例 | PPTX/PDF；16:9 |
+根据用户提问/主题，从全网搜集三类素材并整理为 `materials.md` 素材库：
 
-### design.md 模板
+| 类型 | 采集方式 | 落点 |
+|------|----------|------|
+| 文字内容 | WebSearch/WebFetch 检索权威来源，提炼关键论点/数据/案例/金句 | `materials.md` 文字区 |
+| 图表数据 | WebSearch 检索统计/对比数据；记录数值与来源，供阶段三原生图表使用 | `materials.md` 图表区 |
+| 图片素材 | **优先 ImageGen 生成主题配图**（版权无忧、风格统一）；必要时 WebSearch 检索可商用图床 URL 并经用户确认后下载 | `materials.md` 图片区 + 本地图文件 |
 
-```markdown
-# 演示文稿大纲设计方案 · <命名>
+- 素材 MUST 标注来源 URL 与用途（哪页用/做封面还是配图）。
+- 版权安全：外采图片 MUST 为可商用授权；无授权则改用 ImageGen 生成。
+- 素材库结构化：同步产出机器可读 `materials.json`（字段见 `references/materials-template.md`），供生成脚本消费。
 
-- 场景：<汇报/教学/路演>
-- 总页数：<...>
-- 配色/字体：<...>
-- 交付格式：<PPTX/PDF · 16:9>
+### 审计门① · 素材审计（不可跳）
 
-| 页码 | 版式 | 标题 | 要点/图示 | 动画 |
-|------|------|------|-----------|------|
-| 1 | 封面 | <...> | <...> | - |
-| 2 | 目录 | <...> | <...> | 淡入 |
-| 3 | 标题版 | <...> | <要点> | 擦除 |
-| ... | | | | |
+1. 呈现 `materials.md` + 缩略图，明确「请确认素材 / 指出需补充或剔除的项」。
+2. 通过 → 阶段二；补充/剔除 → 修订素材库回本门；取消 → 终止。
 
-## 设计参数（待确认后执行）
-- 配色：<主色/辅助色/强调色>
-- 字体：<中文/英文/字号层级>
-- 图表：<类型与数据>
-```
+### 阶段二 · 大纲 + 逐页动效方案设计
+
+逐维度填充设计（主题受众/结构页数/每页大纲/版式/配色字体/图表图示/**动效转场**/交付格式），并把已审计素材映射到每页。产出 `design.md` 与机器可读 `design.json`（schema 见 `references/design-template.md`）。
+
+- **动效方案**：逐页标注转场类型（fade/wipe/push/split/none，目录见 `references/design-template.md` 动效目录表）与可选强调点；生成脚本据此注入幻灯片切换效果。
+
+### 审计门② · 设计审计（不可跳，可多轮）
+
+1. 呈现 `design.md`（含每页大纲 + 动效方案），明确「请确认或提出修改意见」。
+2. 通过 → 阶段三；修改 → 修订 `design.md` 回本门（支持多轮迭代直至通过）；取消 → 终止。
+
+### 阶段三 · 生成 PPTX
+
+1. 据 `design.json` + `materials.json` 构造版式/配色/字体/图片/图表/转场参数。
+2. 运行 `python scripts/build_pptx.py --spec <dir>/design.json --materials <dir>/materials.json --out <工作区>/<命名>.pptx`（脚本细则见 `references/design-template.md`）。
+3. 若环境缺 `python-pptx`，脚本会给出 `pip install python-pptx` 提示；或委托 `pptx` skill 兜底生成。
+4. 记录设计参数与素材来源，产物落盘工作区。
 
 ### 可扩展性
 
-1. 新增版式：维度 4 取值表追加
-2. 新增场景：维度 1 取值表追加
-3. 新增维度：设计维度表追加一行
-
+1. 新增版式：在 `scripts/build_pptx.py` 布局函数表追加。
+2. 新增场景：阶段一采集广度按场景调整。
+3. 新增动效：动效目录表（references）与脚本转场映射同步追加。
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 本节为家族级强制技术约束，适用于所有 tri-xxx 家族 skill（不分类型、不分落盘与否）。其优先级与「强制执行契约」同级，且在执行流程中位于「核心处理」之前，是 skill 任一执行入口启动后的**第零步**。
+> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
+> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **铁律**：版本比较/升级/回退/四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析 JSON + 按 state 处置」。
 
-### 设计原则与触发时机
-
-- **设计原则**：skill 行为的正确性以「运行态版本与 skillhub 官网发布版本一致」为前提。任一 skill 在执行前 MUST 自证版本新鲜度，避免因版本陈旧导致契约漂移、快照字段失配或下游路由错乱。
-- **触发时机**：skill 任一执行入口启动后、进入核心处理之前 MUST 触发一次版本检查。
-- **执行顺序**：`版本检查与更新 → 上游依赖检测 → 读取快照 §三 → 核心执行`。版本检查未通过前，NEVER 进入后续任一阶段。
-
-### 版本检查技术实现标准
-
-| 项 | 标准 |
-|----|------|
-| 校验端点 | MUST 连接 skillhub 官网版本校验接口：`GET https://skillhub.<official-domain>/api/v1/skills/tri-ppt/version`（`<official-domain>` 由 skillhub 客户端配置注入，NEVER 硬编码） |
-| 请求载荷 | MUST 携带：`slug`（与 frontmatter 一致）、`current`（当前 `version`）、`client`（skillhub 客户端标识 + 客户端版本）、`runtime`（执行环境指纹，可选） |
-| 响应契约 | HTTP 200 + JSON：`{ "latest": "<semver>", "min_compatible": "<semver>", "deprecated": <bool>, "checksum_sha256": "<hex>", "signature": "<detached-sig>" }`；非 200 视为校验失败 |
-| 版本比较 | MUST 严格遵循 [SemVer](https://semver.org/lang/zh-CN/) 规则比较 `current` 与 `latest`；NEVER 用字符串比较 |
-| 判定逻辑 | `current < latest` → 触发更新流程；`current >= latest` → 放行；`current < min_compatible` → 触发更新并标记为破坏性升级；`deprecated=true` 且 `current<latest` → 强制更新 |
-| 超时控制 | 单次请求超时 MUST ≤ 5s；超时计入「校验失败」而非「放行」 |
-| 幂等性 | 同一执行入口在一次会话内 MUST 仅校验一次，结果缓存于进程内，避免重复请求 |
-
-> **离线降级（唯一例外）**：当网络完全不可达且重试 1 次仍失败时，MUST 在交付产物与执行日志中显著标注「版本校验未完成（离线）」，并以当前版本继续执行。此例外**仅适用于网络不可达**；一旦可达且判定为非最新版本，绝无降级路径，MUST 进入更新流程。
-
-### 更新流程安全验证要求
-
-触发更新后，MUST 严格按以下安全流程执行，任一环节失败 MUST 立即中止并回滚：
-
-1. **来源校验**：MUST 仅通过 `skillhub install tri-ppt --upgrade` 官方通道获取新版本；NEVER 从第三方源、镜像或直链下载。
-2. **完整性校验（SHA-256）**：下载完成后 MUST 计算安装包 SHA-256，与版本检查响应中的 `checksum_sha256` 逐字节比对；不一致 MUST 判定失败。
-3. **签名校验**：MUST 用 skillhub 官方公钥验证安装包的 detached 数字签名（`signature` 字段）；签名无效或公钥指纹不匹配 MUST 判定失败。
-4. **回滚保障**：更新前 MUST 完整备份当前 skill 目录（含 frontmatter `version`）；更新失败、校验不通过或安装异常 MUST 自动回滚至备份版本，并清理半成品文件。
-5. **权限最小化**：更新流程 NEVER 写入 skill 目录以外的任何路径（`.tribro/` 运行时临时目录除外）；NEVER 触发网络外联以外的副作用（不执行 postinstall 脚本、不修改全局配置）。
-6. **版本一致性联动**：更新成功后 MUST 同步刷新 frontmatter `version` 与 CHANGELOG.md 读取口径，并重新触发一次版本校验以自证已升至 `latest`。
-
-### 禁止执行的具体判定条件
-
-以下任一条件成立，MUST **绝对禁止**该 skill 的任何形式执行（含核心执行、降级执行、链路文档落盘）：
-
-| 编号 | 判定条件 | 处置 |
-|------|----------|------|
-| P1 | 版本校验结果为「非最新版本」（`current < latest`）且更新流程尚未成功完成 | 阻断执行，进入更新流程 |
-| P2 | 更新流程中完整性校验（SHA-256）失败 | 阻断执行，回滚并报错 |
-| P3 | 更新流程中签名校验失败 | 阻断执行，回滚并报错 |
-| P4 | 当前版本被标记 `deprecated=true` 且 `current < latest`，用户显式拒绝更新 | 阻断执行，输出强阻断提示 |
-| P5 | 更新流程异常中断且未能成功回滚至可用版本 | 阻断执行，输出恢复指引 |
-| P6 | 版本校验请求超时且重试仍失败，但网络链路本身可达（非离线） | 阻断执行，提示检查 skillhub 连通性 |
-
-> 在禁止执行状态下，skill MUST 输出结构化阻断提示，至少包含：`当前版本`、`最新版本`、`阻断条件编号（P1–P6）`、`阻断原因`、`恢复操作指引`（如 `skillhub install tri-ppt --force --verify`）。NEVER 静默跳过、NEVER 以降级名义绕过 P1–P5。
-
-### 流程图
-
-```mermaid
-graph TB
- Entry[skill 执行入口启动] --> VChk[版本检查 连接 skillhub]
- VChk --> NetChk{网络可达?}
- NetChk -- 否, 重试1次仍失败 --> Offline[离线降级 标注「版本校验未完成」]
- Offline --> Continue[以当前版本继续执行]
- NetChk -- 是 --> Cmp{current vs latest}
- Cmp -- current >= latest --> Pass[放行 进入核心处理]
- Cmp -- current < latest --> Upd[触发更新流程]
- Upd --> Src[来源校验 官方通道]
- Src --> Hash[SHA-256 完整性校验]
- Hash --> Sig[签名校验]
- Sig --> Inst[安装 + 回滚保障]
- Inst --> ReChk[重新版本校验自证]
- ReChk -- 成功 --> Pass
- ReChk -- 任一失败 --> Rollback[回滚至备份版本]
- Rollback --> Block[禁止执行 输出阻断提示]
- Cmp -- 超时 P6 --> Block
-```
-
+**执行方式（MUST）**：启动后运行 `python scripts/check_update.py --slug tri-ppt --json`；按 `state` 处置——`A/B/C/D` 一律放行（分别标注「校验通过 / 离线降级 / 通道降级 / 升级降级」），`BLOCK` 绝对禁止执行并按 `actions` 给恢复指引。退出码 `<20` 放行，`>=20` 阻断。
 
 ## 处理流程
 
 > 执行顺序固定：§版本检查与更新机制（第零步）→ 上游依赖检测 → 读取快照 §三 → 核心执行。版本检查未通过前 NEVER 进入以下任一执行步骤。
 
-> 含**大纲设计方案确认门**。
-
 ### 步骤 1：任务接收与校验
-
 1. 读取 tri-mm 转交任务，校验 `L2=I15` 且媒体类型=PPT
 2. 识别场景（汇报/教学/路演/发布会）
 3. 声明自检句
 
-### 步骤 2：多维设计 → 产出 design.md
+### 步骤 2：阶段一 · 全网素材采集
+1. WebSearch/WebFetch 检索文字与图表数据；ImageGen 生成主题配图
+2. 整理 `materials.md` + 产出 `materials.json`
+3. 落盘 `.tribro/multimedia/ppt/<命名>/`
 
-1. 逐维度填充 §演示文稿设计方法论 表格，生成每页大纲
-2. 落盘 `.tribro/multimedia/ppt/<命名>/design.md`
+### 步骤 3：审计门① · 素材审计
+1. 呈现素材库，请确认/补充/剔除
+2. 通过 → 步骤 4；否则修订回本步
 
-### 步骤 3：确认门（不可跳）
+### 步骤 4：阶段二 · 大纲 + 动效设计
+1. 逐维度设计，素材映射每页
+2. 产出 `design.md` + `design.json`
+3. 落盘 `.tribro/multimedia/ppt/<命名>/`
 
-1. 呈现 design.md，明确「请确认或提出修改」
-2. 确认 → 步骤 4；修改 → 修订回本步；取消 → 终止
+### 步骤 5：审计门② · 设计审计（可多轮）
+1. 呈现 design.md（大纲 + 动效），请确认/提修改
+2. 通过 → 步骤 6；否则修订回本步
 
-### 步骤 4：生成与落盘
+### 步骤 6：阶段三 · 生成与落盘
+1. 运行 `scripts/build_pptx.py` 生成 PPTX
+2. 落盘工作区，返回可访问路径
+3. 记录设计参数与素材来源
 
-1. 据 design.md 构造版式/配色/字体/图表参数
-2. 调用生成能力，产物落盘工作区
-3. 记录设计参数
-
-### 步骤 5：核对与交付
-
-1. 逐项核对 `任务要点` 覆盖（页数/格式/配色）
+### 步骤 7：核对与交付
+1. 逐项核对 `任务要点` 覆盖（页数/格式/配色/动效）
 2. 落盘 `result.md`
 3. 返回 tri-mm 汇总
 
-## 交付产物
+## 交付产物机制
 
 | 产物 | 说明 | 落盘位置 |
 |---|---|---|
-| design.md | 大纲设计方案 | `.tribro/multimedia/ppt/<命名>/` |
-| 演示文稿文件 | PPTX/PDF | 工作区（可访问路径） |
-| result.md | 产物路径+参数+核对 | `.tribro/multimedia/ppt/<命名>/` |
+| materials.md / materials.json | 全网素材库（含来源） | `.tribro/multimedia/ppt/<命名>/` |
+| design.md / design.json | 大纲 + 逐页动效方案 | `.tribro/multimedia/ppt/<命名>/` |
+| 演示文稿文件 | PPTX（必要时 PDF） | 工作区（可访问路径） |
+| result.md | 产物路径 + 参数 + 核对 | `.tribro/multimedia/ppt/<命名>/` |
 
 ## 质量标准
 
 | 维度 | 标准 | 验证方式 |
 |---|---|---|
-| 方案完整 | 8 维度 + 每页大纲填充 | design.md 无空维度 |
-| 确认到位 | 用户确认后生成 | 确认记录存在 |
-| 产物可访问 | 文件落盘 | 路径可开 |
-| 参数可复现 | 设计参数完整 | 可重生成 |
+| 素材完整 | 三类素材齐全且标注来源 | materials.md 无空类 |
+| 双门到位 | 素材审计 + 设计审计均通过 | 两次确认记录存在 |
+| 方案完整 | 设计 8 维 + 每页大纲 + 动效填充 | design.md 无空维度 |
+| 产物可访问 | PPTX 落盘 | 路径可开 |
+| 参数可复现 | 设计参数 + 素材来源完整 | 可重生成 |
 | 格式合规 | 符合 `D4_输出期望` | 格式一致 |
+| 版权安全 | 外采图片均可商用或改生成 | 来源可追溯 |
 | 任务要点覆盖 | 满足全部条目 | 逐项核对 |
 
 ## 落盘规则
 
-- 快照由 tri-intent 已落盘 `.tribro/snapshots/`
-- 本子SKILL 链路文档落盘 `.tribro/multimedia/ppt/<命名>/`（design.md + result.md）
-- 演示文稿产物落盘工作区并返回可访问路径
+- 快照由 tri-intent 已落盘 `.tribro/snapshots/`（本 skill 只读，不重复产出）。
+- 本子SKILL 链路文档落盘 `.tribro/multimedia/ppt/<命名>/`（materials/design/result）。
+- 演示文稿产物落盘工作区并返回可访问路径。
+- **NEVER 在生成物目录生成 `LICENSE` 或 `.gitignore`**——许可证仅由本 SKILL.md frontmatter `license: MIT` 声明。
 
 ## 目录结构
 
 ```
 tri-mm/children/tri-ppt/
-├── SKILL.md
-├── README.md
-├── CHANGELOG.md
+├── SKILL.md                       # 主入口：全流程流水线 + 双审计门 + python-pptx 生成
+├── README.md                     # 特性/目录结构/安装/使用/设计原则
+├── CHANGELOG.md                  # 版本变更历史（Keep a Changelog + SemVer）
+├── scripts/
+│   ├── build_pptx.py             # 确定性 PPTX 生成器（python-pptx）★新增
+│   └── check_update.py           # 版本门脚本（与 tri-intent 同源）
+├── references/
+│   ├── materials-template.md     # 素材库模板 + materials.json schema ★新增
+│   └── design-template.md        # 大纲+动效设计模板 + design.json schema + 动效目录表 ★新增
 └── tests/
-    └── tri-ppt-full-testcases.md
+    └── tri-ppt-full-testcases.md # 全场景测试用例
 ```
