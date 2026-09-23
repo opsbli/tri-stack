@@ -124,7 +124,7 @@ license: MIT
 - **与 tri-cache 的边界**：tri-cache 可缓存历史验证结果，命中即跳过 RAG；本 skill 默认禁用 TM，可选启用。
 - **与 tri-evolve 的边界**：tri-evolve 从验证结果学习调整校准系数；本 skill 的 ECE 是进化信号。
 - **与 tri-translate 的边界**：tri-translate 的 Hallucination 维度可委派本 skill 深度验证。
-- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族 21 个下游执行 skill（数量见 family-spec §1.3）的 MECE 划分；属横切关注点，同 tri-cache / tri-evolve / tri-translate 同属横向层。
+- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族全部路由型下游执行 skill 的 MECE 划分；属横切关注点，同 tri-cache / tri-evolve / tri-translate 同属横向层。
 - **不触发场景（Not-Trigger）**：本 skill 不接手「一般咨询的常规作答」（属 tri-ask，本 skill 只做委派而来的高风险幻觉消除）；不接手「业务内容生成」（属 tri-content，本 skill 只验证不生成）；不接手「翻译转换本身」（属 tri-translate，本 skill 仅承接其 Hallucination 维度深度验证）；不接手「意图识别」（由 tri-intent / 快照驱动）。
 
 ## 消除幻觉方法论（核心能力 · 可扩展）

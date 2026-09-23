@@ -48,6 +48,39 @@ SELFCHECK_EXEMPT = {
 }
 
 
+def parse_frontmatter(fmb: str) -> dict:
+    """极简 frontmatter 解析，支持三类取值：
+
+      1. 行内标量：`key: value`
+      2. YAML 块标量：`key: >` / `key: |` + 缩进续行（折叠为单行）
+      3. YAML 列表：`key:` + `  - item` 续行（不收集内容，仅保证「键存在」）
+
+    **为什么需要它**：早期实现只用行内正则 `^key:[ \t]*(.*)$`，
+    对 `description: >` 这类块标量只取到 `>`、对 `tags:` 多行列表取到空串，
+    导致第 2／4 条按错误文本判定（实测误报 tri-lottie / tri-pm）。
+    """
+    out = {}
+    lines = fmb.splitlines()
+    i = 0
+    while i < len(lines):
+        m = re.match(r"^([a-zA-Z_]+):[ \t]*(.*)$", lines[i])
+        if not m:
+            i += 1
+            continue
+        key, val = m.group(1), m.group(2).strip()
+        if val in (">", "|", ">-", "|-"):
+            i += 1
+            buf = []
+            while i < len(lines) and (lines[i].startswith(" ") or lines[i].startswith("\t")):
+                buf.append(lines[i].strip())
+                i += 1
+            out[key] = " ".join(buf)
+            continue
+        out[key] = val
+        i += 1
+    return out
+
+
 def read(p: Path) -> str:
     try:
         return p.read_text(encoding="utf-8", errors="ignore")
@@ -100,7 +133,7 @@ def check(d: Path) -> dict:
     # 字段**存在性**用键名收集，不要求行内值非空——
     # YAML 列表（如 tags://n  - a\n  - b）会让行内值为空，早期版本据此误判缺字段（实测 tri-pm）。
     fm_keys = set(re.findall(r"^([a-zA-Z_]+):", fmb, re.M)) if fmb else set()
-    fmd = dict(FM_FIELD.findall(fmb)) if fmb else {}
+    fmd = parse_frontmatter(fmb)
     desc = fmd.get("description", "")
     ver = fmd.get("version", "")
     body = t[fm_raw.end():] if fm_raw else t
@@ -149,7 +182,7 @@ def check(d: Path) -> dict:
         f"核心文件 {len(core)}/3（{'/'.join(core)}）；子目录 {len(sub)}/4（{'/'.join(sub)}）")
 
     # 2 独立安装声明
-    m = re.search(r"支持独立安装[，,]含上游依赖检测[一二三四两]?态逻辑", desc)
+    m = re.search(r"支持独立安装[，,]含上游依赖检测[一二三四两\d]*态逻辑", desc)
     has_upstream_sec = any("上游依赖检测" in h for h in secs)
     if m:
         add(2, "独立安装声明", "PASS", f"description 命中：{m.group(0)}")
@@ -379,9 +412,12 @@ def check(d: Path) -> dict:
     # 22 版本检查内部化：硬要求 = 指向自身 spec；STUB 行数为**建议项**（不阻断）
     seg22 = find_sec(secs, "版本检查与更新机制")
     self_ref = "references/version-check-spec.md" in seg22
+    # 外部引用**仅在自身指针缺失时**才算违规：指向自身 spec 的同时并列提及
+    # 「家族级设计总纲 tri-intent/references/version-gate.md」是本设计**鼓励**的写法
+    # （本仓库 payload spec 即如此），早期版本把所有外部提及判违规（实测误报 tri-humanize）。
     foreign = re.findall(r"tri-\w+/references/[\w.-]+", seg22)
     lines = len(seg22.splitlines())
-    hard_ok = self_ref and not foreign
+    hard_ok = self_ref and not (foreign and not self_ref)
     add(22, "版本检查内部化",
         "PASS" if hard_ok else "FAIL",
         f"自身指针={'有' if self_ref else '无'}；指向外部={('是（违规）:' + ','.join(sorted(set(foreign))[:2])) if foreign else '否'}",

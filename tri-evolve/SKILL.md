@@ -129,7 +129,7 @@ license: MIT
 - **不负责**：意图识别（tri-intent）；业务作答（各下游 skill）；缓存存储（tri-cache）；元操作纠偏（tri-meta）。
 - **与 tri-cache 的边界**：tri-cache 是「记忆层」（存历史作答）；本 skill 是「学习层」（从历史中学习）。tri-cache 提供「命中率」信号给本 skill；本 skill 输出「调优建议」可影响 tri-cache 的差异化 TTL 配置。
 - **与 tri-meta 的边界**：tri-meta 处理 M01-M04 元操作（实时澄清/纠偏）；本 skill 处理离线归因与长期学习。tri-meta 的纠偏记录是本 skill 的信号源之一。
-- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族 21 个下游执行 skill（数量见 family-spec §1.3）的 MECE 划分；它是横切关注点（学习层）。
+- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族全部路由型下游执行 skill 的 MECE 划分；它是横切关注点（学习层）。
 - **不触发场景（Not-Trigger）**：本 skill 不接手「意图识别」（转 tri-intent）；不接手「业务作答」（属各下游执行 skill）；不接手「历史作答缓存存储」（属 tri-cache，本 skill 是学习层不是记忆层）；不接手「元操作实时纠偏/细化」（属 tri-meta）。
 
 ## 自进化方法论（核心能力 · 可扩展）

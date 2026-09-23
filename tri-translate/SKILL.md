@@ -114,7 +114,7 @@ license: MIT
 - **与 tri-content I08 的边界**：tri-content I08 处理轻量翻译与跨格式转换；本 skill 处理深度翻译（含代码路径保护、术语表强制、MQM 自检）。**委派决策由 `tri-content/SKILL.md` §职责边界 I08 行持有**（满足任一即委派本 skill：含代码块/路径/URL/API 等不译要素、有术语一致性硬要求、法律/医疗高保真场景、篇幅>2000 字或需 MQM 报告）；本 skill **不主动接管 I08**。产物上 `alignment.md`（本 skill）与 `对照表.md`（tri-content）二选一，NEVER 双份产出。
 - **与 tri-cache 的边界**：tri-cache 是全家族缓存层；本 skill 可选启用翻译记忆（TM），但默认禁用。未来可扩展为 tri-cache 作为 TM 后端。
 - **与 tri-evolve 的边界**：tri-evolve 可从用户对译文的反馈学习调整术语表 Priority C 推荐；本 skill 的 MQM 评分可作 tri-evolve 的进化信号。
-- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族 21 个下游执行 skill（数量见 family-spec §1.3）的 MECE 划分；它是横切关注点（cross-cutting concern），同 tri-cache / tri-evolve 同属横向层。
+- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族全部路由型下游执行 skill 的 MECE 划分；它是横切关注点（cross-cutting concern），同 tri-cache / tri-evolve 同属横向层。
 - **不触发场景（Not-Trigger）**：本 skill 不接手「轻量翻译/跨格式转换」（属 tri-content I08 自处理，本 skill 只处理深度翻译）；不接管「已归 tri-content I08 的简单翻译」；不识别意图（由 tri-intent）；**不主动接管 I08 委派决策**（该决策由 `tri-content/SKILL.md` §职责边界持有）。
 
 ## 完美翻译（核心能力 · 可扩展）
