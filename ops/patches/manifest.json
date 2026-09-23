@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "generated": "2026-09-23",
+  "purpose": "把本仓库对上游 skill 的本地修正表达为可幂等重放的补丁，使 skillhub upgrade 整树替换后不丢失。",
+  "exclude_paths": [
+    ".workbuddy",
+    ".git"
+  ],
+  "ops": [
+    {
+      "id": "spec-per-skill",
+      "type": "sync_spec",
+      "label": "为每个引用 version-check-spec.md 的 skill 部署校正版自带 spec",
+      "payload": "payload/version-check-spec.md",
+      "append_to_dirs": [],
+      "skip_dirs": []
+    },
+    {
+      "id": "f2-pointer",
+      "type": "replace_text",
+      "label": "版本门真源指针：tri-forge 绝对路径 → 自带相对路径",
+      "glob": "**/SKILL.md",
+      "old": "tri-forge/references/version-check-spec.md",
+      "new": "references/version-check-spec.md"
+    },
+    {
+      "id": "f3-clause-inline",
+      "type": "replace_text",
+      "label": "移除发布前校验子句（行内分号引出版）",
+      "glob": "**/*.md",
+      "old": "；发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。",
+      "new": "。",
+      "already_marker": "与四处版本同步点见真源。"
+    },
+    {
+      "id": "f3-clause-sentence",
+      "type": "replace_text",
+      "label": "移除发布前校验子句（句号引出版）",
+      "glob": "**/*.md",
+      "old": "。发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。",
+      "new": "。",
+      "already_marker": "本章节 NEVER 内联上述细则。"
+    },
+    {
+      "id": "f3-standalone-line",
+      "type": "replace_text",
+      "label": "移除发布前校验独立行",
+      "glob": "**/*.md",
+      "old": "- 发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。\n",
+      "new": "",
+      "already_marker": "**行为约束（细则与字段语义见真源，NEVER 在 prompt 重述）**"
+    },
+    {
+      "id": "f3-gate-cmd-check",
+      "type": "replace_text",
+      "label": "移除 version-gate 命令块（check）",
+      "glob": "**/*.md",
+      "old": "python tri-forge/scripts/sync_registry.py --check    # 报告，非零退出码表示存在漂移\n",
+      "new": "",
+      "already_marker": "## 六、版本一致性四处同步点"
+    },
+    {
+      "id": "f3-gate-cmd-apply",
+      "type": "replace_text",
+      "label": "移除 version-gate 命令块（apply）",
+      "glob": "**/*.md",
+      "old": "python tri-forge/scripts/sync_registry.py --apply    # 自动回写 3 与 4（2 属人工内容，须手写变更条目）\n",
+      "new": "",
+      "already_marker": "## 六、版本一致性四处同步点"
+    },
+    {
+      "id": "f5-gate-charter",
+      "type": "replace_text",
+      "label": "version-gate.md：唯一真源 → 家族设计总纲",
+      "glob": "tri-intent/references/version-gate.md",
+      "old": "# 版本检查与更新机制（家族单一真源）\n\n> **本文件是 tri-xxx 家族版本检查细则的唯一真源（single source of truth）。**\n> 所有家族 skill 的 `## 版本检查与更新机制` 章节仅保留硬门声明与指向本文件的指针，NEVER 内联复制本文细则。\n> 需要修订版本检查规则时，只改本文件一处。",
+      "new": "# 版本检查与更新机制（家族设计总纲）\n\n> **本文件是 tri-xxx 家族版本检查的「设计总纲」**，承载家族级设计约束：设计原则与触发时机、\n> 端点配置真源、四处版本同步点、junction/`source: local` 单源例外、P1–P4 阻断定义。\n>\n> **执行细则不在本文**：每个 tri-* skill 各带一份 `references/version-check-spec.md`\n> （入参、退出码、四态处置、兜底），以保证单个 skill 可独立安装、不依赖其他 skill 的文件。\n> `scripts/check_update.py` 是可执行真源；本文与脚本冲突时以脚本实际行为为准。\n>\n> 修订规则时：家族级约束改本文；执行细则改各 skill 的 spec；**两处都需同步时一并改**。"
+    },
+    {
+      "id": "f5-humanize-wording",
+      "type": "replace_text",
+      "label": "tri-humanize：去掉与事实相反的「NEVER 自带 fork」表述",
+      "glob": "tri-humanize/SKILL.md",
+      "old": "（家族级单一事实源，NEVER 内联/自带 fork）",
+      "new": "（本 skill 自带的执行规范；家族级设计总纲见 `tri-intent/references/version-gate.md`）"
+    },
+    {
+      "id": "f6-gate-fill-empty-block",
+      "type": "replace_text",
+      "label": "version-gate.md §六：填补被清空的发布前门禁代码块",
+      "glob": "tri-intent/references/version-gate.md",
+      "old": "**发布前门禁**：MUST 运行同步器确认零不一致——\n\n```bash\n```\n",
+      "new": "**发布前门禁**：MUST 确认四处版本号零不一致——\n\n> ⚠️ **脚本门禁当前缺失**：原本由 `tri-forge/scripts/sync_registry.py` 提供，但 `tri-forge`\n> 未随任何可达源分发（本地磁盘、git 全历史、原作者 GitHub、平台 92/92 全量枚举均无命中）。\n> 在本仓库自行实现等效校验器之前，按下列清单逐条手工核对：\n\n| # | 核对项 | 期望 |\n|---|---|---|\n| 1 | `<skill>/SKILL.md` frontmatter `version:` | 基准值 |\n| 2 | `<skill>/CHANGELOG.md` 首个 `## [x.y.z]` | 与 1 相等，且为全文件最大版本 |\n| 3 | `<skill>/_meta.json` `version` | 与 1 相等 |\n| 4 | `~/.workbuddy/skills/.skills_store_lock.json` 对应条目 | 与 1 相等（该文件在自维护环境通常不存在，仅存在时校验） |\n",
+      "already_marker": "脚本门禁当前缺失"
+    }
+  ]
+}

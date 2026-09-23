@@ -5,7 +5,7 @@
 > `tri-intent/references/version-gate.md`。
 > 所有 tri-* 家族 skill 的版本检查与更新操作均须遵循本规范。
 
-> ⚠️ **本文为本地校正版**（见 `.workbuddy/patches/README.md`）。校正依据：与各 skill 实际搭载的
+> ⚠️ **本文为本地校正版**（见 `ops/patches/README.md`）。校正依据：与各 skill 实际搭载的
 > `scripts/check_update.py` 行为逐条比对，修掉上游版本中不存在于实现的参数与退出码。
 
 ---
