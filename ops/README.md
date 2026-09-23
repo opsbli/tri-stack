@@ -137,6 +137,24 @@ pat='^version: *(\\S+)'   -> 匹配
 
 | 项 | 说明 |
 |---|---|
-| 四处版本一致性校验 | `tri-intent/references/version-gate.md` §六 要求 4 处版本号一致，原由 tri-forge 的 `sync_registry.py` 校验，现**缺脚本门禁**（`ops/` 尚无对应校验器）。计划由自建的 tri-forge 承接 |
-| 远端版本比对停用 | 自维护后「与平台比版本」失去意义，计划停用 `check_update.py` 的远端比对 |
-| ~~版本号漂移清理~~ | ✅ **已完成**：真实漂移在 **P5（README 版本声明）×4**（`tri-god` / `tri-humanize` / `tri-music` / `tri-workflow`）。P1–P4 一直一致。校验器 `ops/version-lint.py`，修复 op `sync_readme_version` |
+| ~~四处版本一致性校验~~ | ✅ **已完成**：`ops/version-lint.py`（仓库侧）+ `tri-forge/scripts/check_registry.py`（独立安装侧），五点校验（P1–P5） |
+| ~~远端版本比对停用~~ | ✅ **已完成**：43+1 份 `check_update.py` 注入 `SELF_MAINTAINED = True`，完全跳过远端请求 |
+| ~~版本号漂移清理~~ | ✅ **已完成**：P5 漂移 ×4（tri-god / tri-humanize / tri-music / tri-workflow）已由 `sync_readme_version` op 修复 |
+| ~~tri-forge 自建~~ | ✅ **已完成**：`tri-forge/`（15 文件），三模式 + 五门流程 + 22 条门④ + 门③ 路由回流 + 五点版本校验 |
+| ~~tri-forge 门④ 负向验证~~ | ✅ **已完成**：mutation testing **6/6** 项注入全部被抓到（见下表） |
+| 自建 tri-forge 走一次**生成型**实战（门①→⑤） | ⬜ tri-forge 已通过门④ 自审 + mutation testing，但「从零生成一个新 skill」的完整五门流程**尚未实战跑通** |
+
+## 门④ 负向测试结果（mutation testing）
+
+| 用例 | 约束 | 门④ 判定 |
+|---|---|---|
+| M1 版本检查全部指向外部 | #22 | FAIL ✅（抓到） |
+| M2 删独立安装声明 | #2 | FAIL ✅ |
+| M3 CHANGELOG 首条≠frontmatter | #11 | FAIL ✅ |
+| M4 插入硬编码家族计数 | #17 | FAIL ✅ |
+| M5 删自检句 | #5 | FAIL ✅ |
+| M6 删除 CHANGELOG.md | #1 | FAIL ✅ |
+| **还原后终态** | — | **PASS** ✅ |
+
+⇒ 门④ **有牙**：6/6 项典型合规缺陷全部被对应条目精确拦截，还原后恢复 PASS。
+测试脚本在 `.workbuddy/_mutation-gate.py`（gitignore 目录内），如需纳入版本控制须迁到 `ops/` 或 `tri-forge/tests/`。
