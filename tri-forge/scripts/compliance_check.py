@@ -41,6 +41,12 @@ SECTIONS = ["强制执行契约", "触发时机", "上游依赖检测", "输入�
             "核心能力方法论", "处理流程", "交付产物", "版本检查与更新机制"]
 LOCK_INSTALL = re.compile(r"(?<!api\.)skillhub\.cn|skills_store_lock|\.hub/skills")
 
+# 自检句**已登记例外**（单一事实源：references/family-spec.md §五 待登记项表）。
+# 例外 MUST 在此与 family-spec 两处同步登记，NEVER 只改一处。
+SELFCHECK_EXEMPT = {
+    "tri-express": "即时对话回应型，设计上不作答前声明（上游审计 F4 已记录该例外）",
+}
+
 
 def read(p: Path) -> str:
     try:
@@ -91,6 +97,9 @@ def check(d: Path) -> dict:
     t = read(sm)
     fm_raw = FM.match(t)
     fmb = fm_raw.group(1) if fm_raw else ""
+    # 字段**存在性**用键名收集，不要求行内值非空——
+    # YAML 列表（如 tags://n  - a\n  - b）会让行内值为空，早期版本据此误判缺字段（实测 tri-pm）。
+    fm_keys = set(re.findall(r"^([a-zA-Z_]+):", fmb, re.M)) if fmb else set()
     fmd = dict(FM_FIELD.findall(fmb)) if fmb else {}
     desc = fmd.get("description", "")
     ver = fmd.get("version", "")
@@ -98,7 +107,9 @@ def check(d: Path) -> dict:
     secs = sections(body)
 
     # 角色识别（决定 #8 / #20 是否适用）
-    if "内部专用工具" in desc or "内部专用工具" in body[:1200]:
+    if "总路由" in desc and "识别" in desc and "路由" in desc:
+        role = "root"
+    elif "内部专用工具" in desc or "内部专用工具" in body[:1200]:
         role = "internal"
     elif "横向" in desc:
         role = "lateral"
@@ -110,7 +121,9 @@ def check(d: Path) -> dict:
         role = "unknown"
 
     # 角色识别（决定 #8 / #20 是否适用）
-    if "内部专用工具" in desc or "内部专用工具" in body[:1200]:
+    if "总路由" in desc and "识别" in desc and "路由" in desc:
+        role = "root"
+    elif "内部专用工具" in desc or "内部专用工具" in body[:1200]:
         role = "internal"
     elif "横向" in desc:
         role = "lateral"
@@ -137,49 +150,85 @@ def check(d: Path) -> dict:
 
     # 2 独立安装声明
     m = re.search(r"支持独立安装[，,]含上游依赖检测[一二三四两]?态逻辑", desc)
-    add(2, "独立安装声明", "PASS" if m else "FAIL",
-        f"description 命中：{m.group(0)}" if m else "description 未含「支持独立安装，含上游依赖检测N态逻辑」")
+    has_upstream_sec = any("上游依赖检测" in h for h in secs)
+    if m:
+        add(2, "独立安装声明", "PASS", f"description 命中：{m.group(0)}")
+    elif not has_upstream_sec and ("总路由" in desc or "总路由" in fmd.get("displayName", "")):
+        add(2, "独立安装声明", "N-A", "根路由，无上游依赖",
+            "本项仅需独立安装的上游依赖型 skill 适用（理由：根路由无上游，不存在独立安装声明）")
+    else:
+        add(2, "独立安装声明", "FAIL",
+            "description 未含「支持独立安装，含上游依赖检测N态逻辑」")
 
-    # 3 章序 —— 按家族实测校准：
-    #    必备 7 章须存在；前 5 章相对顺序固定；
-    #    「方法论」「处理流程」类章节名允许专名变体；
-    #    「版本检查」接受两种位置（紧跟职责边界之后 / 文件末），该变体已在 family-spec §五 登记。
+    # 3 章序 —— 按家族实测校准（第三轮）
+    #    实测：家族主流为「方法论 → 版本检查与更新机制 → 处理流程 → 交付产物」，
+    #    「版本检查」在 20+ 个 skill 中紧接方法论之后、处理流程之前，
+    #    与 CONTRIBUTING.md 所述「版本置于末位」不同——以**实测**为准。
+    #    另有两处变体（版本检查置于更后 / 文件末），亦接受。
     HEAD_FIRST5 = ["强制执行契约", "触发时机", "上游依赖检测", "输入契约", "职责边界"]
-    HEAD_ANY = ["交付产物"]
-    def has(key):
-        return any(key in h for h in secs)
-    missing = [h for h in HEAD_FIRST5 if not has(h)] + [h for h in HEAD_ANY if not has(h)]
-    missing += [] if has("版本检查与更新机制") else ["版本检查与更新机制"]
-    method_ok = any("方法论" in h for h in secs)
-    if not method_ok:
-        missing.append("方法论（核心能力方法论或专名变体）")
+    def has(kw):
+        return any(kw in h for h in secs)
+    def idx_of(*kws):
+        for i, h in enumerate(secs):
+            if any(k in h for k in kws):
+                return i
+        return -1
+    missing = []
+    for h in HEAD_FIRST5:
+        if not has(h):
+            missing.append(h)
+    for label, kws in (("方法论（核心能力 · 可扩展）", ("方法论", "核心能力", "引擎", "架构", "流程：")),
+                       ("处理流程 / 工作流", ("处理流程", "工作流")),
+                       ("交付产物", ("交付产物",)),
+                       ("版本检查与更新机制", ("版本检查与更新机制",))):
+        if idx_of(*kws) < 0:
+            missing.append(label)
     order_bad = []
-    pos = [next((i for i, h in enumerate(secs) if k in h), -1) for k in HEAD_FIRST5]
+    pos = [idx_of(k) for k in HEAD_FIRST5]
     for i in range(4):
         if pos[i] >= 0 and pos[i + 1] >= 0 and pos[i] > pos[i + 1]:
-            order_bad.append(f"{HEAD_FIRST5[i]} 应在 {HEAD_FIRST5[i+1]} 之前")
-    vc_pos = next((i for i, h in enumerate(secs) if "版本检查与更新机制" in h), -1)
-    rq_pos = next((i for i, h in enumerate(secs) if "职责边界" in h), -1)
-    vc_after_rq = vc_pos > rq_pos >= 0
+            order_bad.append(f"{HEAD_FIRST5[i]} 应在 {HEAD_FIRST5[i + 1]} 之前")
+    mi, vi, wi = idx_of("方法论", "核心能力", "引擎"), idx_of("版本检查与更新机制"), idx_of("处理流程", "工作流")
+    if mi >= 0 and vi >= 0 and vi < mi:
+        order_bad.append("版本检查与更新机制 不应早于方法论章节")
+    # 「版本检查 vs 处理流程」的先后**不作硬性要求**——家族自身两种皆有（主流在前、5 例在后），
+    # 该差异纯属章节编排风格，凭频次立标准不成立。仅在 notes 中提示。
+    pos_note = ""
+    if vi >= 0 and wi >= 0 and vi > wi:
+        pos_note = "版本检查置于处理流程之后（家族少数变体，5 例；非缺陷）"
+    if role == "root":
+        add(3, "SKILL.md 章节齐全且顺序正确", "N-A",
+            "根路由，章节结构为已登记变体（family-spec §五）",
+            "根路由以「判定 → 路由步骤 → 兜底」组织，不套用下游型九章（理由：无上游、无交付产物）")
+        missing = order_bad = []
     add(3, "SKILL.md 章节齐全且顺序正确",
         "PASS" if not missing and not order_bad else "FAIL",
-        (f"缺章节：{missing}" if missing else "") + ("；" + "；".join(order_bad) if order_bad else "")
-        or "七类必备章节齐全，前五章顺序正确",
-        f"版本检查位置={'第 ' + str(vc_pos + 1) + ' 个二级标题（两合法变体之一）' if vc_after_rq else '不符合已登记的两变体'}")
+        (f"缺：{missing}；" if missing else "") + ("；".join(order_bad) if order_bad else "九类必备章节齐全，前五章顺序正确"),
+        pos_note or "章序以**家族实测**为准，非 CONTRIBUTING.md 所述末位")
 
     # 4 frontmatter 八字段
     need = ["name", "slug", "version", "displayName", "description", "summary", "tags", "license"]
-    miss = [k for k in need if not fmd.get(k)]
+    miss = [k for k in need if k not in fm_keys]
     add(4, "frontmatter 完整",
         "PASS" if not miss and SEMVER.match(ver or "") else "FAIL",
         f"缺字段：{miss}；version={ver!r}" if (miss or not SEMVER.match(ver or "")) else f"八字段齐全，version={ver}")
 
     # 5 契约存在且含自检句
+    #    **不要求数字编号**——家族契约既有 `1.` 数字列举，也有 `- MUST …` 无序列举
+    #    （实测 tri-article / tri-docx2md / tri-pdf2md 等用无序列举，曾被误判「编号 0 条」）。
+    #    tri-express 为**已登记例外**（family-spec §五）：设计上不作答前声明。
     seg = find_sec(secs, "强制执行契约")
-    numbered = len(re.findall(r"^\d+\.\s", seg, re.M))
-    add(5, "强制执行契约存在且含自检句",
-        "PASS" if numbered >= 5 and SELFCHECK.search(seg) else "FAIL",
-        f"编号条目 {numbered} 条；自检句 {'有' if SELFCHECK.search(seg) else '无'}")
+    has_sc = bool(SELFCHECK.search(seg))
+    if not seg:
+        add(5, "强制执行契约存在且含自检句", "FAIL", "无「强制执行契约」章节")
+    elif slug in SELFCHECK_EXEMPT:
+        add(5, "强制执行契约存在且含自检句", "N-A",
+            f"已登记例外（family-spec §五）：{SELFCHECK_EXEMPT[slug]}",
+            "本项例外已在 family-spec §五 登记，故判 N-A")
+    else:
+        add(5, "强制执行契约存在且含自检句",
+            "PASS" if has_sc else "FAIL",
+            f"契约章节 {len(seg.splitlines())} 行；自检句 {'有' if has_sc else '无'}")
 
     # 6 上游检测态数匹配（三态须含降级声明）
     seg6 = find_sec(secs, "上游依赖检测")
@@ -255,8 +304,13 @@ def check(d: Path) -> dict:
 
     # 15 自检句格式
     m15 = SELFCHECK.search(body)
-    add(15, "自检句格式与家族一致", "PASS" if m15 else "FAIL",
-        f"命中：{m15.group(0)}" if m15 else "未命中 本次意图=/本次模式=/本次操作=")
+    if slug in SELFCHECK_EXEMPT:
+        add(15, "自检句格式与家族一致", "N-A",
+            f"已登记例外（family-spec §五）：{SELFCHECK_EXEMPT[slug]}",
+            "本项例外已在 family-spec §五 登记，故判 N-A")
+    else:
+        add(15, "自检句格式与家族一致", "PASS" if m15 else "FAIL",
+            f"命中：{m15.group(0)}" if m15 else "未命中 本次意图=/本次模式=/本次操作=")
 
     # 16 反规避 —— 仅对有门禁者适用；放宽表述
     if not has_gate:

@@ -133,23 +133,6 @@ license: MIT
 | **B · 补全审计** | ✅ 产出审计报告；补全产物视用户确认 | 逐条对照 22 条 | 已有 skill 包，按规范审计并补齐缺口 | 门① 范围确认 → 门②（可选：补全） → 门④ 自检 → 门⑤ 交付 |
 | **C · 锻造生成** | ✅ 产出完整 skill 包 | 五门全流程 | 从零生成一个合规 skill | 门①→②→③→④→⑤ |
 
-### 五门流程（C 模式）
-
-```
-门① 需求确认        ── 澄清 skill 名/slug/职责/是否下游/上游态数；向用户复述供确认
-   │ 通过
-门② 骨架生成        ── 依 family-spec 生成目录骨架与各文件初稿（SKILL.md 九章 + README + CHANGELOG + references/scripts/templates/tests）
-   │ 通过
-门③ 回流约束        ── 【强制】若为 tri-intent 下游：同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / 家族计数 / README 表；并确保 .tribro/ 落盘约定写入
-   │ 通过
-门④ 合规自检        ── 【门禁】逐条执行 22 条硬约束（scripts/compliance_check.py）；全部 PASS/N-A 方可继续；任一条 FAIL → 回炉门②
-   │ 全过
-门⑤ 落盘交付        ── 写入目标目录；产出交付摘要（产物清单 + 22 条自检结果 + 路由回填记录）
-```
-
-**门③ 与门④ 的顺序不可颠倒**：先接通路由，再自检合规——因为第 8 条「意图认领 MECE 不重叠」
-需要比对**已回填后**的路由表，顺序颠倒会漏检路由冲突。
-
 ### 兜底处理（四类，NEVER 静默失败）
 
 | 场景 | 处置 |
@@ -197,6 +180,27 @@ python scripts/check_registry.py --apply     # 规则化回写可自动修正的
 
 校验位点见 `references/version-check-spec.md`（本仓库为 **5 处**：`SKILL.md` frontmatter /
 `CHANGELOG.md` 首条 / `_meta.json` / 平台注册表 / `README.md` 版本声明）。
+
+## 处理流程
+
+> 三种模式共享同一套判据（`family-spec.md` + `compliance-checklist.md`），差别在**门数**与**是否落盘**；C 模式走完整五门，B 模式跳过门③。
+
+### 五门流程（C 模式 · 完整链路）
+
+```
+门① 需求确认        ── 澄清 skill 名/slug/职责/是否下游/上游态数；向用户复述供确认
+   │ 通过
+门② 骨架生成        ── 依 family-spec 生成目录骨架与各文件初稿（SKILL.md 九章 + README + CHANGELOG + references/scripts/templates/tests）
+   │ 通过
+门③ 回流约束        ── 【强制】若为 tri-intent 下游：同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / 家族计数 / README 表；并确保 .tribro/ 落盘约定写入
+   │ 通过
+门④ 合规自检        ── 【门禁】逐条执行 22 条硬约束（scripts/compliance_check.py）；全部 PASS/N-A 方可继续；任一条 FAIL → 回炉门②
+   │ 全过
+门⑤ 落盘交付        ── 写入目标目录；产出交付摘要（产物清单 + 22 条自检结果 + 路由回填记录）
+```
+
+**门③ 与门④ 的顺序不可颠倒**：先接通路由，再自检合规——因为第 8 条「意图认领 MECE 不重叠」
+需要比对**已回填后**的路由表，顺序颠倒会漏检路由冲突。
 
 ## 交付产物
 
