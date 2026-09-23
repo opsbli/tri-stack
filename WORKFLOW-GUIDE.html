@@ -133,7 +133,7 @@
 
   <p style="margin-top:14px"><strong>缺口 2 · 四处版本一致性校验缺失（tri-forge 的唯一自动化职能）</strong></p>
   <p><code>tri-intent/references/version-gate.md</code> §六 要求 4 处版本号一致（<code>SKILL.md</code> frontmatter / <code>CHANGELOG.md</code> 首条 / <code>_meta.json</code> / <code>skills_store_lock.json</code>），并明写「<b>无法靠人工纪律避免，MUST 靠脚本门禁拦截</b>」。该脚本随 tri-forge 一起不可得，我们已移除其引用但<b>尚未补上能力</b>。</p>
-  <p><strong>且这不是假设问题</strong>：<code>tri-humanize</code> 现状 = <code>_meta.json</code> <code>1.0.0</code> / <code>README.md</code> <code>1.1.0</code> / <code>SKILL.md</code> <code>1.1.1</code>，正是 §六 要拦的漂移。<b>自主版本线的第一条基线需先清干净这类漂移。</b></p>
+  <p><strong>它确实在漏东西</strong>：§六 只列了 4 处同步点，而实测存在<b>第 5 处——README 的版本声明</b>（shields.io 徽章或 README frontmatter）。校验 40 个 skill 发现 <b>4 个在此漂移</b>（<code>tri-god</code> / <code>tri-humanize</code> / <code>tri-music</code> / <code>tri-workflow</code>）。<b>已修复，现 0 漂移</b>。P1–P4 四点本身一直是干净的。</p>
 
   <p style="margin-top:14px"><strong>缺口 3 · <code>doing/I21-distill.md</code> 把「skill 锻造」导向不存在的 tri-forge</strong></p>
   <p>该文件 13 处说明「按家族规范生成 / 补全 / 审计 skill → 由 tri-forge 承接」。用户照做会找不到工具。<b>这是功能缺口，不是文档瑕疵。</b></p>

@@ -2,7 +2,7 @@
 
 去 AI 化改写方法论 skill（横向 · 5 原则速查 + 35 模式精判 + 人味注入）。为 tri-xxx 家族提供「去 AI 化改写」能力——先按 5 条速查原则粗筛，再对照 35 种 AI 写作模式（内容 / 语言语法 / 风格 / 聊天机器人 / 填充对冲与结构套路 五类）精判；删 AI 腔并注入人味，让文本读起来像真人书写，同时不改变原意、不虚构事实。
 
-![version](https://img.shields.io/badge/version-1.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-1.1.1-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 
 ## 特性
 

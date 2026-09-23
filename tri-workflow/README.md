@@ -1,7 +1,7 @@
 ---
 name: tri-workflow
 slug: tri-workflow
-version: 1.2.2
+version: 1.2.3
 displayName: 工作流设计引擎（tri-workflow）
 summary: 依据 tri-intent 快照或独立对话，通过 7 阶段混合智能流水线设计企业级工作流，产出多形态可执行产物。融合模板驱动、状态机校验、编译器多目标后端三种架构范式。
 tags: [workflow, orchestration, pipeline, ci-cd, approval, automation, state-machine, dsl, enterprise]

@@ -159,7 +159,128 @@ def op_replace_text(op, repo, skip, dry):
     }
 
 
-DISPATCH = {"sync_spec": op_sync_spec, "replace_text": op_replace_text}
+def op_sync_version_meta(op, repo, skip, dry):
+    """强制执行 §六 的 P1↔P3 一致性：_meta.json 的 version 同步为 SKILL.md frontmatter 的值。
+
+    与原 tri-forge `sync_registry.py --apply` 的设计一致——它只回写 3 与 4，
+    P2（CHANGELOG 首条）属人工内容，须人写条目，故本 op **不动 CHANGELOG**。
+
+    本 op 是**规则化**而非字面量匹配：`old` 不适用，逐 skill 比对语义值。
+    这样新增/同步 skill 后自动生效，且幂等（一致则跳过）。
+
+    P4（`~/.workbuddy/skills/.skills_store_lock.json`）**不在本 op 范围内**——
+    该文件在仓库外、属平台安装态，本补丁层的契约是「只作用于仓库内路径」。
+    """
+    import json as _json
+    import re as _re
+
+    fm = _re.compile(r"^version:[ \t]*([^\s#]+)", _re.M)
+    written = skipped = missing = 0
+    details = []
+    for sm in collect(repo, op["glob"], skip):
+        d = sm.parent
+        mj = d / "_meta.json"
+        if not mj.is_file():
+            missing += 1
+            continue
+        try:
+            t = sm.read_text(encoding="utf-8", errors="ignore")
+            mv = fm.search(t[:4000])
+            if not mv:
+                details.append(f"跳过 {d.name}：SKILL.md 无 version")
+                missing += 1
+                continue
+            want = mv.group(1).strip()
+            meta = _json.loads(mj.read_text(encoding="utf-8"))
+        except (OSError, _json.JSONDecodeError) as e:
+            details.append(f"跳过 {d.name}：{type(e).__name__}")
+            missing += 1
+            continue
+        cur = meta.get("version")
+        if cur == want:
+            skipped += 1
+            continue
+        if not dry:
+            meta["version"] = want
+            # 字节级写入，不做行尾翻译；保持 2 空格缩进与文件末换行
+            mj.write_bytes((_json.dumps(meta, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+        written += 1
+        details.append(f"{d.name}：_meta.json {cur} → {want}")
+    return {"status": "ok", "written": written, "skipped": skipped,
+            "missing": missing, "details": details}
+
+
+def op_sync_readme_version(op, repo, skip, dry):
+    """强制执行 §六 的 P1↔P5 一致性：README 的**版本声明**同步为 SKILL.md 的值。
+
+    P5 是 §六 原文未列、但实测存在的第 5 处同步点（本仓库补充）。只认两种声明形式：
+      (a) shields.io 徽章：`![version](...badge/version-<v>-blue)`
+      (b) README 顶部 frontmatter：`---\\nversion: <v>\\n---`
+    **不碰**散文提及（如「基于 xxx v1.4.4」）与历史升级记录（如「当前版本：2.1.1」）——
+    那些不是同步点，改动它们是篡改历史。
+
+    规则化而非字面量匹配：逐 skill 比对语义值，幂等（一致则跳过）。
+    """
+    import re as _re
+
+    fm = _re.compile(r"^version:[ \t]*([^\s#]+)", _re.M)
+    rmfm = _re.compile(r"\A---\r?\n(.*?)\r?\n---", _re.S)
+    rmfm_ver = _re.compile(r"^version:[ \t]*([^\s#]+)", _re.M)
+    badge = _re.compile(r"(shields\.io/badge/version-)([0-9]+(?:\.[0-9]+)*)(-)")
+
+    written = skipped = missing = 0
+    details = []
+    for sm in collect(repo, op["glob"], skip):
+        d = sm.parent
+        rm = d / "README.md"
+        if not rm.is_file():
+            missing += 1
+            continue
+        try:
+            p1v = fm.search(sm.read_text(encoding="utf-8", errors="ignore")[:4000])
+            if not p1v:
+                missing += 1
+                continue
+            want = p1v.group(1).strip()
+            raw = rm.read_bytes()
+            t = raw.decode("utf-8")
+        except OSError:
+            missing += 1
+            continue
+
+        form, cur = None, None
+        m = rmfm.match(t)
+        if m:
+            mv = rmfm_ver.search(m.group(1))
+            if mv:
+                form, cur = "frontmatter", mv.group(1).strip()
+        if form is None:
+            mb = badge.search(t)
+            if mb:
+                form, cur = "badge", mb.group(2)
+
+        if form is None:
+            missing += 1
+            continue
+        if cur == want:
+            skipped += 1
+            continue
+
+        if not dry:
+            if form == "frontmatter":
+                new = rmfm.sub(lambda mm: rmfm_ver.sub(f"version: {want}", mm.group(0), count=1), t, count=1)
+            else:
+                new = badge.sub(lambda mm: f"{mm.group(1)}{want}{mm.group(3)}", t, count=1)
+            rm.write_bytes(new.encode("utf-8"))
+        written += 1
+        details.append(f"{d.name}：README({form}) {cur} → {want}")
+    return {"status": "ok", "written": written, "skipped": skipped,
+            "missing": missing, "details": details}
+
+
+DISPATCH = {"sync_spec": op_sync_spec, "replace_text": op_replace_text,
+            "sync_version_meta": op_sync_version_meta,
+            "sync_readme_version": op_sync_readme_version}
 
 
 def main() -> int:
@@ -195,6 +316,8 @@ def main() -> int:
         for r in results:
             if r["type"] == "sync_spec":
                 desc = f"写入 {r['written']}｜跳过 {r['skipped']}"
+            elif r["type"] in ("sync_version_meta", "sync_readme_version"):
+                desc = f"写入 {r['written']}｜跳过 {r['skipped']}｜N/A {r['missing']}"
             elif r["type"] == "replace_text":
                 desc = f"应用 {r['applied']}｜已应用 {r['already']}"
             else:
