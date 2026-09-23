@@ -17,7 +17,7 @@ license: MIT
 
 > 本节定义 skill「被激活后必须做什么」，优先级高于 Agent 的通用默认行为。**引用/读取本文件即视为激活本工作流**，不得仅将其当作参考文档。
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `tri-forge/references/version-check-spec.md` 契约连接 skillhub 官方通道校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。端点 MUST 读取自配置，NEVER 硬编码 `skillhub.cn` 官网域名（营销 SPA 非校验端点，实测 API 主机为 `api.skillhub.cn`）。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `references/version-check-spec.md` 契约连接 skillhub 官方通道校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。端点 MUST 读取自配置，NEVER 硬编码 `skillhub.cn` 官网域名（营销 SPA 非校验端点，实测 API 主机为 `api.skillhub.cn`）。
 1. **强制前置**：收到任何新用户提问，MUST 先执行「路由步骤」完成意图识别，再产出快照交接下游，NEVER 跳过直接给成果物。
 2. **唯一交付产物**：非「不落盘」类意图，MUST 产出 `.tribro/snapshots/<命名>.md`（模板见 `templates/snapshot.md`），并**同时覆盖写** `.tribro/LATEST.md` 指针文件（格式见 §快照定位契约），供下游 skill 无歧义定位。快照是本 skill 的**唯一交付产物**——内含用户原始提问、意图分析过程、结构化结论数据（intent + 置信度 + dimensions + 任务要点 + 下游路由建议 + 下游 slug）。若 `.tribro/` 目录不存在，MUST 先创建该目录再落盘。**禁止产出** requirements.md、design.md、tasks.md、implements.md、reports.md 等任何下游交付物——那些由下游 skill 依据快照自行产出。
 3. **可选轻量复述**：识别完成后，可至多一次将快照中的结构化结论复述给用户，供其发现明显误识别即可。不设回炉循环、不设多轮审批。当 clarify-gate 已完成澄清、需求已充分时，连这一次复述都可跳过。原则上无需再次向用户确认真实意图。
@@ -127,7 +127,7 @@ tri-intent/
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：`tri-intent/scripts/check_update.py`。
+> **细则唯一真源**：`references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：`tri-intent/scripts/check_update.py`。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

@@ -19,7 +19,7 @@ license: MIT
 
 > 本契约优先级高于 Agent 通用默认行为。**触发源命中（用户显式调用 HUMANIZE、tri-article 等下游委派）即视为激活本工作流**，不得仅将其当作参考文档。
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py`，按 `tri-forge/references/version-check-spec.md` 四态判定处置；非最新版自动升级，升级通道不可用则标注态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py`，按 `references/version-check-spec.md` 四态判定处置；非最新版自动升级，升级通道不可用则标注态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
 1. **强制前置**：
    - HUMANIZE 模式：MUST 先读取输入文本（粘贴/文件/嵌入）与可选写作样本，NEVER 无输入静默改写。
@@ -216,7 +216,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-forge/references/version-check-spec.md`（家族级单一事实源，NEVER 内联/自带 fork）。**可执行实现**：`scripts/check_update.py`。
+> **细则唯一真源**：`references/version-check-spec.md`（本 skill 自带的执行规范；家族级设计总纲见 `tri-intent/references/version-gate.md`）。**可执行实现**：`scripts/check_update.py`。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
