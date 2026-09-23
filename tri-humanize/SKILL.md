@@ -232,7 +232,7 @@ license: MIT
    - `BLOCK` → **绝对禁止执行**，按 `block_code` 输出结构化恢复指引。
 3. 退出码语义：`<20` 放行，`>=20` 阻断。脚本自身异常时兜底降级放行，NEVER 因版本门自身故障阻断 skill 启动。
 
-**执行细则**：四态判定、升级流程、版本比较算法、节流缓存均在 `tri-forge/references/version-check-spec.md`，本章节 NEVER 内联。发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。
+**执行细则**：四态判定、升级流程、版本比较算法、节流缓存均在 `references/version-check-spec.md`，本章节 NEVER 内联。
 
 ## 处理流程
 
