@@ -142,6 +142,16 @@ license: MIT
 
 **间隔查询**：读 `.tribro/learning/<主题>/进度.md` 最后学习日期 → 计算并回复天数（`scripts/learn_tool.py days-since --dir .tribro/learning`）。
 
+### 兜底处理（NEVER 静默失败）
+
+| 场景 | 处置 |
+|---|---|
+| 版本检查异常 | 自维护模式下版本声明不一致 → 标注漂移明细并放行（附修订动作）；脚本自身异常 → 兜底降级放行，NEVER 因版本门故障阻断启动 |
+| 上游缺失 | 两态型：MUST 提示安装 tri-intent；NEVER 按空上下文静默执行 |
+| `.tribro/learning/<主题>/` 缺文件 | MUST 先从 `references/file-templates.md` 补建再继续；NEVER 在缺记录的情况下推进课程 |
+| 学习者未回答检查站 | MUST 停在等待态，**NEVER 提前推进**到下一课 |
+| 掌握判断不确定 | MUST 按矩阵判定并显式声明依据；**NEVER 用「大概掌握了」替代判定** |
+
 ## 交付产物机制
 
 ### 一、每次学习/复习会话后 MUST 更新
@@ -179,6 +189,12 @@ license: MIT
 - 链路审计文档（requirements / compliance-report / lessons）落盘于 `tri-learn/_forge/`。
 - 蒸馏分析报告存于 `tri-learn/蒸馏分析报告-xuexi-learning-skill-main.md`（审计用，不参与 skill 执行）。
 - **NEVER 在生成物目录生成 `LICENSE` 或 `.gitignore`**——许可证仅由 frontmatter `license: MIT` 声明。
+
+### 可扩展性
+
+1. **新增学科模板**：在 `references/file-templates.md` 追加学科条目，建主题时自动套用
+2. **新增掌握判断维度**：在掌握判断矩阵追加行，判定逻辑自动覆盖
+3. **新增流程模式**：在五条流程之外追加模式（如「考前冲刺」），路由识别自动纳入
 
 ## 版本检查与更新机制
 

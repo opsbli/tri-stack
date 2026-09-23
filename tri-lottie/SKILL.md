@@ -165,6 +165,12 @@ play / pause / stop / loop / speed / seek / playSegments / reverse / colorTheme 
 - 用户工作区产物（规格单/代码/审查报告）随对话交付，或按用户指定路径落盘；`.tribro/` 不存在时 MUST 先创建，交付时在 `.tribro/forge/<命名>/` 落 `delivery-manifest.md` 记录交付物路径清单，保证产物可追溯。
 - NEVER 在本 skill 目录生成 LICENSE 或 .gitignore（许可由 frontmatter `license: MIT` 声明）。
 
+### 可扩展性
+
+1. **新增动效预设**：在方法论追加预设条目（用途 / 曲线 / 参数），实现时自动可查
+2. **新增集成目标**：在接入说明追加平台（如小程序 / RN），审查清单自动适用
+3. **新增审查规则**：在质量标准追加条目，命中即回炉——判定逻辑零改动
+
 ## 版本检查与更新机制（硬红线 · 细则唯一真源指针）
 
 > 任一执行入口启动后的**第零步**：运行 `python scripts/check_update.py --slug tri-lottie --json`，解析 `state` 四态（A/B/C/D 放行，BLOCK 阻断）；退出码 `<20` 放行，`>=20` 阻断；脚本异常兜底降级放行。24h 节流，`--force` 强制重查。

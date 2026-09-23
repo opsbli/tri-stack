@@ -126,6 +126,12 @@ license: MIT
 5. **不要**预建 `tasks/` 或任何其他 kind——那些是后续赢得的
 
 
+### 可扩展性
+
+1. **新增 substrate kind**：在 `templates/` 追加 kind 的 README（即 schema），bootstrap 自动创建
+2. **新增 loop 模板字段**：在 `templates/loop-readme.md` 追加 frontmatter 字段，charter 收集自动覆盖
+3. **新增记录格式**：在 Timeline / LOG.md 约定追加字段，记录逻辑零改动
+
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。

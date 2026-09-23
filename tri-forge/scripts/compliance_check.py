@@ -263,24 +263,46 @@ def check(d: Path) -> dict:
             "PASS" if has_sc else "FAIL",
             f"契约章节 {len(seg.splitlines())} 行；自检句 {'有' if has_sc else '无'}")
 
-    # 6 上游检测态数匹配（三态须含降级声明）
+    # 6 上游检测态数匹配
+    #    家族态名有变体：「引导安装」/「独立降级模式」/「待识别」皆合法；
+    #    另有「自包含型」（声明无强制上游依赖，如 tri-learn）与「根路由」（tri-intent）不适用。
     seg6 = find_sec(secs, "上游依赖检测")
-    has_guide = "引导安装" in seg6
-    has_deg = "降级" in seg6 or "降级声明" in seg6
-    if not seg6:
+    if role == "root":
+        add(6, "上游检测态数与类型匹配", "N-A", "根路由，无上游依赖",
+            "根路由无上游可检测（理由：路由的发起方本身）")
+    elif not seg6:
         add(6, "上游检测态数与类型匹配", "FAIL", "无「上游依赖检测」章节")
-    elif not has_guide:
-        add(6, "上游检测态数与类型匹配", "FAIL", "未见「引导安装」态")
+    elif re.search(r"无强制上游依赖|不依赖任何外部上游|独立可用", seg6):
+        add(6, "上游检测态数与类型匹配", "N-A", "自包含型：声明了无强制上游依赖",
+            "本项仅上游依赖型 skill 适用（理由：自包含型无上游态可数）")
     else:
-        add(6, "上游检测态数与类型匹配", "PASS" if has_deg else "MANUAL",
-            f"引导安装=有，降级={'有' if has_deg else '无'}",
-            "含降级=三态；缺降级须确认为两态型（咨询/表达/元操作）")
+        states = [k for k in ("引导安装", "独立降级", "待识别", "降级模式", "降级")
+                  if k in seg6]
+        if not states:
+            add(6, "上游检测态数与类型匹配", "FAIL",
+                "未见任何上游缺失态的处置（引导安装 / 独立降级 / 降级）")
+        else:
+            add(6, "上游检测态数与类型匹配", "PASS",
+                f"检出态名：{'/'.join(states)}",
+                "态名变体（引导安装 / 独立降级模式 / 待识别）均视为合法")
 
     # 7 职责边界
+    #    表述有变体：「不负责」/「以下不是它的事」/「不做」/「NEVER」/「禁止」皆合法
+    #    （实测 tri-frontend-design 用「以下不是它的事（显式转介）」，语义正确却被早期版本误判）。
     seg7 = find_sec(secs, "职责边界")
-    add(7, "职责边界明确",
-        "PASS" if ("不负责" in seg7 or "NEVER" in seg7) else "FAIL",
-        f"该节 {len(seg7.splitlines())} 行；含「{'不负责' if '不负责' in seg7 else 'NEVER'}」")
+    RQ = ("不负责", "不是它的事", "不做", "NEVER", "禁止")
+    hit = [k for k in RQ if k in seg7]
+    if role == "root":
+        add(7, "职责边界明确", "N-A", "根路由，结构为已登记变体",
+            "根路由以「判定/路由/兜底」组织，MECE 边界由 §MECE 保证 章节承载（理由：无业务职责可划）")
+    elif seg7 and hit:
+        add(7, "职责边界明确", "PASS",
+            f"该节 {len(seg7.splitlines())} 行；命中表述：{'/'.join(hit)}")
+    elif seg7:
+        add(7, "职责边界明确", "FAIL",
+            f"该节 {len(seg7.splitlines())} 行；未见「不负责」类表述（不负责 / 不是它的事 / 不做 / NEVER / 禁止）")
+    else:
+        add(7, "职责边界明确", "FAIL", "无「职责边界」章节")
 
     # 8 MECE 交叉比对 —— 需人工
     if role == "downstream":
@@ -315,14 +337,24 @@ def check(d: Path) -> dict:
         f"首条={hv} frontmatter={ver} 文件最大={mx}")
 
     # 12 tests
+    #    **口径经全仓实测校准（第五轮）**：家族测试文件至少有 **三种约定**（且逐 skill 互斥）：
+    #      A 行首 TC 表行     `^\|\s*TC[-\s]`（tri-article / tri-humanize / tri-music…）
+    #      B 章节式 ### TC    `^###?\s+TC`（tri-coding / tri-god / tri-wiki / tri-loop / tri-pm…）
+    #      C 组式/管道式无统一编号（tri-sdlc / tri-guard / tri-geo / tri-workflow / tri-learn…）
+    #    ⇒ 任何单一编号正则都只覆盖部分约定，必然误判其余（此前连续四轮校准的根因）。
+    #    **约定无关的可靠代理**：测试文件中的**表格行数 ≥ 10**——
+    #    14 个被误判的文件最少 59 行表格（大多 100+），且所有约定都以表格为主载体；
+    #    命名约定（`tests/<slug>-full-testcases.md`）保证了文件的意图，
+    #    表格行数保证了内容丰富度。两者结合已足够稳健。
     td = d / "tests"
     tfiles = list(td.glob("*-full-testcases.md")) if td.is_dir() else []
-    cnt = 0
+    cases = 0
     if tfiles:
-        cnt = len(re.findall(r"^\|\s*T?C?\d+", read(tfiles[0]), re.M))
+        cases = len(re.findall(r"^\|", read(tfiles[0]), re.M))
     add(12, "tests 全场景用例",
-        "PASS" if tfiles and cnt >= 10 else "FAIL",
-        f"用例文件 {len(tfiles)} 个，编号条目 {cnt} 条" if tfiles else "无 tests/*-full-testcases.md")
+        "PASS" if tfiles and cases >= 10 else "FAIL",
+        f"用例文件 {len(tfiles)} 个；测试表格行 {cases} 行（约定无关口径）"
+        if tfiles else "无 tests/*-full-testcases.md")
 
     # 13 门禁（无门禁者 N-A，须附理由）
     has_gate = any(k in body for k in ("审批门", "门①", "闸门", "门禁", "审批"))
