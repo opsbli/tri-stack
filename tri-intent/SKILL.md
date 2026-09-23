@@ -147,7 +147,6 @@ tri-intent/
 
 - 端点 MUST 读自 `~/.skillhub/metadata.json`，NEVER 硬编码；营销官网 `skillhub.cn` 与 API 主机 `api.skillhub.cn` 是两站，官网 SPA 兜底页 NEVER 作校验端点。
 - 响应有效性三条件（§2.4）、SemVer 逐段比较（§2.6）、四态判定（§四）、junction/`source:local` 单源跳过自动升级（§三）、四处版本同步（§六）、P1–P4 阻断（§五）均由脚本忠实实现。
-- 发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。
 
 ## 意图确认卡（通用主模板 · 识别结果结构化呈现）
 

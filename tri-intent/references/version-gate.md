@@ -183,8 +183,6 @@ NEVER 静默跳过、NEVER 以降级名义绕过 P2–P3、NEVER 在未真实尝
 **发布前门禁**：MUST 运行同步器确认零不一致——
 
 ```bash
-python tri-forge/scripts/sync_registry.py --check    # 报告，非零退出码表示存在漂移
-python tri-forge/scripts/sync_registry.py --apply    # 自动回写 3 与 4（2 属人工内容，须手写变更条目）
 ```
 
 > **历史教训**：tri-intent v1.9.0 发布时 CHANGELOG 写了 1.9.0 而 frontmatter 仍是 1.8.0，漂移被打包进发布产物，导致任何人全新安装后自检都显示 1.8.0。同批次 tri-music 2.2.0/2.1.1 同样中招。三处 junction skill 的 `_meta.json` 与 lock.json 也长期滞后。这类漂移无法靠人工纪律避免，MUST 靠脚本门禁拦截。
