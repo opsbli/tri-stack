@@ -303,15 +303,22 @@ def check(d: Path) -> dict:
             "本项仅横向型适用（理由：非横向型不存在自检句例外需登记）")
 
     # 21 安装评估
+    #    探针用**固定名**并放在 try/finally 里清理：早期版本用 id(d) 命名且清理不健壮，
+    #    曾把 .cmp_probe_* 文件泄漏进被审计目录并误提交。
     conflict = (REPO / slug).exists()
     writable = False
+    probe = d / ".cmp_writable_probe"
     try:
-        probe = d / f".cmp_probe_{id(d)}"
         probe.write_text("x", encoding="utf-8")
-        probe.unlink()
         writable = True
     except OSError:
-        pass
+        writable = False
+    finally:
+        try:
+            if probe.exists():
+                probe.unlink()
+        except OSError:
+            pass
     add(21, "安装评估", "PASS" if writable else "FAIL",
         f"目录可写={'是' if writable else '否'}；slug 目录存在={conflict}（存在属正常，仅记录）")
 
