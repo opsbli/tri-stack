@@ -122,6 +122,17 @@ pat='^version: *(\\S+)'   -> 匹配
 
 > 若希望这些决策记录也随 fork 分发，需另行迁入版本化路径。**待裁决。**
 
+### 版本门：自维护模式（已启用）
+
+每个 skill 自带的 `scripts/check_update.py` 内置 `SELF_MAINTAINED = True`：
+
+- **不再请求平台**（裁定 1「停用远端比对」已落地）
+- 改为校验本 skill 的 **5 处版本声明**是否一致：P1 `SKILL.md` / P2 `CHANGELOG.md` 首条 /
+  P3 `_meta.json` / P4 `lock.json`（存在时）/ **P5 `README.md` 版本声明**
+- 状态：`A`（一致，exit 0）/ `D`（存在漂移，exit 12，附修订动作）
+- 逃生舱：`TRI_ALLOW_REMOTE=1` 可临时恢复远端比对（仅排障）
+- 负向测试已通过：注入 P3/P5 漂移 → 均正确地报 `D` 并给出精确的漂移描述
+
 ## 已知未完成项
 
 | 项 | 说明 |

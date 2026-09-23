@@ -552,6 +552,120 @@ def perform_upgrade(slug: str, skill_dir: Path, current: str, latest: str,
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# 自维护 fork：本地版本一致性校验（替代远端比对）
+# ---------------------------------------------------------------------------
+
+# 本仓库为自维护 fork，不再跟随上游版本号。置 True 时：
+#   - **完全跳过远端请求**，不做「与平台比版本」
+#   - 改为校验本 skill 自身的版本声明是否自洽（P1–P5）
+# 排障时可用环境变量临时恢复远端行为：TRI_ALLOW_REMOTE=1
+SELF_MAINTAINED = True
+_ALLOW_REMOTE_ENV = "TRI_ALLOW_REMOTE"
+
+_SELF_FM = re.compile(r"^version:[ \t]*([^\s#]+)", re.MULTILINE)
+_SELF_CL = re.compile(r"^##\s*\[([0-9]+(?:\.[0-9]+)*)\]", re.MULTILINE)
+_SELF_BADGE = re.compile(r"shields\.io/badge/version-([0-9]+(?:\.[0-9]+)*)-")
+_SELF_RMFM = re.compile(r"\A---\r?\n(.*?)\r?\n---", re.S)
+
+
+def self_consistent_check(skill_dir: Path, slug: str, current, result: dict) -> dict:
+    """本地版本一致性校验 —— 自维护 fork 的门禁。
+
+    校验 5 处版本声明是否一致（与 ops/version-lint.py 同一套规则）：
+      P1 SKILL.md frontmatter        P2 CHANGELOG.md 首条（须为全文件最大）
+      P3 _meta.json                  P4 lock.json（存在时）
+      P5 README.md 版本声明（shields.io 徽章 / README 顶部 frontmatter）
+
+    自包含实现：不依赖仓库根的其他文件，单个 skill 被独立安装时同样可用。
+    P2 属人工内容，本函数只报告、不代写。
+    """
+    drift = []
+
+    # P1（基准，由调用方读入）
+    if not current:
+        drift.append("P1 缺失（SKILL.md frontmatter 无 version）")
+
+    # P2 —— CHANGELOG 首条，且须为全文件最大
+    cl = skill_dir / "CHANGELOG.md"
+    if cl.is_file():
+        try:
+            t = cl.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            t = ""
+        vs = _SELF_CL.findall(t)
+        if vs:
+            head = vs[0]
+            mx = head
+            for v in vs:
+                cmp = version_compare(v, mx)
+                if cmp is not None and cmp > 0:
+                    mx = v
+            if current and head != current:
+                drift.append(f"P2≠P1（CHANGELOG 首条 {head} ≠ SKILL.md {current}）")
+            if mx != head:
+                drift.append(f"P2 非最大（首条 {head} < {mx}）")
+
+    # P3 —— _meta.json
+    mj = skill_dir / "_meta.json"
+    if mj.is_file():
+        try:
+            mv = json.loads(mj.read_text(encoding="utf-8")).get("version")
+        except (OSError, json.JSONDecodeError):
+            mv = None
+            drift.append("P3 解析失败（_meta.json 非法 JSON）")
+        if mv and current and mv != current:
+            drift.append(f"P3≠P1（_meta.json {mv} ≠ SKILL.md {current}）")
+
+    # P4 —— 仓库外的平台注册表（自维护环境通常不存在）
+    try:
+        lock_path = Path.home() / LOCK_REL
+        if lock_path.is_file():
+            ent = (json.loads(lock_path.read_text(encoding="utf-8")).get("skills") or {}).get(slug)
+            if isinstance(ent, dict) and ent.get("version") and current \
+                    and ent["version"] != current:
+                drift.append(f"P4≠P1（lock.json {ent['version']} ≠ SKILL.md {current}）")
+    except (OSError, json.JSONDecodeError):
+        pass
+
+    # P5 —— README 版本声明（只认声明形式，不认散文/历史记录）
+    rm = skill_dir / "README.md"
+    if rm.is_file():
+        try:
+            rt = rm.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            rt = ""
+        v5, form = None, None
+        m = _SELF_RMFM.match(rt)
+        if m:
+            mv2 = _SELF_FM.search(m.group(1))
+            if mv2:
+                v5, form = mv2.group(1).strip(), "frontmatter"
+        if v5 is None:
+            mb = _SELF_BADGE.search(rt)
+            if mb:
+                v5, form = mb.group(1), "badge"
+        if v5 and current and v5 != current:
+            drift.append(f"P5≠P1（README {form} {v5} ≠ SKILL.md {current}）")
+
+    result["endpoint"] = {"api_host": None, "self_maintained": True,
+                          "note": "自维护 fork：不做远端比对"}
+    result["self_check"] = SELF_CHECK_LABEL.get(
+        STATE_STALE if drift else STATE_PASS, "")
+    if drift:
+        result["state"] = STATE_STALE
+        result["warnings"].append(
+            "自维护模式（跳过远端比对）：本地版本声明不一致 —— " + "；".join(drift))
+        result["actions"].append(
+            "运行 python ops/patches/apply.py 规则化修正（P3/P5 自动；P2 需手写 CHANGELOG 条目）")
+        return result
+
+    result["state"] = STATE_PASS
+    result["notes"].append(
+        "自维护模式（跳过远端比对）：本地 5 处版本声明一致（P1/P2/P3/P4/P5）")
+    return result
+
+
 def decide(args) -> dict:
     result: dict = {
         "slug": None, "skill_dir": None, "current": None, "latest": None,
@@ -607,6 +721,12 @@ def decide(args) -> dict:
             " —— 斜杠激活将失效，需重指当前源码树")
 
     # ---- 节流（对齐 coding STALE_MIN=1440） ----
+    # ---- 自维护 fork：跳过远端比对，改为本地版本一致性校验 ----
+    # 必须放在节流检查**之前**：否则旧的远端缓存态会先命中并 early return。
+    if SELF_MAINTAINED and os.environ.get(_ALLOW_REMOTE_ENV, "").strip().lower() \
+            not in ("1", "true", "yes"):
+        return self_consistent_check(skill_dir, slug, current, result)
+
     state = load_state()
     if not args.force and is_fresh(state, slug, args.ttl_min):
         rec = state["skills"][slug]

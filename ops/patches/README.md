@@ -74,6 +74,11 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `f3-gate-cmd-apply` | replace_text | 移除 version-gate.md 的 `sync_registry.py --apply` 命令行 |
 | `f5-gate-charter` | replace_text | `tri-intent/references/version-gate.md`：「唯一真源」→「家族设计总纲」 |
 | `f5-humanize-wording` | replace_text | `tri-humanize/SKILL.md`：去掉与事实相反的「家族级单一事实源，NEVER 内联/自带 fork」 |
+| `f6-gate-fill-empty-block` | replace_text | `version-gate.md` §六：填补被清空的发布前门禁代码块 |
+| `sync-version-meta` | sync_version_meta | P1↔P3：`_meta.json` 版本 = SKILL.md 版本（规则化） |
+| `sync-readme-version` | sync_readme_version | P1↔P5：README 版本声明 = SKILL.md 版本（规则化） |
+| `self-maintained-const-func` | replace_text | 版本门：注入 `SELF_MAINTAINED` 常量与 `self_consistent_check()` |
+| `self-maintained-branch` | replace_text | 版本门：在节流检查前插入自维护分支（跳过远端比对） |
 
 ## 每项补丁的依据
 
@@ -129,3 +134,57 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 若希望「重新 clone 也存活」，需把本目录迁到版本化路径（如仓库根 `patches/`）。
 **待裁决。**
+
+
+---
+
+## 锚点型注入的幂等陷阱（实测事故，必读）
+
+**事故**：新增「把 SELF_MAINTAINED 常量与函数注入 `check_update.py`」两个 op 时，
+第一次重放就把代码**重复注入 43 份 ×3**。
+
+**根因**：这类 op 的 `old` 是**锚点**（插入位置），而 `new = 注入内容 + 锚点` ——
+锚点在插入后**依然存在**。原判定逻辑是「`old` 未命中时才看 `already_marker`」，
+于是每次重放都再插一遍。
+
+**修复**：`op_replace_text` 改为**先判标记、命中即跳过**：
+
+```python
+if marker and marker in txt:
+    already += 1
+    continue          # ← 标记在，说明结果已存在，绝不再插
+n_old = txt.count(old_lf)
+...
+```
+
+**更重要的教训 —— 幂等必须用「内容指纹」验证，不能只比输出**：
+
+当时的幂等测试比较的是**两次运行的输出文本**，两次输出完全相同，于是判定「✅ 幂等」——
+但文件其实在持续增长（1 份 → 2 份 → 3 份）。输出文本相同不代表文件相同。
+
+正确做法：
+
+```python
+# 重放前后统计目标特征串的出现次数，必须恒为 1
+Counter(p.read_text().count("def self_consistent_check(") for p in files)
+# → 应为 {1: 43}；若为 {2: 43}、{3: 43} 即发生重复注入
+```
+
+**现已固化为验证方式**：凡新增**锚点型注入** op，重放后必须按内容指纹确认
+「每个目标文件恰好含 1 份」。
+
+---
+
+## 自维护模式（`SELF_MAINTAINED`）
+
+本仓库为自维护 fork。两个 `self-maintained-*` op 把这一状态**注入到每个 skill 自带的**
+`check_update.py`，使其：
+
+- **完全跳过远端请求**（不再解析 `~/.skillhub/metadata.json`、不请求平台）
+- 改为校验**本 skill 自身的 5 处版本声明**是否一致（P1–P5），返回 A（一致）/ D（漂移）
+- 排障逃生舱：`TRI_ALLOW_REMOTE=1` 临时恢复远端比对
+
+实现要点（为什么可行）：43 份 `check_update.py` 虽有 6 个变体，但差异**仅在模块 docstring
+与两个额外 helper**，`decide()` 主体完全一致 ⇒ 一个字面锚点即可覆盖全部。
+锚点选在 `    state = load_state()` **之前**——必须在节流检查之前，
+否则旧的远端缓存态会先命中并 early return，自维护校验永不执行。

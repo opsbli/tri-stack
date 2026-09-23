@@ -142,14 +142,19 @@ def op_replace_text(op, repo, skip, dry):
             txt, crlf = read_norm(f)
         except OSError:
             continue
+        # 先判「已应用」：标记存在即跳过。
+        # 关键：**锚点型注入**的 old 是「插入位置」，插入后锚点依然存在——
+        # 若只在 old 缺失时才看标记，每次重放都会**重复注入**。
+        # （曾因此把代码重复注入 43 份 ×3；幂等必须用内容指纹验证，不能只比输出。）
+        if marker and marker in txt:
+            already += 1
+            continue
         n_old = txt.count(old_lf)
         if n_old:
             if not dry:
                 write_keep(f, txt.replace(old_lf, new_lf), crlf)
             applied += n_old
             details.append(f"{f.relative_to(repo).as_posix()} ×{n_old}")
-        elif marker and marker in txt:
-            already += 1
     if not applied and not already:
         missing = 1
     return {
