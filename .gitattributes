@@ -1,0 +1,62 @@
+# 统一行尾策略
+#
+# 背景（2026-09-23 实测，共约 691 个受跟踪文本文件）：
+#   i/lf  w/lf    511  正常
+#   i/lf  w/crlf   83  core.autocrlf=true 检出为 CRLF，blob 是 LF
+#   i/crlf w/crlf  80  blob 本身就是 CRLF（上游作者的提交）
+#   i/mixed w/mixed 14  blob 真是混用行尾
+#   i/lf  w/mixed   3  同上
+#
+# 行尾混用已导致本地补丁层两次静默失效（字节级匹配不命中），故在此一次性统一。
+# 目标：仓库内一律 LF。
+#
+# 说明：本文件引入后执行 `git add --renormalize .` 会产生一次
+# 仅含行尾变更的提交（约 97 个文件）。该提交已登记在 .git-blame-ignore-revs，
+# `git blame --ignore-revs-file .git-blame-ignore-revs` 可跳过它。
+
+* text=auto eol=lf
+
+# ---- 二进制：禁止行尾转换与文本 diff ----
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.bmp   binary
+*.svg   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.eot   binary
+*.pdf   binary
+*.zip   binary
+*.gz    binary
+*.tar   binary
+*.7z    binary
+*.db    binary
+*.sqlite binary
+*.exe   binary
+*.dll   binary
+*.so    binary
+*.dylib binary
+*.mp3   binary
+*.mp4   binary
+*.wav   binary
+*.webm  binary
+
+# ---- 以下类型强制 LF，防止被本地 core.autocrlf 覆盖 ----
+*.md    text eol=lf
+*.py    text eol=lf
+*.json  text eol=lf
+*.mjs   text eol=lf
+*.js    text eol=lf
+*.ts    text eol=lf
+*.html  text eol=lf
+*.css   text eol=lf
+*.sh    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.toml  text eol=lf
+*.txt   text eol=lf
