@@ -185,10 +185,18 @@ NEVER 静默跳过、NEVER 以降级名义绕过 P2–P3、NEVER 在未真实尝
 | 3 | `<skill>/_meta.json` `version` | 平台识别可斜杠激活所需 |
 | 4 | `~/.workbuddy/skills/.skills_store_lock.json` | 平台注册表 |
 
-**发布前门禁**：MUST 运行同步器确认零不一致——
+**发布前门禁**：MUST 确认四处版本号零不一致——
 
-```bash
-```
+> ⚠️ **脚本门禁当前缺失**：原本由 `tri-forge/scripts/sync_registry.py` 提供，但 `tri-forge`
+> 未随任何可达源分发（本地磁盘、git 全历史、原作者 GitHub、平台 92/92 全量枚举均无命中）。
+> 在本仓库自行实现等效校验器之前，按下列清单逐条手工核对：
+
+| # | 核对项 | 期望 |
+|---|---|---|
+| 1 | `<skill>/SKILL.md` frontmatter `version:` | 基准值 |
+| 2 | `<skill>/CHANGELOG.md` 首个 `## [x.y.z]` | 与 1 相等，且为全文件最大版本 |
+| 3 | `<skill>/_meta.json` `version` | 与 1 相等 |
+| 4 | `~/.workbuddy/skills/.skills_store_lock.json` 对应条目 | 与 1 相等（该文件在自维护环境通常不存在，仅存在时校验） |
 
 > **历史教训**：tri-intent v1.9.0 发布时 CHANGELOG 写了 1.9.0 而 frontmatter 仍是 1.8.0，漂移被打包进发布产物，导致任何人全新安装后自检都显示 1.8.0。同批次 tri-music 2.2.0/2.1.1 同样中招。三处 junction skill 的 `_meta.json` 与 lock.json 也长期滞后。这类漂移无法靠人工纪律避免，MUST 靠脚本门禁拦截。
 
