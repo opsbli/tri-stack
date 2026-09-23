@@ -1,11 +1,13 @@
 ---
+---
 name: tri-content-full-testcases
-description: 基于 tri-content v1.1.2 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约、输入契约、5 子意图内容处理方法论、输入依赖校验门、交付产物、职责边界、质量标准等全部能力点。
+description: 基于 tri-content v1.2.4 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约、输入契约、5 子意图内容处理方法论、输入依赖校验门、交付产物、职责边界、质量标准等全部能力点。
+version: 1.2.4
 ---
 
 # 内容处理工作流 · 全场景全能力测试用例（审计版）
 
-> 被测对象：`tri-content` v1.1.2（下游执行 skill：依据 tri-intent 快照处理 I06–I10 委托执行类文本意图）
+> 被测对象：`tri-content` v1.2.4（下游执行 skill：依据 tri-intent 快照处理 I06–I10 委托执行类文本意图）
 > 用例总数：**59**（元数据 5 / 执行契约 10 / 输入契约 5 / 内容处理方法论 12 / 输入依赖校验门 8 / 交付产物 8 / 职责边界 5 / 质量标准 6）
 > 生成时间：2026-07-26
 > 审计方式：逐条对照「预期结果」独立判定，再与「通过标准」比对勾选
@@ -21,7 +23,7 @@ description: 基于 tri-content v1.1.2 全量扫描生成的覆盖全场景全�
 | 编号 | 能力点 | 规范 |
 |---|---|---|
 | M1 | slug | 与 name 字段一致（tri-content） |
-| M2 | version | 存在且格式正确（1.1.1） |
+| M2 | version | 存在且格式正确（1.2.3） |
 | M3 | displayName | 存在（内容处理（tri-content）） |
 | M4 | summary | 描述 I06–I10 文本产出意图 + 5 子意图差异化策略 + 输入依赖校验门 + 原文对照机制 |
 | M5 | tags/license | tags 含 content/text-generation/rewrite/translation/summary/analysis；license=MIT |
@@ -150,7 +152,7 @@ description: 基于 tri-content v1.1.2 全量扫描生成的覆盖全场景全�
 ### TC-01-03：version 字段存在且格式正确
 - **前置条件**：已读取 frontmatter
 - **测试步骤**：1. 提取 `version` 字段值；2. 校验是否符合语义化版本格式（MAJOR.MINOR.PATCH）
-- **预期结果**：`version: 1.1.1`，符合语义化版本规范
+- **预期结果**：`version: 1.2.3`，符合语义化版本规范
 - **通过标准**：PASS——version 存在且为 X.Y.Z 格式；FAIL——缺失或格式错误
 
 ### TC-01-04：displayName 字段存在且含中文描述

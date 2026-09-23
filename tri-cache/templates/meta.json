@@ -1,10 +1,16 @@
 {
-  "$schema": "tri-cache-meta-v1",
-  "description": "tri-cache 运行时配置模板。首次运行时复制到 .tribro/cache/meta.json，可按需调整。",
+  "$schema": "tri-cache-meta-v2",
+  "description": "tri-cache 运行时配置模板（四层架构）。首次运行时由 cache_init.py 复制到 .tribro/cache/meta.json，可按需调整。",
   "config": {
     "config_max_size_mb": 100,
     "config_default_ttl_seconds": 2592000,
-    "config_hot_layer_size": 256,
+    "config_window_size": 50,
+    "config_window_inject_full_rounds": 2,
+    "config_embedding_dim": 256,
+    "config_embedding_ngram": [1, 2],
+    "config_vector_top_k": 10,
+    "config_vector_min_score": 0.5,
+    "config_summary_max_chars": 200,
     "config_ttl_by_intent": {
       "I01": 2592000,
       "I02": 2592000,
@@ -39,12 +45,12 @@
       "I16": "reference"
     },
     "config_privacy_patterns": [
-      "password",
-      "passwd",
-      "secret",
-      "api_key",
-      "api-key",
-      "token",
+      "password=...",
+      "passwd=...",
+      "secret=...",
+      "api_key=...",
+      "api-key=...",
+      "token=...",
       "sk-[a-zA-Z0-9]{20,}",
       "AKIA[0-9A-Z]{16}",
       "-----BEGIN.*PRIVATE KEY-----"
@@ -65,5 +71,5 @@
     "total_evictions": 0,
     "last_cleanup_at": null
   },
-  "schema_version": 1
+  "schema_version": 2
 }

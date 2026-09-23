@@ -109,10 +109,24 @@ SUBTYPE_SLUGS = {
     ("I14", "loop"): "tri-loop",
     ("I15", "music"): "tri-music",
     ("I06", "article"): "tri-article",
+    ("I06", "pm"): "tri-pm",
     # 全生命周期（SDLC）子类：三个 L2 共用同一子类键，优先级高于 workflow / loop 子类
     ("I11", "sdlc"): "tri-sdlc",
     ("I13", "sdlc"): "tri-sdlc",
     ("I14", "sdlc"): "tri-sdlc",
+    # I11 编码开发子类
+    ("I11", "frontend-design"): "tri-frontend-design",
+    ("I11", "motion"): "tri-lottie",
+    # I10 分析处理子类
+    ("I10", "arch-viz"): "tri-html",
+    ("I10", "audit-checklist"): "tri-checklist",
+    # I08 翻译转换子类族（x2md + wiki）
+    ("I08", "pdf2md"): "tri-pdf2md",
+    ("I08", "docx2md"): "tri-docx2md",
+    ("I08", "pptx2md"): "tri-pptx2md",
+    ("I08", "xlsx2md"): "tri-xlsx2md",
+    ("I08", "html2md"): "tri-html2md",
+    ("I08", "wiki"): "tri-wiki",
 }
 
 # ---- 置信度阈值（单一事实源，与 SKILL.md §置信度机制 对齐）------------------

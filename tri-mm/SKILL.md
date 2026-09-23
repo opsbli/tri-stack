@@ -1,8 +1,8 @@
 ---
-name: tri-mm
+name: 多媒体生成路由编排
 slug: tri-mm
-version: 1.4.1
-displayName: 多媒体生成路由编排（tri-mm）
+version: 1.5.0
+displayName: 多媒体生成路由编排
 description: 多媒体生成下游路由编排 skill。读取 tri-intent 快照 §三，处理 I15（多媒体生成）意图，识别媒体大类（图片/音频/视频/PPT）并拍发至对应子SKILL（tri-image/tri-audio/tri-video/tri-ppt）执行；音乐创作委派 tri-music。每个子SKILL 先产出多维度设计方案交用户确认后再生成。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测两态逻辑（标准模式/引导安装）。
 summary: I15 多媒体路由编排器，媒体类型识别后拍发 4 个子SKILL，子SKILL 各自做多维设计+确认门+生成；音乐委派 tri-music。
 tags: [multimedia, router, orchestrator, design-plan, image, audio, video, ppt]
@@ -32,7 +32,7 @@ license: MIT
 
 ## 上游依赖检测（独立使用时）
 
-> 本 skill 可独立安装。激活时 MUST 检测上游 tri-intent skill 是否可用，据检测结果选择执行模式：
+> 本 skill 可独立安装。激活时 MUST 检测外部 tri-intent skill 是否可用，据检测结果选择执行模式：
 
 | 模式 | 触发条件 | 行为 |
 |---|---|---|
@@ -68,6 +68,7 @@ license: MIT
 - **不负责**：意图识别（由 tri-intent）、纯文本成果物（由 tri-content）、编码开发（由 tri-coding）
 - **专业设计与生成**：由子SKILL 负责——图片（tri-image）/ 非音乐音频（tri-audio）/ 视频（tri-video）/ PPT（tri-ppt）/ 音乐（tri-music）
 - **对称检测**：子SKILL 内置上游依赖检测（编排模式/引导安装），与 tri-mm 构成双向校验
+- **不触发场景（Not-Trigger）**：本 skill 不接手「图片/非音乐音频/视频/PPT/音乐的实际生成」（由对应子SKILL tri-image / tri-audio / tri-video / tri-ppt / tri-music 承接）；不接手「文本/技术内容生成」（属 tri-content / tri-coding）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 媒体类型识别与子SKILL路由
 
@@ -96,7 +97,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -126,7 +127,7 @@ license: MIT
    - **D 升级降级**（陈旧且已真实尝试自动升级但未完成）→ 标注「版本陈旧·自动升级失败」+ 输出手动升级指引后继续。
    - 四态 NEVER 用于绕过「已检出陈旧却不尝试升级」——MUST 先真实执行一次自动升级，失败方可落 D 态。
 7. **更新通道（自动执行）**：检出陈旧 MUST 自动执行 `skillhub upgrade <slug>` → `skillhub verify <slug>`，升级前备份、签名明确不一致则回滚。CLI 不在 PATH 时回退 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`；CLI 缺失或升级失败 → 落 D 态降级继续，NEVER 阻断。以 junction 指向源码树的 `source: local` skill 跳过自动更新，改为提示维护者手动同步。命令细则、CLI 定位顺序与已知陷阱见真源。
-8. **阻断条件 P1–P4** 与四处版本同步点见真源；发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。
+8. **阻断条件 P1–P4** 与四处版本同步点见真源；发布前 MUST 通过家族版本同步校验。
 
 ## 处理流程
 
@@ -157,7 +158,7 @@ license: MIT
    - 确认 → 子SKILL 生成产物
    - 修改 → 修订 design.md 回到确认
    - 取消 → 终止
-3. 子SKILL 生成产物落盘工作区，落盘各自 `result.md`
+3. 子SKILL 生成产物统一落盘 `.tribro/multimedia/<子类>/<命名>/`，落盘各自 `result.md`
 
 ### 步骤 4：汇总与核对
 
@@ -206,7 +207,7 @@ license: MIT
   - `.tribro/multimedia/audio/<命名>/`（tri-audio）
   - `.tribro/multimedia/video/<命名>/`（tri-video）
   - `.tribro/multimedia/ppt/<命名>/`（tri-ppt）
-- **多媒体产物**（图片/音频/视频/PPT）落盘于工作区并返回可访问路径——这些是实际产物，不是 tri 链路文档
+- **多媒体产物**（图片/音频/视频/PPT）落盘于工作区并返回可访问路径——这些是实际产物，不是 tri 链路文档；`.tribro/` 不存在时 MUST 先创建，交付时在 `.tribro/multimedia/<子类>/<命名>/` 落 `delivery-manifest.md` 记录交付物路径清单，保证产物可追溯
 
 ## 目录结构
 
@@ -219,6 +220,9 @@ tri-mm/
 ├── CHANGELOG.md
 ├── tests/
 │   └── tri-mm-full-testcases.md 全场景测试用例
+├── references/                  # 跨媒体通用参考（非流程逻辑）
+│   ├── prompt-structure.md       # 跨媒体提示词结构：图像六段 / 视频八段 + 三锚复用 + 迭代纪律
+│   └── version-check-spec.md       # 版本门细则（STUB 指针，NEVER 内联）
 └── children/                    子SKILL（多维设计 + 确认门 + 生成）
     ├── tri-image/               图片（位图/矢量图/图表）
     │   ├── SKILL.md             9 维设计 + 生成

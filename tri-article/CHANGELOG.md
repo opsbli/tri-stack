@@ -2,6 +2,44 @@
 
 本文件所有记录遵循 [Keep a Changelog](https://keepachangelog.com/) 格式，版本号遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [1.4.1] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确不接手「长文逐句润色」「通用内容片段生成」等易误唤醒场景，压缩无效上下文、降低误触发。（规范来源：`docs/guides/skill-写作规范.md` / `CONTRIBUTING.md` 强制章节第 5 条扩展）
+
+## [1.4.0] - 2026-08-29
+
+### 新增
+
+- **文末「tri-xxx 技能安装指引」要素（第 3 条文末要素）**：文末在「个人介绍」「许可证声明」之外新增可选的安装指引段，由新占位符 `{{TRI_INSTALL_NOTE}}` 驱动；profile 未配置时整段跳过（绝不输出）。
+- **两处硬要求（机器可校验）**：该段 MUST 包含安装地址 `https://skillhub.cn/`，MUST 给出至少一条 `skillhub install <技能名>` 安装命令示例；用真人语气自然带出，避免广告腔。
+- **profile 与骨架同步**：首次运行初始化反问项增 `TRI_INSTALL_NOTE`（可选但推荐开启）；`templates/profile-skeleton.md` 新增对应配置段与填写说明；§内置默认值表增该字段（空=跳过）。
+- 质量标准「合规」维度增安装指引校验；测试用例增 TC-I01/TC-I02 两条（用例总数 48 → 50）。
+
+### 变更
+
+- frontmatter version `1.3.0` → `1.4.0`
+
+### 修复
+
+- **CHANGELOG 版本漂移**：此前工作区同时打包了 1.3.0（tri-humanize 委派）与 1.4.0（安装指引要素）两批改动，但只写了 1.3.0 条目，导致 `sync_registry.py --check` 报「CHANGELOG首(1.3.0)≠SKILL(1.4.0)」。本条目补齐 1.4.0 记录，四处版本恢复一致。
+
+## [1.3.0] - 2026-08-23
+
+### 新增
+
+- **去 AI 化引擎委派（tri-humanize）**：新增「去 AI 化引擎委派」独立章节，草稿完成后委派家族横向方法论 skill `tri-humanize`（HUMANIZE-EMBED 嵌入模式）对草稿做 35 种 AI 写作模式改写，返回仅终稿供本 skill 直接消费；委派决策由本 skill 持有。
+- **下游依赖检测（委派 · 三态）**：A 委派模式（tri-humanize 可用）/ B 引导安装（软降级，提示 `skillhub install tri-humanize` 后回退内置规则）/ C 降级模式（用户拒绝安装，按内置 de-ai-rules 改写并声明降级）。
+- 强制执行契约新增委派契约条目；自检句扩展「去 AI 化引擎=<tri-humanize|内置 de-ai-rules>」字段。
+- 职责边界新增与 tri-humanize 的委派边界；质量标准新增「委派」维度。
+
+### 变更
+
+- 处理流程 阶段二 常规生成新增第 3 步「去 AI 化引擎委派」，回显补充去 AI 化引擎来源。
+- `references/de-ai-rules.md` 定位由「去 AI 化引擎完整参考」调整为「tri-humanize 缺失时的降级回退引擎」。
+- frontmatter version `1.2.1` → `1.3.0`；description 补充委派 tri-humanize 说明。
+
 ## [1.2.1] - 2026-08-05
 
 ### 修复

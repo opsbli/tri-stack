@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.2.3] - 2026-09-18
+
+### 新增
+
+- **质量标准补「产出前自检清单」**：承接三维硬指标，新增四检通用自检（结构/合规/溯源/可验证），对齐 `docs/guides/skill-写作规范.md` §3；重试仍失败走 `tri-true` 兜底。
+
+## [2.2.2] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手视频剪辑/配图/海报/封面（tri-mm）、程序代码编写（tri-coding）、版权归属判定（用户自查）与意图识别（tri-intent），强化「只产出指令性+文字性交付物、不调 AI 工具 API」边界。
+
 ## [2.2.1] - 2026-08-05
 
 ### 修复

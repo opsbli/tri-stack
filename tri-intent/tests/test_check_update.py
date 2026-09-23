@@ -291,7 +291,10 @@ class Functional(unittest.TestCase):
 class RegressionTest(unittest.TestCase):
     def test_skill_md_references_spec_and_script(self):
         md = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("version-gate.md", md, "SKILL.md 应仍引用细则真源 version-gate.md")
+        self.assertIn("version-check-spec.md", md,
+                      "SKILL.md 应引用细则真源 version-check-spec.md（非已废弃的 version-gate.md）")
+        self.assertNotIn("version-gate.md", md,
+                         "SKILL.md 不得再引用已废弃的 version-gate.md")
         self.assertIn("check_update.py", md, "SKILL.md 应新增对可执行脚本 check_update.py 的引用")
 
     def test_check_downstream_help(self):

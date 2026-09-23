@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.2] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确不接手「轻量翻译/跨格式转换」「I08 委派决策」等易误唤醒场景，压缩无效上下文、降低误触发。（规范来源：`docs/guides/skill-写作规范.md` / `CONTRIBUTING.md` 强制章节第 5 条扩展）
+
 ## [1.1.1] - 2026-08-05
 
 ### 修复

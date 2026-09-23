@@ -1,10 +1,10 @@
 ---
-name: tri-coding
+name: 编码开发
 slug: tri-coding
-version: 1.5.2
-displayName: 编码开发（tri-coding）
+version: 1.7.0
+displayName: 编码开发
 description: 编码开发下游执行 skill。读取 tri-intent 快照 §三，处理 I11（编码开发）意图，自主管理「需求→设计→任务→执行→实现报告」完整编码工作流，含双审批门+执行前确认。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
-summary: 依据 tri-intent 快照自主管理编码全链路（需求→设计→任务→执行→实现报告），含双审批门+执行前确认+可扩展技术栈加载方法论，专注 I11 编码开发。
+summary: 依据 tri-intent 快照自主管理编码全链路（需求→设计→任务→执行→实现报告），含双审批门+执行前确认+可扩展技术栈加载方法论+工具结果治理六条纪律，专注 I11 编码开发。
 tags: [coding, development, workflow, approval-gate, tech-stack]
 license: MIT
 ---
@@ -75,7 +75,9 @@ license: MIT
 
 - **本 skill 负责**：依据快照结论，自主管理编码全链路（需求→设计→任务→执行→实现报告），产出可运行代码及配套链路文档
 - **不负责**：意图识别（由 tri-intent）、调试修复（由 tri-fix）、非编码类文本产物（由 tri-content）、规划方案不写代码（由 tri-plan）、多媒体产物（由 tri-mm）、代码审查（由 tri-review）
+- **与 tri-frontend-design 的边界**：I11 前端设计方向子类（界面设计方向/风格锚点/配色字体结构方案/动效设计与评审/多变体探索，快照 `L3_子意图 = frontend-design`）由 `tri-frontend-design` 承接，本 skill 负责产出可运行代码实现；若快照 `下游路由建议` 已覆写为 tri-frontend-design，本 skill NEVER 激活。设计先行场景由 tri-frontend-design 交付 CSS 令牌/动效基线规格，本 skill 依令牌落地代码，两者按交付对象衔接不竞争。
 - **关键边界**：本 skill 既「出方案」也「动手写代码」——出方案归 design.md/tasks.md，动手归执行阶段；tri-plan 只出方案不写代码；tri-fix 专注调试修复
+- **不触发场景（Not-Trigger）**：本 skill 不接手「单点 bug 的调试修复」（转 tri-fix）；不接手「只审查不改码的代码审查」（属 tri-review）；不接手「规划方案不写实现」（属 tri-plan，仅产出规划文档本身）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 技术栈加载方法论（核心能力 · 可扩展）
 
@@ -142,7 +144,7 @@ design.md · 氛围校准
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -226,6 +228,7 @@ tri-intent 快照 §三
 | 维度 | 执行策略 |
 |---|---|
 | 执行策略 | 搜索优先 → 增量实现 → 小步可编译 → 不越界 |
+| 测试先行（红绿循环） | tasks.md 测试清单中的用例 MUST 先于对应实现执行并**确认失败（红）**，再写最小实现使其**转绿（绿）**——从未见过失败的测试无法证明它能抓住 bug；「实现完了才补测试」与「测试立即通过」均为危险信号，此时停下核对：要么测试没测到新行为，要么实现过度。NEVER 以「之后补测」「手动验证过了」替代（蒸馏自测试驱动开发方法论，与三层测试清单衔接） |
 | 自验 | 给运行/测试方式；关键逻辑加注释与调试日志 |
 | 举一反三 | 指出同类隐患，建议防御（类型/断言/日志/测试） |
 
@@ -276,13 +279,31 @@ tri-intent 快照 §三
 | 变更范围 | 变更仅落在任务清单内，无顺带重构/优化 | `tasks.md` 任务项 vs 实际 diff 比对 |
 | 版权合规 | 产出代码原创、许可证无冲突 | `## 代码版权与许可证合规` 红线校验 |
 | 落盘完整 | 四文档（requirements/design/tasks/implements）齐全且一致 | 落盘目录清单核对 |
+| 工具结果治理 | 长输出经限幅+溢出暂存处理，异常可见化，完成判据为产物与校验结果 | `## 工具结果治理` 六条纪律逐项核对 |
+
+## 工具结果治理（执行阶段）
+
+> 蒸馏自 strix `agents/factory.py` + `tools/output_store.py`（Apache-2.0），去产品化改写。
+> 解决的问题：编码执行阶段的工具输出（编译日志、测试输出、抓取内容、搜索结果）常常远超有用信息量——全量进上下文会挤爆窗口，粗暴截断又会丢掉关键行号与报错原文。
+
+| 纪律 | 规则 |
+|---|---|
+| ① 参数先矫正 | 传给工具的参数先按目标类型对齐（字符串↔结构化互转），不给工具送它解析不了的类型 |
+| ② 输出先限幅 | 超阈值输出按行数/字节截断，保留 head+tail 与截断提示，**NEVER 把 5000 行日志整段读进上下文** |
+| ③ 限幅不丢信息 | 超限部分溢出到可读回的位置（临时文件/分段读取），并把路径交给后续步骤——只说「已截断」而不给路径等于信息黑洞 |
+| ④ 异常可见化 | 工具报错转为**可见的结论**（哪一步失败、报错原文、可能原因），而非静默失败或整轮崩溃；据此决定重试/改策略/上报 |
+| ⑤ 能力降级而非失败 | 目标环境不支持某项能力（如严格模式/某工具不可用）时降级执行，功能不变；NEVER 因环境差异直接判失败 |
+| ⑥ 完成判据外化 | 一个任务「算完成」看**产物与校验结果**（文件存在 + 测试通过 + 无阻塞标记），NEVER 凭「我觉得写完了」结项 |
+
+> 与 tri-cache 的分工：单次工具输出的限幅与溢出治理归本节；跨轮次的上下文压缩与 token 预算归 tri-cache 的 CONTEXT_COMPACT 模式。
 
 ## 落盘规则
 
 - 快照由 tri-intent 已落盘于 `.tribro/snapshots/`
 - 本 skill 链路文档落盘于 `.tribro/coding/<命名>/`
 - 链路文档可覆盖更新（以最新一轮为准），审计记录留痕于各文档审计章节
-- 最终代码成果物落盘至用户工作区项目目录（非 .tribro/）
+- 最终代码成果物就地落盘于用户工作区项目目录（实际交付物，非 .tribro/）
+- 产物归档：`.tribro/` 不存在时 MUST 先创建；每轮执行 MUST 在 `.tribro/coding/<命名>/` 落 `delivery-manifest.md`，记录本次交付/修改的文件路径清单与说明，保证产物可追溯
 
 ## 代码版权与许可证合规（硬红线）
 
@@ -306,6 +327,10 @@ tri-intent 快照 §三
 tri-coding/
 ├── SKILL.md              # 主入口：编码工作流定义 + 双审批门 + 执行前确认 + 技术栈加载方法论
 ├── README.md             # skill 说明与快速上手
+│   ├── arkts.md  cpp.md  css.md  django.md  electron.md        # 技术栈子 skill（扁平存放，无层级子目录）
+│   ├── fastapi.md  flask.md  flutter.md  git.md  gitflow.md  golang.md
+│   ├── h5.md  java.md  nextjs.md  python.md  react.md  react-native.md
+│   └── swiftui.md  tailwind.md  taro.md  typescript.md  uniapp.md  vuejs.md  wechat.md
 ├── CHANGELOG.md          # 版本变更记录
 ├── 代码合规自查小卡片.html   # 提交/发布前一页式合规速查卡（配合 §代码版权与许可证合规 使用）
 ├── references/           # 静态参考资料（非流程逻辑）
@@ -319,11 +344,10 @@ tri-coding/
 │   ├── registry.md       # 技术栈注册清单（唯一扩展入口，含互斥规则与分类匹配顺序）
 │   ├── general.md        # 通用编程基底（始终加载）
 │   ├── README.md         # 如何添加新技术栈
-│   ├── 语言层/           # typescript · python · golang · java · cpp · css
-│   ├── 框架层/           # react · vuejs · react-native · nextjs · taro · uniapp · flutter · swiftui · arkts · tailwind
-│   ├── 后端层/           # fastapi · flask · django
-│   ├── 平台层/           # h5 · wechat · electron
-│   └── 工程层/           # git · gitflow
+│   ├── arkts.md  cpp.md  css.md  django.md  electron.md        # 技术栈子 skill（扁平存放，无层级子目录）
+│   ├── fastapi.md  flask.md  flutter.md  git.md  gitflow.md  golang.md
+│   ├── h5.md  java.md  nextjs.md  python.md  react.md  react-native.md
+│   └── swiftui.md  tailwind.md  taro.md  typescript.md  uniapp.md  vuejs.md  wechat.md
 └── tests/                # 测试用例
     └── tri-coding-full-testcases.md   # 全场景全能力测试用例（审计版）
 ```

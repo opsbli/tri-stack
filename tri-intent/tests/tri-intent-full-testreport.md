@@ -1,6 +1,8 @@
 ---
+---
 name: tri-intent-full-testreport
 description: 基于 tri-intent-full-testcases.md 的 121 条测试用例逐条真实执行结果（含 2026-08-01 v1.7.1 增补 18 条 I21 蒸馏 / CR 代码审查 / I15 音乐子类 / 置信度门控）。Flow 字段全部经 hooks/intent-gate.py 实机运行验证，L1/L2/Gate/D1-D5 字段经路由步骤逐条判定。供人工审计。
+version: 1.11.2
 ---
 
 # 意图识别工作流 · 全场景测试执行报告
@@ -425,3 +427,19 @@ description: 基于 tri-intent-full-testcases.md 的 121 条测试用例逐条�
 - 18 个 skill 模式 A「快照定位契约」已批量修复并加 `A0·待识别` 分支，无残留 OR 漏洞（13 下游执行 + tri-god/tri-express + 横向层 cache/translate/true，见审计报告变更点 §C.2）。
 
 **v1.7.1 增补 18 条全部 PASS，修复闭环可验证。**
+
+
+---
+
+## 十三、附录 · v1.11.2 计数口径修正复验（2026-09-03）
+
+> 背景：SKILL.md §四「对称关系」括注「29 个 tri-* skill 已实现（25 路由型 + 4 横向型）」为历史硬编码，与 §一 现行枚举脱节（横向已于 1.11.0 扩为 7 个；路由型随 pm/frontend-design/sdlc/workflow/loop 子类补齐增长）。
+> 修正：改为「33 个（26 路由型 + 7 横向型）」并新增计数口径说明（MUST 联动约束）。本节为修正后的机械复验记录，非重跑 121 条用例。
+
+| 复验项 | 方法 | 结果 |
+|---|---|---|
+| 路由型 = 26 | §一路由映射表 13 行 + 子类块下游 slug 去重得 27 个，扣除「不落盘」类 tri-express（I17–I20 行） | 26 ✅ |
+| 横向型 = 7 | §一「横向 skill 不参与本表路由」枚举：cache/evolve/translate/true/cost/guard/humanize | 7 ✅ |
+| 总数闭合 | 33 = 26 + 7；38 顶层 = 33 + tri-intent + tri-express + tri-forge/tri-learn/tri-jobhunt | ✅ |
+| 无残留旧计数 | 同上 grep 仅命中本附录「历史硬编码」引文 1 处（存史预期）；SKILL / README / doing/ 等 live 文档 0 命中 | ✅ |
+| 版本四同步 | SKILL / _meta.json / testcases / testreport = 1.11.2；CHANGELOG [1.11.2] 首条 | ✅ |

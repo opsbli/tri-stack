@@ -1,14 +1,16 @@
 ---
+---
 name: tri-article-full-testcases
-description: 基于 tri-article v1.1.2 全量扫描生成的覆盖全场景测试用例集，供人工审计。覆盖占位符/profile 机制、去AI化写作引擎、产品植入开关、质量门禁、独立/接入两种模式、落盘规则，以及 hooks/index.py 脚本调用（add/dedup/search/edit_distance）等全部能力点。
+description: 基于 tri-article v1.4.1 全量扫描生成的覆盖全场景测试用例集，供人工审计。覆盖占位符/profile 机制、去AI化写作引擎、去AI化引擎委派（tri-humanize）、文末安装指引要素（TRI_INSTALL_NOTE）、产品植入开关、质量门禁、独立/接入两种模式、落盘规则，以及 hooks/index.py 脚本调用（add/dedup/search/edit_distance）等全部能力点。
+version: 1.4.1
 ---
 
 # tri-article 全场景测试用例
 
-> 被测对象：`tri-article` v1.1.2（通用去AI化文章生成 skill；占位符+profile 驱动）
-> 用例总数：**42**（文档层 28 + 脚本层 14）
-> 生成时间：2026-08-02
-> 审计方式：逐条对照预期结果独立判定（占位符替换与生成流程按 SKILL.md 步骤推演；质量门禁按 `references/de-ai-rules.md` §六 的 13 项清单核对；TC-S 系列须真实执行命令并比对 stdout JSON 与退出码）
+> 被测对象：`tri-article` v1.4.0（通用去AI化文章生成 skill；占位符+profile 驱动；去 AI 化改写委派 tri-humanize）
+> 用例总数：**50**（文档层 36 + 脚本层 14）
+> 生成时间：2026-08-23
+> 审计方式：逐条对照预期结果独立判定（占位符替换与生成流程按 SKILL.md 步骤推演；质量门禁按 `references/de-ai-rules.md` §六 的 13 项清单核对；委派用例按 SKILL.md §去 AI 化引擎委派 三态判定；TC-S 系列须真实执行命令并比对 stdout JSON 与退出码）
 
 ---
 
@@ -16,14 +18,15 @@ description: 基于 tri-article v1.1.2 全量扫描生成的覆盖全场景测�
 
 | 组 | 能力点 | 规范出处 |
 |----|--------|---------|
-| A 元数据 | frontmatter 齐全、description 含「支持独立安装，含上游依赖检测两态逻辑」 | 规范第二章 |
-| B 强制执行契约 | 占位符替换前置、禁用词/视角/门禁、NEVER 泄露隐私、NEVER 生成 LICENSE/.gitignore | 规范第三章 §3.2 |
+| A 元数据 | frontmatter 齐全、description 含「支持独立安装，含上游依赖检测两态逻辑」与委派 tri-humanize 说明 | 规范第二章 |
+| B 强制执行契约 | 占位符替换前置、禁用词/视角/门禁、委派契约、NEVER 泄露隐私、NEVER 生成 LICENSE/.gitignore | 规范第三章 §3.2 |
 | C 输入契约 | profile 字段映射、PRODUCT_ENABLED 关闭时不植入 | §输入契约 |
 | D 核心方法论 | 去AI化引擎、选题轮转、质量门禁、产品植入、可扩展性 | §方法论 |
-| E 自检声明 | 「本次意图=…已读取profile…」格式 | §3.2 |
+| D' 委派 | 去 AI 化改写委派 tri-humanize（HUMANIZE-EMBED）、三态检测、降级回退 | §去 AI 化引擎委派 |
+| E 自检声明 | 「本次意图=…已读取profile…去 AI 化引擎=…」格式 | §3.2 |
 | F 交付产物 | 文章 + profile.md 落盘 | §交付产物 |
-| G 职责边界 | 不识别意图、不替用户发平台、不与 tri-content 重叠 | §职责边界 |
-| H 质量标准 | 去AI化/实战/通用/合规四维 | §质量标准 |
+| G 职责边界 | 不识别意图、不替用户发平台、委派决策由本 skill 持有、不与 tri-content 重叠 | §职责边界 |
+| H 质量标准 | 去AI化/委派/实战/通用/合规五维 | §质量标准 |
 
 ---
 
@@ -55,7 +58,20 @@ description: 基于 tri-article v1.1.2 全量扫描生成的覆盖全场景测�
 | TC-W09 | 结构模式轮换 | 上一篇模式A | 本次选模式B |
 | TC-W10 | 代码可运行 | 含代码示例 | 完整片段+语言标注，非伪代码 |
 
-## 三、产品自然植入（TC-R01~R05）
+## 三、去 AI 化引擎委派（TC-D01~D06）
+
+> 依据 SKILL.md §去 AI 化引擎委派（tri-humanize · 横向委派）三态判定与委派流程推演。
+
+| 编号 | 场景 | 输入 | 预期 |
+|------|------|------|------|
+| TC-D01 | 委派模式（A） | tri-humanize 可用，草稿完成 | 委派 HUMANIZE-EMBED 改写，返回仅终稿；声明「去 AI 化引擎=tri-humanize」 |
+| TC-D02 | 引导安装（B 软降级） | tri-humanize 未安装 | 提示 `skillhub install tri-humanize`，回退内置 de-ai-rules 继续生成，声明降级；不硬阻断独立运行 |
+| TC-D03 | 降级模式（C） | 用户拒绝安装 | 按内置 de-ai-rules 完成改写，声明「去 AI 化引擎=内置 de-ai-rules（降级）」 |
+| TC-D04 | 委派时机 | 草稿撰写完成后 | 委派发生在质量门禁自查前；委派返回终稿后再跑 §4 门禁，命中即重写 |
+| TC-D05 | 委派不改事实 | 草稿含具体数字/名称/日期 | 委派改写不增删事实（tri-humanize 铁律）；门禁后仍无禁用词、≥2 处主观细节 |
+| TC-D06 | 对称双向检测 | tri-humanize 触发时机表 | tri-humanize 声明「tri-article 等下游委派」触发源（HUMANIZE-EMBED），任一端缺失都被发现 |
+
+## 四、产品自然植入（TC-R01~R05）
 
 | 编号 | 场景 | 输入 | 预期 |
 |------|------|------|------|
@@ -65,7 +81,7 @@ description: 基于 tri-article v1.1.2 全量扫描生成的覆盖全场景测�
 | TC-R04 | 植入开启-位置 | 开启 | 仅开头/中间/结尾 1 处 |
 | TC-R05 | 一票否决 | 多处提及或割裂 | 重写 |
 
-## 四、模式与边界（TC-M01~M05）
+## 五、模式与边界（TC-M01~M05）
 
 | 编号 | 场景 | 输入 | 预期 |
 |------|------|------|------|
@@ -77,7 +93,7 @@ description: 基于 tri-article v1.1.2 全量扫描生成的覆盖全场景测�
 
 ---
 
-## 五、脚本调用用例 · `hooks/index.py`（TC-S01~S14）
+## 六、脚本调用用例 · `hooks/index.py`（TC-S01~S14）
 
 > **被测脚本**：`hooks/index.py`（纯标准库）。以下用例均为**真实命令行调用**，需在临时工作目录执行，`--root` 统一指向 `./articles`。
 > **通用前置（P0）**：`rm -rf ./articles`，随后按用例顺序执行；标注「依赖 TC-Sxx」的用例须先跑完前置用例。
@@ -125,7 +141,20 @@ description: 基于 tri-article v1.1.2 全量扫描生成的覆盖全场景测�
 |------|--------|------|
 | 占位符/profile | 8 | TC-P01~P08 |
 | 去AI化引擎 | 10 | TC-W01~W10 |
+| 去AI化引擎委派 | 6 | TC-D01~D06：委派三态 / 时机 / 事实保真 / 对称检测 |
 | 产品植入 | 5 | TC-R01~R05 |
 | 模式与边界 | 5 | TC-M01~M05 |
 | **脚本调用（`hooks/index.py`）** | **14** | TC-S01~S14：add 字段完整性 4 / dedup 三档 5 / search 过滤 3 / edit_distance 边界 2 |
-| **合计** | **42** | 覆盖零~H 全能力组 + 脚本层
+| **合计** | **48** | 覆盖零~H 全能力组（含 D' 委派）+ 脚本层
+
+
+---
+
+## 三点五、文末安装指引要素（TC-I01~TC-I02）
+
+> 依据 SKILL.md §文末要素 第 3 条（tri-xxx 技能安装指引，`{{TRI_INSTALL_NOTE}}`）与 §内置默认值表推演。
+
+| 编号 | 场景 | 输入 | 预期 |
+|------|------|------|------|
+| TC-I01 | 已配置安装指引 | profile 中 `TRI_INSTALL_NOTE` 非空 | 文末输出安装指引段：含安装地址 `https://skillhub.cn/`，且含至少一条 `skillhub install <技能名>` 命令示例；语气自然无广告腔 |
+| TC-I02 | 未配置安装指引 | profile 中 `TRI_INSTALL_NOTE` 为空 | 文末整段跳过（绝不输出占位符 `{{TRI_INSTALL_NOTE}}`，也不输出无内容的空段）；其余两条文末要素照常 |

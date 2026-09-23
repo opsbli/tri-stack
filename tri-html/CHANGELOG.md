@@ -5,6 +5,72 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-09-22
+
+### 新增
+
+- **外部引擎演进对照登记**：新增 `references/engine-evolution-notes.md`——登记 vendored 引擎基线与外部演进的能力差（工作流约束驱动编译器 / v1→v2 迁移通道 / 内置品牌标记目录 / 机器可读参数回执 / 产物字体自包含 / 输出类型白名单 / 包内更新探测共 7 项），含现状基线清单、同步前置条件、同步评估要点与触发时机建议；登记项在引擎补齐前不进入创作路径。
+- **SKILL.md 能力边界铁律**：§渲染引擎双模 新增「能力边界铁律」——作者契约只承诺 vendored 引擎真实具备的能力，引擎不具备的外部演进能力 MUST NOT 进入创作路径或对用户承诺。
+- **交付诊断纪律补全**（`references/viewer-authoring.md` §五）：① 失败交付禁跑 `visual-check`（会检查到过期的最后好图而非失败候选）；② 三声明分离（deliver 确定性检查 / visual-check 浏览器证据 / 感知性视觉审查独立汇报）；③ compare 失败恢复处置（恢复目录保留并报告备份→目标路径）。
+- **品牌能力现状标注**（`references/viewer-authoring.md` §四）：内置品牌标记目录未随引擎分发（`brands` 内置发现返回空），仅显式 `brands capture` 路径可用且需网络。
+
+### 修订
+
+- 去痕迹中性化：`references/viewer-authoring.md` 开篇移除来源过程性表述，改为能力承诺声明 + 差距登记指针；`references/THIRD-PARTY-NOTICE.md`「外部同步约定」改用「重新同步」称谓并新增演进登记入口与「修改说明」节。
+- SKILL.md / README.md「目录结构」同步新增 reference 文件与 `tests/run_exec_tests.py` 条目。
+
+### 修复（真实执行测试发现，三轮回归 31/31 通过）
+
+- **引擎兼容性（关键）**：`scripts/viewer/bin/viewer.mjs` `runNode` 新增 worker 线程回退——在禁止 node.exe 派生子进程的 Windows 安全策略环境（spawnSync 对任意子进程返回 EBUSY）下，validate/deliver/compare/render 此前 100% 失败（"Renderer process could not start"）；现改经 `worker_threads` 进程内执行并保持 spawnSync 形结果契约，spawn 可用时行为不变。
+- **产物零外部依赖（单文件铁律）**：`scripts/viewer/assets/template.html` 移除 Google Fonts 两处外部 `<link>`；此前每张 viewer 成品均引用 fonts.googleapis.com/gstatic.com，离线或不可达网络下阻塞首屏。全部 font-family 已有本地/系统回退链，移除无渲染影响。
+- **CLI 静默吞错**：`commandValidate`/`commandRender` 补未知 `--选项` 与超量位置参数守卫（exit 2），对齐 commandDeliver 既有守卫。
+- **组装器健壮性**：`scripts/build_html.py` 渲染阶段异常兜底为 `[ERROR][渲染]` + exit 2（此前以裸堆栈崩溃）；输出目录缺失时结构化报错 exit 2。
+- **文档勘误**：`references/engine-evolution-notes.md` E3 更正——内置品牌发现实测可用（标记编译于 generated 模块），非「返回空」；E5 更新为「已轻量修复外部字体引用」。`references/viewer-authoring.md` 品牌基线说明同步更正。
+
+### 新增
+
+- **可执行面自动化测试**：`tests/run_exec_tests.py`（31 用例：引擎探测/CLI 正常·边界·异常/组装与降级链/版本门四态 simulate 注入），真实执行 + 硬性断言 + JSON 报告，退出码=失败数；报告落 `.tribro/html-exec-tests/`。
+
+## [1.2.2] - 2026-09-18
+
+### 新增
+
+- **质量标准补「产出前自检清单」**：新增四检通用自检（结构/合规/溯源/可验证），对齐 `docs/guides/skill-写作规范.md` §3；重试仍失败回到对应门或走 `tri-true` 兜底。
+
+## [1.2.1] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手架构问题的直接修复（tri-coding/tri-fix）、审计清单生成（tri-checklist）、代码级深度剖析报告（tri-code-analyzer）与意图识别（tri-intent），强化「只分析不改码」边界。
+
+## [1.2.0] - 2026-08-28
+
+### 新增
+
+- **内置高精度图表引擎
+  - 五类技术图确定性渲染：architecture / workflow / sequence / dataflow / lifecycle，各有 JSON Schema（`scripts/viewer/schemas/`）
+  - showcase 客观门禁：9 项检查（Schema/布局/HTML·SVG/线路/标签净空）全过才原子提交；失败输出结构化诊断（code/subject/evidence/supportedFixes）
+  - 单文件交互 HTML 成品：深浅主题、搜索聚焦、路径探查、角色透镜、故事播放、演示模式、PNG/SVG/WebM/1200×630 分享卡导出
+  - `validate` / `deliver` / `render` / `preview` / `visual-check` / `guide` / `brands` / `doctor` / `demo` 全套 CLI
+  - `compare` 架构差分（显式启用）：两份已校验架构快照 → Before / Delta / After + 机器回执
+- **渲染引擎双模机制**：新增「§渲染引擎双模」（SKILL.md），图表按类型分流——五类技术图走 viewer 引擎高精模式，目录树/类图/ER/旅程图继续走 Mermaid 兼容模式；`build_html.py --check-engine` 探测 Node ≥ 18 与引擎文件，缺失时自动整体回落 Mermaid 并在报告标注降级原因，**绝不阻断交付**
+- **build_html.py viewer 集成**：`analysis.json` 新增可选顶层 `viewer_diagrams[]`（type/title/ir/quality）；组装时逐张 deliver、报告嵌入链接卡片（含校验摘要 9/9、SHA-256）；无 viewer_diagrams 时行为与 1.1.1 完全一致（向后兼容）
+- **作者契约参考** `references/viewer-authoring.md`：类型路由表、快速创作路径、创作不变量（主路径优先/间距=净空/标签语义/≤12 节点）、修复循环上限 2 轮、Mermaid→IR 转换方法、交付验收口径
+- **门②升级**：交付确认材料新增 viewer `deliver` 客观回执（checksPassed/errors/warnings/SHA-256），主观审美让位于可验证事实
+- **触发语义扩展**：拓扑/时序/数据流/状态机可视化、「交互式架构图」「可导出架构图」「架构差异对比」等触发词纳入本 skill（仍归属 I10 arch-viz，不新增路由键）
+
+### 变更
+
+- **单文件铁律细化**：主报告单文件 + 每张 viewer 图表独立单文件成品（各自零依赖）；viewer 成品与可选 analysis.json 不视为散装多文件
+- **六维框架图表列更新**：架构设计/功能设计/特殊设计标注 viewer 优先或按语义分流
+- **处理流程更新**：新增引擎探测步骤（门①前）；六维分析后新增 viewer IR 校验-修复-交付子流程
+- **产物命名规范扩展**：viewer 成品 `<主报告stem>-view-<序号>-<类型>.html`；链路文档新增 `.viewer-ir/` 中间产物目录
+- **质量标准新增 3 条**：viewer 门禁（9/9 + SHA-256 回执）、引擎降级诚实、修复循环上限
+
+### 版本同步
+
+- frontmatter version `1.1.1` → `1.2.0`；`_meta.json`、tests `based_on` 同步至 `1.2.0`
+
 ## [1.1.1] - 2026-08-05
 
 ### 修复

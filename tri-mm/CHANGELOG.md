@@ -5,6 +5,39 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
 
+## [1.5.0] - 2026-09-22
+
+### 新增
+
+- **子SKILL tri-video 双制作路线增强**（`children/tri-video`，随包分发，子包版本维持 1.1.1 至发布）：
+  - 新增「制作路线判定」：AI 生成工具路线（默认）与代码渲染精确路线（程序化逐帧渲染）双路线，判定结果写入 design.md 与自检句；双路线均可行时对比交用户选择
+  - 子包新增 `references/` 知识包 6 文件：production-pipeline.md（八阶段流水线+三推进模式+动效参数预设）、aesthetic-rules.md（判例式审美准则 26 条 R/Q/S/C/P）、shot-card-system.md（镜头配方卡 schema/十类/三读法则/能量弧）、capture-and-camera.md（采集三件套+2.5D 页面相机+高清栅格化）、beat-sync-sound.md（BGM 卡点+声音设计+音画对齐）、version-check-spec.md（版本门瘦指针）
+  - 子包新增 `scripts/`：beat_grid_fit.py（节拍网格拟合确定性算法）、check_update.py（版本门确定性入口，与家族同源）
+  - 子包 tests 增补至 28 用例（路线判定/知识包装载/准则过检/独立终检/卡点/独立运行 J 组）
+  - 与父包划界不变：tri-mm 仍只做路由编排与媒体类型识别，专业设计与生成归子包；BGM 曲目生成归 tri-music、旁白归 tri-audio，代码渲染路线的节奏分析/钉帧/验收归 tri-video
+- **新增** `references/prompt-structure.md`（增强项 E8）：跨媒体生成提示词结构骨架（图像六段 / 视频八段，含运动与时长节奏强制段）、一致性锚三块复用规则、迭代纪律（单变量 / 先补段后调词 / 可复现参数落盘）、反模式清单。与子包划界：场景级提示词构建与落盘归 `children/tri-image`、`children/tri-video`，冲突以子包为准。
+- `references/` 目录首次建立。
+
+## [1.4.4] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手各类媒体实际生成（由子SKILL tri-image/tri-audio/tri-video/tri-ppt/tri-music 承接）、文本/技术内容生成（tri-content / tri-coding）与意图识别（tri-intent），强化「编排路由、不亲自生成」边界。
+
+## [1.4.3] - 2026-09-18
+
+### 变更
+
+- **版本联动 bump**：本次未改动 tri-mm 自身的路由/编排逻辑，仅因随包分发的子 SKILL `tri-image` 升级至 2.0.0（七场景全栈生图引擎：封面图/结构图/信息图/文章配图/社媒卡片/幻灯片/知识漫画，三轨管线 Track-V/T1/T2，12 provider 引擎，纯 Python 零依赖工具）而提升父包版本，避免与 skillhub 上已发布的 1.4.2 同版本重发（409）并真实分发新内容。
+- frontmatter version `1.4.2` → `1.4.3`
+
+## [1.4.2] - 2026-09-02
+
+### 修复
+- SKILL.md `name`/`displayName` 去除全角括号 slug 后缀；4 个 children SKILL.md 同步去除。
+- `版本检查` 引用从 `version-gate.md` 统一回指 `version-check-spec.md`；产物落盘目录收敛为 `.tribro/multimedia/`。
+- frontmatter version `1.4.1` -> `1.4.2`
+
 ## [1.4.1] - 2026-08-05
 
 ### 修复
@@ -78,7 +111,7 @@
 
 - **上游依赖检测两态逻辑**：支持快照模式 / 引导安装两种执行模式
   - A · 快照模式：检测到 `.tribro/snapshots/` 快照或 `tri-intent/` 目录时，按标准工作流推进
-  - B · 引导安装：未检测到上游依赖时，向用户提示并引导安装 `skillhub install tri-intent`
+  - B · 引导安装：未检测到外部依赖时，向用户提示并引导安装 `skillhub install tri-intent`
 - 明确本 skill 不支持降级模式——模式 B 为硬性阻断，MUST 安装 tri-intent 后方可使用
 
 ### 变更

@@ -1,8 +1,8 @@
 ---
-name: tri-require
+name: 需求分析
 slug: tri-require
 version: 1.1.1
-displayName: 需求分析（tri-require · tri-sdlc P1 子SKILL）
+displayName: 需求分析
 description: SDLC P1 需求分析子SKILL。读取 tri-sdlc 转交的阶段任务（charter.md + 快照§三 + P1 门禁条目清单），完成需求采集与功能/非功能分列、REQ-nnn 唯一 ID 分配、MoSCoW 优先级标注、三段式用户故事编写、Given-When-Then 可判定验收标准编写、双向可追溯矩阵构建与需求基线冻结，产出 requirements.md / user-stories.md / acceptance-criteria.md / traceability-matrix.md 四件套供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P1 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 需求分析专家，产出带唯一 ID、优先级、可判定验收标准与双向追溯矩阵的需求四件套，面向 P1 门禁 8 条必检项交付。
 tags: [sdlc, requirements, user-story, acceptance-criteria, traceability, baseline, tri-sdlc-child]
@@ -177,7 +177,7 @@ Then  <可观测的预期结果>
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
 
 **执行要点**
 

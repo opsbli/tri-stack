@@ -1,8 +1,8 @@
 ---
-name: tri-checklist
+name: 审计清单生成
 slug: tri-checklist
-version: 1.1.1
-displayName: 审计清单生成（tri-checklist）
+version: 1.1.2
+displayName: 审计清单生成
 description: 项目审计清单生成下游执行 skill。对当前项目进行全面审计，覆盖改动点/审查点/测试点/测试步骤四维；操作对象支持 Git 暂存区/工作区/指定 commit id；产出 Markdown 复选框 checklist 供开发者自检、代码审查及质量保障。当 tri-intent 快照下游路由建议指向本 skill（L2=I10、L3=audit-checklist）时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装/降级模式）。
 summary: 四维审计方法论（改动点/审查点/测试点/测试步骤）+ 三种 Git 输入模式（暂存区/工作区/commit id）+ Markdown 复选框产出，含双审批门与 §3.13 代码版权合规。
 tags: [audit, checklist, git-diff, review, testing, quality-assurance, audit-checklist]
@@ -76,7 +76,8 @@ license: MIT
 - **不负责**：意图识别（由 tri-intent）、编码开发（由 tri-coding）、代码审查执行（由 tri-review）、调试修复（由 tri-fix）、生成审查报告（由 tri-review）
 - **关键边界**：本 skill「只生成清单不执行审查」——checklist 供开发者自检或作为 tri-review 的审查依据；执行审查（逐项判定 PASS/FAIL）由 tri-review 完成
 - **与 tri-review 的边界**：tri-checklist 是「审查前的清单生成」（I10 audit-checklist），产出 checklist；tri-review 是「审查执行本身」（CR 特殊路由），产出审查报告。两者可串联：tri-checklist 生成清单 → 开发者自检 → tri-review 执行审查
-- **与 tri-html 的边界**：tri-checklist 是「项目审计清单」（I10 audit-checklist），产出 Markdown checklist；tri-html 是「项目架构可视化」（I10 arch-viz），产出 HTML 报告。两者同属 I10 子类但对象不同（改动/审查点 vs 整体架构）、产出不同（checklist vs HTML）
+- **与 tri-html 的边界**：tri-checklist 是「项目审计清单」（I10 audit-checklist），产出 Markdown checklist；tri-html 是「项目架构可视化」（I10 arch-viz），产出 HTML 报告。两者同属 I10 子类但对象不同（改动/审查点 vs 整体架构）、产出不同（Markdown vs HTML）
+- **不触发场景（Not-Trigger）**：本 skill 不接手「项目整体架构可视化分析」（转 tri-html arch-viz）；不接手「代码级深度剖析报告」（属 tri-code-analyzer）；不接手「清单项问题的直接修复 / 编码」（属 tri-coding / tri-fix）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## tri-checklist 方法论（核心能力 · 可扩展）
 
@@ -133,7 +134,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -195,7 +196,7 @@ license: MIT
 调 scripts/build_checklist.py 组装 Markdown checklist
   │（骨架 + 复选框 + 严重程度标签 + 三级分组）
   ▼
-落盘 checklist 至用户工作区（默认 audit-checklist_<日期>_<时间>.md）
+落盘 checklist 至 `.tribro/audit-checklist/<命名>/`（默认 audit-checklist_<日期>_<时间>.md；用户指定交付路径时同步落一份）
   │
   ▼
 门②·checklist 交付确认 ──不通过──→ 携反馈补充检查项 → 再门②
@@ -254,8 +255,9 @@ license: MIT
 
 - 快照由 tri-intent 已落盘于 `.tribro/snapshots/`
 - 本 skill 链路文档落盘于 `.tribro/audit-checklist/<命名>/`（可覆盖更新）
-- **最终成果物（Markdown checklist）落盘至用户工作区**（项目根目录或用户指定目录，非 `.tribro/`）
+- **最终成果物（Markdown checklist）默认落盘至 `.tribro/audit-checklist/<命名>/`**；用户显式指定交付路径时落用户指定目录（项目根目录），但 MUST 同时保留 `.tribro` 副本
 - diff.json 作为可选中间产物落盘 `.tribro/audit-checklist/<命名>/`
+- 产物归档：`.tribro/` 不存在时 MUST 先创建
 - NEVER 在用户工作区生成多文件（checklist 必须单文件）
 
 ## 目录结构

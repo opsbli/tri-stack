@@ -1,8 +1,8 @@
 ---
-name: tri-fix
+name: 调试修复
 slug: tri-fix
-version: 1.3.1
-displayName: 调试修复（tri-fix）
+version: 1.4.0
+displayName: 调试修复
 description: 调试修复下游执行 skill（I12）——先造出一条能变红的紧密反馈循环，再定位根因，最后最小化修复。当用户说「调试」「debug 一下」「查一下这个 bug」「帮我看看这个报错」，或报告程序报错/崩溃/抛异常/跑不通/结果不对/数据错乱/偶发失败/线上才复现/变慢了/接口超时时激活；也在 tri-intent 快照 §三 下游路由建议指向本 skill 时激活。目标代码尚不存在的新功能交 tri-coding，只看不改的代码审查交 tri-review，只求解释不求修复交 tri-ask。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 以「没有能变红的循环就没有假设阶段」为铁律的系统化调试方法论——6 阶段（建立反馈循环→复现最小化→假设生成→插桩验证→修复回归→清理复盘）串联三道审批门，强制因果确认与最小化修复。
 tags: [debugging, bug-fix, root-cause, feedback-loop, workflow, approval-gate, regression-test]
@@ -97,6 +97,7 @@ license: MIT
 - **不负责**：意图识别（由 tri-intent）、新功能编码开发（由 tri-coding 的 I11）、代码审查（由 tri-review）、规划方案（由 tri-plan）
 - **关键边界**：本 skill「先诊断后修复」——诊断归 bug-report.md/diagnosis.md，修复归 fix-tasks.md/执行阶段；诊断证据链完整之后才动代码
 - **与 tri-coding 的协作**：调试过程中可加载 tri-coding 的技术栈 skill（`tri-coding/tech-skills/`）辅助定位技术栈特定的问题模式，加载方式参考 tri-coding 的 registry 驱动机制
+- **不触发场景（Not-Trigger）**：本 skill 不接手「目标代码尚不存在的新功能开发」（属 tri-coding 的 I11，本 skill 只修复既有缺陷）；不接手「只审查不改的代码审查」（属 tri-review）；不接手「只求解释不求修复的咨询」（属 tri-ask）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 系统化调试方法论（核心能力 · 可扩展）
 
@@ -164,6 +165,12 @@ license: MIT
 
 > 单一假设生成会把人锚定在第一个看似合理的想法上。**强制 3-5 个排序假设**防止锚定。
 
+**假设生成前的证据增强（三式，按成本从低到高，先做再生成假设——假设质量取决于喂进去的证据）**：
+
+1. **近期变更扫描**：`git diff`/最近提交/新依赖/配置变更/环境差异——「什么变了」往往是最高性价比的第一批假设来源；bug 在变更点附近的比例远超随机分布。
+2. **多组件断裂点埋点**：系统有多个组件时（CI → 构建 → 签名，API → 服务 → DB），先在每个组件边界记录进入/离开的数据与环境传递，执行一次收集证据、定位断裂层，再针对该层生成假设——**先定位断裂层，再猜具体原因**，NEVER 跨层盲猜。
+3. **正常示例对比（模式分析）**：在同一代码库找到处理同类问题的正常代码，逐项列 出问题代码与它的差异（无论多小，NEVER 预判「这不可能有影响」）；实现某个模式出问题时完整阅读参考实现，理解隐含依赖后再对比。
+
 每个假设必须**可证伪**，说明它会做出的预测：
 
 > 格式：「若 \<X\> 是原因，则 \<改变 Y\> 会让 bug 消失 / \<改变 Z\> 会让它更严重。」
@@ -207,7 +214,7 @@ license: MIT
 - 假设被证伪 → 回到假设列表取下一个
 - 假设被证实 → 因果确认 → 进入修复
 - 所有假设被证伪 → 回到阶段 3 重新生成假设
-- **最多 3 轮**：全部证伪且未能生成新假设 → 升级求助
+- **最多 3 轮**：全部证伪且未能生成新假设 → 停止并质疑架构——每次修复都暴露新的共享状态/耦合/别处新症状、或修复需要大规模重构才能实现，说明是**架构缺陷信号**而非假设失败；NEVER 未做架构讨论就盲试第 4 次，此时把架构问题写入 fix-report.md 复盘并建议 tri-review 审查（升级求助与架构质疑并行，不互斥）
 
 ### 阶段 5：修复 + 回归测试
 
@@ -271,7 +278,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -410,7 +417,8 @@ tri-intent 快照 §三 (I12)
 - 快照由 tri-intent 已落盘于 `.tribro/snapshots/`
 - 本 skill 链路文档落盘于 `.tribro/fixes/<命名>/`
 - 链路文档可覆盖更新（以最新一轮为准），审计记录留痕于各文档审计章节
-- 最终修复补丁落盘至用户工作区项目目录（非 .tribro/）
+- 最终修复补丁就地落盘于用户工作区项目目录（实际交付物，非 .tribro/）
+- 产物归档：`.tribro/` 不存在时 MUST 先创建；每轮执行 MUST 在 `.tribro/fixes/<命名>/` 落 `delivery-manifest.md`，记录本次交付/修改的文件路径清单与说明，保证产物可追溯
 - 调试日志（含 `[DEBUG-xxx]` 标签）在清理前临时记录于 diagnosis.md，清理后确认已移除
 
 ## 代码版权与许可证合规（硬红线）

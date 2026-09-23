@@ -28,6 +28,10 @@ PRODUCT_TECH: <产品技术栈，仅当开启>
 
 PRODUCT_RELATION: <产品与文章主题的天然关联说明，仅当开启>
 
+## 文末「tri-xxx 技能安装指引」（可选，推荐开启）
+
+TRI_INSTALL_NOTE: <文末「tri-xxx 技能安装指引」文案。作用：让读者知道 tri-xxx 技能去哪安装、怎么装。安装入口写 `skillhub`（不要写成完整 URL https://skillhub.cn/，避免平台判定外链/营销），并给出至少一条 `skillhub install <技能名>` 安装命令示例；用真人语气，避免广告腔。留空则每篇文末都跳过该段。>
+
 ## 可选项（留空回退内置默认）
 
 LICENSE_STMT: <文末许可证声明；留空回退「本文遵循 MIT 协议，转载请注明出处。」>

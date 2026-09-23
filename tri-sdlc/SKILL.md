@@ -1,8 +1,8 @@
 ---
-name: tri-sdlc
+name: 软件工程全生命周期驱动
 slug: tri-sdlc
-version: 1.1.1
-displayName: 软件工程全生命周期驱动（tri-sdlc）
+version: 1.1.3
+displayName: 软件工程全生命周期驱动
 description: 软件工程全生命周期编排 skill。读取 tri-intent 快照 §三，处理 L2 ∈ {I11 编码开发 / I13 规划拆解 / I14 操作执行} 且 L3_子意图 = sdlc（全生命周期 / 端到端交付）的意图，将项目拆为 P0 立项规划→P8 运维监控共 9 个阶段，逐阶段派发子SKILL 产出规定交付物，每阶段内置「自动审计 + 用户确认」双闸门，未过则携修订意见回炉重做，并以 manifest.md 状态机支持自然语言启动/查进度/确认/回退。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 九阶段 SDLC 编排器，逐阶段派发子SKILL、按 68 条必检项审计门禁产物、维护 manifest 状态机，支持自然语言启动/查进度/确认/打回/回退/跳过。
 tags: [sdlc, lifecycle, orchestrator, quality-gate, state-machine, engineering, delivery]
@@ -28,7 +28,7 @@ license: MIT
 5. **门禁强制审计**：阶段交付物产出后 MUST 逐条对照 `gates/acceptance-criteria.md` 对应阶段的**全部必检项**判定，产出 `gate-report.md`；NEVER 凭印象放行、NEVER 在报告外另立标准、NEVER 省略任一必检项。必检项存在 ≥1 条 `FAIL` → 门禁判 `FAIL`，MUST 输出修订意见并回炉该阶段，轮次 +1。
 6. **双闸门不可省**：门禁 `PASS` 后 MUST 将阶段摘要 + gate-report 呈交用户确认；未获用户确认（`通过`/`确认`/等价表述）NEVER 进入下一阶段。用户显式开启「快速模式」后可自动放行，但 `FAIL` 仍 MUST 硬阻断。
 7. **回退级联**：执行 `回退到 Pn` 时 MUST 将 Pn 之后所有阶段状态重置为「未开始」、其已产出交付物标记 `stale（已失效）`，并在 manifest 记录回退原因；NEVER 保留失效阶段的「已通过」状态。
-8. **产物分流**：链路文档 MUST 落 `.tribro/sdlc/<命名>/`；源码、构建产物、`CHANGELOG.md` 等**真实成果物 MUST 落用户工作区**，NEVER 落 `.tribro/`。
+8. **产物分流**：链路文档 MUST 落 `.tribro/sdlc/<命名>/`（`.tribro/` 不存在时 MUST 先创建）；源码、构建产物、`CHANGELOG.md` 等**真实成果物就地落用户工作区**（实际交付物），并在 `.tribro/sdlc/<命名>/` 落 `delivery-manifest.md` 记录交付物路径清单与说明，保证产物可追溯。
 9. **自检句**：每次响应前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，已读取快照，剖面=&lt;full/standard/lite&gt;，当前阶段=&lt;Pn 名称&gt;，状态=&lt;状态值&gt;，门禁=&lt;未审计/PASS/FAIL(n项)&gt;」；与快照冲突时 MUST 停止并纠正，NEVER 擅自继续。
 
 ## 触发时机
@@ -95,6 +95,7 @@ license: MIT
 | `tri-loop`（I14 loop 子类） | tri-loop 建的是**长期运行的知识域/循环体**；tri-sdlc 是**有明确终点的项目交付** |
 
 - **对称检测**：9 个子SKILL 各自内置上游依赖检测（编排模式 / 引导安装），与 tri-sdlc 构成双向校验。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「单个功能/模块的四步开发闭环」（属 tri-coding）；不接手「仅产出规划文档本身的规划」（属 tri-plan）；不接手「流程定义产物即交付」的工作流设计（属 tri-workflow）；不接手「单次带副作用的动作执行」（属 tri-action）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## SDLC 编排方法论（核心能力 · 可扩展）
 
@@ -202,7 +203,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

@@ -1,8 +1,8 @@
 ---
-name: tri-action
+name: 操作执行
 slug: tri-action
-version: 1.2.1
-displayName: 操作执行（tri-action）
+version: 1.2.2
+displayName: 操作执行
 description: 操作执行下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行）意图，调用工具真实执行动作（下单/设提醒/发消息/调用 API 等）并返回操作结果。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测两态逻辑（快照模式/引导安装）。
 summary: 依据 tri-intent 快照处理 I14 操作执行意图，含 4 级操作分级（L0–L3）、L2/L3 确认门与失败不擅重试机制，确保高风险操作可追溯。
 tags: [action, execution, safety, confirmation-gate, side-effects]
@@ -88,6 +88,8 @@ license: MIT
 
 > 命中 L3 子类却路由到本 skill 时，MUST 停止并回退 tri-intent 重新路由，NEVER 越界接管。
 
+- **不触发场景（Not-Trigger）**：本 skill 不接手「规划拆解 / 决策建议」（转 tri-plan / tri-ask，本 skill 只执行带副作用的动作）；不接手「编码实现 / 调试」（属 tri-coding / tri-fix）；不接手「长期运行的知识域/循环体」（属 tri-loop，I14 loop 子类）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
+
 ## 操作安全分级方法论（核心能力 · 可扩展）
 
 > 操作安全分级方法论是 tri-action 的核心能力。通过 4 级操作分类（L0 只读 / L1 可逆 / L2 不可逆 / L3 高风险）将每个操作映射到对应确认要求，确保高风险操作有确认、低风险操作不阻塞。这是 tri-action 区别于其它下游 skill 的核心差异化能力。
@@ -149,7 +151,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

@@ -1,8 +1,8 @@
 ---
-name: tri-translate
+name: 完美翻译
 slug: tri-translate
-version: 1.1.1
-displayName: 完美翻译（tri-translate）
+version: 1.1.2
+displayName: 完美翻译
 description: 横向方法论型 skill，为 tri-xxx 家族提供"意译优先 → 直译次之 → 不译兜底"三策略分层翻译能力；TRANSLATE_EXECUTE 模式执行深度翻译（含隔离区占位、术语表强制、MQM 质量自检），TRANSLATE_QUERY 模式查询术语译法，TRANSLATE_ADMIN 模式管理术语表/不译规则/风格示例；tri-content I08 委派或用户直接调用激活；支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 三策略分层（意译/直译/不译）+ 19 类不译规则集 + 三层术语表（A 不可译/B 批准/C 推荐）+ 隔离区占位法 + MQM Core 4 维质量自检 + Hallucination 子维幻觉检测。
 tags: [tri, translate, i18n, glossary, mqm, free-translation, literal-translation]
@@ -115,6 +115,7 @@ license: MIT
 - **与 tri-cache 的边界**：tri-cache 是全家族缓存层；本 skill 可选启用翻译记忆（TM），但默认禁用。未来可扩展为 tri-cache 作为 TM 后端。
 - **与 tri-evolve 的边界**：tri-evolve 可从用户对译文的反馈学习调整术语表 Priority C 推荐；本 skill 的 MQM 评分可作 tri-evolve 的进化信号。
 - **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族 21 个下游执行 skill（数量见 family-spec §1.3）的 MECE 划分；它是横切关注点（cross-cutting concern），同 tri-cache / tri-evolve 同属横向层。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「轻量翻译/跨格式转换」（属 tri-content I08 自处理，本 skill 只处理深度翻译）；不接管「已归 tri-content I08 的简单翻译」；不识别意图（由 tri-intent）；**不主动接管 I08 委派决策**（该决策由 `tri-content/SKILL.md` §职责边界持有）。
 
 ## 完美翻译（核心能力 · 可扩展）
 
@@ -185,7 +186,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -372,8 +373,8 @@ schema_version: 1
 ## 落盘规则
 
 - 快照由 tri-intent 已落盘于 `.tribro/snapshots/`
-- 本 skill 链路文档落盘于 `.tribro/translate/<命名>/`（含 deliverable.md / preserved.md / alignment.md / quality.md，可覆盖更新）
-- 译文最终成果物落盘至用户工作区（由调用方或用户指定路径，非 `.tribro/`）
+- 本 skill 链路文档落盘于 `.tribro/translate/<命名>/`（含 deliverable.md / preserved.md / alignment.md / quality.md，可覆盖更新）；`.tribro/` 不存在时 MUST 先创建
+- 译文最终成果物默认落盘于 `.tribro/translate/<命名>/deliverable.md`（与链路文档同目录）；仅在用户显式指定目标文件时写用户指定路径，但 MUST 同时在 `.tribro/translate/<命名>/` 保留副本
 - TRANSLATE_QUERY 返回为即时对话回应，不落盘
 - 降级模式（模式 C）仍落盘链路文档，但 quality.md 标注"降级模式，精度低"
 

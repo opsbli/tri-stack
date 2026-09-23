@@ -1,12 +1,19 @@
 # tri-workflow 变更日志
 
 
+## [1.2.3] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手节点内具体业务逻辑编码（tri-coding）、驱动真实项目走完流程的落地交付（tri-sdlc）、单次副作用动作（tri-action）与意图识别（tri-intent），强化「产流程定义即交付」边界。
+
 ## [1.2.2] - 2026-08-14
 
 ### 变更
 
 - **description 补全「支持独立安装」声明**：frontmatter description 追加「支持独立安装，含上游依赖检测三态逻辑」字样，满足 compliance-checklist 第 2 条字面要求（MECE 审计 F5）
 - frontmatter version `1.2.1` → `1.2.2`
+- **SKILL.md ≤500 行合规（约束 #13）**：将 §核心架构 的 45 行 ASCII 流水线架构图下沉至 `references/workflow-architecture.md`（含阶段职责速查表），正文改指针；目录结构树同步新增该文件。版本号不变（内部重构，无接口/行为变更）
 
 ## [1.2.1] - 2026-08-05
 

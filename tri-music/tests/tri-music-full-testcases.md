@@ -1,11 +1,13 @@
 ---
+---
 name: tri-music-full-testcases
-description: 基于 tri-music v2.1.1 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、11 条强制执行契约、上游依赖检测四态、输入契约、创作 5 大原则、6 阶段工作流、5 段输出全案、5 套 AI 工具提示词、5 平台发布矩阵、Hook 命中/反罐头/平台覆盖三维质量标准、版权红线与落盘规则。
+description: 基于 tri-music v2.2.3 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、11 条强制执行契约、上游依赖检测四态、输入契约、创作 5 大原则、6 阶段工作流、5 段输出全案、5 套 AI 工具提示词、5 平台发布矩阵、Hook 命中/反罐头/平台覆盖三维质量标准、版权红线与落盘规则。
+version: 2.2.3
 ---
 
 # 爆款音乐生成器 · 全场景全能力测试用例（审计版）
 
-> 被测对象：`tri-music` v2.1.1（下游执行 skill：I15·music 歌曲创作全案）
+> 被测对象：`tri-music` v2.2.3（下游执行 skill：I15·music 歌曲创作全案）
 > 用例总数：**68**（元数据 5 / 执行契约 12 / 依赖检测与输入契约 9 / 歌词创作 10 / AI 工具提示词 10 / 平台发布矩阵 9 / 质量标准三维 9 / 落盘与边界 4）
 > 生成时间：2026-08-02
 > 审计方式：逐条对照「预期结果」独立判定；反例用例（-N 后缀）须被判为不合格方视为通过
@@ -21,7 +23,7 @@ description: 基于 tri-music v2.1.1 全量扫描生成的覆盖全场景全能�
 | 编号 | 能力点 | 规范 |
 |---|---|---|
 | A1 | name / slug 一致（tri-music） | frontmatter |
-| A2 | version 存在且与 CHANGELOG 最新条目一致（2.1.1） | frontmatter |
+| A2 | version 存在且与 CHANGELOG 最新条目一致（2.2.2） | frontmatter |
 | A3 | displayName / summary 存在且描述 6 维 Hook + 5 平台 + 5 AI 工具 | frontmatter |
 | A4 | description 含「支持独立安装，含上游依赖检测三态逻辑」等效表述 | frontmatter |
 | A5 | tags 含 music/hook-engineering/multi-platform；license=MIT | frontmatter |
@@ -114,7 +116,7 @@ description: 基于 tri-music v2.1.1 全量扫描生成的覆盖全场景全能�
 | 用例 | 覆盖 | 输入 | 预期结果 | 判定 |
 |---|---|---|---|---|
 | TC-A1 | A1 | 读取 frontmatter | name=slug=tri-music | 独立判定 |
-| TC-A2 | A2 | 对比 SKILL.md version 与 CHANGELOG 首条 | 均为 2.1.1 | 独立判定 |
+| TC-A2 | A2 | 对比 SKILL.md version 与 CHANGELOG 首条 | 均为 2.2.2 | 独立判定 |
 | TC-A3 | A3 | 读取 summary | 含 6 维 Hook / 5 平台 / 5 AI 工具 | 独立判定 |
 | TC-A4 | A4 | 读取 description | 含「支持独立安装，含上游依赖检测三态逻辑」 | 独立判定 |
 | TC-A5 | A5 | 读取 tags/license | tags 含 music、hook-engineering；license=MIT | 独立判定 |
@@ -227,6 +229,6 @@ description: 基于 tri-music v2.1.1 全量扫描生成的覆盖全场景全能�
 - 用例总数：68
 - 分布：A5 / B12 / C9 / D10 / E10 / F9 / G9 / H4
 - 反例用例（须判为不合格方通过）：8
-- 被测版本：tri-music v2.1.1
+- 被测版本：tri-music v2.2.3
 - 生成时间：2026-08-02
 - 审计方式：逐条对照「预期结果」独立判定，再与能力清单编号回溯覆盖率

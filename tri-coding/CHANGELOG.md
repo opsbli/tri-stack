@@ -4,6 +4,40 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.7.0] - 2026-09-20
+
+### 新增
+
+- **执行阶段「测试先行（红绿循环）」**（蒸馏自测试驱动开发方法论）：tasks.md 测试清单用例先于对应实现执行并确认失败（红），再写最小实现转绿（绿）；「实现完了才补测」「测试立即通过」为危险信号，NEVER 以「之后补测/手动验证」替代。与既有三层测试清单（UT/IT/AT）衔接，不改变双审批门工作流。
+
+## [1.6.2] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手调试修复（tri-fix）、只审查不改码（tri-review）、规划方案不写实现（tri-plan）与意图识别（tri-intent），强化编码全链路下游的 MECE 边界。
+
+## [1.6.1] - 2026-09-02
+
+### 变更
+
+职责边界补 tri-frontend-design：I11 前端设计方向子类（L3_子意图=frontend-design）由 tri-frontend-design 承接，本 skill 负责可运行代码实现；设计先行场景由 tri-frontend-design 交付令牌规格、本 skill 依令牌落地代码。消除 tri-coding 与 tri-frontend-design 的意图混淆边界缺口
+## [1.6.0] - 2026-08-29
+
+### 新增
+
+- **`## 工具结果治理（执行阶段）`**：编码执行阶段的工具输出治理六条纪律——① 参数先矫正 ② 输出先限幅（NEVER 整段长日志进上下文） ③ 限幅不丢信息（溢出到可读回位置并给出路径）④ 异常可见化（转为可见结论而非静默失败）⑤ 能力降级而非失败 ⑥ 完成判据外化（看产物与校验结果，不看自述）
+- 质量标准新增「工具结果治理」一行（九维验收）
+- 与 tri-cache 的边界已写明：单次工具输出的限幅/溢出归本 skill；跨轮次上下文压缩与 token 预算归 tri-cache CONTEXT_COMPACT
+
+### 变更
+
+- frontmatter version `1.5.2` → `1.6.0`；summary 增工具结果治理
+
+### 来源
+
+- 蒸馏自 strix `agents/factory.py`（工具包装器链：参数矫正/输出限幅/严格模式降级/错误可见化）与 `tools/output_store.py`（溢出暂存），Apache-2.0，去产品化改写
+- 落地来源：2026-08-29 strix 蒸馏迁移审计 MINOR-4（原映射 C6/C7 目标「tri-forge 约束 + tri-coding 提示」的前半已由 tri-forge 硬约束 24 承接，本版本补齐后半）
+
 ## [1.5.2] - 2026-08-06
 
 ### 新增

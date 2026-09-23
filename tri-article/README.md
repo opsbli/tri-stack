@@ -5,6 +5,7 @@
 ## 特性
 
 - **通用引擎**：去 AI 化写作规则（禁用词、口语感、视角库、结构模式、质量门禁）与具体领域/人设解耦，换主题零改 skill。
+- **去 AI 化引擎委派（tri-humanize）**：草稿完成后委派家族横向 skill `tri-humanize`（HUMANIZE-EMBED）做 35 种 AI 写作模式改写；缺失时回退内置 `de-ai-rules` 并声明降级，保证独立运行。
 - **占位符 + profile 机制**：所有具体数据走 `{{占位符}}`，首次运行反问用户后落盘 `.tribro/tri-article/profile.md`，每次生成先替换再执行。
 - **去 AI 化质量门禁**：13 项一票否决自查（完整清单见 `references/de-ai-rules.md`），命中即重写。
 - **可选产品自然植入**：配置开启后按「润物细无声」三层约束植入，绝不写成广告。
@@ -20,7 +21,7 @@ tri-article/
 ├── hooks/                         辅助脚本（纯标准库）
 │   └── index.py                   文章索引与去重（dedup/add/search/list）
 ├── references/                    静态参考资料
-│   └── de-ai-rules.md             去 AI 化引擎完整参考（禁用词/视角库/结构模式/门禁清单）
+│   └── de-ai-rules.md             去 AI 化引擎完整参考（禁用词/视角库/结构模式/门禁清单；tri-humanize 缺失时的降级回退引擎）
 ├── templates/
 │   └── profile-skeleton.md        首次初始化复制填写的占位符骨架
 └── tests/

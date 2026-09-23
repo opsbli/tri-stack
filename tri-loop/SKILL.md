@@ -1,8 +1,8 @@
 ---
-name: tri-loop
+name: 循环启动
 slug: tri-loop
-version: 1.2.1
-displayName: 循环启动（tri-loop）
+version: 1.2.2
+displayName: 循环启动
 description: 知识库 loop（domain）启动下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行·loop/domain 创建子类）意图，在基于文件的知识库中 bootstrap substrate、收集 loop charter、scaffold loop README、执行一次真实测试运行并记录到 Timeline 和 LOG.md。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照处理 I14 loop/domain 创建子类意图，含 substrate bootstrap、loop charter 收集、README scaffold、真实测试运行、Timeline+LOG.md 记录全链路，确保 loop 可验证运行。
 tags: [loop, domain, knowledge-base, bootstrap, scaffold, execution]
@@ -93,6 +93,7 @@ license: MIT
 - **关键边界**：本 skill「创建并验证知识库 loop」——只创建指定的 loop 并做一次测试运行，不擅自创建额外 domain、不擅自修改已有 loop
 - **与 tri-action 的协作**：tri-action 处理通用 I14 操作；当 I14 任务要点含 loop/domain 创建语义时，tri-intent 路由到 tri-loop 而非 tri-action
 - **与 tri-coding 的协作**：对于提交代码的 loop，loop 的运行在隔离 git worktree 中进行，通过 `/verify` skill 提交
+- **不触发场景（Not-Trigger）**：本 skill 不接手「一次性完成即交付的任务执行」（属对应 I 落点 skill，本 skill 建的是长期运行的知识域/循环体）；不接手「对既有代码的单点调试修复」（属 tri-fix）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 核心能力（蒸馏自 new-loop · 全量保留）
 
@@ -128,7 +129,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

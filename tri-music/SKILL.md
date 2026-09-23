@@ -1,8 +1,8 @@
 ---
-name: tri-music
+name: 爆款音乐生成器
 slug: tri-music
-version: 2.2.1
-displayName: 爆款音乐生成器（tri-music）
+version: 2.2.3
+displayName: 爆款音乐生成器
 description: 爆款音乐下游执行 skill。读取 tri-intent 快照 §三，处理 I15（多媒体生成/音乐生成）子意图中的"歌曲创作"分支，自主管理「需求→设计→任务→执行→发布方案」全链路。深度适配抖音/汽水音乐/网易云/QQ-酷狗-酷我五大平台，覆盖海绵音乐/Suno/Udio/Melo/音潮五大AI工具。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 基于2025-2026全网爆款音乐深度研究的歌曲创作全案生成器，含 6维Hook 公式、微情绪意象库、5平台发布矩阵、5AI工具适配提示词、反 AI 罐头自检。
 tags: [music, hit-song, hook-engineering, multi-platform, ai-music-prompt, lyric-writing]
@@ -91,6 +91,7 @@ license: MIT
 - **本 skill 负责**：依据快照结论或降级输入，产出"歌词 + AI 工具提示词 + 音色定位 + 15 秒分镜 + 多平台发布策略"五段标准全案（或按用户范围裁剪）。
 - **不负责**：意图识别（由 tri-intent）、视频剪辑/配图（由 tri-mm 其他分支）、海报/封面（由 tri-mm）、代码（由 tri-coding）、版权归属判定（必须用户自查）。
 - **关键边界**：本 skill 只产出"指令性 + 文字性"交付物，**绝不直接调用任何 AI 音乐工具 API**——这是用户自己执行的动作（避免 LLM 幻觉式"已生成"假象）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「视频剪辑/配图/海报/封面」（转 tri-mm 其他分支）；不接手「程序代码编写」（属 tri-coding）；不接手「版权归属判定」（必须由用户自查，本 skill 不替判）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 创作底层逻辑（5 大原则 · v2.0 升级）
 
@@ -105,7 +106,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -286,6 +287,12 @@ license: MIT
 
 > 三维硬指标，全案交付前 MUST 逐维自检并在 `result.md` 中留痕；任一维不达标 → 返工对应阶段，NEVER 带病交付。
 
+**产出前自检清单**（承接上表三维硬指标；自检重试仍失败 → 走 tri-true 兜底）：
+- [ ] 结构：产物为 5 段标准全案，无缺失与占位符。
+- [ ] 合规：未用禁用措辞，未越出「职责边界/Not-Trigger」，版权红线（第 4 章）未触碰。
+- [ ] 溯源：关键结论附来源标注（结论标注铁律：事实/计算/推断/常识/猜测）。
+- [ ] 可验证：命中内容按上表「验证方式」逐维复验并在 `result.md` 留痕。
+
 | 维度 | 标准 | 验证方式 | 不达标处理 |
 |---|---|---|---|
 | **Hook 命中** | 6 维 Hook（旋律/节奏/歌词/编曲/结构/情绪）**至少命中 5 维**，并在歌词后显式声明命中维度 | 对照 `templates/hook-formula.md` 逐维打勾 | 命中 <5 维 → 返回阶段 2 重写副歌 |
@@ -305,7 +312,7 @@ tri-music/
 │   └── tri-music-full-testcases.md  # 全场景全能力测试用例
 ├── templates/                  # 创作模板
 │   ├── hook-formula.md         # 6 维 Hook 公式
-│   ├── lyrics-micros-emotion.md# 微情绪意象库
+│   ├── lyrics-micros-emotion.md  # 微情绪意象库
 │   ├── platform-matrix.md      # 5 平台发布矩阵
 │   └── release-sop.md          # 5 阶段发布 SOP
 ├── checklists/                 # 自检清单

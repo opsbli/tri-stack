@@ -1,8 +1,8 @@
 ---
-name: tri-impl
+name: 编码实现
 slug: tri-impl
 version: 1.1.1
-displayName: 编码实现（tri-impl · tri-sdlc P4 子SKILL）
+displayName: 编码实现
 description: SDLC P4 编码实现子SKILL。读取 tri-sdlc 转交的阶段任务（P3 任务看板 + P2 设计三件套 + P1 需求 + P4 门禁条目清单），按任务看板逐项编码落盘至用户工作区，复用 tri-coding 技术栈规范与五条合规底线，完成分层产出映射、边界与异常分支处理、公共接口注释、单元测试执行与覆盖率统计，产出 implements.md / unit-test-report.md 并回写任务状态，供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P4 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 编码实现专家，按任务看板落源码至工作区并产出实现清单与单测报告，面向 P4 门禁 8 条必检项交付。
 tags: [sdlc, implementation, coding, unit-test, coverage, compliance, tri-sdlc-child]
@@ -197,7 +197,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
 
 **执行要点**
 

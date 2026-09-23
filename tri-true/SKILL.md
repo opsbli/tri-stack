@@ -1,8 +1,8 @@
 ---
-name: tri-true
+name: 消除幻觉
 slug: tri-true
-version: 1.1.1
-displayName: 消除幻觉（tri-true）
+version: 1.1.2
+displayName: 消除幻觉
 description: 横向方法论型 skill，为 tri-xxx 家族提供"置信度评估 + 事实源验证 + 多模型多方事实源交叉验证 + 自我反思修正"四道防线的幻觉消除能力；VERIFY_EXECUTE 模式执行深度验证（含段级置信度评估、RAG 句级引用、T1-T4 信源分级、UAF 多模型加权融合、CoVe/Reflexion 闭环修正、人审兜底），VERIFY_QUERY 模式查询历史验证，VERIFY_ADMIN 模式管理信源/校准/模型池；下游 skill 委派或用户直接调用激活；支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 四道防线（置信度/事实源/多模型/自反思）+ 三层置信度（VC+SC+CC 校准）+ 四级信源分级（T1-T4 可信度加权）+ 异构多模型交叉验证（UAF 融合 + 共识阈值）+ CoVe/Reflexion 闭环修正 + 人审兜底 + ECE/Brier 校准。
 tags: [tri, true, hallucination, verification, fact-check, rag, confidence, multi-model]
@@ -125,6 +125,7 @@ license: MIT
 - **与 tri-evolve 的边界**：tri-evolve 从验证结果学习调整校准系数；本 skill 的 ECE 是进化信号。
 - **与 tri-translate 的边界**：tri-translate 的 Hallucination 维度可委派本 skill 深度验证。
 - **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族 21 个下游执行 skill（数量见 family-spec §1.3）的 MECE 划分；属横切关注点，同 tri-cache / tri-evolve / tri-translate 同属横向层。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「一般咨询的常规作答」（属 tri-ask，本 skill 只做委派而来的高风险幻觉消除）；不接手「业务内容生成」（属 tri-content，本 skill 只验证不生成）；不接手「翻译转换本身」（属 tri-translate，本 skill 仅承接其 Hallucination 维度深度验证）；不接手「意图识别」（由 tri-intent / 快照驱动）。
 
 ## 消除幻觉方法论（核心能力 · 可扩展）
 
@@ -233,7 +234,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

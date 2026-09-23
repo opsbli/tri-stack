@@ -1,11 +1,13 @@
 ---
+---
 name: tri-evolve-full-testcases
-description: 基于 tri-evolve v1.0.2 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约、输入契约、自进化方法论（OODA闭环/六渠道/经验条目库/画像四层/外部锚定/A/B验证门/安全分级回滚/可扩展性）、自检声明验证、交付产物、职责边界、质量标准等全部能力点。
+description: 基于 tri-evolve v1.1.2 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约、输入契约、自进化方法论（OODA闭环/六渠道/经验条目库/画像四层/外部锚定/A/B验证门/安全分级回滚/可扩展性）、自检声明验证、交付产物、职责边界、质量标准等全部能力点。
+version: 1.1.2
 ---
 
 # 自进化学习工作流 · 全场景全能力测试用例（审计版）
 
-> 被测对象：`tri-evolve` v1.0.2（横向学习/进化型 skill：多渠道信号驱动持续改进 + 用户画像构建）
+> 被测对象：`tri-evolve` v1.1.2（横向学习/进化型 skill：多渠道信号驱动持续改进 + 用户画像构建）
 > 用例总数：**55**
 > 生成时间：2026-08-01
 > 审计方式：逐条对照「预期结果」独立判定，再与「通过标准」比对勾选
@@ -21,7 +23,7 @@ description: 基于 tri-evolve v1.0.2 全量扫描生成的覆盖全场景全能
 | 编号 | 能力点 | 规范 |
 |---|---|---|
 | M1 | slug | 与 name 一致（tri-evolve） |
-| M2 | version | 存在且格式正确（1.0.0） |
+| M2 | version | 存在且格式正确（1.1.2） |
 | M3 | displayName | 存在（自进化学习（tri-evolve）） |
 | M4 | description | 含「支持独立安装，含上游依赖检测三态逻辑」+ 定位 + 三模式 + 激活条件 |
 | M5 | tags/license | tags 含 tri/evolve/learning/feedback/profiling/ab-testing；license=MIT |
@@ -160,7 +162,7 @@ description: 基于 tri-evolve v1.0.2 全量扫描生成的覆盖全场景全能
 ### TC-01-03：version 符合 SemVer
 - **前置条件**：已读取 frontmatter
 - **测试步骤**：1. 提取 version；2. 校验 MAJOR.MINOR.PATCH
-- **预期结果**：`version: 1.0.0`
+- **预期结果**：`version: 1.1.2`
 - **通过标准**：PASS——格式正确；FAIL——格式错
 
 ### TC-01-04：description 含必需声明

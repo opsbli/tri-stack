@@ -1,15 +1,15 @@
 ---
-name: tri-ppt
+name: 演示文稿全流程自动化
 slug: tri-ppt
 version: 1.2.0
-displayName: 演示文稿全流程自动化（tri-ppt · tri-mm 子SKILL）
+displayName: 演示文稿全流程自动化
 description: 演示文稿全流程自动化子SKILL。从 tri-mm 接收 I15·PPT 任务后，先「从全网采集文字/图片/图表素材」→ 提交素材审计 → 据已审计素材设计大纲与逐页动效方案 → 提交设计审计（可多轮迭代）→ 全部通过后生成精美 PPTX。当 tri-mm 路由建议指向本子SKILL时激活。作为 tri-mm 子SKILL随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: 演示文稿端到端自动化：全网采集 → 双审计门 → 生成可直接下载的 PPTX。
 tags: [ppt, presentation, slide, web-research, design-plan, animation, tri-mm-child]
 license: MIT
 ---
 
-# 演示文稿全流程自动化（tri-ppt · tri-mm 子SKILL · PPT）
+# 演示文稿全流程自动化
 
 > 本 skill 是 tri-mm 在 I15 多媒体生成下的**演示文稿类子 SKILL**，并升级为**端到端全自动流水线**：收到 PPT 任务后，先根据用户提问从全网采集文字/图片/图表素材 → 提交**素材审计** → 据已通过审计的素材设计每页大纲与逐页动效方案 → 提交**设计审计**（可多轮迭代）→ 全部通过后生成设计精美、可直接下载的 PPTX。
 >
@@ -19,12 +19,12 @@ license: MIT
 
 > 本节定义 skill「被激活后必须做什么」，优先级高于 Agent 的通用默认行为。**tri-mm 依 I15 委派且媒体类型=PPT 即视为激活本子SKILL，不得仅当参考文档。**
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（见该章 STUB 指向的 `tri-intent/references/version-gate.md` 真源）；升级通道不可用则标注 C 态降级继续。版本检查完成前 NEVER 进入后续步骤。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（见该章 STUB 指向的 `references/version-check-spec.md` 真源）；升级通道不可用则标注 C 态降级继续。版本检查完成前 NEVER 进入后续步骤。
 1. **强制前置**：收到 tri-mm 转交任务 MUST 先读取快照 §三，校验 `intent.L2_核心意图 = I15` 且媒体类型 ∈ {PPT}；NEVER 跳过校验直接执行。独立使用 MUST 先走 §上游依赖检测。
 2. **采集先于设计**：MUST 先完成 §全流程方法论 阶段一（全网素材采集 + 整理），产出 `materials.md` 素材库，NEVER 在素材审计通过前进入大纲设计。
 3. **双审计门不可跳**：素材库 MUST 经**审计门①**通过后方可设计；大纲 + 动效方案 MUST 经**审计门②**通过后方可生成。任一未通过 NEVER 进入下一阶段。
 4. **子类型识别**：MUST 识别演示场景（汇报/教学/路演/发布会），据此调整结构深度与采集广度。
-5. **产物落盘**：生成演示文稿 MUST 落盘工作区并返回可访问路径（PPTX，必要时 PDF），NEVER 仅对话内联。
+5. **产物落盘**：生成演示文稿 MUST 落盘 `.tribro/multimedia/ppt/<命名>/` 并返回可访问路径（PPTX，必要时 PDF），NEVER 仅对话内联。
 6. **参数可复现**：MUST 记录版式/配色/字体/动效等设计参数与素材来源，使产物可重生成。
 7. **自检句**：作答前声明「本次意图=I15·PPT，已读取快照，场景=<...>，素材审计通过=<是/否>，设计审计通过=<是/否>」；与快照冲突 MUST 停止纠正。
 
@@ -102,9 +102,9 @@ license: MIT
 ### 阶段三 · 生成 PPTX
 
 1. 据 `design.json` + `materials.json` 构造版式/配色/字体/图片/图表/转场参数。
-2. 运行 `python scripts/build_pptx.py --spec <dir>/design.json --materials <dir>/materials.json --out <工作区>/<命名>.pptx`（脚本细则见 `references/design-template.md`）。
+2. 运行 `python scripts/build_pptx.py --spec <dir>/design.json --materials <dir>/materials.json --out .tribro/multimedia/ppt/<命名>/<命名>.pptx`（脚本细则见 `references/design-template.md`）。
 3. 若环境缺 `python-pptx`，脚本会给出 `pip install python-pptx` 提示；或委托 `pptx` skill 兜底生成。
-4. 记录设计参数与素材来源，产物落盘工作区。
+4. 记录设计参数与素材来源，产物落盘 `.tribro/multimedia/ppt/<命名>/`。
 
 ### 可扩展性
 
@@ -115,7 +115,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`references/version-check-spec.md`。**可执行实现**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较/升级/回退/四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析 JSON + 按 state 处置」。
 
 **执行方式（MUST）**：启动后运行 `python scripts/check_update.py --slug tri-ppt --json`；按 `state` 处置——`A/B/C/D` 一律放行（分别标注「校验通过 / 离线降级 / 通道降级 / 升级降级」），`BLOCK` 绝对禁止执行并按 `actions` 给恢复指引。退出码 `<20` 放行，`>=20` 阻断。
@@ -149,7 +149,7 @@ license: MIT
 
 ### 步骤 6：阶段三 · 生成与落盘
 1. 运行 `scripts/build_pptx.py` 生成 PPTX
-2. 落盘工作区，返回可访问路径
+2. 落盘 `.tribro/multimedia/ppt/<命名>/`，返回可访问路径
 3. 记录设计参数与素材来源
 
 ### 步骤 7：核对与交付
@@ -183,7 +183,7 @@ license: MIT
 
 - 快照由 tri-intent 已落盘 `.tribro/snapshots/`（本 skill 只读，不重复产出）。
 - 本子SKILL 链路文档落盘 `.tribro/multimedia/ppt/<命名>/`（materials/design/result）。
-- 演示文稿产物落盘工作区并返回可访问路径。
+- 演示文稿产物落盘 `.tribro/multimedia/ppt/<命名>/` 并返回可访问路径。
 - **NEVER 在生成物目录生成 `LICENSE` 或 `.gitignore`**——许可证仅由本 SKILL.md frontmatter `license: MIT` 声明。
 
 ## 目录结构

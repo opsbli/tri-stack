@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.2] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手规划拆解/决策建议（tri-plan / tri-ask）、编码实现/调试（tri-coding / tri-fix）、长期运行循环体（tri-loop 的 I14 loop 子类）与意图识别（tri-intent），强化「执行带副作用动作、不做方案不写码」边界。
+
 ## [1.2.1] - 2026-08-05
 
 ### 修复

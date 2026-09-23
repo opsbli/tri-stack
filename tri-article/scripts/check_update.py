@@ -3,13 +3,13 @@
 """
 tri-* 家族版本检查与强制自动更新脚本（check_update.py，按 --slug 适配各 skill）
 
-职责：把 `references/version-gate.md` 中原本仅以文字约定存在的「第零步版本门」
+职责：把 `references/version-check-spec.md` 中原本仅以文字约定存在的「第零步版本门」
 落成确定性可执行逻辑。prompt 层只负责「调用本脚本 + 读取 JSON 结果 + 按态处置」，
 NEVER 自行推断版本、NEVER 自行拼接升级命令。脚本自身不绑定 tri-intent——
 它通过 --slug / --skill-dir（或自动从所在目录推导）适配任意 tri-* skill，
 因此全家族共用同一份逻辑、同一套四态与退出码。
 
-四态判定（与 version-gate.md §四 逐条对应）：
+四态判定（与 version-check-spec.md §四 逐条对应）：
   A 校验通过   响应有效且 current >= latest
   B 离线降级   网络不可达（DNS/连接失败/超时），重试 1 次仍失败
   C 通道降级   可达但响应无效（非 200 / 非 JSON / 无版本字段 / 读不到配置）
@@ -196,7 +196,7 @@ def detect_install_mode(skill_dir: Path, registry: Optional[dict]) -> dict:
         "is_link": linked,
         "source_local": src_local,
         "dangling_link": dangling,
-        # junction 单源安装 → 跳过自动升级（version-gate.md §三 junction 例外）
+        # junction 单源安装 → 跳过自动升级（version-check-spec.md §三 junction 例外）
         "skip_auto_upgrade": linked or src_local,
     }
 
@@ -212,6 +212,23 @@ def check_writable(target: Path) -> Tuple[bool, Optional[str]]:
         return True, None
     except OSError as e:
         return False, f"{type(e).__name__}: {e}"
+
+
+def find_install_root(skill_dir: Path) -> Optional[Path]:
+    """从 skill 目录向上寻找含 lockfile 的安装根，供 CLI --dir 定位。
+
+    CLI 的 upgrade 默认以 <cwd>/skills 为安装根，而真实安装根（含
+    .skills_store_lock.json 的目录）可能与 cwd 无关，导致升级找不到技能。
+    显式传 --dir 可消除对 cwd 的隐式依赖。
+    """
+    cur = skill_dir
+    for _ in range(8):
+        if (cur / ".skills_store_lock.json").is_file():
+            return cur
+        if cur.parent == cur:
+            break
+        cur = cur.parent
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -395,7 +412,7 @@ def is_fresh(state: dict, slug: str, ttl_min: int) -> bool:
 
 
 def locate_cli() -> Tuple[Optional[List[str]], str]:
-    """按 version-gate.md §3.2 顺序定位 CLI。返回 (argv 前缀, 描述)。"""
+    """按 version-check-spec.md §3.2 顺序定位 CLI。返回 (argv 前缀, 描述)。"""
     exe = shutil.which("skillhub")
     if exe:
         return [exe], f"PATH: {exe}"
@@ -509,7 +526,11 @@ def perform_upgrade(slug: str, skill_dir: Path, current: str, latest: str,
         if cli is None:
             log(cli_desc)
             return r
-        code, out = run_cmd(cli + ["upgrade", slug])
+        cmd = cli + ["upgrade", slug]
+        root = find_install_root(skill_dir)
+        if root is not None:
+            cmd += ["--dir", str(root)]
+        code, out = run_cmd(cmd)
     log(f"upgrade 退出码={code}；输出：{out[:500]}")
 
     if code != 0:
@@ -565,6 +586,18 @@ def decide(args) -> dict:
     skill_dir = Path(args.skill_dir).resolve() if args.skill_dir \
         else Path(__file__).resolve().parent.parent
     result["skill_dir"] = str(skill_dir)
+
+    # 产物落盘兜底（家族硬约束：全部输出写入 .tribro，目录不存在时自动创建）。
+    # 仅源码树运行态（skill_dir.parent 为家族根，含 tri-intent）下确保 <家族根>/.tribro 存在；
+    # 用户级安装态（~/.workbuddy/skills/...）不在此推断创建，由调用方按 SKILL.md 落盘指令负责。
+    if (skill_dir.parent / "tri-intent").is_dir():
+        tribro_root = skill_dir.parent / ".tribro"
+        try:
+            tribro_root.mkdir(parents=True, exist_ok=True)
+            result["tribro"] = str(tribro_root)
+        except OSError as e:
+            result["warnings"].append(
+                f".tribro 目录创建失败：{type(e).__name__}: {e}")
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.is_file():
         result["state"] = STATE_BLOCK

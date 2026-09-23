@@ -19,15 +19,15 @@ description: 【Doing·I10 分析处理】用户提供数据/文本/现象，要
 
 ## 子类路由
 
-> I10 分析处理现有两个 L3 子类，均**直接覆写下游 slug**（一跳，无需中介 skill），与 I06 article 子类设计一致。
+> I10 分析处理现有三个 L3 子类，均**直接覆写下游 slug**（一跳，无需中介 skill），与 I06 article 子类设计一致。
 
 ### arch-viz（架构可视化分析）
 
-- **触发语义**：任务要点含项目架构可视化语义（分析项目架构/生成架构可视化 HTML/画项目架构图/项目全貌报告/架构师视角分析项目）
+- **触发语义**：任务要点含项目架构可视化语义（分析项目架构/生成架构可视化 HTML/画项目架构图/项目全貌报告/架构师视角分析项目；v1.2.0 起扩展：拓扑/时序/数据流/状态机可视化、交互式架构图、架构差异对比）
 - **L3 子意图**：`arch-viz`
 - **下游覆写**：`tri-content` → **`tri-html`**
-- **下游职责**：以系统架构设计师视角对项目进行六维架构分析（架构设计/目录结构/技术栈/代码设计/功能设计/特殊设计），生成单文件 HTML 可视化报告
-- **下游依赖检测**：仅需检测 `tri-html/`（含 `.tribro/skills/tri-html/`），缺失即提示安装
+- **下游职责**：以系统架构设计师视角对项目进行六维架构分析（架构设计/目录结构/技术栈/代码设计/功能设计/特殊设计），生成主报告单文件 HTML + viewer 高精度交互图表（内置确定性渲染引擎，Node≥18 可用时启用，缺失自动回落 Mermaid 兼容模式）
+- **下游依赖检测**：仅需检测源码树 `tri-html/`，缺失即提示安装
 
 ### audit-checklist（审计清单生成）
 
@@ -35,7 +35,15 @@ description: 【Doing·I10 分析处理】用户提供数据/文本/现象，要
 - **L3 子意图**：`audit-checklist`
 - **下游覆写**：`tri-content` → **`tri-checklist`**
 - **下游职责**：对项目进行全面审计，覆盖改动点/审查点/测试点/测试步骤四维，支持 Git 暂存区/工作区/commit id 三种输入模式，产出 Markdown 复选框 checklist
-- **下游依赖检测**：仅需检测 `tri-checklist/`（含 `.tribro/skills/tri-checklist/`），缺失即提示安装
+- **下游依赖检测**：仅需检测源码树 `tri-checklist/`，缺失即提示安装
+
+### code-analyzer（代码库深度剖析）
+
+- **触发语义**：任务要点含代码库深度剖析语义（剖析代码库/帮我读懂这个项目/接手项目全维度分析/代码级深度剖析/吃透代码库/代码库 onboarding）
+- **L3 子意图**：`code-analyzer`
+- **下游覆写**：`tri-content` → **`tri-code-analyzer`**
+- **下游职责**：以架构师+程序员双视角对代码库执行七阶段剖析管道（定位→识别→拓扑→穿透→横切→对照→交付），产出五部分 Markdown 报告（架构拓扑/工程实现/风格审计/Mermaid 四图/上手指南），每条结论强制附 file:line 证据锚，对照内置技术栈知识库（arkts/electron/flutter/qt/react-native/taro/uni-app/通用后端）校准，未覆盖栈经官方文档联网建卡
+- **下游依赖检测**：检测源码树 `tri-code-analyzer/` 或 `.tribro/skills/tri-code-analyzer/`，缺失即提示安装
 
 ### 子类 MECE 论证
 
@@ -43,8 +51,15 @@ description: 【Doing·I10 分析处理】用户提供数据/文本/现象，要
 |---|---|---|---|
 | arch-viz | 项目整体架构 | 单文件 HTML 可视化 | tri-content 是通用分析，arch-viz 专司架构可视化 |
 | audit-checklist | 项目改动/审查/测试点 | Markdown checklist | tri-content 是通用分析，audit-checklist 专司审计清单 |
+| code-analyzer | 代码库工程实现细节 | 五部分深度剖析报告（Markdown + 内嵌 Mermaid） | tri-content 是通用分析，code-analyzer 专司代码级剖析（证据锚定+上手指南） |
 
-两个子类分析对象不同（架构 vs 改动点）、产出不同（HTML vs checklist），MECE 成立。默认 I10（无子类语义）仍路由 tri-content。
+三个子类交付物形态互斥（HTML 图表 / 复选框清单 / 深度报告），分析对象与深度不同，MECE 成立。默认 I10（无子类语义）仍路由 tri-content。
+
+### 冲突消解（code-analyzer × arch-viz）
+
+- 「画架构图/生成可视化 HTML/交互式架构图」→ arch-viz（tri-html）。
+- 「剖析/读懂/接手项目/代码级深度分析」→ code-analyzer（tri-code-analyzer）。
+- 同时命中（如「深度分析项目并画图」）→ 按**用户指定输出物形态**判定：要 HTML 交互图表 → arch-viz；要深度报告 → code-analyzer。code-analyzer 报告内嵌 Mermaid 四图已覆盖基础图形需求；用户需交互式可视化时由 code-analyzer 提示续接 tri-html。
 
 ### 对称检测说明
 

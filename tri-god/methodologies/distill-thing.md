@@ -1,6 +1,6 @@
 ---
 name: distill-thing
-description: tri-god 蒸馏「事物（书/视频/课程/文档等长内容）」的方法论。借鉴 cangjie 范式——五阶段 RIA-TV++ 流水线，从长内容提炼可复用知识框架并封装为 skill。含整书理解→并行五提取器→三重验证→RIA++ 六段构造→Zettelkasten 链接→压力测试→交付 DIGEST。断点续跑用 PIPELINE_STATE.md。
+description: tri-god 蒸馏「事物（书/视频/课程/文档等长内容）」的方法论。五阶段 RIA-TV++ 流水线，从长内容提炼可复用知识框架并封装为 skill。含整书理解→并行五提取器→三重验证→RIA++ 六段构造→Zettelkasten 链接→压力测试→交付 DIGEST。断点续跑用 PIPELINE_STATE.md。
 ---
 
 # 蒸馏事物方法论（distill-thing）
@@ -12,6 +12,7 @@ description: tri-god 蒸馏「事物（书/视频/课程/文档等长内容）�
 
 - 原文直接引用单条 ≤150 字，保留章节出处；主体以「自述重写」承载知识。
 - NEVER 整段搬运原文；蒸馏产出须标注内容来源与作者署名，尊重许可证。
+- 素材含敏感信息（商业机密/专有流程细节/个人隐私等）时，MUST 先与用户确认脱敏范围，蒸馏产物 NEVER 保留可识别的敏感细节。
 
 ## 断点续跑机制
 

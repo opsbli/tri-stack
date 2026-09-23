@@ -1,8 +1,8 @@
 ---
-name: tri-audio
+name: 音频生成
 slug: tri-audio
 version: 1.1.1
-displayName: 音频生成（tri-audio · tri-mm 子SKILL）
+displayName: 音频生成
 description: 音频生成子SKILL。读取 tri-mm 转交的 I15 多媒体任务（快照§三 + 媒体类型=音频），对配音/音效/配乐（非音乐）三类意图做多维度详细设计，产出设计方案交用户确认后生成。当 tri-mm 路由建议指向本子SKILL时激活。作为 tri-mm 子SKILL随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。音乐创作仍由 tri-music 处理。
 summary: 非音乐音频多维设计专家，覆盖脚本/音色/语速/情绪/时长/BGM音效/技术参数等维度，先出设计方案确认再生成。
 tags: [audio, voiceover, sfx, bgm, design-plan, tri-mm-child]
@@ -26,7 +26,7 @@ license: MIT
 3. **多维设计先于生成**：MUST 先完成 §音频设计方法论 全部维度分析，产出 `design.md` 设计方案，NEVER 在未经用户确认前调用生成工具。
 4. **确认门不可跳**：`design.md` MUST 呈现用户确认；未确认 NEVER 进入生成。修改 → 修订回确认；取消 → 终止。
 5. **子类型识别**：MUST 识别音频子类型（配音/音效/配乐），据此调整设计维度与生成能力。
-6. **产物落盘**：生成音频 MUST 落盘工作区并返回可访问路径，NEVER 仅对话内联。
+6. **产物落盘**：生成音频 MUST 落盘 `.tribro/multimedia/audio/<命名>/` 并返回可访问路径，NEVER 仅对话内联。
 7. **参数可复现**：MUST 记录生成参数（脚本/音色/语速/种子/采样率）。
 8. **自检句**：作答前声明「本次意图=I15·音频，已读取快照，子类型=<配音/音效/配乐>，设计方案已交付确认=<是/否>」；与快照冲突 MUST 停止纠正。
 
@@ -124,7 +124,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
+> **细则唯一真源**：`references/version-check-spec.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
 
 **执行要点**
 
@@ -140,7 +140,7 @@ license: MIT
    - **D 升级降级**（陈旧且已真实尝试自动升级但未完成）→ 标注「版本陈旧·自动升级失败」+ 输出手动升级指引后继续。
    - 四态 NEVER 用于绕过「已检出陈旧却不尝试升级」——MUST 先真实执行一次自动升级，失败方可落 D 态。
 7. **更新通道（自动执行）**：检出陈旧 MUST 自动执行 `skillhub upgrade <slug>` → `skillhub verify <slug>`，升级前备份、签名明确不一致则回滚。CLI 不在 PATH 时回退 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`；CLI 缺失或升级失败 → 落 D 态降级继续，NEVER 阻断。以 junction 指向源码树的 `source: local` skill 跳过自动更新，改为提示维护者手动同步。命令细则、CLI 定位顺序与已知陷阱见真源。
-8. **阻断条件 P1–P4** 与四处版本同步点见真源；发布前 MUST 通过 `python tri-forge/scripts/sync_registry.py --check`。
+8. **阻断条件 P1–P4** 与四处版本同步点见真源；发布前 MUST 通过家族版本同步校验。
 
 ## 处理流程
 
@@ -169,7 +169,7 @@ license: MIT
 ### 步骤 4：生成与落盘
 
 1. 据 design.md 构造生成参数
-2. 调用生成能力，产物落盘工作区
+2. 调用生成能力，产物落盘 `.tribro/multimedia/audio/<命名>/`
 3. 记录生成参数
 
 ### 步骤 5：核对与交付
@@ -201,7 +201,7 @@ license: MIT
 
 - 快照由 tri-intent 已落盘 `.tribro/snapshots/`
 - 本子SKILL 链路文档落盘 `.tribro/multimedia/audio/<命名>/`（design.md + result.md）
-- 音频产物落盘工作区并返回可访问路径
+- 音频产物落盘 `.tribro/multimedia/audio/<命名>/` 并返回可访问路径
 
 ## 目录结构
 

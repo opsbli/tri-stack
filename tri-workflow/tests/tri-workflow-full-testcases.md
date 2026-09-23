@@ -1,14 +1,14 @@
 ---
 name: tri-workflow-full-testcases
 slug: tri-workflow-full-testcases
-version: 1.2.2
-description: 基于 tri-workflow v1.2.2 全量扫描生成的全场景测试用例（能力清单 A–H + 7 阶段真实用例）
+version: 1.2.3
+description: 基于 tri-workflow v1.2.3 全量扫描生成的全场景测试用例（能力清单 A–H + 7 阶段真实用例）
 license: MIT
 ---
 
 # tri-workflow 全场景测试用例
 
-> 基于 tri-workflow v1.2.2 全量扫描生成。覆盖 13 章骨架、7 阶段流水线、上游依赖检测三态、质量门禁与落盘规则。
+> 基于 tri-workflow v1.2.3 全量扫描生成。覆盖 13 章骨架、7 阶段流水线、上游依赖检测三态、质量门禁与落盘规则。
 
 ## 零、能力清单
 

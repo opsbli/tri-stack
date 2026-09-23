@@ -1,8 +1,8 @@
 ---
-name: tri-charter
+name: 立项与规划
 slug: tri-charter
 version: 1.1.1
-displayName: 立项与规划（tri-charter · tri-sdlc P0 子SKILL）
+displayName: 立项与规划
 description: SDLC P0 立项与规划子SKILL。读取 tri-sdlc 转交的阶段任务（快照§三 + manifest 摘要 + P0 门禁条目清单），完成业务背景澄清、可证伪核心问题提炼、in/out-of-scope 双清单界定、三维可行性评估（技术/资源/时间）、可度量项目目标与里程碑规划，产出 charter.md 立项报告供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P0 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 立项专家，产出含可证伪核心问题、双范围清单、三维可行性、可度量目标与里程碑的 charter.md，面向 P0 门禁 6 条必检项交付。
 tags: [sdlc, charter, project-initiation, feasibility, scope, milestone, tri-sdlc-child]
@@ -224,7 +224,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
 
 **执行要点**
 

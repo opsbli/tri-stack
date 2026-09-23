@@ -1,15 +1,15 @@
 ---
-name: tri-evolve
+name: 自进化学习
 slug: tri-evolve
-version: 1.1.1
-displayName: 自进化学习（tri-evolve）
+version: 1.1.2
+displayName: 自进化学习
 description: 横向学习/进化型 skill，为 tri-xxx 家族提供多渠道信号驱动的持续改进与用户画像构建能力；EVOLVE_OBSERVE 模式采集作答后信号，EVOLVE_LEARN 模式批量归因学习，EVOLVE_APPLY 模式向下游 skill 提供画像与经验复用；hook/定时/请求激活；支持独立安装，含上游依赖检测三态逻辑（完整模式/引导安装/降级模式）。
 summary: OODA 进化闭环（观察-归因-提议-验证-沉淀）+ 经验条目库（embedding 检索复用）+ 用户画像（静态/动态分层+时间衰减）+ A/B 验证门 + 安全回滚，纯自我批判禁沉淀。
 tags: [tri, evolve, learning, feedback, profiling, ab-testing]
 license: MIT
 ---
 
-# 自进化学习（tri-evolve）
+# 自进化学习
 
 > 本 skill 是 tri-xxx 家族的横向学习/进化型 skill，为全家族提供持续改进与用户画像构建能力。
 > 通过多渠道信号采集 → 归因 → 提议 → A/B 验证 → 沉淀的 OODA 闭环，提升 skill 命中率与回答质量；构建演进式用户画像使回答风格贴合用户偏好。
@@ -130,6 +130,7 @@ license: MIT
 - **与 tri-cache 的边界**：tri-cache 是「记忆层」（存历史作答）；本 skill 是「学习层」（从历史中学习）。tri-cache 提供「命中率」信号给本 skill；本 skill 输出「调优建议」可影响 tri-cache 的差异化 TTL 配置。
 - **与 tri-meta 的边界**：tri-meta 处理 M01-M04 元操作（实时澄清/纠偏）；本 skill 处理离线归因与长期学习。tri-meta 的纠偏记录是本 skill 的信号源之一。
 - **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族 21 个下游执行 skill（数量见 family-spec §1.3）的 MECE 划分；它是横切关注点（学习层）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「意图识别」（转 tri-intent）；不接手「业务作答」（属各下游执行 skill）；不接手「历史作答缓存存储」（属 tri-cache，本 skill 是学习层不是记忆层）；不接手「元操作实时纠偏/细化」（属 tri-meta）。
 
 ## 自进化方法论（核心能力 · 可扩展）
 
@@ -206,7 +207,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

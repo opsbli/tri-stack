@@ -5,6 +5,7 @@ tri-html 单文件 HTML 组装器（确定性算法下沉）
 用法:
     python build_html.py --analysis analysis.json --out myapp-arch-viz.html
     python build_html.py --analysis analysis.json --out out.html --dry-run
+    python build_html.py --check-engine
 
 功能:
     1. 读取 analysis.json（六维分析结论 + Mermaid 源码 + 元数据）
@@ -13,6 +14,9 @@ tri-html 单文件 HTML 组装器（确定性算法下沉）
     4. 注入交互 JS（折叠/展开/全屏/复制/主题切换）
     5. 渲染 Mermaid 图表（语法校验 + 错误降级）
     6. 输出单文件 HTML（零外部依赖，可双击打开）
+    7. 高精度渲染模式：探测 Node>=18，将 analysis.json 的 viewer_diagrams[]
+       逐张经 scripts/viewer 引擎 deliver 为独立单文件交互 HTML，
+       并在报告中生成链接卡片；引擎不可用时整体回落 Mermaid 兼容模式
 
 许可证合规:
     - Mermaid.js = MIT，注入时保留版权声明
@@ -22,10 +26,13 @@ tri-html 单文件 HTML 组装器（确定性算法下沉）
     0 = 成功
     1 = 输入错误/语法校验失败
     2 = 输出写入失败
+    3 = --check-engine 检出引擎不可用（仅该模式下使用）
 """
 
 import argparse
 import json
+import re
+import subprocess
 import sys
 import hashlib
 from datetime import datetime
@@ -35,6 +42,13 @@ from pathlib import Path
 
 MERMAID_VERSION = "10.9.1"
 MERMAID_SHA256 = ""  # 实际使用时填入 mermaid.min.js 的 SHA256，校验完整性；空则跳过校验
+
+# viewer 引擎（高精度渲染模式，vendored MIT 组件）
+VIEWER_ENGINE_ENTRY = Path(__file__).resolve().parent / "viewer" / "bin" / "viewer.mjs"
+VIEWER_ENGINE_ROOT = VIEWER_ENGINE_ENTRY.parent.parent
+VIEWER_DIAGRAM_TYPES = ("architecture", "workflow", "sequence", "dataflow", "lifecycle")
+MIN_NODE_MAJOR = 18
+VIEWER_DELIVER_TIMEOUT_SECONDS = 180
 
 # 六维分析维度定义（与 references/analysis-dimensions.md 一致）
 DIMENSIONS = [
@@ -81,6 +95,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 {dimensions_html}
 </main>
 
+{viewer_section_html}
+
 <section class="observations">
   <h2>📋 架构观察</h2>
   {observations_html}
@@ -89,7 +105,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <section class="about">
   <h2>ℹ️ 关于本报告</h2>
   <p>本报告由 <strong>tri-html</strong>（tri-xxx 家族 · I10 arch-viz 子类）生成。</p>
-  <p>内联库: <a href="https://github.com/mermaid-js/mermaid">Mermaid.js v{mermaid_version}</a>（MIT License）。</p>
+  <p>内联库: <a href="mermaid-js/mermaid">Mermaid.js v{mermaid_version}</a>（MIT License）。</p>
   <p>分析维度: 六维（架构设计 / 目录结构 / 技术栈 / 代码设计 / 功能设计 / 特殊设计）。</p>
 </section>
 
@@ -146,6 +162,14 @@ body { margin: 0; padding: 0; font-family: -apple-system, "Segoe UI", "PingFang 
 .chart-body pre { margin: 0; font-size: 0.85rem; color: var(--muted); display: none; }
 .chart.expanded .chart-body pre { display: block; }
 .mermaid { text-align: center; }
+.viewer-section { max-width: 1200px; margin: 0 auto 2rem; padding: 0 2rem; }
+.viewer-section h2 { border-bottom: 2px solid var(--accent); padding-bottom: 0.3rem; }
+.viewer-card { border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; margin: 0.6rem 0; background: var(--card-bg); }
+.viewer-card.ok { border-left: 4px solid #1a7f37; }
+.viewer-card.fail { border-left: 4px solid #d73a49; }
+.viewer-card a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.viewer-card p { margin: 0.4rem 0 0; font-size: 0.85rem; color: var(--muted); word-break: break-all; }
+.viewer-degraded { background: rgba(240, 136, 62, 0.08); border-left: 4px solid #f0883e; border-radius: 4px; padding: 0.8rem 1rem; }
 .observations { max-width: 1200px; margin: 0 auto 2rem; padding: 0 2rem; }
 .observations h2 { border-bottom: 2px solid #d73a49; padding-bottom: 0.3rem; }
 .observation-item { padding: 0.8rem 1rem; margin: 0.6rem 0; border-radius: 4px; border-left: 4px solid; }
@@ -228,6 +252,158 @@ def validate_analysis(data):
     return True
 
 
+# ============ viewer 引擎集成（高精度渲染模式） ============
+
+def detect_node():
+    """探测 Node >= 18。返回 (ok, version_str)。"""
+    try:
+        proc = subprocess.run(["node", "--version"], capture_output=True, text=True, timeout=15)
+    except (OSError, subprocess.TimeoutExpired):
+        return False, None
+    if proc.returncode != 0:
+        return False, None
+    version = (proc.stdout or "").strip()
+    match = re.search(r"v(\d+)\.", version)
+    if match and int(match.group(1)) >= MIN_NODE_MAJOR:
+        return True, version
+    return False, version
+
+
+def viewer_engine_ready():
+    """引擎文件完整性（粗检）：入口 + 模板 + 五类 schema 齐备。"""
+    required = [
+        VIEWER_ENGINE_ENTRY,
+        VIEWER_ENGINE_ROOT / "assets" / "template.html",
+        *[(VIEWER_ENGINE_ROOT / "schemas" / f"{t}.schema.json") for t in VIEWER_DIAGRAM_TYPES],
+    ]
+    return all(p.is_file() for p in required)
+
+
+def render_viewer_diagram(diagram_type, ir, out_html, ir_workdir, quality="showcase"):
+    """经 viewer 引擎 deliver 一张图。
+
+    ir: dict（内联 IR，写入 ir_workdir 临时文件）或 str（已有 JSON 路径）。
+    返回 dict: {ok, type, output, checks?, errors?, warnings?, sha256?, diagnostics?, error?}
+    """
+    if diagram_type not in VIEWER_DIAGRAM_TYPES:
+        return {"ok": False, "type": diagram_type, "output": str(out_html),
+                "error": f"不支持的图类型: {diagram_type}（支持 {list(VIEWER_DIAGRAM_TYPES)}）"}
+    if isinstance(ir, dict):
+        ir_path = Path(ir_workdir) / f"{Path(out_html).stem}.ir.json"
+        ir_path.parent.mkdir(parents=True, exist_ok=True)
+        ir_path.write_text(json.dumps(ir, ensure_ascii=False, indent=2), encoding="utf-8")
+    elif isinstance(ir, str):
+        ir_path = Path(ir)
+        if not ir_path.is_file():
+            return {"ok": False, "type": diagram_type, "output": str(out_html),
+                    "error": f"IR 文件不存在: {ir}"}
+    else:
+        return {"ok": False, "type": diagram_type, "output": str(out_html),
+                "error": "ir 必须是内联 JSON 对象或文件路径字符串"}
+
+    cmd = ["node", str(VIEWER_ENGINE_ENTRY), "deliver", diagram_type,
+           str(ir_path), str(out_html), "--quality", quality, "--json"]
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=VIEWER_DELIVER_TIMEOUT_SECONDS,
+                              cwd=str(VIEWER_ENGINE_ROOT))
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "type": diagram_type, "output": str(out_html),
+                "error": f"deliver 超时（>{VIEWER_DELIVER_TIMEOUT_SECONDS}s）"}
+    except OSError as exc:
+        return {"ok": False, "type": diagram_type, "output": str(out_html),
+                "error": f"无法启动 node: {exc}"}
+
+    receipt = {}
+    for line in (proc.stdout or "").splitlines():
+        line = line.strip()
+        if line.startswith("{"):
+            try:
+                receipt = json.loads(line)
+                break
+            except json.JSONDecodeError:
+                continue
+    if not receipt:
+        try:
+            receipt = json.loads(proc.stdout or "{}")
+        except json.JSONDecodeError:
+            receipt = {}
+    if proc.returncode == 0 and receipt.get("ok") is True:
+        validation = receipt.get("validation", {})
+        return {
+            "ok": True, "type": diagram_type, "output": str(out_html),
+            "checks": f"{validation.get('checksPassed')}/{validation.get('checkCount')}",
+            "errors": validation.get("errors"), "warnings": validation.get("warnings"),
+            "sha256": (receipt.get("artifact") or {}).get("sha256"),
+        }
+    result = {"ok": False, "type": diagram_type, "output": str(out_html),
+              "error": receipt.get("error") or (proc.stderr or "").strip()[:300] or
+                       f"deliver 退出码 {proc.returncode}"}
+    diagnostics = receipt.get("diagnostics") or []
+    if diagnostics:
+        result["diagnostics"] = [f"{d.get('code')}: {d.get('message', '')[:120]}"
+                                 for d in diagnostics[:5]]
+    return result
+
+
+def render_all_viewer_diagrams(entries, out_path):
+    """处理 analysis.json 的 viewer_diagrams[]。返回 (results, engine_status)。"""
+    if not entries:
+        return [], {"mode": "none"}
+    node_ok, node_version = detect_node()
+    if not node_ok:
+        return [], {"mode": "degraded",
+                    "reason": f"Node >= {MIN_NODE_MAJOR} 不可用"
+                              + (f"（检出 {node_version}）" if node_version else "（未检出 node）")
+                              + "，viewer_diagrams 整体回落 Mermaid 兼容模式"}
+    if not viewer_engine_ready():
+        return [], {"mode": "degraded",
+                    "reason": "scripts/viewer 引擎文件缺失，viewer_diagrams 整体回落 Mermaid 兼容模式"}
+
+    out_file = Path(out_path)
+    ir_workdir = out_file.parent / ".viewer-ir"
+    results = []
+    for index, entry in enumerate(entries, start=1):
+        diagram_type = entry.get("type", "")
+        title = entry.get("title", f"高精度图表 {index}")
+        out_html = out_file.parent / f"{out_file.stem}-view-{index}-{diagram_type}.html"
+        result = render_viewer_diagram(diagram_type, entry.get("ir"), out_html, ir_workdir,
+                                       quality=entry.get("quality", "showcase"))
+        result["title"] = title
+        results.append(result)
+    return results, {"mode": "viewer", "node": node_version}
+
+
+def build_viewer_section_html(results, engine_status):
+    """构建高精度图表链接卡片区（无 viewer_diagrams 时返回空串，不出空节）。"""
+    if not results and engine_status.get("mode") == "none":
+        return ""
+    if engine_status.get("mode") == "degraded":
+        return f'''<section class="viewer-section">
+  <h2>🎯 高精度交互图表</h2>
+  <div class="viewer-degraded">⚠️ {engine_status.get('reason', '')}。</div>
+</section>'''
+    cards = []
+    for r in results:
+        if r.get("ok"):
+            rel = Path(r["output"]).name
+            cards.append(f'''<div class="viewer-card ok">
+  <a href="{rel}" target="_blank" rel="noopener">📈 {r.get('title', '')}（{r['type']}）</a>
+  <p>独立单文件交互成品 · 校验 {r.get('checks', '?')} · 错误 {r.get('errors', '?')} · 警告 {r.get('warnings', '?')}</p>
+</div>''')
+        else:
+            diag = "<br>".join(r.get("diagnostics", [])) or (r.get("error", "")[:160])
+            cards.append(f'''<div class="viewer-card fail">
+  <span>⛔ {r.get('title', '')}（{r.get('type', '')}）deliver 未通过</span>
+  <p>{diag}</p>
+</div>''')
+    return f'''<section class="viewer-section">
+  <h2>🎯 高精度交互图表</h2>
+  <p>以下图表由内置 viewer 引擎确定性渲染并通过 showcase 门禁，每张为独立单文件（零依赖、可离线打开、深浅主题/聚焦/路径探查/导出可用）：</p>
+  {"".join(cards)}
+</section>'''
+
+
 def build_toc_items(data):
     """构建目录项"""
     items = []
@@ -299,7 +475,7 @@ def build_observations_html(observations):
     return "\n".join(items)
 
 
-def build_html(data, project_name, project_path):
+def build_html(data, project_name, project_path, viewer_section_html=""):
     """组装单文件 HTML"""
     validate_analysis(data)
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -316,6 +492,7 @@ def build_html(data, project_name, project_path):
         generated_at=generated_at,
         toc_items=toc_items,
         dimensions_html="\n".join(dims_html),
+        viewer_section_html=viewer_section_html,
         observations_html=observations_html,
         css=CSS,
         js=JS,
@@ -323,12 +500,31 @@ def build_html(data, project_name, project_path):
     )
 
 
+def check_engine():
+    """--check-engine：报告 viewer 引擎可用性。就绪退出 0，不可用退出 3。"""
+    node_ok, node_version = detect_node()
+    engine_ok = viewer_engine_ready()
+    print(f"[ENGINE] node={'OK ' + (node_version or '') if node_ok else 'MISSING/版本不足（需 >= %d）' % MIN_NODE_MAJOR}")
+    print(f"[ENGINE] viewer_engine_files={'OK' if engine_ok else 'MISSING'} (entry={VIEWER_ENGINE_ENTRY})")
+    if node_ok and engine_ok:
+        print("[ENGINE] 高精度渲染模式可用；不可用时自动回落 Mermaid 兼容模式（不阻断交付）")
+        return 0
+    print("[ENGINE] 高精度渲染模式不可用，将回落 Mermaid 兼容模式")
+    return 3
+
+
 def main():
     parser = argparse.ArgumentParser(description="tri-html 单文件 HTML 组装器")
-    parser.add_argument("--analysis", required=True, help="analysis.json 路径")
-    parser.add_argument("--out", required=True, help="输出 HTML 文件路径")
+    parser.add_argument("--analysis", help="analysis.json 路径")
+    parser.add_argument("--out", help="输出 HTML 文件路径")
     parser.add_argument("--dry-run", action="store_true", help="仅校验不输出")
+    parser.add_argument("--check-engine", action="store_true", help="仅探测 viewer 引擎可用性")
     args = parser.parse_args()
+
+    if args.check_engine:
+        sys.exit(check_engine())
+    if not args.analysis or not args.out:
+        parser.error("--analysis 与 --out 必填（或使用 --check-engine）")
 
     try:
         with open(args.analysis, "r", encoding="utf-8") as f:
@@ -351,10 +547,29 @@ def main():
         print(f"[INFO][校验] 通过。项目={project_name}, 六维覆盖=完整", file=sys.stderr)
         sys.exit(0)
 
-    html = build_html(data, project_name, project_path)
+    try:
+        viewer_results, engine_status = render_all_viewer_diagrams(
+            data.get("viewer_diagrams", []), args.out)
+    except Exception as e:  # noqa: BLE001  渲染层异常不得以堆栈崩溃形式逃逸
+        print(f"[ERROR][渲染] viewer 图表渲染阶段异常: {type(e).__name__}: {e}", file=sys.stderr)
+        sys.exit(2)
+    if engine_status.get("mode") != "none":
+        print(f"[INFO][引擎] 高精度渲染模式={engine_status.get('mode')}"
+              + (f", node={engine_status.get('node')}" if engine_status.get("node") else "")
+              + (f", 原因={engine_status.get('reason')}" if engine_status.get("reason") else ""),
+              file=sys.stderr)
+    viewer_section_html = build_viewer_section_html(viewer_results, engine_status)
+
+    html = build_html(data, project_name, project_path, viewer_section_html)
 
     try:
-        Path(args.out).write_text(html, encoding="utf-8")
+        out_path = Path(args.out)
+        if not out_path.parent.exists():
+            print(f"[ERROR][写入] 输出目录不存在: {out_path.parent}", file=sys.stderr)
+            sys.exit(2)
+        out_path.write_text(html, encoding="utf-8")
+    except SystemExit:
+        raise
     except Exception as e:
         print(f"[ERROR][写入] HTML 写入失败: {e}", file=sys.stderr)
         sys.exit(2)

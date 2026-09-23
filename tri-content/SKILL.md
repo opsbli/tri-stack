@@ -1,8 +1,8 @@
 ---
-name: tri-content
+name: 内容处理
 slug: tri-content
-version: 1.2.1
-displayName: 内容处理（tri-content）
+version: 1.2.4
+displayName: 内容处理
 description: 内容处理下游执行 skill。读取 tri-intent 快照 §三，处理 I06–I10（内容生成/内容改写/翻译转换/总结提炼/分析处理）委托执行类文本意图，产出可直接使用的文本成果物。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照处理 I06–I10 文本产出意图，含 5 子意图差异化策略、输入依赖校验门与原文对照机制。
 tags: [content, text-generation, rewrite, translation, summary, analysis]
@@ -74,7 +74,9 @@ license: MIT
 - **本 skill 负责**：依据快照结论，对 I06–I10 意图产出文本类成果物（生成/改写/翻译/总结/分析）
 - **不负责**：意图识别（由 tri-intent）、咨询作答类知识回答（由 tri-ask）、编码/调试（由 tri-coding）、多媒体产物（由 tri-mm）
 - **与 tri-article 的边界**：I06 文章撰写子类（去 AI 化长文/技术文章/博客/个人风格长文，快照 `L3_子意图 = article`）由 `tri-article` 承接，本 skill 负责通用内容生成，不抢文章子类；若快照 `下游路由建议` 已覆写为 tri-article，本 skill NEVER 激活。
+- **与 tri-pm 的边界**：I06 PM 产物子类（PRD/需求文档/战略画布/路线图/OKR/GTM/竞品分析/产品数据分析，快照 `L3_子意图 = pm`）由 `tri-pm` 承接，本 skill 负责通用内容生成，不抢 PM 产物子类；若快照 `下游路由建议` 已覆写为 tri-pm，本 skill NEVER 激活。
 - **与 tri-translate 的边界**：I08 翻译统一由本 skill 承接，`tri-translate` 为横向翻译方法论 skill。**委派决策由本 skill 持有**——满足任一即委派 tri-translate：(a) 原文含代码块/路径/URL/API 等不译要素；(b) 存在项目术语表或术语一致性硬要求；(c) 目标为法律/医疗等高保真场景；(d) 篇幅 >2000 字或需 MQM 质量报告。否则本 skill 自处理轻量翻译。产物上 `对照表.md`（本 skill）与 `alignment.md`（tri-translate）二选一，NEVER 双份产出。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「PM 专属产物子类（PRD/需求文档/战略画布/OKR/GTM/竞品分析等 I06 pm）」（转 tri-pm）；不接手「编码/调试/审查」（属 tri-coding / tri-fix / tri-review）；不接手「多媒体生成（图片/音频/视频/PPT/音乐）」（属 tri-mm）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 内容处理方法论（核心能力 · 可扩展）
 
@@ -121,7 +123,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -244,6 +246,12 @@ tri-intent 快照 §三 (L2 ∈ I06–I10)
 |---|---|---|
 
 ## 质量标准
+
+**产出前自检清单**（交付前逐项核对，任一不达标 → 追标不交付；重试仍失败 → 走 tri-true 兜底）：
+- [ ] 结构：产物含 D4_格式约束要求的章节/清单，无缺失与占位符。
+- [ ] 合规：未用禁用措辞，未越出「职责边界/Not-Trigger」。
+- [ ] 溯源：关键事实/数据附来源标注（结论标注铁律：事实/计算/推断/常识/猜测）。
+- [ ] 可验证：命中内容可按下表「校验方式」复验。
 
 | 质量维度 | 标准 | 适用子意图 | 校验方式 |
 |---|---|---|---|

@@ -5,6 +5,23 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
 
+## [1.2.4] - 2026-09-18
+
+### 新增
+
+- **质量标准补「产出前自检清单」**：新增四检通用自检（结构/合规/溯源/可验证），对齐 `docs/guides/skill-写作规范.md` §3；重试仍失败走 `tri-true` 兜底。
+
+## [1.2.3] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手 PM 专属产物子类（tri-pm）、编码/调试/审查（tri-coding / tri-fix / tri-review）、多媒体生成（tri-mm）与意图识别（tri-intent），强化通用内容处理与 PM/多媒体子类的 MECE 边界。
+
+## [1.2.2] - 2026-09-02
+
+### 变更
+
+职责边界补 tri-pm：I06 PM 产物子类（L3_子意图=pm）由 tri-pm 承接，本 skill 负责通用内容生成；快照 `下游路由建议` 已覆写为 tri-pm 时 NEVER 激活。消除 tri-content 与 tri-pm 的意图混淆边界缺口
 ## [1.2.1] - 2026-08-05
 
 ### 修复

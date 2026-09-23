@@ -1,13 +1,14 @@
 ---
 name: cache-entry-template
-description: tri-cache 缓存原文 Markdown 模板。每条缓存条目的冷层原文格式，含 frontmatter 元数据 + 用户提问 + AI 回答 + 摘要四段。
+description: tri-cache 缓存原文 Markdown 模板（四层架构）。每条缓存条目的冷层原文格式，含 frontmatter 元数据 + 用户提问 + AI 回答 + 摘要四段。
 ---
 
 # 缓存原文 · <问题类型>_<日期>_<时间>_<会话ID>_<hash8>
 
-> 本文件是 tri-cache 的冷层存储单元，由 CACHE_WRITE 流程自动生成。
+> 本文件是 tri-cache 的 L2 结构化存储原文载体，由 CACHE_WRITE 流程自动生成。
 > 文件名示例：`I08_20260801_143022_6a5c037d_a1b2c3d4.md`
 > 存放路径：`.tribro/cache/entries/<YYYY-MM>/`
+> 四层归属：L1 窗口（全文即时）→ 滑出后落本文件（L2）+ 摘要（L3）+ 向量（L4）
 
 ---
 
@@ -32,9 +33,10 @@ source_skill: <如 tri-ask|tri-content|tri-coding>
 created_at: <ISO8601，如 2026-08-01T14:30:22+08:00>
 ttl_seconds: <秒，如 2592000；null=永久>
 expires_at: <ISO8601，如 2026-08-31T14:30:22+08:00>
-tags: [<关键词，如 翻译, 中英>]
+tags: [<关键词，如 闭包, JavaScript>]
+summary: <≤200 字摘要，L3 轻量摘要层>
 status: active
-schema_version: 1
+schema_version: 2
 ---
 ```
 
@@ -62,7 +64,8 @@ schema_version: 1
 
 ## 摘要
 
-<≤200 字摘要，用于索引检索快速预览。由 CACHE_WRITE 流程生成（抽取式或 LLM 摘要）。>
+<≤200 字摘要（L3 轻量摘要层），用于索引检索快速预览与低成本上下文注入。
+由 CACHE_WRITE 流程生成（scripts/cache_ops.py::generate_summary 抽取式首句）。>
 
 ---
 

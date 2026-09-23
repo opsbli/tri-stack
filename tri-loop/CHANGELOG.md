@@ -3,6 +3,12 @@
 All notable changes to this skill will be documented in this file.
 
 
+## [1.2.2] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手一次性完成即交付的任务执行（对应 I 落点 skill）、对既有代码的单点调试修复（tri-fix）与意图识别（tri-intent），强化「建长期运行循环体」边界。
+
 ## [1.2.1] - 2026-08-05
 
 ### 修复

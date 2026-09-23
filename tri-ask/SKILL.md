@@ -1,8 +1,8 @@
 ---
-name: tri-ask
+name: 咨询作答
 slug: tri-ask
-version: 1.2.1
-displayName: 咨询作答（tri-ask）
+version: 1.2.2
+displayName: 咨询作答
 description: 咨询作答下游执行 skill。读取 tri-intent 快照 §三，处理 I01–I05（信息查询/概念解释/建议咨询/决策辅助/推理计算）咨询求解类意图，产出知识、建议、判断或推理结果。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别模式/引导安装）。
 summary: 依据 tri-intent 快照处理 I01–I05 咨询求解意图，含 5 子意图差异化作答策略、来源标注机制与任务要点覆盖核对。
 tags: [consulting, qa, knowledge, advice, decision, reasoning]
@@ -69,6 +69,7 @@ license: MIT
 - **本 skill 负责**：依据快照结论，对 I01–I05 意图产出咨询作答内容（知识解释/建议/决策依据/推理过程）
 - **不负责**：意图识别（由 tri-intent）、内容生成/改写/翻译等 Doing 类产出（由 tri-content 等）、编码/调试（由 tri-coding）
 - **与 tri-content 的边界**：本 skill 是「咨询求解」（回答知识/建议/判断，不产出文件成果物）；tri-content 是「委托执行」（生成/改写/翻译出文本产物）。同一段文字落在「问」侧归本 skill，落在「做」侧归 tri-content
+- **不触发场景（Not-Trigger）**：本 skill 不接手「需要落盘成果物的委托执行」（转 tri-content，本 skill 只答不产文件）；不接手「实际编码 / 操作执行」（属 tri-coding / tri-action）；不接手「角色扮演 / 闲聊等表达陪伴」（属 tri-express）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 咨询作答方法论（核心能力 · 可扩展）
 
@@ -109,7 +110,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

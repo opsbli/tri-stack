@@ -1,6 +1,6 @@
 ---
 name: distill-human
-description: tri-god 蒸馏「人类」的方法论。借鉴 nuwa 范式——把一个人的思维方式、决策模式、表达 DNA 提炼成可被 Agent 调用的人物 skill。核心信条：捕捉 HOW they think，而非 WHAT they said。含入口分流→需求澄清→六维并行调研→思维框架提炼→生成人物 skill 五阶段。
+description: tri-god 蒸馏「人类」的方法论。把一个人的思维方式、决策模式、表达 DNA 提炼成可被 Agent 调用的人物 skill。核心信条：捕捉 HOW they think，而非 WHAT they said。含入口分流→需求澄清→六维并行调研→思维框架提炼→生成人物 skill 五阶段。
 ---
 
 # 蒸馏人类方法论（distill-human）
@@ -12,6 +12,7 @@ description: tri-god 蒸馏「人类」的方法论。借鉴 nuwa 范式——�
 
 - 直接引用其原话单条 ≤150 字，保留出处；其余以「自述重写」提炼其思维模式。
 - NEVER 整段照搬其著作/文章；蒸馏产出须标注素材来源与人物署名。
+- 素材含敏感信息（商业机密/专有流程细节/个人隐私等）时，MUST 先与用户确认脱敏范围，蒸馏产物 NEVER 保留可识别的敏感细节。
 
 ## Phase 0 · 入口分流
 

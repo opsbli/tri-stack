@@ -1,11 +1,13 @@
 ---
+---
 name: tri-express-full-testcases
-description: 基于 tri-express v1.1.1 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约、输入契约、4 子意图差异化回应基调+安全边界检查方法论、自检声明+安全边界优先、即时回应质量验证、职责边界、质量标准等全部能力点。
+description: 基于 tri-express v1.2.2 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约、输入契约、4 子意图差异化回应基调+安全边界检查方法论、自检声明+安全边界优先、即时回应质量验证、职责边界、质量标准等全部能力点。
+version: 1.2.2
 ---
 
 # 表达陪伴工作流 · 全场景全能力测试用例（审计版）
 
-> 被测对象：`tri-express` v1.1.1（下游执行 skill：针对 I17–I20 表达陪伴类意图直接自然回应，不落盘不产出成果物）
+> 被测对象：`tri-express` v1.2.2（下游执行 skill：针对 I17–I20 表达陪伴类意图直接自然回应，不落盘不产出成果物）
 > 用例总数：**57**（元数据 5 / 执行契约 10 / 输入契约 5 / 方法论 10 / 自检声明+安全边界 7 / 即时回应质量 8 / 职责边界 5 / 质量标准 7）
 > 生成时间：2026-07-26
 > 审计方式：逐条对照「预期结果」独立判定，再与「通过标准」比对勾选
@@ -21,7 +23,7 @@ description: 基于 tri-express v1.1.1 全量扫描生成的覆盖全场景全�
 | 编号 | 能力点 | 规范 |
 |---|---|---|
 | M1 | slug | 与 name 字段一致（tri-express） |
-| M2 | version | 存在且格式正确（1.1.0） |
+| M2 | version | 存在且格式正确（1.2.2） |
 | M3 | displayName | 存在（表达陪伴（tri-express）） |
 | M4 | summary | 描述 I17–I20 + 4 子意图差异化回应基调 + 安全边界优先机制 + 即时回应不落盘 |
 | M5 | tags/license | tags 含 expression/roleplay/companion/chitchat/opinion/no-persist；license=MIT |
@@ -134,7 +136,7 @@ description: 基于 tri-express v1.1.1 全量扫描生成的覆盖全场景全�
 ### TC-01-03：version 字段存在且格式正确
 - **前置条件**：已读取 frontmatter
 - **测试步骤**：1. 提取 `version` 字段值；2. 校验是否符合语义化版本格式（MAJOR.MINOR.PATCH）
-- **预期结果**：`version: 1.1.0`，符合语义化版本规范
+- **预期结果**：`version: 1.2.2`，符合语义化版本规范
 - **通过标准**：PASS——version 存在且为 X.Y.Z 格式；FAIL——缺失或格式错误
 
 ### TC-01-04：displayName 字段存在且含中文描述

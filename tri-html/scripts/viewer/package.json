@@ -1,0 +1,18 @@
+{
+  "name": "tri-html-diagram-engine",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vendored typed-JSON-IR diagram renderers (architecture / workflow / sequence / dataflow / lifecycle) for the tri-html skill.",
+  "license": "MIT",
+  "bin": {
+    "tri-html-diagram-engine": "./bin/viewer.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "comments": {
+    "provenance": "Vendored into tri-html from an MIT-licensed open-source project and rebranded.",
+    "runtime": "Zero runtime npm dependencies; devDependencies are not needed after vendoring (generated validators and brand marks are committed)."
+  }
+}

@@ -1,8 +1,8 @@
 ---
-name: tri-bs
+name: 头脑风暴
 slug: tri-bs
-version: 1.2.1
-displayName: 头脑风暴（tri-bs）
+version: 1.2.2
+displayName: 头脑风暴
 description: 头脑风暴下游执行 skill。读取 tri-intent 快照 §三，处理 I16（创意发散/头脑风暴）意图，发散产出多个候选点子/方案/可能性。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测两态逻辑（标准模式/引导安装）。
 summary: 依据 tri-intent 快照处理 I16 创意发散意图，含 3 种发散方法（横向穷举/纵向深挖/跨域联想）与只发散不收敛原则，产出多候选点子。
 tags: [brainstorm, ideation, divergent, creative, multi-candidate]
@@ -64,6 +64,7 @@ license: MIT
 - **本 skill 负责**：依据快照结论，对 I16 意图发散产出多个候选点子/方案
 - **不负责**：意图识别（由 tri-intent）、收敛决策（收敛到单一方案归 tri-ask 的 I04 决策辅助）、编码/内容生成（归 tri-coding/tri-content）
 - **关键边界**：本 skill 只「发散」，不「收敛」——给多个候选，由用户或下游决策
+- **不触发场景（Not-Trigger）**：本 skill 不接手「收敛决策 / 从多方案中选唯一解」（转 tri-ask 的 I04 决策辅助）；不接手「编码 / 内容生成落地」（属 tri-coding / tri-content）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 创意发散方法论（核心能力 · 可扩展）
 
@@ -101,7 +102,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

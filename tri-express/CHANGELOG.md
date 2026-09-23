@@ -5,6 +5,12 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
 
+## [1.2.2] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手知识咨询/事实查询（tri-ask 的 I01–I05）、需落盘成果物的内容生成（tri-content 等 Doing 类 skill）与意图识别（tri-intent），强化「只对话陪伴、不落盘不产出」边界。
+
 ## [1.2.1] - 2026-08-05
 
 ### 修复

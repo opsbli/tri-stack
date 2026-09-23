@@ -3,13 +3,13 @@
 """
 tri-* 家族版本检查与强制自动更新脚本（check_update.py，按 --slug 适配各 skill）
 
-职责：把 `references/version-gate.md` 中原本仅以文字约定存在的「第零步版本门」
+职责：把 `references/version-check-spec.md` 中原本仅以文字约定存在的「第零步版本门」
 落成确定性可执行逻辑。prompt 层只负责「调用本脚本 + 读取 JSON 结果 + 按态处置」，
 NEVER 自行推断版本、NEVER 自行拼接升级命令。脚本自身不绑定 tri-intent——
 它通过 --slug / --skill-dir（或自动从所在目录推导）适配任意 tri-* skill，
 因此全家族共用同一份逻辑、同一套四态与退出码。
 
-四态判定（与 version-gate.md §四 逐条对应）：
+四态判定（与 version-check-spec.md §四 逐条对应）：
   A 校验通过   响应有效且 current >= latest
   B 离线降级   网络不可达（DNS/连接失败/超时），重试 1 次仍失败
   C 通道降级   可达但响应无效（非 200 / 非 JSON / 无版本字段 / 读不到配置）
@@ -196,7 +196,7 @@ def detect_install_mode(skill_dir: Path, registry: Optional[dict]) -> dict:
         "is_link": linked,
         "source_local": src_local,
         "dangling_link": dangling,
-        # junction 单源安装 → 跳过自动升级（version-gate.md §三 junction 例外）
+        # junction 单源安装 → 跳过自动升级（version-check-spec.md §三 junction 例外）
         "skip_auto_upgrade": linked or src_local,
     }
 
@@ -395,7 +395,7 @@ def is_fresh(state: dict, slug: str, ttl_min: int) -> bool:
 
 
 def locate_cli() -> Tuple[Optional[List[str]], str]:
-    """按 version-gate.md §3.2 顺序定位 CLI。返回 (argv 前缀, 描述)。"""
+    """按 version-check-spec.md §3.2 顺序定位 CLI。返回 (argv 前缀, 描述)。"""
     exe = shutil.which("skillhub")
     if exe:
         return [exe], f"PATH: {exe}"

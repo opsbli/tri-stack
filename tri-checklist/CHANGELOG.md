@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手项目整体架构可视化分析（tri-html）、代码级深度剖析（tri-code-analyzer）、清单问题的直接修复/编码（tri-coding/tri-fix）与意图识别（tri-intent），强化「审计清单生成」边界。
+
 ## [1.1.1] - 2026-08-05
 
 ### 修复

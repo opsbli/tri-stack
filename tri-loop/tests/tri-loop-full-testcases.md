@@ -1,11 +1,13 @@
 ---
+---
 name: tri-loop-full-testcases
-description: 基于 tri-loop v1.1.2 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、5 条强制执行契约、上游依赖检测（A/A0/B/C）、输入契约、substrate bootstrap、charter 收集、README scaffold、真实测试运行、Timeline+LOG.md 记录、回报、落盘规则、质量标准八维、安全约束与最小化原则。
+description: 基于 tri-loop v1.2.2 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、5 条强制执行契约、上游依赖检测（A/A0/B/C）、输入契约、substrate bootstrap、charter 收集、README scaffold、真实测试运行、Timeline+LOG.md 记录、回报、落盘规则、质量标准八维、安全约束与最小化原则。
+version: 1.2.2
 ---
 
 # tri-loop 全场景测试用例
 
-> 被测对象：`tri-loop` v1.1.2（下游执行 skill：I14 · loop/domain 创建子类）
+> 被测对象：`tri-loop` v1.2.2（下游执行 skill：I14 · loop/domain 创建子类）
 > 本文件覆盖 tri-loop skill 的全部能力路径，包括依赖检测、substrate bootstrap、charter 收集、scaffold、真实测试运行、记录、回报，以及边界条件和异常处理。
 > 审计方式：逐条对照「预期行为 / 预期输出 / 验证点」独立判定。
 
@@ -20,7 +22,7 @@ description: 基于 tri-loop v1.1.2 全量扫描生成的覆盖全场景全能�
 | 编号 | 能力点 | 规范 |
 |---|---|---|
 | A1 | name / slug 一致（tri-loop） | frontmatter |
-| A2 | version 存在且与 CHANGELOG 最新条目一致（1.1.2） | frontmatter |
+| A2 | version 存在且与 CHANGELOG 最新条目一致（1.2.1） | frontmatter |
 | A3 | displayName / summary 描述 substrate bootstrap + charter + scaffold + 测试运行 + 记录全链路 | frontmatter |
 | A4 | description 含「支持独立安装，含上游依赖检测三态逻辑」等效表述 | frontmatter |
 | A5 | tags 含 loop/domain/knowledge-base/bootstrap；license=MIT | frontmatter |

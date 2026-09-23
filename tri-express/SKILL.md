@@ -1,8 +1,8 @@
 ---
-name: tri-express
+name: 表达陪伴
 slug: tri-express
-version: 1.2.1
-displayName: 表达陪伴（tri-express）
+version: 1.2.2
+displayName: 表达陪伴
 description: 表达陪伴下游执行 skill。处理 I17–I20（角色扮演/情感陪伴/闲聊娱乐/观点表达）表达陪伴类意图，直接自然回应，不落盘不产出成果物。当 tri-intent 判定为 Expressing 类（不落盘）时激活。支持独立安装，含上游依赖检测两态逻辑（标准模式/引导安装）。
 summary: 依据 tri-intent 判定处理 I17–I20 表达陪伴类意图，含 4 子意图差异化回应基调与安全边界优先机制，即时自然回应不落盘。
 tags: [expression, roleplay, companion, chitchat, opinion, no-persist]
@@ -68,6 +68,7 @@ license: MIT
 - **本 skill 负责**：对 I17–I20 意图直接自然回应，维持角色/情感/娱乐/观点交互
 - **不负责**：意图识别（由 tri-intent）、知识咨询/事实查询（归 tri-ask）、产出成果物（归 Doing 类 skill）
 - **边界守护**：涉及未成年人、自伤、暴力等有害内容时，按全局安全规则拒绝/转介
+- **不触发场景（Not-Trigger）**：本 skill 不接手「知识咨询 / 事实查询 / 决策答案」需求（转 tri-ask 的 I01–I05）；不接手「需要产出落盘成果物」的内容生成（属 tri-content 等 Doing 类 skill，本 skill 只对话不落盘）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 表达陪伴方法论（核心能力 · 可扩展）
 
@@ -113,7 +114,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -197,6 +198,7 @@ license: MIT
 ## 落盘规则
 
 - **不落盘**：本 skill 全程不产出任何文件
+- **.tribro 不适用**：「不落盘」为 Expressing 类设计态（与 tri-intent §落盘规则 Flow 三态一致），本 skill 无 `.tribro/` 产物，落盘规则不适用
 - 与 tri-intent 的「不落盘」Flow 一致
 
 ## 目录结构

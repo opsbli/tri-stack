@@ -1,8 +1,8 @@
 ---
-name: tri-meta
+name: 元操作处理
 slug: tri-meta
-version: 1.2.1
-displayName: 元操作处理（tri-meta）
+version: 1.2.2
+displayName: 元操作处理
 description: 元操作下游执行 skill。处理 M01–M04（澄清追问/纠错反馈/追加细化/能力询问）元操作意图，针对「上一轮回复」或「AI 本身」发问做出响应。M05 中止确认 → 空（不落盘），由 tri-intent 直接处理，本 skill 不认领。当 tri-intent 判定为 Meta 类（M01–M04）时激活。支持独立安装，含上游依赖检测两态逻辑（标准模式/引导安装）。
 summary: 依据 tri-intent 判定处理 M01–M04 元操作意图，含 4 子意图差异化响应策略与 M02/M03 重路由机制（含回环护栏）；M05 不认领。
 tags: [meta, clarification, correction, refine, capability, abort]
@@ -69,6 +69,7 @@ license: MIT
 - **本 skill 负责**：对 M01–M04 元操作意图做出响应（澄清/纠错/细化/能力说明）
 - **不负责**：意图识别（由 tri-intent）、M05 中止确认（→ 空，由 tri-intent 直接处理）、新一轮独立提问的处理（归对应 I 意图 skill）
 - **关键边界**：M02/M03 本质是「再次触发某个 I 意图」——本 skill 负责接住元操作信号并重路由到原 I 意图 skill 执行
+- **不触发场景（Not-Trigger）**：本 skill 不接手「重路由后的 I 意图真实执行」（由对应 I 落点 skill 承接，本 skill 只管元操作信号处理）；不接手「对普通新提问的首次意图识别」（属 tri-intent 上游判定）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 元操作响应方法论（核心能力 · 可扩展）
 
@@ -124,7 +125,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**

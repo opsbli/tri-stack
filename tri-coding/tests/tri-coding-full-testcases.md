@@ -1,11 +1,13 @@
 ---
+---
 name: tri-coding-full-testcases
-description: 基于 tri-coding v1.4.1 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约（6 条 MUST/NEVER）、上游依赖检测三态与输入契约、registry 驱动技术栈加载、双审批门+执行前确认工作流、交付产物与落盘、职责边界（tri-fix/tri-review/tri-sdlc/tri-plan/tri-content）、代码版权与许可证合规硬红线等全部能力点，含正例/诱饵反例/边界模糊三类。
+description: 基于 tri-coding v1.7.0 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约（6 条 MUST/NEVER）、上游依赖检测三态与输入契约、registry 驱动技术栈加载、双审批门+执行前确认工作流、交付产物与落盘、职责边界（tri-fix/tri-review/tri-sdlc/tri-plan/tri-content）、代码版权与许可证合规硬红线等全部能力点，含正例/诱饵反例/边界模糊三类。
+version: 1.7.0
 ---
 
 # 编码开发工作流 · 全场景全能力测试用例（审计版）
 
-> 被测对象：`tri-coding` v1.4.1（下游执行 skill：依据 tri-intent 快照处理 I11 编码开发意图，自主管理需求→设计→任务→执行→实现报告全链路）
+> 被测对象：`tri-coding` v1.7.0（下游执行 skill：依据 tri-intent 快照处理 I11 编码开发意图，自主管理需求→设计→任务→执行→实现报告全链路）
 > 用例总数：**45**（元数据 A 5 / 执行契约 B 7 / 依赖检测与输入契约 C 6 / 技术栈加载 D 6 / 审批门工作流 E 6 / 交付产物 F 4 / 职责边界 G 5 / 版权合规 H 6）
 > 三类分布：正例 **29** / 诱饵反例 **11** / 边界模糊 **5**
 > 生成时间：2026-08-02
@@ -23,7 +25,7 @@ description: 基于 tri-coding v1.4.1 全量扫描生成的覆盖全场景全能
 |---|---|---|
 | A1 | frontmatter 8 字段 | name/slug/version/displayName/description/summary/tags/license 齐全不缺项 |
 | A2 | name/slug 一致 | 均为 tri-coding，英文 kebab-case |
-| A3 | version SemVer | 存在且格式正确（1.4.1） |
+| A3 | version SemVer | 存在且格式正确（1.7.0） |
 | A4 | displayName / summary | displayName=编码开发（tri-coding）；summary 含全链路 + 双审批门 + 可扩展技术栈加载 |
 | A5 | tags / license | tags 含 coding/development/workflow/approval-gate/tech-stack；license=MIT |
 
@@ -121,7 +123,7 @@ description: 基于 tri-coding v1.4.1 全量扫描生成的覆盖全场景全能
 ### TC-A-03：version 符合 SemVer 且与 CHANGELOG 顶部一致【A3｜正例】
 - **能力点引用**：A3
 - **输入场景**：比对 SKILL.md `version` 与 CHANGELOG.md 最新版本条目
-- **预期结果**：`version: 1.4.1`，CHANGELOG 顶部为 `[1.4.1]`，两者一致
+- **预期结果**：`version: 1.7.0`，CHANGELOG 顶部为 `[1.7.0]`，两者一致
 - **通过标准**：PASS——格式合规且两处一致；FAIL——格式错误或版本漂移
 
 ### TC-A-04：displayName 与 summary 要素齐全【A4｜正例】
@@ -419,3 +421,34 @@ description: 基于 tri-coding v1.4.1 全量扫描生成的覆盖全场景全能
 | G 职责边界 | 5 | | | |
 | H 版权合规 | 6 | | | |
 | **合计** | **45** | | | |
+
+
+---
+
+## TC-工具结果治理验证（4 用例）
+
+> 覆盖 tri-coding v1.6.0 新增能力（蒸馏自 strix 工具工程模式，Apache-2.0）。
+
+### TC-TRG-01：长输出限幅
+- **前置条件**：某工具输出 5000 行构建日志
+- **测试步骤**：1. 检查是否按阈值截断并保留 head+tail；2. 检查是否给出截断行数/字节提示
+- **预期结果**：未整段进入上下文，提示信息完整
+- **通过标准**：PASS——限幅+提示；FAIL——整段灌入
+
+### TC-TRG-02：限幅不丢信息
+- **前置条件**：输出超限被截断
+- **测试步骤**：1. 检查超限部分是否落到可读回位置；2. 检查是否把路径交给后续步骤
+- **预期结果**：路径可达且已传递
+- **通过标准**：PASS——可回读；FAIL——只说「已截断」无路径
+
+### TC-TRG-03：异常可见化
+- **前置条件**：某工具调用失败
+- **测试步骤**：1. 检查是否转为可见结论（失败步骤+报错原文+可能原因）；2. 检查是否据此决策（重试/改策略/上报）
+- **预期结果**：结论可见且有后续动作
+- **通过标准**：PASS——可见+有动作；FAIL——静默失败或整轮崩溃
+
+### TC-TRG-04：完成判据外化
+- **前置条件**：某任务执行完毕
+- **测试步骤**：1. 检查完成判定是否基于产物存在+校验通过+无阻塞标记；2. 检查是否存在「凭自述结项」的情形
+- **预期结果**：判据为可机械校验的产物/校验结果
+- **通过标准**：PASS——外化判据；FAIL——自述结项

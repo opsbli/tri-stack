@@ -4,6 +4,63 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.13.1] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：在「触发时机」新增 Not-Trigger 子节，明确不接手已定意图的重识别、下游产出（需求/设计/任务/报告/回答）与具体领域执行，强化意图识别总路由的 MECE 边界。
+
+## [1.13.0] - 2026-09-16
+
+### 变更
+
+- **R4 豁免登记补记（tri-geo · 独立领域入口型）**：§一「其余不参与本表路由的 skill 及理由」全量枚举追加 `tri-geo` 行——GEO 单领域入口（国内生成式引擎优化），用户显式调用激活，不经 L2 意图路由；豁免理由：GEO 为跨内容/技术/渠道的独立领域闭环，现行 27 个 L2 落点无对应项。同步将该句中的硬编码「39 个顶层」改为非计数表述（约束 17：禁易漂移硬编码计数）。
+- 来源：tri-geo v1.0.0→v1.0.1 家族合规审计 P-1 项（方案 A：豁免登记），审计报告 `docs/audit-tri-geo-20260916.md`。
+- 版本联动：SKILL frontmatter / CHANGELOG / tests frontmatter / `_meta.json` 全部 1.13.0；顺带修正 tests frontmatter `version` 字段滞留 1.11.2 的约束 14 违例。
+
+## [1.12.0] - 2026-09-15
+
+### 变更
+
+- **门③路由接通补记（I10 深度剖析子类 code-analyzer · tri-forge v1.15.0 门③第⑥步双向版本文件同步首次执行）**：
+  - SKILL.md 路由映射表 I10 行追加「深度剖析子类（I10）→tri-code-analyzer/」；新增 I10 深度剖析子类说明 note（触发语义/一跳覆写/与 arch-viz MECE 及冲突消解/依赖检测路径）；计数 38→39 个顶层 skill、34→35 个 tri-*（28 路由型 + 7 横向型）。
+  - README.md L3 子类路由表追加 `code-analyzer` 行。
+  - doing/I10-analyze.md 子类路由扩为三个（arch-viz/audit-checklist/code-analyzer）+ MECE 表更新 + §冲突消解新增。
+  - 2026-09-14 路由接通当日未随改 bump（门③五步时代无版本同步步），本条目按 tri-intent-integration.md §⑥ 补记。
+- 版本联动：SKILL frontmatter / CHANGELOG / tests frontmatter / _meta.json（workbuddy + trae_cn）/ lock 注册表 全部 1.12.0；修复 trae_cn 侧 _meta 滞留 1.10.0 与 lock 缺 tri-intent 条目。
+
+## [1.11.3] - 2026-09-08
+
+### 变更
+
+- I08 x2md 族路由说明回填（anydoc-main 蒸馏报告 v1.3.0 Phase 2 门③）：SKILL.md / doing/I08-translate.md / README 三处扩展名族更新——docx2md=.docx/.docm/.doc、pptx2md=.pptx/.pptm/.pps/.pot/.ppsx/.ppsm/.ppt、xlsx2md=.xlsx/.xlsm/.xls/.xlsb/.csv、html2md=.html/.htm；MECE 依据补「同族扩展名归同一 skill」与五格式 SKIP 语义；路由计数 27 不变
+
+## [1.11.2] - 2026-09-03
+
+### 修复
+
+- **§四 对称关系计数口径修正**（描述性硬编码过期）：§四「下游 skill → 上游」括注原为「29 个 tri-* skill 已实现，含 25 个路由型 + 4 个横向型」，与 §一 现行枚举脱节（横向已于 1.11.0 扩为 7 个；路由型随 pm/frontend-design/sdlc/workflow/loop 等子类补齐而增长）。修正为现行口径「33 个（26 路由型 + 7 横向型）」，并新增计数口径说明（路由型 = 路由映射表下游 slug 去重 27 扣除「不落盘」tri-express；横向型 = §一全量枚举 7 个），附 MUST 联动防漂移约束
+
+### 变更
+
+- frontmatter version `1.11.1` → `1.11.2`（tests / testreport / _meta.json 四同步）
+
+## [1.11.1] - 2026-09-02
+
+### 变更
+
+补齐二级下钻文档的子类路由定义（意图识别完整性收尾）：`doing/I06-content-gen.md` 补 article/pm 子类小节、`doing/I11-coding.md` 补 frontend-design/sdlc 子类小节、`doing/I15-multimedia.md` 补 music 子类小节，`doing/SKILL.md` 判定要点补 music 子类。此前主表 SKILL.md 已声明子类但二级下钻文档缺失，导致下钻时子类不可识别（意图识别不准确/分发错误根因）
+## [1.11.0] - 2026-09-02
+
+### 新增
+
+- **I06 PM 产物子类路由**（P0 断链修复）：tri-pm 自声明「认领 I06 的 PM 产物子类（L3_子意图=pm）」，但本 skill 路由映射表/L3 表此前无 pm 子类定义，导致该下游经意图路由不可达。补齐：路由映射表 I06 行 + 子类说明 + `doing/SKILL.md` 判定要点 + README L3 表
+- **I11 前端设计方向子类路由**（P0 真空断链修复）：tri-frontend-design 自含「快照/引导/降级」三态上游检测，但此前无任何路由入口或委派方（真空断链）。补齐 I11 frontend-design 子类：设计方向语义覆写为 tri-frontend-design，代码实现仍走 tri-coding 默认
+
+### 变更
+
+- 「横向 skill 不参与本表路由」说明扩为全量枚举：补 tri-cost / tri-guard / tri-humanize（横向方法论），并补 tri-forge / tri-learn / tri-jobhunt 不纳入路由的理由说明，使 38 个顶层 skill 路由状态全量可查
+- frontmatter version `1.10.0` → `1.11.0`
 ## [1.10.0] - 2026-08-05
 
 > 下游分发闭环版本。将「意图识别 → 下游安装 → 下游执行」串成不断链的流水线，并修复版本门自动升级的死命令。

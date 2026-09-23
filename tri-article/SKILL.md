@@ -1,15 +1,15 @@
 ---
-name: tri-article
+name: 文章生成
 slug: tri-article
-version: 1.2.1
-displayName: 文章生成（tri-article）
-description: 通用「去 AI 化」技术文章生成器；读取用户配置 profile 后替换占位符并执行去 AI 化写作引擎；支持独立安装，含上游依赖检测两态逻辑；可经 tri-intent 下游路由建议接入
+version: 1.4.1
+displayName: 文章生成
+description: 通用「去 AI 化」技术文章生成器；读取用户配置 profile 后替换占位符并执行去 AI 化写作引擎；去 AI 化改写委派 tri-humanize（HUMANIZE-EMBED），缺失时回退内置 de-ai-rules；支持独立安装，含上游依赖检测两态逻辑；可经 tri-intent 下游路由建议接入
 summary: 把任意技术主题写成「像真人随手写」的去 AI 化文章，具体人设/产品/路径由 profile 占位符注入
 tags: [tri, article, de-ai, writing, content]
 license: MIT
 ---
 
-# 文章生成（tri-article）
+# 文章生成
 
 > 本 skill 是 tri-intent 的**下游 skill（读取快照直接执行，绝不重识别意图）**，也可完全独立运行（profile 驱动）。执行路径：先用已保存的 `profile` 替换模板中的 `{{占位符}}`，再执行「去 AI 化写作引擎」产出一篇读起来像真人随手写的技术文章。
 
@@ -25,10 +25,11 @@ license: MIT
 - MUST 每次生成前先执行 **§占位符替换前置**：读取 `.tribro/tri-article/profile.md`；缺失或必填项为空时 MUST 先走「§首次运行初始化」反问用户并落盘，未补齐不得生成。
 - MUST 把本文件与 `templates/` 中所有形如 `{{字段名}}` 的占位符替换为 profile 对应值；未配置项回退到 §内置默认值，并在文末向用户提示「本次使用了哪些默认值」。
 - MUST 严格遵循「去 AI 化写作引擎」（§方法论）的全部禁用词、视角库、结构模式与质量门禁；命中任一否决项 MUST 重写。
+- MUST 草稿完成后执行 §去 AI 化引擎委派：优先委派 tri-humanize（HUMANIZE-EMBED 模式）对草稿做 35 模式改写；tri-humanize 不可用时回退内置 de-ai-rules（§2）并声明降级，NEVER 跳过改写直接交付。
 - NEVER 把 `{{占位符}}` 原样残留进最终文章；若某产品植入配置为关闭，NEVER 出现该产品名。
 - NEVER 在文章泄露隐私信息（手机号 / 邮箱 / 微信号 / 住址）。
 - NEVER 生成 LICENSE 文件或 .gitignore（许可证仅由 frontmatter 的 `license` 字段声明）。
-- MUST 作答前先声明自检句：「本次意图=I06（L3=article），已读取快照=<是/否>，profile 已加载=<是/否>」；与 profile 冲突时 MUST 停止并纠正。
+- MUST 作答前先声明自检句：「本次意图=I06（L3=article），已读取快照=<是/否>，profile 已加载=<是/否>，去 AI 化引擎=<tri-humanize|内置 de-ai-rules>」；与 profile 冲突时 MUST 停止并纠正。
 
 ---
 
@@ -64,6 +65,7 @@ license: MIT
 | profile | `ARTICLES_ROOT` | 文章保存根目录（默认 `.tribro/tri-article/articles`，内部结构见 §1.5） |
 | profile | `DOMAIN_POOL` | 选题领域轮转池（同时作为「领域分桶」名，见 §1.5） |
 | profile | `LICENSE_STMT` / `DISABLED_WORDS` | 文末声明 / 禁用词表（可回退默认） |
+| profile | `TRI_INSTALL_NOTE` | 文末「tri-xxx 技能安装指引」文案（见 §文末要素第 3 条；为空则跳过该段） |
 | 快照 §三（可选） | `一句话复述` / `任务要点` / `L3_子意图` | 若经 tri-intent 接入（L2=I06 & L3=article），取其作为选题与要点约束 |
 
 > 若 `PRODUCT_ENABLED≠true`，所有 `PRODUCT_*` 占位符视为未配置，文章不出现产品植入。
@@ -75,6 +77,8 @@ license: MIT
 - **负责**：把给定主题写成去 AI 化的真人风格文章（选题轮转、去 AI 化改写、三版本摘要、标签、文末要素、可选产品植入）。
 - **不负责**：不替用户决定发布平台账号矩阵（仅产出 Markdown 与元数据）；不做意图识别（自有 profile 驱动，不重造 tri-intent）；不生成代码的工程化落地（示例代码仅作文章素材）。
 - **与相邻 skill 边界**：tri-content 偏「内容生成通用」；本 skill 偏「去 AI 化长文 + 人设/产品注入」，是 tri-content 在「文章体」上的特化，可经 tri-intent 路由接入。
+- **与 tri-humanize 的边界**：本 skill 的「去 AI 化改写」委派 tri-humanize（HUMANIZE-EMBED 模式）；tri-humanize 负责 35 种 AI 写作模式识别与处置，本 skill 负责文章级约束（禁用词表 / 视角库 / 结构模式 / 门禁清单）与生成流程。**委派决策由本 skill 持有**——草稿完成后 MUST 委派，tri-humanize 缺失时回退内置 de-ai-rules。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「已成型长文的逐句润色/改写单句」（直接交 tri-humanize）；不接手「通用内容片段生成」（属 tri-content，非文章体的去 AI 化长文）；不生成工程化落地代码（示例代码仅作文素材）；不做意图识别（由 tri-intent / 自身 profile 驱动）。
 
 ---
 
@@ -130,6 +134,7 @@ license: MIT
 
 1. **个人介绍**：基于 `{{AUTHOR_PROFILE}}` 用自己话自然组织 1–2 句。**不得添加隐私信息**。
 2. **许可证声明**：`{{LICENSE_STMT}}`（profile 为空时回退默认）。
+3. **tri-xxx 技能安装指引**：基于 `{{TRI_INSTALL_NOTE}}` 输出（profile 为空时跳过本段，绝不输出）。这段作用是让读者知道包括本文在内的 tri-xxx 技能去哪安装、怎么装：**安装入口写 `skillhub`（禁止写成完整 URL `https://skillhub.cn/`，避免平台判为外链/营销），安装命令是 `skillhub install <技能名>`（如 `skillhub install tri-humanize`）**，并可引导读者安装所需技能后读其 README。用真人语气自然带出，避免广告腔。**两处硬要求：安装入口写成 `skillhub`（不得是完整 URL），必须给出至少一条 `skillhub install <技能名>` 安装命令示例**。
 
 ### 1.5 文章存储与检索（`.tribro` 结构 · 便于搜索去重）
 
@@ -210,12 +215,49 @@ license: MIT
 
 ---
 
+## 去 AI 化引擎委派（tri-humanize · 横向委派）
 
+> 本 skill 的「去 AI 化改写」能力委派给家族横向方法论 skill **tri-humanize**（35 种 AI 写作模式识别与处置），缺失时回退内置 `references/de-ai-rules.md`。**委派决策由本 skill 持有**——草稿完成后 MUST 委派，NEVER 由本 skill 自行跳过改写。
+
+### 委派契约
+
+| 项 | 值 |
+|----|----|
+| 委派目标 | tri-humanize（HUMANIZE-EMBED 嵌入模式） |
+| 委派时机 | 草稿撰写完成后、质量门禁自查前（§处理流程 阶段二 第 3 步） |
+| 委派输入 | 文章草稿全文（含代码块；散文部分改写，代码块/YAML/链接目标保留） |
+| 委派输出 | 改写终稿（仅终稿，供本 skill 直接消费） |
+| 降级回退 | tri-humanize 不可用时按 §2 内置 de-ai-rules 完成改写并声明降级 |
+
+### 委派流程
+
+1. 草稿撰写完成后，激活 tri-humanize 的 **HUMANIZE-EMBED 模式**（触发源=委派），输入形态=embed。
+2. 将草稿全文作为输入文本传入；tri-humanize 按 35 模式识别与处置改写，返回**仅终稿**。
+3. 本 skill 对返回终稿继续执行 §4 质量门禁自查（文章级约束：禁用词表 / 视角库 / 结构模式 / 门禁清单）。
+4. 命中任一否决项 → 重写后重新委派或按内置规则修正，NEVER 带病交付。
+
+### 下游依赖检测（委派 · 三态）
+
+| 模式 | 条件 | 行为 |
+|------|------|------|
+| **A · 委派模式** | tri-humanize 可用 | 委派 HUMANIZE-EMBED 改写，声明「去 AI 化引擎=tri-humanize」 |
+| **B · 引导安装（软降级）** | tri-humanize 未安装 | 提示安装 `skillhub install tri-humanize`，回退内置 de-ai-rules 继续生成，声明降级 |
+| **C · 降级模式** | 用户拒绝安装 | 按 §2 内置 de-ai-rules 完成改写，声明「去 AI 化引擎=内置 de-ai-rules（降级）」 |
+
+**模式 B 提示语**：
+
+> 本 skill 的去 AI 化改写默认委派 tri-humanize（35 种 AI 写作模式识别与处置）。当前未检测到 tri-humanize，已回退内置 de-ai-rules 完成改写。
+> 请安装：`skillhub install tri-humanize`
+> 安装后改写将由 tri-humanize 接管，识别更全面的 AI 腔模式。
+
+> **对称双向检测**：本 skill 检下游 tri-humanize；tri-humanize 亦在自身触发时机表中声明「tri-article 等下游委派」触发源（HUMANIZE-EMBED）。任一端缺失都被发现。
+
+---
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -262,16 +304,18 @@ license: MIT
    - `DOMAIN_POOL`（选题领域池，至少 3 项；可回退默认）
    - `PRODUCT_ENABLED` + 若开启则 `PRODUCT_NAME/DESC/TECH/RELATION`
    - `LICENSE_STMT`（可回退默认 MIT 声明）
+   - `TRI_INSTALL_NOTE`（文末「tri-xxx 技能安装指引」，可选但推荐开启；为空则每篇跳过该段）
 3. 依据 `templates/profile-skeleton.md` 落盘到 `.tribro/tri-article/profile.md`。
 4. 告知用户「配置已保存，后续生成自动复用；如需修改可编辑该文件或说『重新配置 tri-article』」。
 
 ### 阶段二 · 常规生成（Generate）
 
 1. **占位符替换前置**：读取 profile，将本文件与模板中所有形如 `{{字段名}}` 的占位符替换为对应值；缺项回退 §内置默认值并提示。
-2. 按「去 AI 化写作引擎」执行：选题轮转 → 类型/视角/人称/节奏随机 → **§1.5 去重（生成前 MUST 跑）** → 撰写 → 三版本摘要/标签/文末要素 → （若开启）产品植入。
-3. 运行 §质量门禁自查，命中即重写。
-4. 保存到 `{{ARTICLES_ROOT}}/<domain-slug>/<YYYYMMDD>-<slug>.md`，并 **MUST 追加记录到 `{{ARTICLES_ROOT}}/index.json`**（见 §1.5）。
-5. 回显：「已生成：<路径>；本次使用了默认值的字段：<列表>」。
+2. 按「去 AI 化写作引擎」执行：选题轮转 → 类型/视角/人称/节奏随机 → **§1.5 去重（生成前 MUST 跑）** → 撰写草稿 → 三版本摘要/标签/文末要素 → （若开启）产品植入。
+3. **去 AI 化引擎委派**：按 §去 AI 化引擎委派 将草稿委派 tri-humanize（HUMANIZE-EMBED）改写；tri-humanize 不可用时回退内置 de-ai-rules（§2）并声明降级。
+4. 运行 §质量门禁自查，命中即重写。
+5. 保存到 `{{ARTICLES_ROOT}}/<domain-slug>/<YYYYMMDD>-<slug>.md`，并 **MUST 追加记录到 `{{ARTICLES_ROOT}}/index.json`**（见 §1.5）。
+6. 回显：「已生成：<路径>；本次使用了默认值的字段：<列表>；去 AI 化引擎=<tri-humanize|内置 de-ai-rules>」。
 
 ---
 
@@ -289,9 +333,11 @@ license: MIT
 | 维度 | 标准 | 验证方式 |
 |------|------|----------|
 | 去AI化 | 无禁用词、有≥2处主观细节、结构非八股 | 质量门禁自查 |
+| 委派 | 草稿改写委派 tri-humanize（HUMANIZE-EMBED），缺失时回退内置规则并声明降级 | 委派状态核对 |
 | 实战性 | 代码可运行且标语言 | 人工/运行验证 |
 | 通用性 | 无写死领域/人设/产品，全部来自 profile | 占位符替换校验 |
 | 合规 | 无隐私泄露、许可证声明存在 | 文末要素检查 |
+| 安装指引 | 配置了 `TRI_INSTALL_NOTE` 时，文末段含 `skillhub` 但**不含 `https://skillhub.cn/`**（避免外链/营销判定），且含至少一条 `skillhub install <技能名>` 示例；未配置时该段整段跳过 | grep 安装入口 + grep 安装命令 |
 
 ---
 
@@ -314,7 +360,7 @@ tri-article/
 ├── hooks/                         辅助脚本（纯标准库）
 │   └── index.py                   文章索引与去重（dedup/add/search/list）
 ├── references/                    静态参考资料（非流程逻辑）
-│   └── de-ai-rules.md             去 AI 化引擎完整参考（禁用词/视角库/结构模式/门禁清单）
+│   └── de-ai-rules.md             去 AI 化引擎完整参考（禁用词/视角库/结构模式/门禁清单；tri-humanize 缺失时的降级回退引擎）
 ├── templates/
 │   └── profile-skeleton.md        首次初始化复制填写的占位符骨架
 └── tests/
@@ -329,4 +375,5 @@ tri-article/
 |----|--------|
 | `DOMAIN_POOL` | Web 前端 / 后端架构 / 移动开发 / AI 工程 / 数据库 / DevOps |
 | `LICENSE_STMT` | 本文遵循 MIT 协议，转载请注明出处。 |
+| `TRI_INSTALL_NOTE` | 空（未配置时每篇不再文末输出安装指引；推荐在 profile 中配置，安装入口写 skillhub 而非完整 URL） |
 | `DISABLED_WORDS` | 首先/其次/最后/此外/综上所述/总而言之/值得注意的是/颠覆性/重塑格局/双刃剑/至关重要/不可或缺/深入挖掘/旨在/随着……的发展/在当今……时代/本文详细介绍了/完整介绍/手把手教你 |

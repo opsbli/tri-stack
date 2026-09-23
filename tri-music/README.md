@@ -1,7 +1,7 @@
 ---
 name: tri-music
 slug: tri-music
-version: 2.1.1
+version: 2.2.1
 displayName: 爆款音乐创作（tri-music）
 description: 多平台爆款音乐创作下游执行 skill。读取 tri-intent 快照 §三，处理 I15.music（音乐/多媒体创作）意图，覆盖抖音/汽水音乐/网易云/QQ 音乐/酷狗/酷我五大平台发行 + 海绵音乐/Suno/Udio/Melo/音潮五套 AI 工具适配。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 抖音+汽水音乐+网易云+QQ 音乐+酷狗+酷我的爆款音乐创作 skill，含 6 维 Hook 公式、微情绪意象库、反 AI 罐头基底、多 AI 工具适配与发行 SOP。

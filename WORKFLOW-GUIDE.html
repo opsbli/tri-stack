@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tri-skills 使用手册 · 需求到落地</title>
+<style>
+  :root{
+    --bg:#0b0d10; --panel:#14171c; --panel2:#191d23; --line:#262b33; --line2:#333a44;
+    --tx:#e6e8ec; --tx2:#9aa3ae; --tx3:#6b7480;
+    --purple:#a78bfa; --blue:#60a5fa; --teal:#34d399; --amber:#fbbf24;
+    --coral:#fb923c; --red:#f87171; --gray:#94a3b8; --pink:#f472b6;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:14px;line-height:1.68;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:44px 24px 100px}
+
+  header.top{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:36px}
+  .kicker{font-family:var(--mono);font-size:12px;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:26px;font-weight:600;margin:10px 0 8px;letter-spacing:-.01em}
+  .sub{color:var(--tx2);font-size:14px;max-width:760px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .chip{font-family:var(--mono);font-size:11px;padding:3px 9px;border:1px solid var(--line2);
+        border-radius:999px;color:var(--tx2)}
+
+  h2{font-size:18px;font-weight:600;margin:52px 0 6px;padding-top:22px;border-top:1px solid var(--line);
+     display:flex;align-items:baseline;gap:10px}
+  h2 .n{font-family:var(--mono);font-size:12px;color:var(--tx3);font-weight:400}
+  h3{font-size:14px;font-weight:600;margin:26px 0 8px;color:var(--tx)}
+  h4{font-size:13px;font-weight:600;margin:18px 0 6px;color:var(--tx2)}
+  p{margin:8px 0;color:var(--tx2)}
+  p strong,li strong{color:var(--tx);font-weight:600}
+  ul,ol{margin:8px 0;padding-left:20px;color:var(--tx2)}
+  li{margin:4px 0}
+  code{font-family:var(--mono);font-size:12.5px;background:var(--panel2);border:1px solid var(--line);
+       border-radius:4px;padding:1px 5px;color:#d5dae2}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+      overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.62;color:#cfd6df;margin:12px 0}
+  pre code{background:none;border:none;padding:0;font-size:inherit}
+  .cmt{color:var(--tx3)}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--tx3);font-weight:500;font-size:11.5px;font-family:var(--mono);text-transform:uppercase;
+     letter-spacing:.05em;white-space:nowrap}
+  tbody tr:hover{background:#12151a}
+  td code{white-space:nowrap}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+  .card.gate{border-left:3px solid var(--amber)}
+  .card.warn{border-left:3px solid var(--red)}
+  .card.ok{border-left:3px solid var(--teal)}
+  .card.note{border-left:3px solid var(--blue)}
+  .card .t{font-weight:600;color:var(--tx);margin-bottom:6px;font-size:13.5px}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  .layer{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0;background:var(--panel)}
+  .layer .lh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .layer .lh .dot{width:8px;height:8px;border-radius:2px;flex:none}
+  .layer .lh .nm{font-weight:600;font-size:13.5px}
+  .layer .lh .ver{font-family:var(--mono);font-size:11px;color:var(--tx3)}
+  .skills{display:flex;flex-wrap:wrap;gap:6px}
+  .sk{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:6px;
+      border:1px solid var(--line2);background:#12151a;color:var(--tx2)}
+
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0}
+  .step{font-family:var(--mono);font-size:12px;padding:6px 11px;border-radius:7px;
+        background:#12151a;border:1px solid var(--line2);color:var(--tx)}
+  .arw{color:var(--tx3);font-family:var(--mono)}
+  .step.g{border-color:#4a3a12;background:#1d1a10;color:var(--amber)}
+  .step.p{border-color:#3a2f5c;background:#171430;color:var(--purple)}
+  .step.d{border-color:#1f4d3c;background:#0f1f1a;color:var(--teal)}
+
+  .sev{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:4px;white-space:nowrap}
+  .s0{background:#2a1517;color:var(--red)}
+  .s1{background:#2a2110;color:var(--amber)}
+  .s2{background:#0f1f1a;color:var(--teal)}
+
+  .tree{font-family:var(--mono);font-size:12.5px;line-height:1.75;color:var(--tx2);
+        background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow-x:auto}
+  .tree b{color:var(--tx);font-weight:500}
+  .tree i{color:var(--tx3);font-style:normal}
+
+  .ask{background:#12151a;border:1px solid var(--line2);border-radius:9px;padding:12px 14px;margin:10px 0;
+       font-family:var(--mono);font-size:12.5px;color:#d5dae2;line-height:1.7}
+  .ask .u{color:var(--purple)}
+  .ask .who{color:var(--tx3)}
+
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:24px 0}
+  .toc ol{margin:0;padding-left:22px;columns:2;column-gap:28px}
+  @media(max-width:820px){.toc ol{columns:1}}
+  .toc a{color:var(--tx2);text-decoration:none;border-bottom:1px solid transparent}
+  .toc a:hover{color:var(--tx);border-bottom-color:var(--line2)}
+  .toc li{font-size:13px;margin:3px 0}
+
+  footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);
+         color:var(--tx3);font-size:12px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">tri-skills · v1.0.0 · 24 skills</div>
+  <h1>使用手册：从一句需求到落地交付</h1>
+  <p class="sub">这套 skill 不是工具箱，是一条<b>流水线</b>。它的设计内核只有三件事：<b>意图只识别一次</b>（快照交接）、<b>每步落盘可溯源</b>（.tribro 链路文档）、<b>关键节点不放行不推进</b>（审批门）。理解这三件事，24 个 skill 就是一条路，不是 24 个工具。</p>
+  <div class="meta">
+    <span class="chip">入口 tri-intent v1.10.0</span>
+    <span class="chip">27 个意图落点</span>
+    <span class="chip">3 条落地轨道</span>
+    <span class="chip">68 条 SDLC 必检项</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <ol>
+    <li><a href="#m">先记住心智模型：三句话</a></li>
+    <li><a href="#map">全景：24 个 skill 的五层结构</a></li>
+    <li><a href="#contract">核心契约：快照 + LATEST 指针</a></li>
+    <li><a href="#route">三条落地轨道怎么选</a></li>
+    <li><a href="#sop">SOP：7 步完成一次需求落地</a></li>
+    <li><a href="#gates">三道门怎么答（口令卡）</a></li>
+    <li><a href="#cases">场景速查：这样问就对了</a></li>
+    <li><a href="#tribro">.tribro 目录地图</a></li>
+    <li><a href="#pitfalls">避坑清单</a></li>
+  </ol>
+</nav>
+
+<h2 id="m"><span class="n">01</span>先记住心智模型：三句话</h2>
+
+<div class="grid3">
+  <div class="card note">
+    <div class="t">① 意图只识别一次</div>
+    <p style="margin:0">所有提问先过 <code>tri-intent</code>，产出快照交给下游。<b>下游 skill 绝不重新识别意图</b>——它们只读快照 §三。</p>
+  </div>
+  <div class="card note">
+    <div class="t">② 一切落盘</div>
+    <p style="margin:0">链路文档进 <code>.tribro/</code>（快照/规划/编码/SDLC 全留痕）；真实成果物（源码、CHANGELOG）进你的工作区。</p>
+  </div>
+  <div class="card note">
+    <div class="t">③ 闸门优先于速度</div>
+    <p style="margin:0">凡是「要动手」的 skill 都有审批门。<b>门没过，代码一行都不会写</b>。想过得快，就在门上报「通过」。</p>
+  </div>
+</div>
+
+<p>反过来说，用不好这套 skill 的典型症状也只有三种：<b>提问太泛</b>（动作无法映射，被降级到咨询）、<b>门上一言不发</b>（skill 卡在等你确认）、<b>跳轨</b>（小需求用了重装轨，或大项目用了轻轨导致返工）。后面每一条都有对治。</p>
+
+<h2 id="map"><span class="n">02</span>全景：24 个 skill 的五层结构</h2>
+
+<p>按「在流水线上的位置」分五层。你日常只需要认识<b>入口层</b>和<b>编排层</b>；执行层是被路由自动拉起来的，横向层是被委派或 hook 拉起来的。</p>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--purple)"></span><span class="nm">L0 入口层 · 唯一入口</span><span class="ver">v1.10.0</span></div>
+  <div class="skills"><span class="sk">tri-intent</span><span class="sk">tri-intent/clarify-gate</span></div>
+  <p style="margin:8px 0 0;font-size:12.5px">任何新提问的第一步：三分法判定（Asking / Doing / Expressing / Meta）→ 下钻二级意图 → 标注 D1–D5 正交维度 → 打置信度 → 落快照 → 交接下游。需求模糊则先过 <code>clarify-gate</code>。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--blue)"></span><span class="nm">L1 执行层 · 按意图分派</span><span class="ver">12 个</span></div>
+  <div class="skills">
+    <span class="sk">tri-ask</span><span class="sk">tri-content</span><span class="sk">tri-article</span><span class="sk">tri-coding</span>
+    <span class="sk">tri-fix</span><span class="sk">tri-review</span><span class="sk">tri-plan</span><span class="sk">tri-action</span>
+    <span class="sk">tri-bs</span><span class="sk">tri-mm</span><span class="sk">tri-music</span><span class="sk">tri-express</span><span class="sk">tri-god</span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px">拿快照、干专业活、产出成果物。每个都有自己的一套阶段与闸门（见 §04）。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--coral)"></span><span class="nm">L2 编排层 · 长链路 / 流程定义</span><span class="ver">3 个</span></div>
+  <div class="skills"><span class="sk">tri-workflow</span><span class="sk">tri-sdlc</span><span class="sk">tri-loop</span></div>
+  <p style="margin:8px 0 0;font-size:12.5px"><b>tri-workflow</b>=设计一个流程（产出 CI 配置/DAG/审批模板就结束）；<b>tri-sdlc</b>=驱动一个真实项目走完 P0–P8；<b>tri-loop</b>=建一个长期运行的知识库循环体。<b>三者极易混，判据见 §04 决策表。</b></p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--gray)"></span><span class="nm">L3 横向能力层 · 被委派或 hook 唤起</span><span class="ver">4 个</span></div>
+  <div class="skills"><span class="sk">tri-true</span><span class="sk">tri-cache</span><span class="sk">tri-evolve</span><span class="sk">tri-translate</span></div>
+  <p style="margin:8px 0 0;font-size:12.5px"><b>不占意图落点、不被路由</b>。<code>tri-true</code> 消除幻觉（四道防线）、<code>tri-cache</code> 指纹去重复用、<code>tri-evolve</code> 从反馈中沉淀经验与画像、<code>tri-translate</code> 翻译方法论（信达雅）。<b>你不用主动叫它们，下游 skill 会在需要时委派。</b></p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--pink)"></span><span class="nm">L4 元层 · 对话控制与清单</span><span class="ver">2 个</span></div>
+  <div class="skills"><span class="sk">tri-meta</span><span class="sk">tri-checklist</span></div>
+  <p style="margin:8px 0 0;font-size:12.5px"><code>tri-meta</code> 处理 M01–M04（澄清追问/纠错反馈/追加细化/能力询问）；<code>tri-checklist</code> 是 I10 的审计清单子类，产出可勾选的四维 checklist（改动点/审查点/测试点/测试步骤）。</p>
+</div>
+
+<div class="card warn">
+  <div class="t">一个容易踩的边界：tri-mece-audit 不是 skill</div>
+  <p style="margin:0">仓库根目录下的 <code>tri-mece-audit/</code> 里只有一个 HTML，不参与路由、不出现在路由表里。别把它当成第 25 个 skill 去调用。</p>
+</div>
+
+<h2 id="contract"><span class="n">03</span>核心契约：快照 + LATEST 指针</h2>
+
+<p>这是整套系统里最需要理解的一个机制。<code>tri-intent</code> 的唯一交付产物是<b>一份快照</b>，快照里的 §三 是下游 skill 的<b>唯一输入源</b>。</p>
+
+<h3>快照长什么样</h3>
+<pre><code><span class="cmt"># .tribro/snapshots/I11_20260923_181207_6a5c037d.md</span>
+
+一、用户原始提问（原文，不加工）
+二、意图分析过程（L1/L2/D1–D5 逐步判定推导）   <span class="cmt">← 溯源用</span>
+<span class="cmt">三、结构化结论（下游 skill 直接读取执行区）</span>   <span class="cmt">← 机器消费用</span>
+</code></pre>
+
+<p>§三 是一个 YAML 块，核心字段如下（下游就靠这几个字段干活）：</p>
+
+<pre><code>一句话复述: 你要我用 React 写一个可搜索的表格组件
+
+intent:
+  L1_交互类型: B.Doing
+  L2_核心意图: I11 编码开发
+  L3_子意图: 无            <span class="cmt"># 仅子类路由时填 sdlc|workflow|loop|music|article</span>
+  置信度: 0.92
+  置信度档位: 高            <span class="cmt"># 高≥0.85 / 中0.60–0.85 / 低&lt;0.60</span>
+
+dimensions:
+  D1_任务领域: 编程
+  D2_输入形态: 无
+  D3_交互轮次: 单轮
+  D4_输出期望: 可执行代码
+  D5_确定性: 明确
+
+任务要点: [...]
+澄清门状态: 已跳过(需求清晰)
+交付预期: 可编译、含单测的表格组件
+
+下游路由建议: I11 → 编码开发 skill（tri-coding）
+下游 slug: tri-coding        <span class="cmt"># 依赖检测直接消费这个字段</span>
+</code></pre>
+
+<h3>下游怎么找到这份快照</h3>
+<p>快照文件名含会话 ID，下游无法凭空推算。所以 <code>tri-intent</code> 落盘快照的<b>同时</b>会覆盖写一个指针文件 <code>.tribro/LATEST.md</code>。下游按<b>四级优先级</b>定位：</p>
+
+<table>
+<thead><tr><th>优先级</th><th>定位方式</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>①</td><td><code>.tribro/LATEST.md</code> 的 <code>snapshot_path</code></td><td>推荐路径，最稳</td></tr>
+<tr><td>②</td><td>会话 ID 匹配的最新快照</td><td>同会话多次提问时用</td></tr>
+<tr><td>③</td><td>全局最新且修改时间 <b>≤ 30 分钟</b></td><td>超时即过期，不得使用</td></tr>
+<tr><td>④</td><td>校验 <code>intent.L2</code> 属于本 skill 认领范围</td><td>越界即停止并回退重路由</td></tr>
+</tbody>
+</table>
+
+<div class="card warn">
+  <div class="t">给运维的三个后果</div>
+  <ul style="margin:0">
+    <li><b>快照有时效</b>：超过 30 分钟未使用，下游会要求重新识别。别隔夜再喊「继续」。</li>
+    <li><b>下游会拒绝越界</b>：如果快照 L2=I13 而你想让 tri-coding 干活，它会停下来回退重路由，不会将就。</li>
+    <li><b>低置信度不放行</b>：<code>置信度档位=低</code>（&lt;0.60）时下游直接拒绝执行，强制先回 <code>clarify-gate</code>。所以把需求说清楚，是省时间的唯一办法。</li>
+  </ul>
+</div>
+
+<h3>双向依赖检测（上下游互查）</h3>
+<p>上游查下游、下游查上游，任一端缺失都会提示安装，不会静默失败：</p>
+<pre><code><span class="cmt"># tri-intent 侧：产出快照后检测下游是否安装</span>
+python tri-intent/scripts/check_downstream.py --slug tri-coding --json
+<span class="cmt"># 退出码 0=全部已安装 / 1=存在缺失；检测四处安装位置 + 注册表</span>
+</code></pre>
+<p>未安装时会走<b>两道确认门</b>：门①问「是否现在安装」→ 同意则发送安装 prompt → <b>复检脚本自证安装成功</b> → 门②问「是否立即执行」。拒绝任一门的后果是停在快照态，快照仍在，随时可续。</p>
+
+<h2 id="route"><span class="n">04</span>三条落地轨道怎么选</h2>
+
+<p>需求落地的全部路径就是三条轨道 + 若干旁支。选错轨道是最大时间浪费来源。</p>
+
+<div class="card ok">
+  <div class="t" style="color:var(--blue)">轨道 A · 轻轨 —— 单功能 / 小需求</div>
+  <div class="flow">
+    <span class="step p">tri-intent (I11)</span><span class="arw">→</span>
+    <span class="step">requirements.md</span><span class="arw">→</span><span class="step g">门①需求审计</span><span class="arw">→</span>
+    <span class="step">design.md</span><span class="arw">→</span><span class="step g">门②设计审计</span><span class="arw">→</span>
+    <span class="step">tasks.md</span><span class="arw">→</span><span class="step g">门③执行前确认</span><span class="arw">→</span>
+    <span class="step d">执行 + 测试</span><span class="arw">→</span><span class="step d">implements.md</span>
+  </div>
+  <p style="margin:8px 0 0"><b>承接：</b><code>tri-coding</code>（v1.5.2）｜<b>适用：</b>写一个功能/模块/脚本，目标代码尚不存在｜<b>门数：</b>3 道，全部落盘、逐级串行</p>
+  <p style="margin:6px 0 0"><b>特色：</b>门②的「氛围校准」会扫你的项目特征文件（<code>tsconfig.json</code>/<code>go.mod</code>/<code>pubspec.yaml</code>…），从 <code>tech-skills/</code> 注册表匹配出技术栈规范（general 基底 + 24 个技术栈）注入 design.md，执行阶段有约束力。新增技术栈零改动 SKILL.md。</p>
+</div>
+
+<div class="card ok">
+  <div class="t" style="color:var(--teal)">轨道 B · 规划轨 —— 先要方案，再决定做不做</div>
+  <div class="flow">
+    <span class="step p">tri-intent (I13)</span><span class="arw">→</span>
+    <span class="step">plan-brief.md</span><span class="arw">→</span><span class="step g">门①方向确认</span><span class="arw">→</span>
+    <span class="step">plan.md</span><span class="arw">→</span><span class="step g">门②规划审计</span><span class="arw">→</span>
+    <span class="step">task-checklist.md</span><span class="arw">→</span><span class="step g">门③交付前确认</span>
+  </div>
+  <p style="margin:8px 0 0"><b>承接：</b><code>tri-plan</code>（v1.2.1）｜<b>适用：</b>要 WBS 分解 / 排期 / 里程碑 / 任务清单｜<b>关键：</b>只出方案，不写代码、不执行</p>
+  <p style="margin:6px 0 0"><b>衔接下一跳：</b><code>task-checklist.md</code> 每项都带「<b>建议执行 skill</b>」字段。<code>tri-coding</code> 与 <code>tri-action</code> 可直接拿它当输入。<b>门③会主动问你两件事</b>：① 是否需要调其它 skill 协同 ② 是否有补充约束。<b>这是挂接下游的官方接口，别说「没有了」就完事。</b></p>
+</div>
+
+<div class="card ok">
+  <div class="t" style="color:var(--coral)">轨道 C · 重装轨 —— 整项目端到端交付</div>
+  <div class="flow">
+    <span class="step p">tri-intent (I11/I13/I14 + L3=sdlc)</span><span class="arw">→</span>
+    <span class="step d">P0 立项</span><span class="arw">→</span><span class="step d">P1 需求</span><span class="arw">→</span>
+    <span class="step d">P2 设计</span><span class="arw">→</span><span class="step d">P3 开发准备</span><span class="arw">→</span>
+    <span class="step d">P4 编码</span><span class="arw">→</span><span class="step d">P5 评审</span><span class="arw">→</span>
+    <span class="step d">P6 测试</span><span class="arw">→</span><span class="step d">P7 发布</span><span class="arw">→</span>
+    <span class="step d">P8 运维</span>
+  </div>
+  <p style="margin:8px 0 0"><b>承接：</b><code>tri-sdlc</code>（v1.1.1）｜<b>适用：</b>「按完整研发流程做个项目」「从零到上线」</p>
+  <p style="margin:6px 0 0"><b>每一阶段是「派发 → 审计 → 确认」三拍：</b>把阶段交给 <code>children/tri-&lt;name&gt;/</code> 子 SKILL 产出交付物 → <b>闸门①</b> 逐条对照 <code>gates/acceptance-criteria.md</code> 的 <b>68 条必检项 + 21 条建议项</b>判定，产出 <code>gate-report.md</code>（FAIL 则携修订意见回炉，轮次+1，连 3 轮 FAIL 停机请人工介入）→ <b>闸门②</b> 呈交给你确认。</p>
+  <p style="margin:6px 0 0"><b>剖面裁剪（省时的关键）：</b><code>full</code> P0–P8 全量（正式立项）｜<code>standard</code> 跳过 P3/P8（已有工程环境，常规迭代）｜<code>lite</code> 只跑 P1 P2 P4 P6（单功能快速闭环）。<b>剖面由 skill 建议 + 你确认，不会静默裁剪。</b></p>
+  <p style="margin:6px 0 0"><b>状态机：</b><code>.tribro/sdlc/&lt;命名&gt;/manifest.md</code> 维护十态；支持 12 类自然语言指令：<code>START / STATUS / APPROVE / REJECT / ROLLBACK / SKIP / PROFILE / REGATE / FASTMODE / PAUSE / RESUME / ABORT</code>。<b>回退是级联的</b>：说「回退到 P2」会把 P2 之后所有阶段重置为未开始，已产出物标记 <code>stale</code>。</p>
+</div>
+
+<h3>轨道选择决策表</h3>
+<table>
+<thead><tr><th>你的需求长相</th><th>走哪条</th><th>判据</th></tr></thead>
+<tbody>
+<tr><td>「写个 XX 功能 / 改一下这个模块」</td><td><b>轻轨</b> tri-coding</td><td>目标代码不存在，单功能/模块</td></tr>
+<tr><td>「先出个方案 / 排个期 / 拆下任务」</td><td><b>规划轨</b> tri-plan</td><td>只要文档，不要动手</td></tr>
+<tr><td>「按完整流程做个项目 / 从零到上线」</td><td><b>重装轨</b> tri-sdlc</td><td>交付对象是一个真实项目</td></tr>
+<tr><td>「设计一个 CI 流水线 / 审批流 / DAG」</td><td>tri-workflow</td><td>交付对象是<b>流程定义产物</b>，交付即结束</td></tr>
+<tr><td>「建一个知识库 loop / domain / 定期跑的循环」</td><td>tri-loop</td><td>交付对象是<b>长期循环体</b>，无明确终点</td></tr>
+<tr><td>「这个报错查一下 / 跑不通了」</td><td>tri-fix</td><td>有可复现故障</td></tr>
+<tr><td>「帮我 review 一下 / 审一下这次改动」</td><td>tri-review</td><td>只看不改</td></tr>
+<tr><td>「生成审计清单 / commit 前检查清单」</td><td>tri-checklist</td><td>要可勾选的 checklist，不是结论报告</td></tr>
+<tr><td>「把某人的方法论做成 skill」</td><td>tri-god</td><td>产物是一个可独立调用的 skill</td></tr>
+</tbody>
+</table>
+
+<div class="card warn">
+  <div class="t"><span class="sev s0">优先级冲突</span> sdlc 子类最高</div>
+  <p style="margin:0">三个子类（sdlc / workflow / loop）可能同时被命中。规则是：<b>sdlc 优先于 workflow、workflow 优先于 loop</b>，最终以「交付对象是<b>一个真实项目</b> / <b>一份流程定义</b> / <b>一个长期循环体</b>」三者择一。而且 sdlc 子类的判据是<b>任务要点</b>里的语义，不是表层动词——你用「规划」还是「做个项目」开头，都可能落到 tri-sdlc。</p>
+</div>
+
+<h2 id="sop"><span class="n">05</span>SOP：7 步完成一次需求落地</h2>
+
+<h3>Step 0 · 环境准备（一次性）</h3>
+<pre><code><span class="cmt"># 方式一：克隆</span>
+git clone https://github.com/TrisighT9527/tri-skills.git
+
+<span class="cmt"># 方式二：SkillHub prompt（任一支持 SkillHub 协议的环境）</span>
+请根据 https://skillhub.cn/install/skillhub.md，安装 tri-intent。
+
+<span class="cmt"># 入口必须先装，其他按需；缺失会被自动检测出来并引导安装</span>
+</code></pre>
+<p><b>版本门提醒（每个 skill 的第零步）：</b>所有 skill 启动后的第一件事是跑版本检查脚本，连 skillhub 校验，24 小时节流一次。四态降级（A 通过 / B 离线 / C 通道不可用 / D 升级失败）<b>一律放行</b>，只有 <code>BLOCK</code> 才阻断。所以断网不会卡死流程，但你会在交付物上看到「版本校验未完成（离线）」的标注——这是标注，不是错误。</p>
+
+<h3>Step 1 · 把需求说出来（决定命中率的一步）</h3>
+<p>意图识别的主键是<b>核心动词</b>。动词能映射到具体的 I06–I16 / I21，就能精准分派；动词太泛（「搞定」「搞一下」「处理一下」）会被<b>降级为 I03 建议咨询</b>并强制先澄清。</p>
+
+<table>
+<thead><tr><th>别这样问</th><th>这样问</th><th>为什么</th></tr></thead>
+<tbody>
+<tr><td>帮我搞定那个表格的事</td><td>用 React + TypeScript 写一个支持关键字搜索和分页的表格组件</td><td>泛化动作无法映射 → 降级 I03</td></tr>
+<tr><td>优化一下</td><td>优化一下这段 SQL 的查询性能（附代码）</td><td>动作明确但对象缺失 → 不降级，但会先澄清对象</td></tr>
+<tr><td>按完整流程做个项目</td><td>按完整研发流程做一个图书借阅管理系统，要能上线</td><td>加上「完整流程 + 交付物 + 目标」→ 稳定命中 sdlc 子类</td></tr>
+<tr><td>设计个工作流</td><td>设计一个 GitHub PR 提交后自动跑 lint + 单测 + 部署到预发环境的流水线</td><td>补上触发方式 + 核心节点 → 模板匹配度 ≥70%</td></tr>
+</tbody>
+</table>
+
+<p><b>补充维度能显著提升质量：</b>说明任务领域、是否有素材、要多细、期望什么形态（简答/长文/可执行代码/文件产物/分步指引）。这些会被写进快照的 <code>D1–D5</code>，下游 skill 直接按它调整策略。</p>
+
+<h3>Step 2 · 被澄清时（clarify-gate）</h3>
+<p>需求模糊/矛盾/缺关键信息时，会先出<b>澄清对齐卡</b>——一次只问 ≤3 个<b>真正阻塞执行</b>的问题，每项都<b>带建议默认值</b>：</p>
+<div class="ask">
+<span class="who">反问模式:</span> G1 苏格拉底式(引导) 或 G2 批判式(挑刺)<br>
+<span class="who">初步理解:</span> 你想做数据看板，但没说给谁看、看哪些指标<br>
+<span class="who">需澄清项:</span><br>
+&nbsp;&nbsp;- 问题: 目标用户是谁？<br>
+&nbsp;&nbsp;&nbsp;&nbsp;为何要问: 缺它会导致指标口径偏差<br>
+&nbsp;&nbsp;&nbsp;&nbsp;建议默认: 运营团队内部使用<br>
+<span class="who">回复方式:</span> 逐条补充 | 回「按默认」全采纳 | 「继续」表示无需澄清
+</div>
+<p><b>三种应答：</b>逐条答 / 「按默认」全校准 / 「继续」跳过。默认值都给了，回答成本很低——<b>别在这里沉默，这是唯一会卡住你的地方</b>。</p>
+
+<h3>Step 3 · 识别与落盘（你什么都不用做，但要会看自检句）</h3>
+<p>每个 skill 作答前都会打一行自检句。这行字是你判断「它有没有跑对」的窗口：</p>
+<pre><code><span class="cmt">tri-intent：</span>
+本次意图=I11，置信度=0.92/高，版本检查=已通过，已产出快照+LATEST 指针，
+路由建议=tri-coding，下游检测=已安装，分发=直接交接
+
+<span class="cmt">tri-coding：</span> 本次意图=I11，已读取快照，当前阶段=门②设计审计
+<span class="cmt">tri-sdlc：</span>   本次意图=I11·sdlc，已读取快照，剖面=lite，当前阶段=P2 方案设计，状态=待审计，门禁=未审计
+</code></pre>
+
+<h3>Step 4 · 选轨道并确认</h3>
+<p>按 §04 的决策表。如果 tri-intent 建议的轨道和你想的不一样，<b>直接说</b>——它会更新快照，不设多轮审批（这是唯一的「轻量复述」环节，需求已澄清时连这步都跳过）。</p>
+<p>重装轨会在这里问你<b>剖面</b>（full / standard / lite），务必选对，这一步的省时效果最大。</p>
+
+<h3>Step 5 · 过门（逐级审批，这是主循环）</h3>
+<p>三条轨道的门都是同一套逻辑：<b>产出文档 → 呈交你审计 → 通过才进下一步</b>。你的应答方式见 §06 口令卡。</p>
+<div class="card gate">
+  <div class="t">门的三种结果与对应动作</div>
+  <ul style="margin:0">
+    <li><span class="sev s2">通过</span> 携反馈零意见 → 阶段置「已通过」，进入下一阶段</li>
+    <li><span class="sev s0">打回</span> 说清楚哪里不对 → <b>携修订意见回炉该阶段</b>，轮次 +1；轻轨/规划轨是原地重做该文档，SDLC 是重新派发子 SKILL</li>
+    <li><span class="sev s1">回退</span> 说「回退到 Pn」→ <b>级联重置</b>：Pn 之后全部置「未开始」，已产出物标 <code>stale</code></li>
+  </ul>
+</div>
+<p><b>反规避规则（对你有保护的）：</b>门禁不会因为「用户着急」「内容大致齐了」下调标准；也不会由编排器自己代笔补全交付物——补全必须回炉给对应子 SKILL。所以你在门上说「快点过」是没用的，只会让门更啰嗦。真正快的方式是<b>把需求一次说清</b>，减少回炉轮次。</p>
+
+<h3>Step 6 · 执行后加装验证</h3>
+<table>
+<thead><tr><th>想加什么</th><th>在哪加</th><th>怎么加</th></tr></thead>
+<tbody>
+<tr><td>代码审查</td><td>门③「执行前确认」</td><td>被问到①是否调其它 skill 协同 → 答「调 tri-review」</td></tr>
+<tr><td>审计清单</td><td>任何改动前后</td><td>说「生成这次改动的审计 checklist」→ tri-checklist 四维覆盖</td></tr>
+<tr><td>幻觉消除</td><td>由下游委派或你直说</td><td>说「验证这个结论 / 消除幻觉」→ tri-true 四道防线</td></tr>
+<tr><td>修 bug（不新写）</td><td>—</td><td>new：说「查一下这个报错」→ tri-fix（红循环铁律 + 6 阶段 + 3 门）</td></tr>
+</tbody>
+</table>
+<p><b>tri-fix 值得单独记住</b>：它的第一性规则是「<b>没有能变红的反馈循环，就没有假设阶段</b>」。在一条你真实跑过、且在这个 bug 上失败的命令出现之前，它<b>只允许做一件事：构造这条命令</b>，不会凭代码阅读跳到根因。这是它比通用 debug 靠谱的原因，但也会让你觉得「它在绕」——让它绕完。如果实在构造不出循环，它会停下来向你要三样东西之一：环境访问权 / 抓取产物（HAR、日志转储、core dump、带时间戳录屏）/ 临时生产插桩许可。</p>
+
+<h3>Step 7 · 沉淀（可选，但复利最高）</h3>
+<ul>
+<li><code>tri-cache</code> 自动缓存作答产物（SHA-256 前 16 位指纹去重、差异化 TTL）。注意 <b>I11/I12/I17–I20/M01–M04 不缓存</b>——代码和故障会变，缓存它们有害。</li>
+<li><code>tri-evolve</code> 从外部信号（你的显式反馈 / 隐式行为 / 缓存命中 / 纠偏记录）中归因学习。改 skill 核心契约属高风险，必须人工审批；经验沉淀要过 A/B 验证门（lift ≥5%，p&lt;0.05）。</li>
+<li><code>tri-god</code>：如果你发现某套流程反复用，说「把这套流程做成 skill」，它走「识别蒸馏对象类型 → 加载方法论 → 双门 → 产出 skill」。</li>
+</ul>
+
+<h2 id="gates"><span class="n">06</span>三道门怎么答（口令卡）</h2>
+
+<p>把下面这些原样复制使用，识别率最高。</p>
+
+<table>
+<thead><tr><th>场景</th><th>你说</th><th>效果</th></tr></thead>
+<tbody>
+<tr><td>门上的文档没问题</td><td><code>通过</code></td><td>阶段置「已通过」，推进下一阶段</td></tr>
+<tr><td>方向对但细节要改</td><td><code>打回，XX 章节的第 3 条改成 YY</code></td><td>携修订意见回炉，轮次 +1（历史轮次保留不删）</td></tr>
+<tr><td>前面某阶段就错了</td><td><code>回退到 P2</code></td><td>P2 之后级联重置，产出物标 stale，记录回退原因</td></tr>
+<tr><td>想跳过某个阶段</td><td><code>跳过 P3</code></td><td>登记跳过理由与风险（<b>显式指令才生效</b>）</td></tr>
+<tr><td>后面别再问我了</td><td><code>开启快速模式</code></td><td>闸门②自动放行并告知；<b>但闸门① FAIL 仍硬阻断</b></td></tr>
+<tr><td>想换轨道/裁剪阶段</td><td><code>切换剖面到 standard</code></td><td>剖面变更需登记，未纳入剖面的阶段不计入分母</td></tr>
+<tr><td>查进度</td><td><code>到哪了</code> / <code>状态</code></td><td>返回 manifest 各阶段状态</td></tr>
+<tr><td>重新审计当前阶段</td><td><code>重新审计这个阶段</code></td><td>REGATE，重跑 68 条必检项判定</td></tr>
+<tr><td>暂停/继续</td><td><code>暂停</code> / <code>继续</code></td><td>PAUSE / RESUME，状态机支持</td></tr>
+<tr><td>算了不做了</td><td><code>中止</code></td><td>ABORT</td></tr>
+<tr><td>换方向重来（元操作）</td><td><code>不对，你搞错了，按 XX 重做</code></td><td>tri-meta 接住 M02，<b>重路由回原意图 skill</b> 执行</td></tr>
+<tr><td>再细一点（元操作）</td><td><code>第 2 段再展开讲讲</code></td><td>tri-meta 接住 M03，基于上一轮追加细化</td></tr>
+</tbody>
+</table>
+
+<div class="card note">
+  <div class="t">元操作与新一轮提问的区别（值得记住）</div>
+  <p style="margin:0">针对「上一轮回复」发问 → 走 <code>tri-meta</code>（M01–M04），它会在原上下文里响应并<b>重路由回原 skill</b>；发起一个<b>新</b>需求 → 重新走 <code>tri-intent</code>，产新快照。<b>别把「重做一遍」和「新需求」混着说</b>，前者复用上下文，后者从头识别。</p>
+</div>
+
+<h2 id="cases"><span class="n">07</span>场景速查：这样问就对了</h2>
+
+<table>
+<thead><tr><th>场景</th><th>照抄这句</th><th>链路</th><th>你会拿到</th></tr></thead>
+<tbody>
+<tr>
+  <td>新写一个功能</td>
+  <td>用 React + TypeScript 写一个支持关键字搜索和分页的表格组件，要可编译、带单测</td>
+  <td>tri-intent(I11) → tri-coding 3 门</td>
+  <td><code>.tribro/coding/&lt;n&gt;/</code> 下 requirements / design / tasks / implements + 组件代码落工作区</td>
+</tr>
+<tr>
+  <td>修复一个报错</td>
+  <td>查一下这个报错：TypeError: Cannot read properties of undefined（附堆栈）</td>
+  <td>tri-intent(I12) → tri-fix 6 阶段 3 门</td>
+  <td>bug-report（含能变红的循环）/ diagnosis（3–5 个可证伪假设）/ fix-tasks / fix-report</td>
+</tr>
+<tr>
+  <td>审查一次改动</td>
+  <td>审查一下当前分支相对 main 的改动，走规格合规 + 代码质量两阶段</td>
+  <td>tri-intent(CR) → tri-review（Phase1 未过不进 Phase2）</td>
+  <td>review-report.md：6 维度 + 12 种 Fowler 坏味，<b>只记录不修改</b></td>
+</tr>
+<tr>
+  <td>架构师视角审计增量</td>
+  <td>增量审计这个项目，以架构师视角看改动给修复建议和优先级</td>
+  <td>tri-review 增量审计模式（不依赖快照）</td>
+  <td>Phase 0 三维审计：代码设计改动 / 架构设计实现 / 功能设计实现 + 修复建议 + 优先级</td>
+</tr>
+<tr>
+  <td>只要方案不要代码</td>
+  <td>给「订单履约时效优化」出个方案，要 WBS 分解、里程碑、风险登记和任务清单</td>
+  <td>tri-intent(I13) → tri-plan 3 门</td>
+  <td>plan-brief / plan / task-checklist（每项带「建议执行 skill」）</td>
+</tr>
+<tr>
+  <td>整个项目端到端</td>
+  <td>按完整研发流程做一个图书借阅管理系统，从立项到上线，用 standard 剖面</td>
+  <td>tri-intent(I11 + L3=sdlc) → tri-sdlc P0–P8</td>
+  <td>manifest.md + 各阶段交付物 + 每阶段 gate-report + summary.md；源码与 CHANGELOG 落工作区</td>
+</tr>
+<tr>
+  <td>设计一条流水线</td>
+  <td>设计一个 GitHub PR 提交后自动 lint + 单测 + 部署预发的流水线</td>
+  <td>tri-intent(I13/I14 + workflow 子类) → tri-workflow 7 阶段</td>
+  <td><code>.github/workflows/&lt;n&gt;.yml</code> + 设计文档 + 统一 DSL + 依赖校验与可执行性报告</td>
+</tr>
+<tr>
+  <td>提交前自检</td>
+  <td>生成这次改动的审计 checklist，基于暂存区</td>
+  <td>tri-intent(I10 + L3=audit-checklist) → tri-checklist</td>
+  <td>Markdown 复选框清单，四维：改动点 / 审查点 / 测试点 / 测试步骤</td>
+</tr>
+<tr>
+  <td>把方法论做成 skill</td>
+  <td>把我们这套上线检查流程蒸馏成一个可复用的 skill</td>
+  <td>tri-intent(I21) → tri-god</td>
+  <td>一个可独立调用的新 skill 包（不是业务代码，也不是普通答复）</td>
+</tr>
+<tr>
+  <td>建长期循环体</td>
+  <td>建一个「竞品动态周报」的知识库 loop，每周一跑</td>
+  <td>tri-intent(I14 + loop 子类) → tri-loop</td>
+  <td><code>domains/&lt;name&gt;/README.md</code>（charter + Timeline）+ LOG.md 条目 + <b>一次真实测试运行</b></td>
+</tr>
+</tbody>
+</table>
+
+<div class="card note">
+  <div class="t">tri-loop 的「真实测试运行」不是走过场</div>
+  <p style="margin:0">它的核心断言是「<b>证明这个 loop 确实能跑</b>，而不只是文件夹存在」。所以会真的小规模跑一次（拉一条真实 SERP / 分诊几张真实工单 / 跑一个分析查询），并<b>强制</b>产出两个记录：README 的 <code>## Timeline</code> 追加一行 + <code>LOG.md</code> 追加一条。artifact 可选，但这两条记录必须有。凭证缺失时它会做「能达到的最远 dry run」并标注差距。</p>
+</div>
+
+<h2 id="tribro"><span class="n">08</span>.tribro 目录地图</h2>
+
+<p>一个约定：<b>链路文档进 <code>.tribro/</code>，真实成果物进工作区</b>。判据是「这份东西是不是给人用的最终产品」——是，就落工作区；是过程留痕，就落 .tribro。</p>
+
+<div class="tree">
+<b>.tribro/</b>
+├── <b>LATEST.md</b>              <i># 指针文件，覆盖写，始终指向本会话最新快照</i>
+├── snapshots/                <i># tri-intent 产出（唯一交付产物，永不覆盖）</i>
+│   └── I11_20260923_181207_6a5c037d.md
+├── plans/&lt;命名&gt;/              <i># tri-plan：plan-brief / plan / task-checklist</i>
+├── coding/&lt;命名&gt;/             <i># tri-coding：requirements / design / tasks / implements</i>
+├── actions/&lt;命名&gt;/            <i># tri-action：操作执行记录</i>
+├── workflows/&lt;命名&gt;/          <i># tri-workflow：result.md + env-profile + model + validation-report</i>
+├── loops/&lt;命名&gt;/              <i># tri-loop：result.md（loop README 与 LOG.md 落知识库仓库根）</i>
+├── sdlc/&lt;命名&gt;/              <i># tri-sdlc：manifest.md + summary.md + P0..P8 子目录</i>
+│   ├── manifest.md              <i># 主控状态机（覆盖写）</i>
+│   ├── P2-design/               <i># design.md / api-contract.md / data-model.md</i>
+│   │   └── gate-report.md       <i># 门禁报告（每轮追加章节，NEVER 删历史）</i>
+│   └── P6-testing/ ...
+├── multimedia/               <i># tri-mm 产出</i>
+├── cache/                    <i># tri-cache：三层缓存（内存热层 / SQLite 索引 / Markdown 归档）</i>
+└── evolve/                   <i># tri-evolve：signals.jsonl / profile.db / run-log.jsonl</i>
+</div>
+
+<div class="card warn">
+  <div class="t">命名规则（照抄别改）</div>
+  <p style="margin:0"><code>&lt;问题类型&gt;_&lt;YYYYMMDD&gt;_&lt;HHMMSS&gt;_&lt;会话ID 前 8 位&gt;</code>，例如 <code>I11_20260923_181207_6a5c037d</code>。<b>阶段目录名与阶段内文件名是固定的</b>（<code>P2-design</code> / <code>design.md</code>…）——门禁审计按固定文件名定位交付物，改名会导致审计找不到产物。</p>
+</div>
+
+<h2 id="pitfalls"><span class="n">09</span>避坑清单</h2>
+
+<table>
+<thead><tr><th>级别</th><th>症状</th><th>根因</th><th>对治</th></tr></thead>
+<tbody>
+<tr>
+  <td><span class="sev s0">P0</span></td>
+  <td>skill 停下来一直问，你以为它卡死了</td>
+  <td>它在等你过门 / 等你澄清</td>
+  <td>看它最后一行的问题，回 <code>通过</code> 或 <code>按默认</code>。这是设计，不是故障</td>
+</tr>
+<tr>
+  <td><span class="sev s0">P0</span></td>
+  <td>想让它接着昨天的活干，它要求重新识别</td>
+  <td>快照过期（&gt;30 分钟）</td>
+  <td>同会话内连续推进；跨会话就重新说一遍需求（成本很低）</td>
+</tr>
+<tr>
+  <td><span class="sev s0">P0</span></td>
+  <td>小需求被拉成了九阶段大工程</td>
+  <td>任务要点里带了「完整流程/端到端/上线」类语义 → 命中 sdlc 子类</td>
+  <td><b>要么去掉那些词，要么接受并选 <code>lite</code> 剖面</b>（只跑 P1 P2 P4 P6）</td>
+</tr>
+<tr>
+  <td><span class="sev s1">P1</span></td>
+  <td>说「搞定一下」结果被当成咨询，只给了建议不动手</td>
+  <td>动作泛化无法映射 → 降级 I03 + 强制澄清</td>
+  <td>把动词说具体（写/改/修/翻译/审查/设计），并给对象</td>
+</tr>
+<tr>
+  <td><span class="sev s1">P1</span></td>
+  <td>下游 skill 拒绝执行，说要回退重路由</td>
+  <td>快照 L2 与 skill 认领范围不符（越界了）</td>
+  <td>让 tri-intent 重新识别，别硬塞</td>
+</tr>
+<tr>
+  <td><span class="sev s1">P1</span></td>
+  <td>门禁连续 FAIL，一直在回炉</td>
+  <td>需求/设计本身有结构性缺陷，不是措辞问题</td>
+  <td>连 3 轮 FAIL 会自动停机并请人工介入；<b>此时该回退到 P1/P2 改需求，而不是继续打回</b></td>
+</tr>
+<tr>
+  <td><span class="sev s2">P2</span></td>
+  <td>交付物上看不到源码</td>
+  <td>源码应该在<b>你的工作区</b>，不在 .tribro</td>
+  <td>去 <code>implements.md</code> / <code>release-report.md</code> 里看记录的路径</td>
+</tr>
+<tr>
+  <td><span class="sev s2">P2</span></td>
+  <td>交付物标了「版本校验未完成（离线）」</td>
+  <td>网络不可达，走了 B 态降级放行</td>
+  <td>这是标注不是错误。想消除就先跑一次 <code>check_update.py</code></td>
+</tr>
+<tr>
+  <td><span class="sev s2">P2</span></td>
+  <td>想跳过验证直接出代码</td>
+  <td>门禁不支持「着急就放行」</td>
+  <td>用 <code>快速模式</code> 自动过闸门②，<b>但闸门① 的 FAIL 永远硬阻断</b>——真有问题就一定拦</td>
+</tr>
+</tbody>
+</table>
+
+<div class="card ok">
+  <div class="t">最短路径总结</div>
+  <p style="margin:0">说清需求（动词 + 对象 + 形态）→ 过澄清 → 认轨道 → <b>门上及时回「通过」</b> → 执行后按需加 tri-review / tri-checklist。要快，唯一有效的杠杆是<b>减少回炉轮次</b>，而不是催它放行——门禁不吃催。</p>
+</div>
+
+<footer>
+  tri-skills · 需求到落地使用手册 · 基于仓库源码逐 skill 契约核对生成<br>
+  覆盖 24 个 skill / tri-intent v1.10.0 / tri-coding v1.5.2 / tri-sdlc v1.1.1 / tri-workflow v1.2.2
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,8 +1,8 @@
 ---
-name: tri-intent
+name: 意图识别总路由
 slug: tri-intent
-version: 1.10.0
-displayName: 意图识别总路由（tri-intent）
+version: 1.13.1
+displayName: 意图识别总路由
 description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。
 summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约。
 tags: [intent-routing, mece, snapshot, classification, router, confidence]
@@ -17,7 +17,7 @@ license: MIT
 
 > 本节定义 skill「被激活后必须做什么」，优先级高于 Agent 的通用默认行为。**引用/读取本文件即视为激活本工作流**，不得仅将其当作参考文档。
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `tri-intent/references/version-gate.md` 契约连接 skillhub 官方通道校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。端点 MUST 读取自配置，NEVER 硬编码 `skillhub.cn` 官网域名（营销 SPA 非校验端点，实测 API 主机为 `api.skillhub.cn`）。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `tri-forge/references/version-check-spec.md` 契约连接 skillhub 官方通道校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。端点 MUST 读取自配置，NEVER 硬编码 `skillhub.cn` 官网域名（营销 SPA 非校验端点，实测 API 主机为 `api.skillhub.cn`）。
 1. **强制前置**：收到任何新用户提问，MUST 先执行「路由步骤」完成意图识别，再产出快照交接下游，NEVER 跳过直接给成果物。
 2. **唯一交付产物**：非「不落盘」类意图，MUST 产出 `.tribro/snapshots/<命名>.md`（模板见 `templates/snapshot.md`），并**同时覆盖写** `.tribro/LATEST.md` 指针文件（格式见 §快照定位契约），供下游 skill 无歧义定位。快照是本 skill 的**唯一交付产物**——内含用户原始提问、意图分析过程、结构化结论数据（intent + 置信度 + dimensions + 任务要点 + 下游路由建议 + 下游 slug）。若 `.tribro/` 目录不存在，MUST 先创建该目录再落盘。**禁止产出** requirements.md、design.md、tasks.md、implements.md、reports.md 等任何下游交付物——那些由下游 skill 依据快照自行产出。
 3. **可选轻量复述**：识别完成后，可至多一次将快照中的结构化结论复述给用户，供其发现明显误识别即可。不设回炉循环、不设多轮审批。当 clarify-gate 已完成澄清、需求已充分时，连这一次复述都可跳过。原则上无需再次向用户确认真实意图。
@@ -47,6 +47,14 @@ license: MIT
 
 - 任何新用户提问进入工作流的**第一步**
 - 需要将模糊、复合的用户输入路由到精确处理链路时
+
+### 不触发场景（Not-Trigger）
+
+本 skill 不接手以下情形（命中即转出，仅产出快照后交接，不越界产出）：
+
+- 「意图已被上游指定 / 快照已存在」——直接由对应下游 skill 读取快照执行，本 skill 不重识别。
+- 「产出需求/设计/任务清单/实现报告/最终回答」——识别后由各下游 skill 依据快照自行产出，本 skill 不代做。
+- 「轻量咨询作答 / 具体领域执行（编码、翻译、写作等）」——属各 L2 落点 skill（tri-ask / tri-coding / tri-content 等），本 skill 只做识别与路由。
 
 ## 第一层判定（四选一，互斥穷尽）
 
@@ -119,7 +127,7 @@ tri-intent/
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。**可执行实现（single source of truth for logic）**：`tri-intent/scripts/check_update.py`。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：`tri-intent/scripts/check_update.py`。
 > **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
 
 **执行方式（MUST）**
@@ -203,6 +211,7 @@ tri-intent/
 - **落盘快照**（默认）：
   - 除 Expressing/M05 外的所有意图
   - 流程：识别完成 → 填充意图确认卡 → 产出快照 `snapshot.md` → 可选轻量复述一次 → 交接下游 skill
+  - 落盘路径：`.tribro/snapshots/<命名>.md` + 指针 `.tribro/LATEST.md`；`.tribro/` 目录不存在时 MUST 先创建（见 §强制执行契约 第 2 条）
 - **不落盘**（免打断/即时响应）：
   - Expressing（I17–I20，默认）、Meta 的 M05 中止确认
   - 流程：直接自然回应，不生成快照
@@ -227,8 +236,8 @@ tri-intent/
 | L2 意图 | 下游 skill slug | skill 目录名 |
 |---|---|---|
 | I01–I05 | tri-ask | `tri-ask/` |
-| I06–I10 | tri-content | `tri-content/`（默认）；文章撰写子类→`tri-article/`（见下）；架构可视化子类（I10）→`tri-html/`；审计清单子类（I10）→`tri-checklist/` |
-| I11 | tri-coding | `tri-coding/`（默认）；全生命周期子类→`tri-sdlc/` |
+| I06–I10 | tri-content | `tri-content/`（默认）；文章撰写子类→`tri-article/`（见下）；PM 产物子类→`tri-pm/`（见下）；格式转换子类族（I08）→ `tri-pdf2md/`、`tri-docx2md/`、`tri-pptx2md/`、`tri-xlsx2md/`、`tri-html2md/`（见下）；知识库搭建子类（I08）→`tri-wiki/`（见下）；架构可视化子类（I10）→`tri-html/`；审计清单子类（I10）→`tri-checklist/`；深度剖析子类（I10）→`tri-code-analyzer/`（见下） |
+| I11 | tri-coding | `tri-coding/`（默认）；前端设计方向子类→`tri-frontend-design/`（见下）；动效实现子类→`tri-lottie/`（见下）；全生命周期子类→`tri-sdlc/` |
 | I12 | tri-fix | `tri-fix/` |
 | 代码审查（CR） | tri-review | `tri-review/` |
 | I13 | tri-plan | `tri-plan/`（默认）；工作流设计子类→`tri-workflow/`；全生命周期子类→`tri-sdlc/` |
@@ -250,27 +259,69 @@ tri-intent/
 > 此设计与 I15 音乐子类保持一致：「一个 L2 意图（I06）对应一个一跳下游」，仅由 `L3_子意图` 区分 tri-content（通用内容）与 tri-article（去 AI 化长文）。
 > 下游依赖检测在此场景仅需检测 `tri-article/`，缺失即提示安装。
 
+> **I06 PM 产物子类说明（子类路由）**：当 L2=I06 内容生成，且任务要点含 PM 产物语义（写 PRD/需求文档/战略画布/产品路线图/OKR/GTM/竞品分析/产品数据分析）时，
+> `L3_子意图` 标注为 `pm`，`下游路由建议` **直接覆写为 tri-pm**（一跳，无需中介 skill）。
+> 此设计与 I06 article 子类保持一致：仅由 `L3_子意图` 区分 tri-content（通用内容）、tri-article（去 AI 化长文）与 tri-pm（PM 领域产物），三者互斥不重叠。
+> 下游依赖检测在此场景仅需检测 `tri-pm/`，缺失即提示安装。tri-pm 的上游依赖检测为三态逻辑（快照/引导/降级），与本表覆写路由对称。
+
 > **I10 架构可视化子类说明（子类路由）**：当 L2=I10 分析处理，且任务要点含项目架构可视化语义（分析项目架构/生成架构可视化 HTML/画项目架构图/项目全貌报告/架构师视角分析项目）时，
 > `L3_子意图` 标注为 `arch-viz`，`下游路由建议` **直接覆写为 tri-html**（一跳）。
 > 此设计与 I06 article 子类保持一致：「一个 L2 意图（I10）对应一个一跳下游」，仅由 `L3_子意图` 区分 tri-content（通用分析）与 tri-html（架构可视化）。
-> 下游依赖检测在此场景仅需检测 `tri-html/`（含 `.tribro/skills/tri-html/`），缺失即提示安装。详见 `doing/I10-analyze.md` §子类路由。
+> 下游依赖检测在此场景仅需检测源码树 `tri-html/`，缺失即提示安装。详见 `doing/I10-analyze.md` §子类路由。
 
 > **I10 审计清单子类说明（子类路由）**：当 L2=I10 分析处理，且任务要点含项目审计清单语义（生成审计 checklist/项目自检清单/改动审查测试清单/质量保障 checklist/commit 提交前检查清单）时，
 > `L3_子意图` 标注为 `audit-checklist`，`下游路由建议` **直接覆写为 tri-checklist**（一跳）。
 > 此设计与 I10 arch-viz 子类保持一致：「一个 L2 意图（I10）对应一个一跳下游」，仅由 `L3_子意图` 区分 tri-content（通用分析）、tri-html（架构可视化）与 tri-checklist（审计清单）。
-> 下游依赖检测在此场景仅需检测 `tri-checklist/`（含 `.tribro/skills/tri-checklist/`），缺失即提示安装。详见 `doing/I10-analyze.md` §子类路由。
+> 下游依赖检测在此场景仅需检测源码树 `tri-checklist/`，缺失即提示安装。详见 `doing/I10-analyze.md` §子类路由。
+
+> **I10 深度剖析子类说明（code-analyzer · 子类路由）**：当 L2=I10 分析处理，且任务要点含代码库深度剖析语义（剖析代码库/帮我读懂这个项目/接手项目全维度分析/代码级深度剖析/吃透代码库/代码库 onboarding）时，
+> `L3_子意图` 标注为 `code-analyzer`，`下游路由建议` **直接覆写为 tri-code-analyzer**（一跳）。
+> 与 arch-viz 子类 MECE：产出物是**可视化 HTML 图表**（画架构图/可视化）→ tri-html；产出物是**深度剖析 Markdown 报告**（代码级证据+上手指南）→ tri-code-analyzer；同时命中按用户指定输出物形态判定（详见 `doing/I10-analyze.md` §冲突消解）。
+> 下游依赖检测需检测源码树 `tri-code-analyzer/` 或 `.tribro/skills/tri-code-analyzer/`，缺失即提示安装。
 
 > **I11/I13/I14 全生命周期子类说明（子类路由）**：当 L2 ∈ {I11, I13, I14}，且任务要点含全生命周期语义（全生命周期/SDLC/研发流程/立项到上线/端到端交付/完整开发流程/从需求到发布/阶段门禁）时，
 > `L3_子意图` 标注为 `sdlc`，`下游路由建议` **覆写为 tri-sdlc**（一跳）。三个 L2 共用同一子类键，因为「按完整流程做个项目」可能以编码（I11）、规划（I13）或推进执行（I14）为表层动词，但交付对象同为「一个走完九阶段的真实项目」。
 > **优先级**：sdlc 子类高于 workflow 子类与 loop 子类；同时命中时以「交付对象是真实项目 / 流程定义产物 / 长期循环体」判定，详见 `doing/sdlc-design.md`。
 > 下游依赖检测在此场景仅需检测 `tri-sdlc/`，缺失即提示安装。tri-sdlc 的 9 个阶段子SKILL 位于 `tri-sdlc/children/`，随包分发，**不是顶层 skill，不参与本表路由**。
 
+> **I11 前端设计方向子类说明（子类路由）**：当 L2=I11 编码开发，且任务要点为「界面设计方向/风格锚点选定/配色字体结构方案/动效设计与评审/多变体探索」等**设计语义**而非代码实现时，
+> `L3_子意图` 标注为 `frontend-design`，`下游路由建议` **直接覆写为 tri-frontend-design**（一跳）。
+> 判定要点：产出物是设计方向与令牌规格（CSS 令牌/动效基线/多变体方案）→ tri-frontend-design；产出物是可运行代码实现 → tri-coding 默认。「实现这个页面」仍走 tri-coding，仅设计先行场景覆写。
+> 下游依赖检测在此场景仅需检测 `tri-frontend-design/`，缺失即提示安装。
+
+> **I11 动效实现子类说明（motion · 子类路由）**：当 L2=I11 编码开发，且任务要点含「生成动画/动效代码、Lottie 集成、转场/微交互/加载态实现、动画代码审查修复」等**动效实现语义**时，
+> `L3_子意图` 标注为 `motion`，`下游路由建议` 直接覆写为 `tri-lottie` （一跳）。
+> 与 frontend-design 子类 MECE：产出设计方向与令牌规格 → tri-frontend-design；产出动画代码/集成/审查 → tri-lottie；一般编码 → tri-coding 默认。
+> 下游依赖检测在此场景需同时检测 `.tribro/skills/tri-lottie/` 或源码树 `tri-lottie/`，缺失即提示安装。
+
+> **I08 PDF 转换子类说明（子类路由）**：当 L2=I08 翻译转换，且任务要点含 PDF 转 Markdown 语义（PDF 转 MD/转成 Markdown/pdf2md/PDF 无损转换/把这份 PDF 转成 md）时，
+> `L3_子意图` 标注为 `pdf2md`，`下游路由建议` **直接覆写为 tri-pdf2md**（一跳，无需中介 skill）。
+> 此设计与 I06 article 子类保持一致：「一个 L2 意图（I08）对应一个一跳下游」，仅由 `L3_子意图` 区分 tri-content（通用转换/翻译）与 tri-pdf2md（PDF→MD 专用编排+质量保障）。
+> 下游依赖检测在此场景仅需检测源码树 `tri-pdf2md/`，缺失即提示安装。详见 `doing/I08-translate.md` §PDF 转换子类。
+
+> **I08 格式转换子类族说明（x2md 族 · 子类路由）**：当 L2=I08 翻译转换，且任务要点含 Word/PPT/Excel/HTML 转 Markdown 语义（Word 转 MD/docx2md、PPT 转 MD/pptx2md、Excel 转 MD/xlsx2md、HTML 转 MD/html2md；扩展名族：.docx/.docm/.doc、.pptx/.pptm/.pps/.pot/.ppsx/.ppsm/.ppt、.xlsx/.xlsm/.xls/.xlsb/.csv、.html/.htm；.wps 同格式兼容；五格式 SKIP 语义见下游 preflight）时，
+> `L3_子意图` 分别标注为 `docx2md` / `pptx2md` / `xlsx2md` / `html2md`，`下游路由建议` **直接覆写为对应 x2md skill**（一跳，无需中介 skill）。
+> 与 pdf2md 子类同构：一个 L2 意图（I08）对应一个一跳下游，仅由 `L3_子意图` 区分目标格式；五个 x2md skill 之间 MECE 不重叠（各认领一种源格式）。
+> 下游依赖检测在此场景仅需检测源码树对应的 `tri-<fmt>2md/`，缺失即提示安装。详见 `doing/I08-translate.md` §格式转换子类族。
+
+> **I08 知识库搭建子类说明（wiki · 子类路由）**：当 L2=I08 翻译转换，且任务要点含知识库搭建语义（搭建知识库/建知识库/把文档整理成知识库/构建 wiki/知识库生成/批量文档转知识库）时，
+> `L3_子意图` 标注为 `wiki`，`下游路由建议` **直接覆写为 tri-wiki**（一跳，无需中介 skill）。
+> 与 pdf2md 子类同构：仅由 `L3_子意图` 区分——**单文档转换走 x2md 族单技能，文档集→知识库（信息架构/组织/MOC/索引）走 tri-wiki**；tri-wiki 在 C 阶段反向委派 x2md 族完成批量转换，两层不竞争。
+> 下游依赖检测在此场景仅需检测源码树 `tri-wiki/`，缺失即提示安装。详见 `doing/I08-translate.md` §知识库搭建子类。
+
 > **I08 翻译与 tri-translate 边界说明**：I08 翻译转换统一路由到 `tri-content`（通用内容处理），`tri-translate` 为**横向方法论** skill（意译优先/直译次之/不译兜底），
 > 不由 tri-intent 依 L2 直接路由；`tri-content` 在需要深度翻译时可委派 `tri-translate` 作为方法论支撑（详见 `tri-translate/SKILL.md`）。两者非竞争关系。
 
 > **横向 skill 不参与本表路由**：`tri-cache`（缓存）、`tri-evolve`（自进化）、`tri-translate`（翻译方法论）、
-> `tri-true`（消除幻觉）为横向基础设施/方法论型 skill，由 hook、下游 skill 委派或用户显式调用激活，
+> `tri-true`（消除幻觉）、`tri-cost`（token 成本审计）、`tri-guard`（技能安全审计）、`tri-humanize`（去 AI 化改写）
+> 为横向基础设施/方法论型 skill，由 hook、下游 skill 委派或用户显式调用激活，
 > 不由 tri-intent 依 L2 意图直接路由，故不在本表内。
+
+> **其余不参与本表路由的 skill 及理由（全量枚举，保证顶层 skill 路由状态逐一可查）**：
+> `tri-forge`——内部专用工具（skill 生成/合规自检/蒸馏门⑤），由用户直接调用，不承载用户任务语义，非下游；
+> `tri-learn`——学习教练，独立标准模式（用户直接发起学习请求时独立推进全流程），tri-intent 仅作可选登记（其 §上游依赖检测 B 态），不依赖快照路由；
+> `tri-jobhunt`——求职单入口，设计为用户显式 `/tri-jobhunt` 调用后向 6 个 children 分发，不经 L2 意图路由（其 §上游依赖检测针对 children 就位态，非快照）。
+> `tri-geo`——GEO 单领域入口（国内生成式引擎优化），设计为用户显式调用激活，不经 L2 意图路由（豁免理由：GEO 是跨内容/技术/渠道的独立领域闭环，现行 27 个 L2 落点无对应项；其 §上游依赖检测为直用/引导补参/讲解降级三态，不依赖快照）。登记于 2026-09-16（tri-geo v1.0.1 家族合规审计 P-1 项，报告 `docs/audit-tri-geo-20260916.md`）。
 
 ### 二、检测步骤（脚本驱动 · 确定性）
 
@@ -347,7 +398,10 @@ graph LR
 
 > tri-intent 的「下游依赖检测」与下游 skill 的「上游依赖检测」构成对称的双向检测机制：
 >
-> - **下游 skill → 上游**（23 个 tri-* skill 已实现，含 19 个路由型 + 4 个横向型）：激活时检测 tri-intent 是否可用 → 不可用提示安装 → 高频 skill 支持降级模式
+> - **下游 skill → 上游**（35 个 tri-* skill 已实现，含 28 个路由型 + 7 个横向型）：激活时检测 tri-intent 是否可用 → 不可用提示安装 → 高频 skill 支持降级模式
 > - **上游 → 下游 skill**（tri-intent 本节）：产出快照后检测下游 skill 是否可用 → 不可用提示安装
 >
 > 双向检测确保：无论用户先安装哪一端，缺失的另一端都会被检测到并给出安装引导。
+>
+> 计数口径（MUST 随 §一 枚举联动更新，NEVER 沿用历史值）：路由型 26 = §一路由映射表全部下游 slug 去重（27 个）扣除「不落盘」类
+> tri-express（I17–I20，无快照交接，见映射表末行）；横向型 7 = 下方「横向 skill 不参与本表路由」全量枚举。任一枚举变更 MUST 同步本节。

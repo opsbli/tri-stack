@@ -1,7 +1,9 @@
 ---
+---
 name: tri-checklist-full-testcases
 description: tri-checklist 全场景测试用例。覆盖 SKILL.md 全部能力点（强制执行契约 / 上游依赖检测 / 输入契约 / 四维审计方法论 / 三种 Git 输入 / Markdown 组装 / 双审批门 / §3.13 代码版权 / 质量标准）。
-based_on: tri-checklist v1.0.0
+version: 1.1.1
+based_on: tri-checklist v1.1.2
 ---
 
 # tri-checklist 全场景测试用例
@@ -18,7 +20,7 @@ based_on: tri-checklist v1.0.0
 |---|---|---|---|
 | A 元数据 | A1 | frontmatter 八字段齐全，description 含「支持独立安装，含上游依赖检测三态逻辑」 | compliance §2 |
 | A 元数据 | A2 | name/slug 一致 kebab-case | compliance §1 |
-| A 元数据 | A3 | version=1.0.0 与 CHANGELOG 一致 | compliance §10/12 |
+| A 元数据 | A3 | version=1.1.1 与 CHANGELOG 一致 | compliance §10/12 |
 | B 强制执行契约 | B1 | 契约置顶标「最高优先级」含激活语义 | compliance §3 |
 | B 强制执行契约 | B2 | MUST/NEVER 大写祈使贯穿 | compliance §4 |
 | B 强制执行契约 | B3 | 四维审计铁律（缺一=半成品） | SKILL §契约2 |
@@ -60,8 +62,8 @@ based_on: tri-checklist v1.0.0
 
 ### TC-A-03：版本一致性
 
-- **步骤**：比对 SKILL.md `version` 与 CHANGELOG.md 置顶 `[1.0.0]`
-- **预期**：两处均为 `1.0.0`
+- **步骤**：比对 SKILL.md `version` 与 CHANGELOG.md 置顶 `[1.1.1]`
+- **预期**：两处均为 `1.1.1`
 - **判定**：严格相等 = 通过
 
 ---

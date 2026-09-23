@@ -1,8 +1,8 @@
 ---
-name: tri-ops
+name: 运维与监控
 slug: tri-ops
 version: 1.1.1
-displayName: 运维与监控（tri-ops · tri-sdlc P8 子SKILL）
+displayName: 运维与监控
 description: SDLC P8 运维与监控子SKILL。读取 tri-sdlc 转交的阶段任务（P7 发布报告与巡检结论 + P2 容量性能目标 + P6 缺陷台账 + P8 门禁条目清单），定义日志四要素方案、三类监控指标与采集方式、指标阈值与告警四要素、健康检查与失败处置、备份容灾与恢复演练计划，并沉淀 ≥3 条含现象/定位/处置的故障处置条目，产出 ops-runbook.md / monitoring.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P8 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 运维监控专家，产出日志与监控方案、告警阈值矩阵、健康检查、备份容灾与故障处置手册，面向 P8 门禁 7 条必检项交付。
 tags: [sdlc, operations, monitoring, alerting, runbook, backup, tri-sdlc-child]
@@ -192,7 +192,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
 
 **执行要点**
 

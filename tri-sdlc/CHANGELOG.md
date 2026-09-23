@@ -4,6 +4,19 @@
 
 格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [1.1.3] - 2026-09-18
+
+### 新增
+
+- **职责边界补「不触发场景（Not-Trigger）」**（对齐全家族 skill 写作规范）：明确本 skill 不接手单功能四步开发（tri-coding）、仅产出规划文档（tri-plan）、流程定义即交付的工作流设计（tri-workflow）、单次副作用动作（tri-action）与意图识别（tri-intent），强化「整个项目九阶段编排」边界。
+
+## [1.1.2] - 2026-09-02
+
+### 修复
+- SKILL.md `name`/`displayName` 去除 `（tri-sdlc）` 全角括号 slug 后缀；9 个 children SKILL.md 同步去除。
+- `版本检查` 引用从孤儿文件 `tri-intent/references/version-gate.md` 统一回指唯一真源 `tri-forge/references/version-check-spec.md`（2026-08-30 审计修复，此前未随版本发布）。
+- frontmatter version `1.1.1` -> `1.1.2`
+
 ## [1.1.1] - 2026-08-05
 
 ### 修复

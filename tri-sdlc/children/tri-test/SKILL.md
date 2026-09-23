@@ -1,8 +1,8 @@
 ---
-name: tri-test
+name: 测试验证
 slug: tri-test
 version: 1.1.1
-displayName: 测试验证（tri-test · tri-sdlc P6 子SKILL）
+displayName: 测试验证
 description: SDLC P6 测试验证子SKILL。读取 tri-sdlc 转交的阶段任务（P1 验收标准 + P4 实现与单测报告 + P5 评审报告 + P6 门禁条目清单），编制覆盖全部验收标准的测试计划，执行单元/集成/用户验收三层测试，统计通过率并按四要素登记缺陷、跟踪复测闭环，产出 test-plan.md / test-report.md / defects.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P6 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 测试验证专家，产出验收标准 100% 覆盖的测试计划、三层执行报告与四要素缺陷台账，面向 P6 门禁 7 条必检项交付。
 tags: [sdlc, testing, test-plan, defect-tracking, acceptance, tri-sdlc-child]
@@ -198,7 +198,7 @@ license: MIT
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`tri-intent/references/version-gate.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
+> **细则唯一真源**：`tri-forge/references/version-check-spec.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
 
 **执行要点**
 
