@@ -1,0 +1,21 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "[REPLACE: 官网首页 URL + #website]",
+  "url": "[REPLACE: 官网首页 URL]",
+  "name": "[REPLACE: 站点名，须与 organization.json 的 name 一致]",
+  "alternateName": "[REPLACE: 站点简称，无则删除本行]",
+  "inLanguage": "zh-CN",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "[REPLACE: 品牌主体 #organization 的 @id]"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "[REPLACE: 站内搜索 URL 模板，如 https://example.com/search?q={search_term_string}]"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}

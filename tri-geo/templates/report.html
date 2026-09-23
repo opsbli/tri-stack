@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>智引（tri-geo）GEO 诊断报告 — {{brand}}</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f7f7f5;color:#2c2c2a;margin:0;padding:32px}
+  .wrap{max-width:960px;margin:0 auto;background:#fff;border:1px solid #e3e2dd;border-radius:12px;padding:32px}
+  h1{font-size:22px;font-weight:500;margin:0 0 4px}
+  h2{font-size:16px;font-weight:500;margin:28px 0 12px;border-left:3px solid #1d9e75;padding-left:8px}
+  .meta{color:#5f5e5a;font-size:13px;line-height:1.8}
+  .score{font-size:44px;font-weight:500;color:#0f6e56}
+  .rating{font-size:14px;color:#0f6e56;margin-left:8px}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{border:1px solid #e3e2dd;padding:8px 10px;text-align:left}
+  th{background:#f1efe8;font-weight:500}
+  .tag{padding:2px 6px;border-radius:4px;font-size:12px}
+  .p0{background:#fcebeb;color:#a32d2d}
+  .p1{background:#faeeda;color:#854f0b}
+  .foot{margin-top:28px;font-size:12px;color:#5f5e5a;border-top:1px solid #e3e2dd;padding-top:12px}
+  .warn{background:#fcebeb;color:#a32d2d;padding:8px 12px;border-radius:6px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>智引（tri-geo）GEO 诊断报告</h1>
+  <div class="meta">
+    品牌：{{brand}} ｜ 日期：{{date}} ｜ 模式：{{mode}}<br>
+    评分来源：{{toolchain}} ｜ 证据：{{evidence_path}}<br>
+    输入指纹：{{html_sha256}}
+  </div>
+
+  <h2>站内信号分</h2>
+  <div><span class="score">{{total}}</span><span class="rating">/100 · {{rating}}</span></div>
+
+  <h2>维度得分</h2>
+  <table>
+    <tr><th>维度</th><th>得分</th><th>权重</th><th>产出脚本</th></tr>
+    {{#pillars}}
+    <tr><td>{{name}}</td><td>{{score}}</td><td>{{weight}}</td><td>{{tool}}</td></tr>
+    {{/pillars}}
+  </table>
+
+  <h2>引擎实测（采样实测，非推演）</h2>
+  <table>
+    <tr><th>引擎</th><th>提及率</th><th>轮数</th><th>波动区间</th><th>平均位次</th><th>判定脚本</th></tr>
+    {{#probe_rows}}
+    <tr><td>{{engine}}</td><td>{{rate}}%</td><td>{{rounds}}</td><td>{{interval}}</td><td>{{avg_rank}}</td><td>{{tool}}</td></tr>
+    {{/probe_rows}}
+  </table>
+
+  <h2>一票否决</h2>
+  <div class="meta">
+    {{#veto_rows}}
+    · {{code}}：{{message}}<br>
+    {{/veto_rows}}
+  </div>
+
+  <h2>优先修复项</h2>
+  <table>
+    <tr><th>优先级</th><th>事项</th><th>依据（脚本与证据）</th></tr>
+    {{#fixes}}
+    <tr><td><span class="tag {{priority}}">{{priority}}</span></td><td>{{item}}</td><td>{{basis}}</td></tr>
+    {{/fixes}}
+  </table>
+
+  <div class="foot">
+    本报告所有分数由确定性脚本计算产生，可经证据路径复核；引用文献数字均标注测试环境与来源（设计指南 §4.4）。<br>
+    实测分标注采样轮数与波动区间，区间由实测统计得出，NEVER 预设数值。
+  </div>
+</div>
+</body>
+</html>

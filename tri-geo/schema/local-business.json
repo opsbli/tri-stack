@@ -1,0 +1,50 @@
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "[REPLACE: 门店页 URL + #business]",
+  "name": "[REPLACE: 门店/主体全称，须与地图 POI 名称完全一致]",
+  "branchOf": {
+    "@type": "Organization",
+    "@id": "[REPLACE: 品牌主体 #organization 的 @id，与 organization.json 保持一致]"
+  },
+  "url": "[REPLACE: 门店页 URL]",
+  "image": "[REPLACE: 门店门头图绝对地址]",
+  "description": "[REPLACE: 40-100 字门店描述，含主营 + 服务范围]",
+  "telephone": "[REPLACE: 门店电话，含区号]",
+  "priceRange": "[REPLACE: ¥¥ 或具体客区间，如 ¥¥]",
+  "currenciesAccepted": "CNY",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[REPLACE: 街道门牌，与地图 POI 一致]",
+    "addressLocality": "[REPLACE: 城市]",
+    "addressRegion": "[REPLACE: 省份]",
+    "postalCode": "[REPLACE: 邮编]",
+    "addressCountry": "CN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "[REPLACE: 纬度，须为数字，如 39.9042]",
+    "longitude": "[REPLACE: 经度，须为数字，如 116.4074]"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday", "Sunday"],
+      "opens": "10:00",
+      "closes": "16:00"
+    }
+  ],
+  "sameAs": [
+    "[REPLACE: 高德/百度地图 POI 页 URL]",
+    "[REPLACE: 大众点评商户页 URL，无则删除]",
+    "[REPLACE: 美团商户页 URL，无则删除]",
+    "[REPLACE: 品牌官网 URL]"
+  ],
+  "hasMap": "[REPLACE: 地图标注页 URL]"
+}

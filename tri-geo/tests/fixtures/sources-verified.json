@@ -1,0 +1,12 @@
+[
+  {
+    "claim": "2026 年中国 GEO 市场规模约 42 亿元",
+    "url": "https://example.com/report-2026",
+    "path": "tests/fixtures/source-page.txt"
+  },
+  {
+    "claim": "样本覆盖 42 个中文站点，实测周期 90 天",
+    "url": "https://example.com/report-2026",
+    "path": "tests/fixtures/source-page.txt"
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "[REPLACE: 官网首页 URL + #organization，如 https://example.com/#organization]",
+  "name": "[REPLACE: 工商/品牌全称，须与百科词条名完全一致]",
+  "alternateName": ["[REPLACE: 品牌简称]", "[REPLACE: 英文名或别名，无则删除本行]"],
+  "url": "[REPLACE: 官网首页 URL]",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "[REPLACE: 绝对地址 logo URL]",
+    "width": 600,
+    "height": 60
+  },
+  "description": "[REPLACE: 60-120 字客观描述，含品类 + 核心服务 + 覆盖区域，禁广告法禁用语]",
+  "foundingDate": "[REPLACE: ISO 8601 日期，如 2015-06-01]",
+  "founder": {
+    "@type": "Person",
+    "name": "[REPLACE: 创始人姓名，不便公开则删除本段]"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[REPLACE: 街道门牌]",
+    "addressLocality": "[REPLACE: 城市]",
+    "addressRegion": "[REPLACE: 省份]",
+    "postalCode": "[REPLACE: 邮编]",
+    "addressCountry": "CN"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "telephone": "[REPLACE: +86-400-000-0000]",
+      "email": "[REPLACE: 客服邮箱]",
+      "availableLanguage": ["zh-CN"]
+    }
+  ],
+  "sameAs": [
+    "[REPLACE: 百度百科词条 URL（最高优先）]",
+    "[REPLACE: 中文维基百科 URL，无则删除]",
+    "[REPLACE: 知乎机构号 URL]",
+    "[REPLACE: 微信公众号介绍页 URL，无则删除]",
+    "[REPLACE: 企查查/天眼查主体页 URL]",
+    "[REPLACE: 官方微博 URL，无则删除]",
+    "[REPLACE: B 站机构号 URL，无则删除]",
+    "[REPLACE: Wikidata 实体 URL，无则删除]"
+  ],
+  "knowsAbout": [
+    "[REPLACE: 核心业务关键词 1]",
+    "[REPLACE: 核心业务关键词 2]",
+    "[REPLACE: 核心业务关键词 3]"
+  ],
+  "areaServed": {
+    "@type": "Country",
+    "name": "CN"
+  }
+}
