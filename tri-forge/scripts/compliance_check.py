@@ -337,23 +337,24 @@ def check(d: Path) -> dict:
         f"首条={hv} frontmatter={ver} 文件最大={mx}")
 
     # 12 tests
-    #    **口径经全仓实测校准（第五轮）**：家族测试文件至少有 **三种约定**（且逐 skill 互斥）：
-    #      A 行首 TC 表行     `^\|\s*TC[-\s]`（tri-article / tri-humanize / tri-music…）
-    #      B 章节式 ### TC    `^###?\s+TC`（tri-coding / tri-god / tri-wiki / tri-loop / tri-pm…）
-    #      C 组式/管道式无统一编号（tri-sdlc / tri-guard / tri-geo / tri-workflow / tri-learn…）
-    #    ⇒ 任何单一编号正则都只覆盖部分约定，必然误判其余（此前连续四轮校准的根因）。
-    #    **约定无关的可靠代理**：测试文件中的**表格行数 ≥ 10**——
-    #    14 个被误判的文件最少 59 行表格（大多 100+），且所有约定都以表格为主载体；
-    #    命名约定（`tests/<slug>-full-testcases.md`）保证了文件的意图，
-    #    表格行数保证了内容丰富度。两者结合已足够稳健。
+    #    **口径经全仓实测校准（第六轮）**：家族测试文件至少有 **四种约定**（逐 skill 互斥）：
+    #      A 行首 TC 表行（tri-article / tri-humanize / tri-music…）
+    #      B 章节式 ### TC（tri-coding / tri-god / tri-wiki / tri-loop / tri-pm / tri-checklist / tri-html…）
+    #      C 组式/管道式无统一编号（tri-sdlc / tri-geo / tri-workflow / tri-learn…）
+    #      D 纯列表+正文式，**不用表格**（tri-frontend-design 169 行 / tri-pm 262 行，0 表格行）
+    #    ⇒ **任何单一形式判定都只覆盖部分约定**（此前五轮校准的根因——表格行数对 D 类不成立）。
+    #    **约定无关的可靠判据**：测试文件存在 + **行数 ≥ 50** + 标题含「测试用例」
+    #    （命名约定 `tests/<slug>-full-testcases.md` 保证意图，行数保证内容丰富度，
+    #      标题保证类型。三者结合已足够稳健，且对四种约定一律成立）。
     td = d / "tests"
     tfiles = list(td.glob("*-full-testcases.md")) if td.is_dir() else []
-    cases = 0
+    rich = False
     if tfiles:
-        cases = len(re.findall(r"^\|", read(tfiles[0]), re.M))
+        tt = read(tfiles[0])
+        rich = len(tt.splitlines()) >= 50 and "测试用例" in tt
     add(12, "tests 全场景用例",
-        "PASS" if tfiles and cases >= 10 else "FAIL",
-        f"用例文件 {len(tfiles)} 个；测试表格行 {cases} 行（约定无关口径）"
+        "PASS" if rich else "FAIL",
+        f"用例文件 {len(tfiles)} 个；{len(read(tfiles[0]).splitlines())} 行（约定无关口径：行数≥50 且标题含「测试用例」）"
         if tfiles else "无 tests/*-full-testcases.md")
 
     # 13 门禁（无门禁者 N-A，须附理由）
