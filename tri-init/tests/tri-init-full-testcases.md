@@ -40,3 +40,22 @@
 | T19 | 项目路径为文件（非目录） | 澄清；NEVER 继续 |
 | T20 | 项目目录为空 | 标注「空项目」；仍生成基础 AGENTS.md |
 | T21 | 版本检查报 D 态 | 放行但告警 |
+
+## 六、AGENTS.md 内容验证
+
+| # | 场景 | 预期结果 |
+|---|---|---|
+| T22 | AGENTS.md 含项目概述 | 标题 + 一句话描述 + 技术栈摘要 |
+| T23 | AGENTS.md 含技术栈表 | 与 project-scan.py 检出结果一致 |
+| T24 | AGENTS.md 含编码规范 | 命名规范 / 分层规范 / 代码风格 |
+| T25 | AGENTS.md 含目录结构说明 | 与实际目录结构一致 |
+
+## 七、project-profile.json 验证
+
+| # | 场景 | 预期结果 |
+|---|---|---|
+| T26 | profile 含 slug / name / version | 与 SKILL.md frontmatter 一致 |
+| T27 | profile 含 tech_stack 数组 | 与 project-scan.py 检出结果一致 |
+| T28 | profile 含 db_conventions（如有代码生成器） | 含租户/审计/逻辑删除字段 |
+| T29 | profile 含 directory_structure | 与实际目录一致 |
+| T30 | profile JSON 可被 tri-coding 解析 | tri-coding 门② 消费时不报错 |
