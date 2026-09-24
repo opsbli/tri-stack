@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-09-26
+
+### 新增
+
+- **交付前风险预筛自动门（tri-true 自动委派）**：解决「何时该对剖析结论深核」靠人工判断的缺口——阶段 7 交付前自动执行确定性风险预筛（R1 YMYL 领域 / R2 指导破坏性或高风险操作 / R3 无法本地自证的外部断言 / R4 低置信或 guess 溢出 / R5 作为决策或接手唯一依据），命中即自动委派 tri-true 开 `VERIFY_EXECUTE`，跑 `confidence_calc.py` 三层置信度门 + 人审盖章，落盘 `.tribro/true/<命名>/`。与契约第 10 条「结论置信标注」互补：第 10 条逐句标注（防线一行内），本条升级高影响结论为正式验证（防线升级闸）。诚实边界：自动层落地置信度门 + 事实源自检 + 人审标记；多模型交叉验证（UAF/T1-T4）需 key 与 RAG 基础设施，仅留方法论占位，NEVER 假装调用。版本号 1.4.1 → 1.5.0（新功能）。
+
 ## [1.4.1] - 2026-09-24
 
 ### 变更
