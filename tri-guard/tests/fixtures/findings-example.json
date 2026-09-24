@@ -1,5 +1,0 @@
-[
-  {"severity": "HIGH", "rule_id": "E2",        "confidence": 0.94, "executable": true},
-  {"severity": "MEDIUM", "rule_id": "E1",      "confidence": 0.89, "executable": true},
-  {"severity": "HIGH", "rule_id": "P1",        "confidence": 0.80, "executable": false}
-]

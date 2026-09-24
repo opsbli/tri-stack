@@ -1,7 +1,0 @@
-{
-  "slug": "tri-image",
-  "version": "2.0.0",
-  "parent": "tri-mm",
-  "displayName": "图片生成",
-  "source": "local"
-}
