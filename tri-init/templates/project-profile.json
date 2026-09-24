@@ -30,6 +30,12 @@
     "test": "",
     "lint": ""
   },
+  "standards_doc": {
+    "path": "",
+    "status": "",
+    "consumption_rule": "tri-coding 门② 与 tri-review MUST 完整阅读该文件后逐条对照执行；本 JSON 仅是结构化摘要，与该文件冲突时以该文件为准",
+    "sections": []
+  },
   "db_conventions": {
     "source": "",
     "tenant_fields": [],

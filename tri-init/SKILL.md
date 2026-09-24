@@ -101,6 +101,17 @@ license: MIT
 | 审计字段 | `BaseEntity.java` 或 `create_by/create_time` 列 | 审计字段名与类型 |
 | 逻辑删除 | `del_flag` 列或 `@TableLogic` 注解 | 删除标志字段名与值 |
 
+### 项目规范文档发现（唯一事实源指针 · 防双源漂移）
+
+| 检测目标 | 特征文件 | 处置 |
+|---|---|---|
+| 项目级强制规范 | `docs/agents/project-standards.md` | 存在即写入 profile 的 `standards_doc` 指针（path / status / consumption_rule / sections 索引） |
+| 领域术语 | `CONTEXT.md` | 存在即在 standards_doc.sections 登记 |
+| 架构决策记录 | `docs/adr/` | 存在即在 standards_doc.sections 登记 |
+
+> **铁律**：项目已有规范文档时，profile 只做**结构化摘要 + 指针**，NEVER 全文复制——防双源漂移；摘要与原文冲突时以原文为准，`consumption_rule` 固定为「tri-coding 门② 与 tri-review MUST 完整阅读该文件后逐条对照执行」。
+> **教训实证（2026-09-24 ops-pilot）**：首次生成漏了 standards_doc 指针，导致 profile 的 coding_standards 丢掉调用级骨架规则，且 del_flag 语义写成与项目硬规则冲突的旧口径——指针缺失会让 profile 与项目已确认规范脱节。
+
 ### 五步初始化流水线
 
 ```
