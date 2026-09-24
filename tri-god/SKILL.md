@@ -1,7 +1,7 @@
 ---
 name: 蒸馏造物
 slug: tri-god
-version: 1.2.1
+version: 1.2.2
 displayName: 蒸馏造物
 description: 蒸馏元 skill 下游执行 skill；读取快照§三直接执行；处理蒸馏类意图（把人/工作流/专业技能/事物/其它提炼为可用 skill）；当 tri-intent 快照下游路由建议指向本 skill 时激活；支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）
 summary: 依据 tri-intent 快照识别蒸馏对象类型并 registry 驱动加载对应方法论，把人类/工作流/专业技能/事物提炼为可独立调用的 skill，含双审批门+执行前确认、敏感信息脱敏边界与结论置信标注。
@@ -34,7 +34,7 @@ license: MIT
 - MUST 遵循最小化原则：只做 `tasks.md` 范围内的蒸馏工作，扩大范围须用户确认。
 
 **③ 职责边界（NEVER）**
-- NEVER 越界执行其它 skill 的职责：不做纯咨询作答（→ tri-ask）、不做常规编码开发（→ tri-coding）、不做缺陷修复（→ tri-fix）。本 skill 的产物是「一个新 skill」，而非普通答复或业务代码。
+- NEVER 越界执行其它 skill 的职责：不做纯咨询作答（本分支未包含，原 tri-ask）、不做常规编码开发（→ tri-coding）、不做缺陷修复（→ tri-fix）。本 skill 的产物是「一个新 skill」，而非普通答复或业务代码。
 
 **④ 自检句**
 - MUST 作答前先声明自检句：「本次意图=<L2>，已读取快照，蒸馏对象类型=<类型>，加载方法论=<方法论>，已读教训=<N 条/无文件>」；与快照冲突时 MUST 停止并纠正，NEVER 擅自继续。
@@ -128,10 +128,10 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：识别蒸馏对象类型 → 路由并加载对应方法论 → 按方法论执行蒸馏 → 产出可独立调用的 skill 及配套链路文档。
-- **不负责**：纯咨询作答（→ tri-ask）、常规业务编码（→ tri-coding）、缺陷修复（→ tri-fix）、意图识别（由 tri-intent）、多媒体产物（→ tri-mm）。
-- **与相邻 skill 边界**：tri-god 的产物永远是「一个新 skill（方法论/人格/流程的可复用封装）」；tri-coding 产出业务代码，tri-ask 只作答不产出 skill。若用户只想要一次性答案而非可复用 skill，应回退 tri-ask/tri-content。
+- **不负责**：纯咨询作答（本分支未包含，原 tri-ask）、常规业务编码（→ tri-coding）、缺陷修复（→ tri-fix）、意图识别（由 tri-intent）、多媒体产物（本分支未包含，原 tri-mm）。
+- **与相邻 skill 边界**：tri-god 的产物永远是「一个新 skill（方法论/人格/流程的可复用封装）」；tri-coding 产出业务代码，原 tri-ask 只作答不产出 skill（本分支未包含）。若用户只想要一次性答案而非可复用 skill，应回退到对应的作答/内容能力（原 tri-ask/tri-content，均未包含在本分支）。
 - **脱敏边界**：无论何种调用通道，蒸馏素材中的敏感信息（商业机密/专有流程细节/个人隐私）MUST 在门① 声明脱敏范围并经确认，产物 NEVER 携带可识别敏感细节——本 skill 产物须可在通用场景安全复用。
-- **不触发场景（Not-Trigger）**：本 skill 不接手「通用业务代码 / 前端工程开发」（转 tri-coding，本 skill 只蒸馏造 skill）；不接手「去 AI 化改写既有文本」（属 tri-humanize）；不接手「通用内容生成」（属 tri-content）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「通用业务代码 / 前端工程开发」（转 tri-coding，本 skill 只蒸馏造 skill）；不接手「去 AI 化改写既有文本」（本分支未包含，原 tri-humanize）；不接手「通用内容生成」（本分支未包含，原 tri-content）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 蒸馏方法论（核心能力 · 可扩展）
 

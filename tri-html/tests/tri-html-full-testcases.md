@@ -2,7 +2,7 @@
 ---
 name: tri-html-full-testcases
 description: tri-html 全场景测试用例。覆盖 SKILL.md 全部能力点（强制执行契约 / 上游依赖检测 / 输入契约 / 六维分析方法论 / 双渲染引擎 / HTML 组装 / 双审批门 / §3.13 代码版权 / 质量标准）。
-version: 1.3.1
+version: 1.3.2
 based_on: tri-html v1.3.0
 ---
 

@@ -1,8 +1,8 @@
 ---
 ---
 name: tri-coding-full-testcases
-description: 基于 tri-coding v1.7.0 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约（6 条 MUST/NEVER）、上游依赖检测三态与输入契约、registry 驱动技术栈加载、双审批门+执行前确认工作流、交付产物与落盘、职责边界（tri-fix/tri-review/tri-sdlc/tri-plan/tri-content）、代码版权与许可证合规硬红线等全部能力点，含正例/诱饵反例/边界模糊三类。
-version: 1.7.0
+description: 基于 tri-coding v1.7.0 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约（6 条 MUST/NEVER）、上游依赖检测三态与输入契约、registry 驱动技术栈加载、双审批门+执行前确认工作流、交付产物与落盘、职责边界（tri-fix/tri-review/tri-sdlc/tri-plan 等）、代码版权与许可证合规硬红线等全部能力点，含正例/诱饵反例/边界模糊三类。
+version: 1.7.1
 ---
 
 # 编码开发工作流 · 全场景全能力测试用例（审计版）
@@ -91,7 +91,7 @@ version: 1.7.0
 | G2 | 与 tri-review 边界 | 代码审查（CR）归 tri-review，本 skill 不接 |
 | G3 | 与 tri-sdlc 边界 | I11 全生命周期子类（L3=sdlc）覆写路由到 tri-sdlc，本 skill 不接 |
 | G4 | 与 tri-plan 边界 | tri-plan 只出方案不写代码；本 skill 既出方案也动手 |
-| G5 | 与 tri-content 边界 | 非编码类文本产物归 tri-content |
+| G5 | 与文本类产出的边界 | 非编码类文本产物在本分支未包含 |
 
 ### H. 代码版权与许可证合规能力（硬红线）
 
@@ -360,11 +360,11 @@ version: 1.7.0
 - **预期结果**：说明 tri-plan 只出方案不写代码为更贴合的归属；若用户坚持在本 skill 内，则明确停在门②design.md 不进入执行
 - **通过标准**：PASS——边界说明清晰且不擅自写代码；FAIL——直接进入执行阶段
 
-### TC-G-05：非编码文本产物应转 tri-content【G5｜诱饵反例】
+### TC-G-05：非编码文本产物本分支未包含【G5｜诱饵反例】
 - **能力点引用**：G5
 - **输入场景**：用户说「帮我把这个项目的 README 重写得更专业些」
-- **预期结果**：识别为 I06/I07 文本类意图，说明归属 tri-content，本 skill 不接
-- **通过标准**：PASS——移交 tri-content；FAIL——按 I11 走编码工作流
+- **预期结果**：识别为 I06/I07 文本类意图，说明该文本类在本分支未包含（原 tri-content），本 skill 不接
+- **通过标准**：PASS——说明文本类本分支未包含；FAIL——按 I11 走编码工作流
 
 ---
 

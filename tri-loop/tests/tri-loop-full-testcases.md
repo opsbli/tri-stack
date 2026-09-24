@@ -2,7 +2,7 @@
 ---
 name: tri-loop-full-testcases
 description: 基于 tri-loop v1.2.2 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、5 条强制执行契约、上游依赖检测（A/A0/B/C）、输入契约、substrate bootstrap、charter 收集、README scaffold、真实测试运行、Timeline+LOG.md 记录、回报、落盘规则、质量标准八维、安全约束与最小化原则。
-version: 1.2.2
+version: 1.2.3
 ---
 
 # tri-loop 全场景测试用例

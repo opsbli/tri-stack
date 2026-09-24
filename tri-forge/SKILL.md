@@ -1,7 +1,7 @@
 ---
 name: tri-forge
 slug: tri-forge
-version: 1.0.0
+version: 1.0.1
 displayName: 技能锻造（tri-forge）
 description: 内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于「按家族硬规范生成 / 补全 / 审计一个 skill」：以 references/family-spec.md 为生成单一事实源，通过三模式（A 规范顾问·不落盘 / B 补全审计 / C 锻造生成·五门流程）产出或修复**合规的 skill 包**，并以 references/compliance-checklist.md 的 22 条硬约束在门④逐条自检，全过方可落盘；生成物若具备 tri-intent 下游身份，MUST 在门③同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / README 表，NEVER 只生成 skill 而不接通路由。同时承接家族的四点版本一致性校验（原 sync_registry.py 职能）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。
 summary: 三模式技能锻造工具（A 规范顾问 / B 补全审计 / C 锻造生成五门流程）+ 家族硬规范单源 + 22 条合规硬约束门④自检 + 门③路由回流强制 + 四点版本一致性校验 + 四平台安装。
@@ -31,7 +31,7 @@ license: MIT
 3. **门④ 逐条自检强制**：C 模式下产物落盘前 MUST 逐条执行 22 条硬约束自检，**全部 PASS / N/A（须附理由）方可落盘**；任一条 FAIL → 回炉门② 修正，NEVER 带缺口交付。可执行实现见 `scripts/compliance_check.py`。
 4. **门③ 路由回流强制**：生成物若**具备 tri-intent 下游身份**（认领 L2/L3 意图编码），MUST 在门③同步回填——路由映射表 / L3 子类 note / 下游依赖检测路径 / 家族计数 / README 相关表。**NEVER 只生成 skill 而不接通路由**。回填规则见 `references/tri-intent-integration.md`。
 5. **跨真源交叉比对强制**：门④ 的「意图认领 MECE 不重叠」一条 MUST 以 `tri-intent/SKILL.md` 的**路由映射表**（路由真源）为比对基准，**不得**以 `family-spec.md` 内的路由副本为唯一依据。
-6. **职责边界（NEVER 越界）**：本 skill 产出的是「**合规的 skill 包**」，不是业务代码、不是普通答复、不是内容成果物。不做纯咨询作答（→ tri-ask）、不做常规编码开发（→ tri-coding）、不做缺陷修复（→ tri-fix）、不做非 skill 类蒸馏（→ tri-god，见 §职责边界）。A 模式**不落盘**，NEVER 借 A 模式之名写入任何文件。
+6. **职责边界（NEVER 越界）**：本 skill 产出的是「**合规的 skill 包**」，不是业务代码、不是普通答复、不是内容成果物。不做纯咨询作答（本分支未包含，原 tri-ask）、不做常规编码开发（→ tri-coding）、不做缺陷修复（→ tri-fix）、不做非 skill 类蒸馏（→ tri-god，见 §职责边界）。A 模式**不落盘**，NEVER 借 A 模式之名写入任何文件。
 7. **版本一致性校验（家族承接职能）**：本 skill 承接家族**四点版本一致性校验**（`SKILL.md` frontmatter / `CHANGELOG.md` 首条 / `_meta.json` / 平台注册表）的 `--check` 与 `--apply` 两模式。本仓库额外有 `README` 版本声明这第 5 处（见 `references/version-check-spec.md`）。检出漂移 MUST 报告；`--apply` 只回写可由规则化的位点，**CHANGELOG 首条属人工内容，NEVER 代写**。
 8. **最小化原则**：只做 `任务要点` 或用户明确要求范围内的生成 / 补全 / 审计工作，NEVER 擅自扩展范围（如顺手重构无关 skill、批量改无关文件）。扩大范围须先向用户说明并确认。
 9. **自检句**：每次响应前 MUST 声明「本次模式=&lt;A/B/C&gt;，触发分支=&lt;快照路由/直接触发/补全触发/顾问触发&gt;，已读取&lt;快照§三/family-spec/compliance-checklist/目标 skill&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;」，若与上述规则冲突则停止并纠正。
@@ -55,8 +55,8 @@ license: MIT
 | 写业务代码 / 实现功能 | tri-coding（I11） |
 | 修 bug / 调试 | tri-fix（I12） |
 | 审查**业务代码**质量 | tri-review（CR） |
-| 生成普通内容 / 文章 / 翻译 | tri-content / tri-article / tri-translate |
-| 审 AI agent skill **安全性、可信性、可否安装**（供应链风险） | tri-guard |
+| 生成普通内容 / 文章 / 翻译 | 本分支未包含（原 tri-content / tri-article / tri-translate） |
+| 审 AI agent skill **安全性、可信性、可否安装**（供应链风险） | 本分支未包含（原 tri-guard） |
 | 识别用户意图 / 路由 | tri-intent |
 
 > **与 tri-god 的关键边界**：二者都以「产出 skill」为表象，判据是**依据什么生成**——
@@ -117,7 +117,7 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：判定执行模式 → 依家族硬规范生成 / 补全 / 审计 skill 包 → 门④ 22 条合规自检 → 门③ 路由回流 → 交付；并承接家族四点版本一致性校验。
-- **不负责**：意图识别（tri-intent）、业务代码（tri-coding）、缺陷修复（tri-fix）、业务代码审查（tri-review）、内容与多媒体产出（tri-content / tri-article / tri-mm）、非 skill 类蒸馏（tri-god）、skill 安全审计（tri-guard）。
+- **不负责**：意图识别（tri-intent）、业务代码（tri-coding）、缺陷修复（tri-fix）、业务代码审查（tri-review）、内容与多媒体产出（本分支未包含，原 tri-content / tri-article / tri-mm）、非 skill 类蒸馏（tri-god）、skill 安全审计（本分支未包含，原 tri-guard）。
 - **与 tri-intent 的关系**：**不注册为下游**。本 skill 的产物若具备下游身份，由**本 skill 在门③主动回填** tri-intent——即本 skill 是「下游的制造者」，而不是下游之一。
 - **产物归属**：本 skill 产出**合规的 skill 包**（可被独立安装、被路由、被检测）。产物落盘后即脱离本 skill 管辖，后续维护由维护者按家族规范进行。
 

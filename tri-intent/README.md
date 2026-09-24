@@ -1,3 +1,7 @@
+> **分支范围提示（编程工作流专线）**：本文件描述的是**分类识别逻辑**，该逻辑完整保留；
+> 但其中提到的部分下游 skill **未包含在本分支**。路由真源以 `SKILL.md` §一 路由映射表为准；
+> 未包含的落点在快照中标注「本分支未包含」，全量实现见归档分支 `archive-full-skills-20260924`。
+
 # tri-intent
 
 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都先经此 skill 处理——完成第一层三分法（Asking / Doing / Expressing / Meta）判定，下钻二级意图（I01–I21 / CR / M01–M05），标注正交维度（D1–D5），产出快照（`snapshot.md`）作为唯一交付产物，交接下游 skill 精准执行。
@@ -75,18 +79,18 @@ tri-intent/
 | `sdlc` | I11 / I13 / I14 | `tri-sdlc` | 全生命周期九阶段编排（优先级高于 workflow / loop） |
 | `workflow` | I13 / I14 | `tri-workflow` | 产出流程定义产物（DAG / CI 配置 / 审批模板） |
 | `loop` | I14 | `tri-loop` | 知识库 loop/domain 创建 |
-| `music` | I15 | `tri-mm` → `tri-music` | 二跳委派，tri-intent 不直接路由 tri-music |
-| `article` | I06 | `tri-article` | 去 AI 化长文 / 技术文章 |
-| `pdf2md` | I08 | `tri-pdf2md` | PDF→Markdown 转换（五阶段管道 + 保真率/丢失率分级质量报告 + 类 Obsidian 结构化/父子分块/RAG 数据供给） |
-| `docx2md` | I08 | `tri-docx2md` | Word→Markdown 转换（.docx/.docm/.doc 全族 anydoc 直读首选，四门管道 + 保真度分级报告） |
-| `pptx2md` | I08 | `tri-pptx2md` | PPT→Markdown 转换（.pptx/.pptm/.pps/.pot/.ppsx/.ppsm/.ppt 同族七扩展名 anydoc 直读首选，四门管道 + 保真度分级报告） |
-| `xlsx2md` | I08 | `tri-xlsx2md` | Excel→Markdown 转换（.xlsx/.xlsm/.xls/.xlsb/.csv 全族 anydoc 直读首选 + 多 Sheet 结构化 + 保真度分级报告） |
-| `html2md` | I08 | `tri-html2md` | HTML→Markdown 转换（四门管道 + 双档降级链 + 保真度分级报告） |
-| `wiki` | I08 | `tri-wiki` | 知识库搭建（六阶段管道：信息架构/收集预检/批量转换委派 x2md 族/组织元数据/MOC 链接索引/质量报告） |
+| `music` | I15 | （本分支未包含，原 `tri-mm` → `tri-music`） | 二跳委派（本分支无下游） |
+| `article` | I06 | （本分支未包含，原 `tri-article`） | 去 AI 化长文 / 技术文章 |
+| `pdf2md` | I08 | （本分支未包含，原 `tri-pdf2md`） | PDF→Markdown 转换（五阶段管道 + 保真率/丢失率分级质量报告 + 类 Obsidian 结构化/父子分块/RAG 数据供给） |
+| `docx2md` | I08 | （本分支未包含，原 `tri-docx2md`） | Word→Markdown 转换（.docx/.docm/.doc 全族 anydoc 直读首选，四门管道 + 保真度分级报告） |
+| `pptx2md` | I08 | （本分支未包含，原 `tri-pptx2md`） | PPT→Markdown 转换（.pptx/.pptm/.pps/.pot/.ppsx/.ppsm/.ppt 同族七扩展名 anydoc 直读首选，四门管道 + 保真度分级报告） |
+| `xlsx2md` | I08 | （本分支未包含，原 `tri-xlsx2md`） | Excel→Markdown 转换（.xlsx/.xlsm/.xls/.xlsb/.csv 全族 anydoc 直读首选 + 多 Sheet 结构化 + 保真度分级报告） |
+| `html2md` | I08 | （本分支未包含，原 `tri-html2md`） | HTML→Markdown 转换（四门管道 + 双档降级链 + 保真度分级报告） |
+| `wiki` | I08 | （本分支未包含，原 `tri-wiki`） | 知识库搭建（六阶段管道：信息架构/收集预检/批量转换委派 x2md 族/组织元数据/MOC 链接索引/质量报告） |
 | `arch-viz` | I10 | `tri-html` | 项目架构可视化分析（单文件 HTML，六维架构分析） |
 | `audit-checklist` | I10 | `tri-checklist` | 项目审计清单生成（Markdown 复选框，四维审计） |
 | `code-analyzer` | I10 | `tri-code-analyzer` | 代码库全维度深度剖析（双视角五部分 Markdown 报告 + Mermaid 四图 + file:line 证据锚 + 技术栈知识库对照 + 上手/重构指南） |
-| `pm` | I06 | `tri-pm` | PM 领域产物（PRD/战略画布/路线图/OKR/GTM/竞品分析/AI 交付审计包） |
+| `pm` | I06 | （本分支未包含，原 `tri-pm`） | PM 领域产物（PRD/战略画布/路线图/OKR/GTM/竞品分析/AI 交付审计包） |
 | `frontend-design` | I11 | `tri-frontend-design` | 前端设计方向（风格锚点 CSS 令牌 + 动效引擎 + 多变体探索；代码实现仍走 tri-coding） |
 | `motion` | I11 | `tri-lottie` | 动效实现（8 步规格单决策 → 六端动画代码：Web/Android/iOS/鸿蒙 ArkTS/React Native/Flutter；Lottie 集成与动效审查） |
 

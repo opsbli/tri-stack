@@ -1,7 +1,7 @@
 ---
 name: 规划拆解
 slug: tri-plan
-version: 1.3.0
+version: 1.3.1
 displayName: 规划拆解
 description: 规划拆解下游执行 skill。读取 tri-intent 快照 §三，处理 I13（规划拆解）意图，产出计划/方案/任务清单/排期等结构化规划成果物。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装）。
 summary: 依据 tri-intent 快照自主管理规划全链路（规划纲要→完整规划→任务清单），融合 WBS 分解与 SMART 目标校准方法论，含三门审批机制。
@@ -22,10 +22,10 @@ license: MIT
 2. **规划确认门 + 任务清单硬性规则**：I13 属规划类，MUST 严格串行经过**规划方向确认门 + 规划审计门 + 交付前确认**，禁止直接给最终计划：
    - **门①（规划方向确认）**：先产出 `plan-brief.md`（规划纲要），向用户结构化复述供确认；**通过后**方可进入深度拆解。目标或范围含糊时 MUST 在此门澄清，不得带着含糊目标进入拆解。
    - **门②（规划审计）**：据已确认的 plan-brief.md 产出 `plan.md`（完整规划文档），再交用户审计；**通过后**方可产出 `task-checklist.md`。
-   - **门③（交付前确认）**：门②通过后产出 `task-checklist.md`（可执行任务清单+验收标准+依赖标注），**交付前 MUST 主动询问用户两件事**：① 是否需要调用其它 skill 协同（如 tri-coding 编码实现、tri-action 操作执行、tri-content 文档产出等）；② 是否有需要补充的约束/素材。用户确认无补充 → 交付；用户提出补充 → 据反馈更新 `task-checklist.md`（涉及规划缺陷则回退门②更新 `plan.md`）后再次确认，**通过后方可交付**，禁止跳门抢跑。
+   - **门③（交付前确认）**：门②通过后产出 `task-checklist.md`（可执行任务清单+验收标准+依赖标注），**交付前 MUST 主动询问用户两件事**：① 是否需要调用其它 skill 协同（如 tri-coding 编码实现、tri-action 操作执行等）；② 是否有需要补充的约束/素材。用户确认无补充 → 交付；用户提出补充 → 据反馈更新 `task-checklist.md`（涉及规划缺陷则回退门②更新 `plan.md`）后再次确认，**通过后方可交付**，禁止跳门抢跑。
    - **任务清单复选框规则**：task-checklist.md 中每个任务条目均含「完成状态」复选框字段，形如 `` `- [ ] **完成状态**：未确认` ``（`- [ ]` 必须位于行首，否则 GFM 渲染成纯文本而非可勾选控件）。此处的「完成」指**规划交付确认**，非任务本身执行完成（执行由下游 skill 负责）。
    - 完整链路：`plan-brief.md → ①→ plan.md → ②→ task-checklist.md → ③→ 交付`。任一门未通过则携反馈回炉，不得跳门或抢跑。**阶段—产物—门—关键动作的完整对应见 §阶段速查表（唯一事实源），本条不再复述。**
-3. **职责边界**：本 skill 负责「读取快照 → 明确目标 → 结构化拆解 → 产出规划文档 → 交付任务清单」全链路。意图识别（由 tri-intent）、编码实现（由 tri-coding）、真实操作执行（由 tri-action）、内容文本产出（由 tri-content）不属于本 skill。**本 skill 只出方案不写代码不执行操作。**
+3. **职责边界**：本 skill 负责「读取快照 → 明确目标 → 结构化拆解 → 产出规划文档 → 交付任务清单」全链路。意图识别（由 tri-intent）、编码实现（由 tri-coding）、真实操作执行（由 tri-action）、内容文本产出（本分支未包含）不属于本 skill。**本 skill 只出方案不写代码不执行操作。**
 4. **自检**：作答前用一句话声明「本次意图=I13，已读取快照，当前阶段=<阶段>」，若与上述规则冲突则停止并纠正。
 
 > 若快照 `澄清门状态` = 待澄清，本 skill 不应激活。
@@ -71,7 +71,7 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：依据快照结论，对 I13 意图产出规划类成果物（计划/方案/任务清单/排期/里程碑）
-- **不负责**：意图识别（由 tri-intent）、编码实现（由 tri-coding）、真实操作执行（由 tri-action）、内容文本产出（由 tri-content）
+- **不负责**：意图识别（由 tri-intent）、编码实现（由 tri-coding）、真实操作执行（由 tri-action）、内容文本产出（本分支未包含）
 - **关键边界**：本 skill 只出「方案/计划」，不「动手做」——动手执行归 tri-action 或 tri-coding
 - **与 tri-coding 的协作**：tri-plan 产出的 task-checklist.md 可作为 tri-coding 的执行输入；tri-plan 只拆解任务不规定代码实现细节，技术实现方案归 tri-coding 的 design.md
 - **与 tri-action 的协作**：tri-plan 产出的任务清单中标注「建议执行 skill=tri-action」的任务，由 tri-action 读取并执行
@@ -85,7 +85,7 @@ license: MIT
 
 > 命中 L3 子类却路由到本 skill 时，MUST 停止并回退 tri-intent 重新路由，NEVER 越界接管。
 
-- **不触发场景（Not-Trigger）**：本 skill 不接手「编码实现 / 动手执行」（转 tri-coding / tri-action）；不接手「工作流设计、全生命周期编排」（属 tri-workflow / tri-sdlc，I13 L3 分流）；不接手「内容文本产出」（属 tri-content）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「编码实现 / 动手执行」（转 tri-coding / tri-action）；不接手「工作流设计、全生命周期编排」（属 tri-workflow / tri-sdlc，I13 L3 分流）；不接手「内容文本产出」（本分支未包含）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 
 ## 核心能力方法论（WBS 拆解 · 可扩展）

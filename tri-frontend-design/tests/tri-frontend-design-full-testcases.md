@@ -1,7 +1,7 @@
 ---
 name: tri-frontend-design-full-testcases
 slug: tri-frontend-design
-version: 1.1.1
+version: 1.1.2
 description: 全场景全能力测试用例（审计版），覆盖八锚点选择、令牌保真、内容纪律、抗杂交、版本门，以及 v1.1.1 的三模式（design / motion / variants）动效引擎、评审、审计、多变体。
 ---
 

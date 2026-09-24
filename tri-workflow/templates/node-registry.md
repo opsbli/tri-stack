@@ -52,7 +52,7 @@
 | `data-clean` | 数据清洗 | auto | system/etl | 清洗/去重/格式化 | data-pipeline |
 | `data-transform` | 数据转换 | auto | system/etl | 数据格式转换/聚合 | data-pipeline |
 | `data-load` | 数据加载 | auto | api/database | 加载到目标数据库 | data-pipeline |
-| `report-generate` | 报表生成 | auto | skill/tri-content | 生成分析报表 | data-pipeline |
+| `report-generate` | 报表生成 | auto | skill/tri-coding | 生成分析报表 | data-pipeline |
 
 ### 五、监控告警类
 

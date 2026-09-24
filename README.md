@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](CHANGELOG.md)
-[![Skills](https://img.shields.io/badge/skills-42-6c5ce7.svg)](#技能目录)
+[![Skills](https://img.shields.io/badge/skills-22-6c5ce7.svg)](#技能目录)
 [![Self-Maintained](https://img.shields.io/badge/status-self--maintained-00b894.svg)](#自维护声明)
 
 **模块化、可组合的 AI 智能体技能集合 · 自维护 fork**
@@ -22,7 +22,8 @@
 - **自建基础设施**：`ops/` 目录包含版本校验器、补丁层、补装工具与版本线基线
 - **自建 tri-forge**：技能锻造 skill（三模式 + 五门流程 + 22 条合规门禁）
 - **自建 tri-prototype**：PM→Dev 桥接 skill（解析原型 + PRD → 产出 tri-coding 需求说明书）
-- **补装缺失 skill**：从平台补装 11 个 tri-intent 路由引用的子类 skill（顶层 29 → 42）
+- **补装缺失 skill**：曾从平台补装 11 个 tri-intent 路由引用的子类 skill（顶层 29 → 42）
+- **分支收窄（2026-09-24）**：`main` 收窄为**编程工作流专线，22 个 skill**；全量 46 个保存在归档分支 `archive-full-skills-20260924`
 
 > 上游作者将 tri-forge 私有化（`.gitignore` 显式排除 + 平台未发布），本仓库依据
 > `tri-mece-audit/tri-mece-audit.html` 记录的规格自行重建。
@@ -31,7 +32,9 @@
 
 ## 简介
 
-**tri-stack** 是一个面向 AI 智能体的技能集合，提供 **46 个模块化、可组合的 skill**，覆盖意图路由、编码、审查、修复、规划、内容生成、翻译、工作流编排、原型解析、PM→Dev 桥接等多个领域。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
+**tri-stack** 是一个面向 AI 智能体的技能集合。**本分支（`main`）为编程工作流专线，携带 22 个 skill**，覆盖意图路由、编码、审查、修复、规划、代码洞察、全流程编排、项目接入与 skill 锻造。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
+
+> **全量版（46 个 skill）** 保存在归档分支 **`archive-full-skills-20260924`**，额外包含内容生成、格式转换（PDF/Word/PPT/Excel/HTML → Markdown）、多模态生成、表达陪伴、领域单入口与横向方法论等 24 个 skill。
 
 ### 设计理念
 
@@ -43,82 +46,74 @@
 
 ---
 
-## 技能目录（46 个）
+## 分支说明：编程工作流专线
 
-### 入口层
+本分支面向**编程工作流的 skill 开发**，只携带编程线 22 个 skill。
+
+- 全量版 46 个 skill 保存在归档分支 **`archive-full-skills-20260924`**（已推送远端）
+- 需要非编程能力的 skill 时，从归档分支取用或在该分支工作
+- `tri-intent` 的 **27 落点分类体系完整保留**——未包含的落点（I01–I09 / I15 / I16 / I17–I20）在快照中被标注为「本分支未包含」，**不再触发安装询问**
+
+---
+
+## 技能目录（22 个）
+
+### 控制面
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-intent](tri-intent/) | 1.13.1 | 意图识别总路由。第一层三分法（Asking/Doing/Expressing/Meta）→ 下钻二级意图 → 产出快照交接下游 |
+| [tri-meta](tri-meta/) | 1.2.2 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
 
-### 执行层（按意图分派）
+### 编程主干（写 → 修 → 审）
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-ask](tri-ask/) | 1.2.2 | 咨询作答（I01–I05） |
-| [tri-content](tri-content/) | 1.2.4 | 通用内容处理（I06–I10） |
-| [tri-article](tri-article/) | 1.4.1 | 去 AI 化技术文章生成（I06 子类） |
 | [tri-coding](tri-coding/) | 1.7.0 | 编码开发，三门流程：需求审批 → 设计审批 → 执行确认（I11） |
-| [tri-fix](tri-fix/) | 1.4.0 | 调试修复：先造红再定位根因（I12） |
+| [tri-fix](tri-fix/) | 1.4.0 | 调试修复：先造出一条能变红的反馈循环，再定位根因（I12） |
 | [tri-review](tri-review/) | 1.6.0 | 代码审查：三模式 + Fowler 12 坏味 + 审查执行纪律八则（CR） |
+
+### 编码子类（I11 一跳覆写）
+
+| 名称 | 版本 | 描述 |
+|---|---|---|
+| [tri-frontend-design](tri-frontend-design/) | 1.1.1 | 前端设计方向：设计令牌 / 动效基线 / 多变体探索 |
+| [tri-lottie](tri-lottie/) | 1.0.2 | 动效实现 / Lottie 集成 |
+| [tri-prototype](tri-prototype/) | 1.1.0 | PM→Dev 桥接：解析原型 + PRD → tri-coding 需求说明书 |
+
+### 代码洞察（I10 一跳覆写）
+
+| 名称 | 版本 | 描述 |
+|---|---|---|
+| [tri-code-analyzer](tri-code-analyzer/) | 1.4.0 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
+| [tri-html](tri-html/) | 1.3.1 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
+| [tri-checklist](tri-checklist/) | 1.1.3 | 审计清单生成：改动点 / 审查点 / 测试点 / 测试步骤四维 |
+
+### 全流程 / 协作对齐
+
+| 名称 | 版本 | 描述 |
+|---|---|---|
+| [tri-sdlc](tri-sdlc/) | 1.1.3 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
+| [tri-orchestrate](tri-orchestrate/) | 1.0.0 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
+| [tri-grill](tri-grill/) | 1.0.0 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
+| [tri-domain](tri-domain/) | 1.0.0 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
+
+### 内务 / 造物
+
+| 名称 | 版本 | 描述 |
+|---|---|---|
+| [tri-init](tri-init/) | 1.0.0 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
+| [tri-forge](tri-forge/) | 1.0.0 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
+| [tri-god](tri-god/) | 1.2.1 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
+
+### 相邻支撑
+
+| 名称 | 版本 | 描述 |
+|---|---|---|
 | [tri-plan](tri-plan/) | 1.3.0 | 规划拆解：WBS + 依赖图 + 风险登记（I13） |
 | [tri-action](tri-action/) | 1.2.2 | 操作执行（I14） |
-| [tri-bs](tri-bs/) | 1.2.2 | 头脑风暴（I16） |
-| [tri-mm](tri-mm/) | 1.5.0 | 多媒体生成路由编排（I15） |
-| [tri-music](tri-music/) | 2.2.3 | 爆款音乐生成器（I15 音乐子类） |
-| [tri-express](tri-express/) | 1.2.2 | 表达陪伴（I17–I20，不落盘） |
-| [tri-meta](tri-meta/) | 1.2.2 | 元操作处理（M01–M04） |
-| [tri-god](tri-god/) | 1.2.1 | 蒸馏造物（I21） |
-| [tri-html](tri-html/) | 1.3.0 | 架构可视化分析（I10 子类） |
-| [tri-checklist](tri-checklist/) | 1.1.2 | 审计清单生成（I10 子类） |
-| [tri-frontend-design](tri-frontend-design/) | 1.1.1 | 前端设计方向（I11 子类） |
-| [tri-lottie](tri-lottie/) | 1.0.2 | 动效实现 / Lottie 集成（I11 子类） |
-| [tri-code-analyzer](tri-code-analyzer/) | 1.4.0 | 代码深度剖析（I10 子类） |
-| [tri-pdf2md](tri-pdf2md/) | 1.4.5 | PDF → Markdown（I08 子类） |
-| [tri-docx2md](tri-docx2md/) | 1.4.5 | Word → Markdown（I08 x2md 族） |
-| [tri-pptx2md](tri-pptx2md/) | 1.4.5 | PPT → Markdown（I08 x2md 族） |
-| [tri-xlsx2md](tri-xlsx2md/) | 1.3.5 | Excel → Markdown（I08 x2md 族） |
-| [tri-html2md](tri-html2md/) | 1.3.5 | HTML → Markdown（I08 x2md 族） |
-| [tri-wiki](tri-wiki/) | 1.1.0 | 知识库搭建（I08 子类） |
-| [tri-prototype](tri-prototype/) | 1.1.0 | PM→Dev 桥接：解析原型 + PRD → tri-coding 需求说明书（I11 子类） |
-
-### 编排层
-
-| 名称 | 版本 | 描述 |
-|---|---|---|
 | [tri-workflow](tri-workflow/) | 1.2.3 | 工作流设计引擎：7 阶段混合智能流水线（I13/I14 子类） |
-| [tri-sdlc](tri-sdlc/) | 1.1.3 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面（I11/I13/I14 子类） |
 | [tri-loop](tri-loop/) | 1.2.2 | 知识库 loop 启动（I14 子类） |
-| [tri-orchestrate](tri-orchestrate/) | 1.0.0 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
-
-### 横向方法论层
-
-| 名称 | 版本 | 描述 |
-|---|---|---|
-| [tri-cache](tri-cache/) | 2.1.1 | 四层缓存 + 上下文压缩 |
-| [tri-cost](tri-cost/) | 1.3.0 | token 成本审计 + 预算闸门 |
-| [tri-evolve](tri-evolve/) | 1.1.2 | 自进化学习 + 用户画像 |
-| [tri-guard](tri-guard/) | 1.0.1 | skill 安全审计（skillspector 确定性扫描） |
-| [tri-humanize](tri-humanize/) | 1.1.1 | 去 AI 化改写（35 种 AI 写作模式） |
-| [tri-translate](tri-translate/) | 1.1.2 | 三策略分层翻译 |
-| [tri-true](tri-true/) | 1.1.2 | 四道防线消除幻觉 |
-| [tri-domain](tri-domain/) | 1.0.0 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
-| [tri-grill](tri-grill/) | 1.0.0 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
-
-### 领域层
-
-| 名称 | 版本 | 描述 |
-|---|---|---|
-| [tri-learn](tri-learn/) | 1.0.2 | 一对一学习教练（掌握学习 + 间隔重复 + 错题追踪） |
-| [tri-jobhunt](tri-jobhunt/) | 1.0.3 | 求职全流程（ATS 简历 + 面试 + 谈判），含 6 个 children |
-| [tri-pm](tri-pm/) | 1.1.1 | PM 领域产物与工作流（9 域 / 68 框架 / 42 工作流） |
-
-### 内部工具层
-
-| 名称 | 版本 | 描述 |
-|---|---|---|
-| [tri-forge](tri-forge/) | 1.0.0 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
-| [tri-init](tri-init/) | 1.0.0 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
 
 ---
 
@@ -129,7 +124,7 @@ ops/
 ├── README.md                基础设施说明（工具 / 纪律 / 未完成项）
 ├── skills-install.py        平台取包 / 补装 / 缺失检测
 ├── version-lint.py          五点版本一致性校验（P1–P5）
-├── versions.json            自主版本线基线（42 skill 快照）
+├── versions.json            自主版本线基线（22 skill 快照）
 └── patches/                 本地补丁层（14 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
@@ -186,8 +181,8 @@ cd tri-stack
 
 ```
 tri-skills/
-├── tri-*/                    # 46 个顶层 skill（见上方技能目录）
-│   └── */children/           # 子 skill（tri-mm×4 + tri-sdlc×9 + tri-jobhunt×6）
+├── tri-*/                    # 22 个顶层 skill（见上方技能目录）
+│   └── */children/           # 子 skill（tri-sdlc×9，随父包分发，非顶层 skill）
 ├── ops/                      # 自维护基础设施
 │   ├── skills-install.py     # 平台取包 / 补装
 │   ├── version-lint.py       # 五点版本一致性校验

@@ -1,7 +1,7 @@
 ---
 name: 操作执行
 slug: tri-action
-version: 1.2.2
+version: 1.2.3
 displayName: 操作执行
 description: 操作执行下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行）意图，调用工具真实执行动作（下单/设提醒/发消息/调用 API 等）并返回操作结果。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测两态逻辑（快照模式/引导安装）。
 summary: 依据 tri-intent 快照处理 I14 操作执行意图，含 4 级操作分级（L0–L3）、L2/L3 确认门与失败不擅重试机制，确保高风险操作可追溯。
@@ -74,7 +74,7 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：依据快照结论，对 I14 意图调用工具真实执行动作并返回结果
-- **不负责**：意图识别（由 tri-intent）、出方案不执行（由 tri-plan）、编码开发（由 tri-coding）、内容文本产出（由 tri-content）
+- **不负责**：意图识别（由 tri-intent）、出方案不执行（由 tri-plan）、编码开发（由 tri-coding）、内容文本产出（本分支未包含）
 - **关键边界**：本 skill「真实执行产生副作用」——只读查询直接执行，不可逆/高风险操作必须经确认门；绝不跳过确认门执行高风险操作
 - **与 tri-plan 的协作**：tri-plan 产出的任务清单中标注「建议执行 skill=tri-action」的任务，由本 skill 读取并执行
 - **L3 让渡边界**：I14 有 L3 子类分流，本 skill 只处理**默认的 L14 操作执行**（单次带副作用的动作，如下单/设提醒/发消息/调 API）：
@@ -88,7 +88,7 @@ license: MIT
 
 > 命中 L3 子类却路由到本 skill 时，MUST 停止并回退 tri-intent 重新路由，NEVER 越界接管。
 
-- **不触发场景（Not-Trigger）**：本 skill 不接手「规划拆解 / 决策建议」（转 tri-plan / tri-ask，本 skill 只执行带副作用的动作）；不接手「编码实现 / 调试」（属 tri-coding / tri-fix）；不接手「长期运行的知识域/循环体」（属 tri-loop，I14 loop 子类）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「规划拆解 / 决策建议」（转 tri-plan；决策建议类在本分支未包含，原 tri-ask，本 skill 只执行带副作用的动作）；不接手「编码实现 / 调试」（属 tri-coding / tri-fix）；不接手「长期运行的知识域/循环体」（属 tri-loop，I14 loop 子类）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 操作安全分级方法论（核心能力 · 可扩展）
 

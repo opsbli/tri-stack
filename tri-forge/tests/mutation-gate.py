@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """门④ 负向测试（mutation testing）—— 验证 compliance_check.py 的 22 条判据「有牙」。
 
-流程：对真实 skill（tri-guard）逐项注入合规缺陷 → 运行门④ → 确认对应条目 FAIL → 还原 → 确认恢复 PASS。
+流程：对真实 skill（tri-coding）逐项注入合规缺陷 → 运行门④ → 确认对应条目 FAIL → 还原 → 确认恢复 PASS。
 若注入缺陷后门④仍 PASS，说明判据失效。
 
 用法：
@@ -39,7 +39,7 @@ def find_repo_root(start):
 
 REPO = find_repo_root(pathlib.Path(__file__).resolve().parent)
 SCRIPT = REPO / "tri-forge" / "scripts" / "compliance_check.py"
-TARGET = "tri-guard"
+TARGET = "tri-coding"
 TD = REPO / TARGET
 SM = TD / "SKILL.md"
 CL = TD / "CHANGELOG.md"

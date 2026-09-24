@@ -3,6 +3,11 @@ name: I15-multimedia
 description: 【Doing·I15 多媒体生成】用户要求生成图片、图表、图示、音频、视频、PPT 等非纯文本产物时触发。核心是产出可视/可听的多媒体成果物。
 ---
 
+> **分支范围提示（编程工作流专线）**：本文件描述的是**分类识别逻辑**，该逻辑完整保留；
+> 但其中提到的部分下游 skill **未包含在本分支**。路由真源以 `SKILL.md` §一 路由映射表为准；
+> 未包含的落点在快照中标注「本分支未包含」，全量实现见归档分支 `archive-full-skills-20260924`。
+
+
 # I15 多媒体生成（Doing）
 
 ## 识别特征
@@ -21,10 +26,10 @@ description: 【Doing·I15 多媒体生成】用户要求生成图片、图表�
 
 **触发语义**：任务要点含音乐创作语义（写歌 / 作词 / 作曲 / AI 音乐 / 海绵音乐 / Suno / 汽水音乐 / 抖音神曲 / 国风音乐 / DJ 改编）。
 
-**路由规则**：`L3_子意图` 标注为 `music`，`下游路由建议` 仍指向 **tri-mm**（二跳），L2 保持 I15 不变。tri-intent **不直接路由到 tri-music**，以保持「一个 L2 意图对应一个一跳下游」的 MECE 约束；由 tri-mm 依其 §子意图委派 章节转交 tri-music。
+**路由规则**：`L3_子意图` 标注为 `music`，`下游路由建议` 标注为「本分支未包含（原 `tri-mm` → `tri-music` 二跳）」，L2 保持 I15 不变。原设计中 tri-intent **不直接路由到 tri-music**，以保持「一个 L2 意图对应一个一跳下游」的 MECE 约束；由原 tri-mm 依其 §子意图委派 章节转交 tri-music。该二跳通路在本分支未包含。
 
-**MECE 依据**：I15 媒体大类下，图片（tri-image）/ 非音乐音频（tri-audio）/ 视频（tri-video）/ PPT（tri-ppt）由 tri-mm 拍发 children，音乐（歌曲/歌词/AI 音乐指令）为独立委派分支转 tri-music。
+**MECE 依据**：I15 媒体大类下，图片（tri-image）/ 非音乐音频（tri-audio）/ 视频（tri-video）/ PPT（tri-ppt）由原 tri-mm 拍发 children，音乐（歌曲/歌词/AI 音乐指令）为独立委派分支转原 tri-music。
 
-**对称双向检测**：tri-intent 的下游依赖检测在此场景需**同时**检测 `tri-mm/` 与 `tri-music/`，任一缺失均提示安装；tri-mm 委派时反向检测 tri-music 可用性（三态），tri-music 亦内置 tri-intent 上游检测，三层构成双向校验。
+**对称双向检测**：本分支无该下游（原 `tri-mm/` 与 `tri-music/`），跳过下游依赖检测；原 tri-mm 委派时反向检测 tri-music 可用性（三态），原 tri-music 亦内置 tri-intent 上游检测，三层构成双向校验。
 
-**边界细则**：含「歌曲/歌词/AI 音乐/具体音乐平台工具」语义 → 音乐 → tri-music；纯「配音/旁白/音效/配乐/BGM/朗读」→ 音频 → tri-audio。配乐/BGM 属非音乐音频（音效设计），不生成歌词或音乐工具指令。
+**边界细则**：含「歌曲/歌词/AI 音乐/具体音乐平台工具」语义 → 音乐 → 原 tri-music；纯「配音/旁白/音效/配乐/BGM/朗读」→ 音频 → 原 tri-audio。配乐/BGM 属非音乐音频（音效设计），不生成歌词或音乐工具指令。以上原下游均未包含在本分支。

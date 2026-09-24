@@ -1,7 +1,7 @@
 ---
 name: tri-prototype
 slug: tri-prototype
-version: 1.1.0
+version: 1.1.1
 displayName: 原型解析（tri-prototype）
 description: "PM→Dev 桥接 skill：解析产品原型链接（Axure / 摹客 / 墨刀 / Figma / Figma Dev Mode）与 PRD 文档，提取页面结构、交互规则、业务规则与验收标准，产出 tri-coding 门② 可直接消费的 `requirements.md`（编码需求说明书）——无缝衔接 tri 家族开发流程。支持 Axure share 链接、Figma 文件链接、PRD 文档链接与本地文件输入。认领 I11 的 PM 原型解析子类（L3_子意图=pm-prototype，与 tri-frontend-design / tri-lottie / tri-code-analyzer 并列，非独占 I11）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。"
 summary: 解析 PM 原型与 PRD → 产出 tri-coding `requirements.md`（编码需求说明书），无缝衔接 tri-coding 门② 的设计审批流程。
@@ -28,7 +28,7 @@ license: MIT
 3. **PRD 优先铁律**：当 PRD 与原型**冲突**时，**以 PRD 为准**（PRD 是业务规则的权威来源），并在 `requirements.md` 中标注冲突项。NEVER 自行裁决业务规则。
 4. **完整链路铁律**：MUST 覆盖「原型解析 → PRD 解析 → 规则提取 → 页面清单 → 交互规则 → 验收标准 → `requirements.md` 产出」完整链路，NEVER 只做部分然后跳过。
 5. **最小化原则**：只做 `任务要点` 或用户明确要求范围内的解析工作，NEVER 擅自扩展范围（如顺手写代码、设计 UI、评审业务合理性）。
-6. **职责边界**：本 skill 产出的是「**编码需求文档**」，不是业务代码（→ tri-coding）、不是设计方案（→ tri-frontend-design）、不是测试用例（→ 各 skill 的 tests）、不是 PM 文档（→ tri-pm）。意图识别（tri-intent）、缺陷修复（tri-fix）、业务代码审查（tri-review）均不属于本 skill。
+6. **职责边界**：本 skill 产出的是「**编码需求文档**」，不是业务代码（→ tri-coding）、不是设计方案（→ tri-frontend-design）、不是测试用例（→ 各 skill 的 tests）、不是 PM 文档（本分支未包含，原 tri-pm）。意图识别（tri-intent）、缺陷修复（tri-fix）、业务代码审查（tri-review）均不属于本 skill。
 7. **最小输入要求**：至少需要**一个原型链接或一个 PRD 来源**。两者都没有时 MUST 澄清，NEVER 凭想象编造需求。
 8. **自检**：作答前 MUST 声明「本次意图=&lt;L2&gt;，已读取快照，原型链接=&lt;平台&gt;，PRD=&lt;有/无&gt;，保真度=&lt;高/中/低&gt;，落盘=&lt;requirements.md 路径&gt;，衔接目标=&lt;tri-coding 门②&gt;」，若与上述规则冲突则停止并纠正。
 
@@ -43,14 +43,14 @@ license: MIT
 
 | 信号 | 归属 |
 |---|---|
-| 产出 PRD / 路线图 / OKR / 竞品分析（PM 文档） | tri-pm（I06 + L3=pm） |
+| 产出 PRD / 路线图 / OKR / 竞品分析（PM 文档） | 本分支未包含（原 tri-pm，I06 + L3=pm） |
 | 写业务代码 / 实现功能 | tri-coding（I11，默认落点） |
 | 界面设计方向 / 风格锚点 / 配色字体 | tri-frontend-design（I11 + L3=frontend-design） |
 | 动效代码 / Lottie 集成 | tri-lottie（I11 + L3=motion） |
 | 识别用户意图 / 路由 | tri-intent |
-| 一次性生成完整课程大纲 | tri-learn |
+| 一次性生成完整课程大纲 | 本分支未包含（原 tri-learn） |
 
-> **与 tri-pm 的关键边界**：tri-pm 产出**PM 用的文档**（PRD / 战略画布 / OKR）；本 skill 产出 **Dev 用的需求文档**（`requirements.md`）。tri-pm 是 PM 的写作助手；本 skill 是 PM→Dev 的**桥接翻译层**。一句话：tri-pm 写文档，tri-prototype 造需求。
+> **与 tri-pm 的关键边界（原 tri-pm，本分支未包含）**：tri-pm 产出**PM 用的文档**（PRD / 战略画布 / OKR）；本 skill 产出 **Dev 用的需求文档**（`requirements.md`）。tri-pm 是 PM 的写作助手；本 skill 是 PM→Dev 的**桥接翻译层**。一句话：tri-pm 写文档，tri-prototype 造需求。（该产出方未包含在本分支，本 skill 仍可消费任意来源的 PRD。）
 
 ## 上游依赖检测（独立使用时 · 三态）
 
@@ -89,14 +89,14 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：解析原型链接与 PRD → 提取页面结构、交互规则、业务规则、验收标准 → 按 tri-coding 九章规范产出 `requirements.md` → 无缝衔接 tri-coding 门②。
-- **不负责**：写业务代码（tri-coding）、界面设计方案（tri-frontend-design）、动效实现（tri-lottie）、产出 PRD / 路线图 / OKR 等 PM 文档（tri-pm）、意图识别（tri-intent）、缺陷修复（tri-fix）。
+- **不负责**：写业务代码（tri-coding）、界面设计方案（tri-frontend-design）、动效实现（tri-lottie）、产出 PRD / 路线图 / OKR 等 PM 文档（本分支未包含）、意图识别（tri-intent）、缺陷修复（tri-fix）。
 - **相邻边界**：
 
 | 相邻 skill | 边界判据 |
 |---|---|
 | **tri-coding**（I11 默认） | 本 skill 产出 `requirements.md`（tri-coding 门② 的**输入**）；tri-coding 消费该文档产出 design.md / tasks.md / 代码 |
 | **tri-frontend-design**（I11 + L3=frontend-design） | 本 skill 产出**需求层**（做什么）；tri-frontend-design 产出**设计层**（怎么做好看）。原型解析包含视觉线索提取，但不下设计结论 |
-| **tri-pm**（I06 + L3=pm） | tri-pm 产出**PM 文档**（PRD / OKR）；本 skill **消费** PM 文档（作为输入源之一）。tri-pm 写，本 skill 读 |
+| **PM 文档产出**（原 tri-pm，本分支未包含，I06 + L3=pm） | 原 tri-pm 产出**PM 文档**（PRD / OKR）；本 skill 可**消费** PM 文档（作为输入源之一），但该产出方未包含在本分支 |
 | **tri-workflow**（I13 + L3=workflow） | 本 skill 产出**需求文档**（单个功能的 requirements.md）；tri-workflow 产出**流程定义**（CI/CD / 审批流 / DAG），两者交付物类型不同 |
 
 ## 核心能力方法论（原型解析 · 可扩展）

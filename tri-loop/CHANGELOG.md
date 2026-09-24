@@ -3,6 +3,12 @@
 All notable changes to this skill will be documented in this file.
 
 
+## [1.2.3] - 2026-09-24
+
+### 变更
+
+- **分支收窄为编程工作流专线（22 skill）**：清理对已移除 skill 的交叉引用——职责边界表 / 不由本 skill 处理表的对应行改为「本分支未包含（原 tri-xxx）」或删除；已删的委派关系与相邻边界说明同步失效。非功能性变更（文档）。
+
 ## [1.2.2] - 2026-09-18
 
 ### 新增

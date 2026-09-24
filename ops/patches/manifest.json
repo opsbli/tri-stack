@@ -77,14 +77,6 @@
       "new": "# 版本检查与更新机制（家族设计总纲）\n\n> **本文件是 tri-xxx 家族版本检查的「设计总纲」**，承载家族级设计约束：设计原则与触发时机、\n> 端点配置真源、四处版本同步点、junction/`source: local` 单源例外、P1–P4 阻断定义。\n>\n> **执行细则不在本文**：每个 tri-* skill 各带一份 `references/version-check-spec.md`\n> （入参、退出码、四态处置、兜底），以保证单个 skill 可独立安装、不依赖其他 skill 的文件。\n> `scripts/check_update.py` 是可执行真源；本文与脚本冲突时以脚本实际行为为准。\n>\n> 修订规则时：家族级约束改本文；执行细则改各 skill 的 spec；**两处都需同步时一并改**。"
     },
     {
-      "id": "f5-humanize-wording",
-      "type": "replace_text",
-      "label": "tri-humanize：去掉与事实相反的「NEVER 自带 fork」表述",
-      "glob": "tri-humanize/SKILL.md",
-      "old": "（家族级单一事实源，NEVER 内联/自带 fork）",
-      "new": "（本 skill 自带的执行规范；家族级设计总纲见 `tri-intent/references/version-gate.md`）"
-    },
-    {
       "id": "f6-gate-fill-empty-block",
       "type": "replace_text",
       "label": "version-gate.md §六：填补被清空的发布前门禁代码块",

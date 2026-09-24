@@ -47,7 +47,7 @@ description: tri-code-analyzer v1.4.0 全场景测试用例——能力清单 A�
 | F3 | 落盘 `.tribro/code-analyzer/<命名>-analysis.md` | §落盘规则 |
 | F4 | 安装态只读时栈卡落 `.tribro/code-analyzer/stack-cards/` | acquire-unknown-stack.md |
 | G1 | 与 tri-html arch-viz 冲突消解（输出物形态判定） | §职责边界 |
-| G2 | 与 tri-review / tri-content 边界 | §触发时机 |
+| G2 | 与 tri-review / 文本类分析（本分支未包含）边界 | §触发时机 |
 | H1 | 质量标准七维可验证 | §质量标准 |
 | H2 | 进化契约三要素（反馈点/沉淀位/修订触发） | §进化契约 |
 

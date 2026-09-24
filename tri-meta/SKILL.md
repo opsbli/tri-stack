@@ -1,7 +1,7 @@
 ---
 name: 元操作处理
 slug: tri-meta
-version: 1.2.2
+version: 1.2.3
 displayName: 元操作处理
 description: 元操作下游执行 skill。处理 M01–M04（澄清追问/纠错反馈/追加细化/能力询问）元操作意图，针对「上一轮回复」或「AI 本身」发问做出响应。M05 中止确认 → 空（不落盘），由 tri-intent 直接处理，本 skill 不认领。当 tri-intent 判定为 Meta 类（M01–M04）时激活。支持独立安装，含上游依赖检测两态逻辑（标准模式/引导安装）。
 summary: 依据 tri-intent 判定处理 M01–M04 元操作意图，含 4 子意图差异化响应策略与 M02/M03 重路由机制（含回环护栏）；M05 不认领。
@@ -103,11 +103,11 @@ license: MIT
    - M02：提取用户的纠错内容，作为原 I 意图的新约束
    - M03：提取用户的细化方向，作为原 I 意图的追加要求
 3. 重路由到原 I 意图 skill 执行：
-   - 原 I ∈ {I01–I05} → tri-ask
+   - 原 I ∈ {I01–I05} → （本分支未包含，原 tri-ask）
    - 原 I = I11/I12 → tri-coding/tri-fix
-   - 原 I = I15 → tri-mm
-   - 原 I = I16 → tri-bs
-   - 其它 I 意图 → 对应下游 skill
+   - 原 I = I15 → （本分支未包含，原 tri-mm）
+   - 原 I = I16 → （本分支未包含，原 tri-bs）
+   - 其它 I 意图 → 对应下游 skill（本分支有下游者）
 4. 重路由时携带纠错/细化信息，原 I 意图 skill 据此重做/追加
 
 > **回环护栏**：重路由后应交由 tri-intent 重新识别，避免 tri-meta → 原 skill → tri-intent 回环；若检测到回环则停止。

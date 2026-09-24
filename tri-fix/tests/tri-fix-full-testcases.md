@@ -2,7 +2,7 @@
 ---
 name: tri-fix-full-testcases
 description: 基于 tri-fix v1.4.0 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约、输入契约、6 阶段调试方法论、审批门逻辑、链路文档产物、职责边界、质量标准等全部能力点。
-version: 1.4.0
+version: 1.4.1
 ---
 
 # 调试修复工作流 · 全场景全能力测试用例（审计版）

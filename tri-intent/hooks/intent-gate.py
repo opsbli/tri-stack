@@ -83,22 +83,22 @@ ROUTE_SUGGESTIONS = {
 }
 
 # L2 意图 → 下游 skill slug（供「下游依赖检测」直接消费，避免中文泛称无法映射目录）
+# 本分支为**编程工作流专线**：未包含的落点映射为空串，表示「无下游、跳过依赖检测」（与 M05 同处置）。
 ROUTE_SLUGS = {
-    "I01": "tri-ask", "I02": "tri-ask", "I03": "tri-ask",
-    "I04": "tri-ask", "I05": "tri-ask",
-    "I06": "tri-content", "I07": "tri-content", "I08": "tri-content",
-    "I09": "tri-content", "I10": "tri-content",
+    # —— 本分支有下游的落点 ——
     "I11": "tri-coding",
     "I12": "tri-fix",
     "CR": "tri-review",
     "I13": "tri-plan",
     "I14": "tri-action",
-    "I15": "tri-mm",
-    "I16": "tri-bs",
     "I21": "tri-god",
-    "I17": "tri-express", "I18": "tri-express",
-    "I19": "tri-express", "I20": "tri-express",
     "M01": "tri-meta", "M02": "tri-meta", "M03": "tri-meta", "M04": "tri-meta",
+    # —— 本分支未包含（分类保留、无下游）——
+    "I01": "", "I02": "", "I03": "", "I04": "", "I05": "",
+    "I06": "", "I07": "", "I08": "", "I09": "",
+    "I10": "",   # I10 默认无下游；三个子类见下方 SUBTYPE_SLUGS
+    "I15": "", "I16": "",
+    "I17": "", "I18": "", "I19": "", "I20": "",
     "M05": "",
 }
 
@@ -107,9 +107,6 @@ SUBTYPE_SLUGS = {
     ("I13", "workflow"): "tri-workflow",
     ("I14", "workflow"): "tri-workflow",
     ("I14", "loop"): "tri-loop",
-    ("I15", "music"): "tri-music",
-    ("I06", "article"): "tri-article",
-    ("I06", "pm"): "tri-pm",
     # 全生命周期（SDLC）子类：三个 L2 共用同一子类键，优先级高于 workflow / loop 子类
     ("I11", "sdlc"): "tri-sdlc",
     ("I13", "sdlc"): "tri-sdlc",
@@ -117,16 +114,11 @@ SUBTYPE_SLUGS = {
     # I11 编码开发子类
     ("I11", "frontend-design"): "tri-frontend-design",
     ("I11", "motion"): "tri-lottie",
-    # I10 分析处理子类
+    ("I11", "pm-prototype"): "tri-prototype",
+    # I10 分析处理子类（本分支全部保留）
     ("I10", "arch-viz"): "tri-html",
     ("I10", "audit-checklist"): "tri-checklist",
-    # I08 翻译转换子类族（x2md + wiki）
-    ("I08", "pdf2md"): "tri-pdf2md",
-    ("I08", "docx2md"): "tri-docx2md",
-    ("I08", "pptx2md"): "tri-pptx2md",
-    ("I08", "xlsx2md"): "tri-xlsx2md",
-    ("I08", "html2md"): "tri-html2md",
-    ("I08", "wiki"): "tri-wiki",
+    ("I10", "code-analyzer"): "tri-code-analyzer",
 }
 
 # ---- 置信度阈值（单一事实源，与 SKILL.md §置信度机制 对齐）------------------

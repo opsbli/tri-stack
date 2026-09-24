@@ -16,7 +16,7 @@
 | C7 | 版本门（自维护模式） | 运行 `scripts/check_update.py --slug tri-forge --json` |
 | C8 | 兜底处理（四类） | 检查 §兜底处理表 |
 | C9 | 独立安装三态 | 检查 §上游依赖检测 三行表 |
-| C10 | 与 tri-god / tri-guard 的边界 | 检查 §不由本 skill 处理 表 |
+| C10 | 与 tri-god / tri-guard（本分支未包含）的边界 | 检查 §不由本 skill 处理 表 |
 
 ## 二、功能用例
 
@@ -28,7 +28,7 @@
 | T04 | 用户说「给 tri-yyy 按规范审一遍」 | 判为 **B 模式**；产 `reports/tri-yyy-compliance.md`；22 条逐条判定 + 证据位置 |
 | T05 | 用户说「补全这个 skill」且目标缺 `CHANGELOG.md` | 判为 **B 模式**；报 FAIL（第 1、11 条）；补全产物须用户确认后落盘 |
 | T06 | 用户说「蒸馏这个人的方法论成一个 skill」 | **不激活本 skill**；指向 tri-god（I21） |
-| T07 | 用户说「审一下这个第三方 skill 能不能装」 | **不激活本 skill**；指向 tri-guard（安全审计） |
+| T07 | 用户说「审一下这个第三方 skill 能不能装」 | **不激活本 skill**；指向 tri-guard（安全审计，本分支未包含） |
 | T08 | 用户说「实现一个排序函数」 | **不激活本 skill**；指向 tri-coding（I11） |
 | T09 | C 模式：生成的 skill 认领 L2=I13 默认落点，但 L2=I13 已被 tri-plan 认领 | 门③ → 门④ 第 8 条 **FAIL**；停止并提示改为 L3 子类或回炉门② |
 | T10 | C 模式：生成物为横向型（不认领 L2） | 门③ **跳过**；门④ 第 8 条判 **N-A**（须附理由） |

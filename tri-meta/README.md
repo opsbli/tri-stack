@@ -55,11 +55,11 @@ cp -r tri-meta/ /path/to/your/skills/
 
 | 原 I 意图 | 重路由目标 |
 |---|---|
-| I01–I05 | tri-ask |
+| I01–I05 | （本分支未包含，原 tri-ask） |
 | I11 / I12 | tri-coding / tri-fix |
-| I15 | tri-mm |
-| I16 | tri-bs |
-| 其它 I 意图 | 对应下游 skill |
+| I15 | （本分支未包含，原 tri-mm） |
+| I16 | （本分支未包含，原 tri-bs） |
+| 其它 I 意图 | 对应下游 skill（本分支有下游者） |
 
 ### 4. 独立安装依赖检测
 

@@ -110,7 +110,7 @@ nodes:
   - id: resolve_conflict
     name: 冲突解决
     type: auto
-    role: { type: skill, target: tri-ask }
+    role: { type: skill, target: tri-coding }
     action: 分析冲突原因并给出解决方案
     inputs:
       - { name: conflicts, type: array, source: conflict_detect.outputs.conflicts, required: true }
@@ -122,7 +122,7 @@ nodes:
   - id: final_output
     name: 最终输出
     type: auto
-    role: { type: skill, target: tri-content }
+    role: { type: skill, target: tri-coding }
     action: 生成最终的结构化输出
     inputs:
       - { name: aggregated, type: object, source: aggregate_results.outputs.aggregated, required: true }

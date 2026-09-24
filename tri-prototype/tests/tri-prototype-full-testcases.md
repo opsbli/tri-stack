@@ -26,7 +26,7 @@
 | T08 | 产出 requirements.md 后交给 tri-coding | tri-coding 门② 能读取并按九章消费 |
 | T09 | 无原型无 PRD | 澄清（NEVER 凭想象编造） |
 | T10 | 降级模式 C（无 tri-intent） | 原样声明降级；自构造输入；仍产出 requirements.md |
-| T11 | tri-pm 已产出 PRD，用户要求解析该 PRD + 原型 | 本 skill **消费** tri-pm 的 PRD（作为输入源），与 tri-pm 互不冲突 |
+| T11 | 外部已产出 PRD（原 tri-pm），用户要求解析该 PRD + 原型 | 本 skill **消费**该 PRD（作为输入源），与产出方互不冲突（原 tri-pm 本分支未包含） |
 | T12 | 用户指定目标页面范围（如「只解析登录页」） | 只解析指定页面；其余页面标注「未解析（用户指定范围外）」 |
 
 ## 三、测试结果记录

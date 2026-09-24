@@ -3,6 +3,11 @@ name: snapshot
 description: 意图识别的唯一交付产物。记录用户原始提问、意图分析过程、结构化结论数据，供下游 skill 直接读取执行，亦供用户后续溯源。文件名格式 <问题类型>_<日期>_<时间>_<会话ID>.md，存放于 .tribro/snapshots/。
 ---
 
+> **分支范围提示（编程工作流专线）**：本文件描述的是**分类识别逻辑**，该逻辑完整保留；
+> 但其中提到的部分下游 skill **未包含在本分支**。路由真源以 `SKILL.md` §一 路由映射表为准；
+> 未包含的落点在快照中标注「本分支未包含」，全量实现见归档分支 `archive-full-skills-20260924`。
+
+
 # 提问快照 · <问题类型>_<日期>_<时间>_<会话ID>
 
 > 本文件是 tri-intent 的**唯一交付产物**：既是溯源记录，也是下游 skill 的交接输入。
@@ -80,17 +85,18 @@ dimensions:
 交付预期: <一句话说明用户期望的最终交付物>
 
 下游路由建议: <基于 L2 意图给出的下游 skill 路由建议，须与 SKILL.md §路由映射表 一致：
-  I01-I05 → 咨询作答 skill（tri-ask）；
-  I06-I10 → 内容处理 skill（tri-content；文章撰写子类→tri-article）；
+  I01-I05 → 本分支未包含（原 tri-ask）；
+  I06-I09 → 本分支未包含（原 tri-content）；
+  I10 → 仅 L3 子类有下游（arch-viz→tri-html；audit-checklist→tri-checklist；code-analyzer→tri-code-analyzer），I10 默认本分支未包含（原 tri-content）；
   I11 → 编码开发 skill（tri-coding；全生命周期子类→tri-sdlc）；
   I12 → 调试修复 skill（tri-fix）；
   代码审查(CR) → 代码审查 skill（tri-review）；
   I13 → 规划拆解 skill（tri-plan；工作流设计子类→tri-workflow；全生命周期子类→tri-sdlc）；
   I14 → 操作执行 skill（tri-action；工作流编排子类→tri-workflow；loop/domain 创建子类→tri-loop；全生命周期子类→tri-sdlc）；
-  I15 → 多媒体生成 skill（tri-mm；音乐创作子类→tri-music）；
-  I16 → 头脑风暴 skill（tri-bs）；
+  I15 → 本分支未包含（原 tri-mm；音乐创作子类→原 tri-music）；
+  I16 → 本分支未包含（原 tri-bs）；
   I21 → 蒸馏造物 skill（tri-god）；
-  I17-I20 → 表达陪伴 skill（tri-express，不落盘）；
+  I17-I20 → 本分支未包含（原 tri-express），不落盘；
   M01-M04 → 元操作处理 skill（tri-meta）；
   M05 → 即时叫停/放行（不交接，不落盘）>
 下游 slug: <上行括号内的实际 skill 目录名，供下游依赖检测直接消费，如 tri-fix>

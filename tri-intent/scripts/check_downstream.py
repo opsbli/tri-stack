@@ -19,7 +19,7 @@ activatable= 位于平台可识别目录 且 注册表有条目 且 目录含 _m
 
 用法：
     python check_downstream.py --slug tri-coding
-    python check_downstream.py --slug tri-mm --slug tri-music --json
+    python check_downstream.py --slug tri-coding --slug tri-sdlc --json
     python check_downstream.py --slug tri-coding --project-dir D:/proj --json
 
 退出码：0=全部已安装  1=存在未安装  2=参数/环境错误
@@ -174,7 +174,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         description="tri-intent 下游 skill 安装检测（供两道确认门消费）"
     )
     ap.add_argument("--slug", action="append", required=True,
-                    help="下游 skill slug，可重复传入（如 I15 音乐子类需 tri-mm + tri-music）")
+                    help="下游 skill slug，可重复传入（如同时检测多个候选下游）")
     ap.add_argument("--project-dir", default=os.getcwd(),
                     help="项目根目录，默认当前工作目录")
     ap.add_argument("--family-root", default=None,

@@ -3,6 +3,11 @@ name: snapshot-contract
 description: tri-intent 快照定位契约与快照异常处置表完整参考。含下游 skill 定位快照的四级优先级顺序（LATEST 指针→会话内最新→全局最新≤30分钟→意图校验）、LATEST.md 最小格式，以及快照缺失/过期/损坏/字段不全/意图越界/低置信度六类异常的判定条件与统一处置动作。由 SKILL.md §快照定位契约 引用，所有下游 skill 必读。
 ---
 
+> **分支范围提示（编程工作流专线）**：本文件描述的是**分类识别逻辑**，该逻辑完整保留；
+> 但其中提到的部分下游 skill **未包含在本分支**。路由真源以 `SKILL.md` §一 路由映射表为准；
+> 未包含的落点在快照中标注「本分支未包含」，全量实现见归档分支 `archive-full-skills-20260924`。
+
+
 # 快照定位契约与异常处置（下游 skill 必读 · 完整参考）
 
 > 快照「永不覆盖」会导致目录持续堆积，且文件名含会话 ID——下游 skill 无法凭空推算该读哪个文件。
@@ -24,9 +29,9 @@ description: tri-intent 快照定位契约与快照异常处置表完整参考�
 > tri-intent 每次落盘快照后**覆盖写**该文件。
 
 ```yaml
-snapshot_path: .tribro/snapshots/I08_20250211_143022_6a5c037d.md
-intent: I08
-route_slug: tri-content
+snapshot_path: .tribro/snapshots/I11_20250211_143022_6a5c037d.md
+intent: I11
+route_slug: tri-coding
 confidence: 0.92
 generated_at: 2025-02-11 14:30:22
 session_id: 6a5c037d

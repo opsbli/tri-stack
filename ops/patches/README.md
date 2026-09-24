@@ -73,7 +73,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `f3-gate-cmd-check` | replace_text | 移除 version-gate.md 的 `sync_registry.py --check` 命令行 |
 | `f3-gate-cmd-apply` | replace_text | 移除 version-gate.md 的 `sync_registry.py --apply` 命令行 |
 | `f5-gate-charter` | replace_text | `tri-intent/references/version-gate.md`：「唯一真源」→「家族设计总纲」 |
-| `f5-humanize-wording` | replace_text | `tri-humanize/SKILL.md`：去掉与事实相反的「家族级单一事实源，NEVER 内联/自带 fork」 |
+| ~~`f5-humanize-wording`~~ | replace_text | （已移除：原 `tri-humanize` 未包含在本分支，对应 op 已从 `manifest.json` 删除） |
 | `f6-gate-fill-empty-block` | replace_text | `version-gate.md` §六：填补被清空的发布前门禁代码块 |
 | `sync-version-meta` | sync_version_meta | P1↔P3：`_meta.json` 版本 = SKILL.md 版本（规则化） |
 | `sync-readme-version` | sync_readme_version | P1↔P5：README 版本声明 = SKILL.md 版本（规则化） |

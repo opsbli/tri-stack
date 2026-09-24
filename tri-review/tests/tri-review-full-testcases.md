@@ -2,7 +2,7 @@
 ---
 name: tri-review-full-testcases
 description: 基于 tri-review v1.6.0 全量扫描生成的覆盖全场景全能力测试用例集，供人工审计。覆盖 frontmatter 元数据、强制执行契约（三模式+Phase 0）、输入契约（三模式）、Phase 0 架构师增量审计、两阶段方法论、Fowler 坏味基线、反规避机制、审批门退回逻辑、质量标准与产物等全部能力点。
-version: 1.6.0
+version: 1.6.1
 ---
 
 # 代码审查/审计工作流 · 全场景全能力测试用例（审计版）

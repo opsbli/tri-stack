@@ -1,7 +1,7 @@
 ---
 name: tri-code-analyzer
 slug: tri-code-analyzer
-version: 1.4.0
+version: 1.4.1
 displayName: 代码剖析（tri-code-analyzer）
 description: 代码库全维度深度剖析 skill（I10 分析处理 · code-analyzer 子类）——以架构师+程序员双视角对任意技术栈代码库执行七阶段剖析管道，产出五部分 Markdown 剖析报告（架构拓扑/工程实现/风格审计/Mermaid 可视化/上手指南），每条结论强制附 file:line 证据锚，对照内置技术栈知识库（arkts/electron/flutter/qt/react-native/taro/uni-app/通用后端/agent-skills-plugin）分析，未覆盖栈经官方文档联网补齐。读取快照 §三（L2=I10 且 L3=code-analyzer）直接执行；用户说「剖析这个代码库/帮我读懂这个项目/接手项目全维度分析/代码级深度剖析」时经 tri-intent 路由激活。支持独立安装，含上游依赖检测三态逻辑。
 summary: 双视角七阶段剖析管道 + file:line 证据锚定 + 技术栈知识库对照（本地 wikihub 外部层 + 官网补齐协议）+ Mermaid 四图引擎 + 上手/重构行动指南，技术栈无关的代码库深度剖析器。
@@ -25,7 +25,7 @@ license: MIT
 4. **技术栈对照强制**：MUST 在剖析前完成技术栈识别（按 `references/tech-stacks/INDEX.md` 索引），命中已建卡技术栈时 MUST 读取对应栈卡并用卡内「分析要点」校准分析深度；未命中时 MUST 执行 `references/tech-stacks/acquire-unknown-stack.md` 获取协议（官网抓取→建卡→登记索引），NEVER 跳过对照直接泛泛分析。
 5. **深度档位声明**：MUST 依据快照 D4/任务要点或用户指定确定剖析深度（快速导览/标准剖析/深度穿透，定义见 §处理流程），开篇声明所用档位；未指定时默认「标准剖析」。
 6. **Mermaid 渲染安全**：所有图谱 MUST 使用可渲染的 Mermaid 语法（节点名用中文标注，NEVER 使用引号/斜杠等破坏语法的字符），产出前按 `references/analysis-framework.md` §Mermaid 安全清单逐图自检。
-7. **职责边界**：本 skill 负责「读取快照 → 技术栈识别 → 七阶段剖析 → 五部分报告交付」。架构可视化 HTML 产出（tri-html）、通用内容分析（tri-content）、代码修改（tri-coding/tri-fix）、代码审查（tri-review）不属于本 skill。
+7. **职责边界**：本 skill 负责「读取快照 → 技术栈识别 → 七阶段剖析 → 五部分报告交付」。架构可视化 HTML 产出（tri-html）、通用内容分析（本分支未包含）、代码修改（tri-coding/tri-fix）、代码审查（tri-review）不属于本 skill。
 8. **自检**：作答前用一句话声明「本次意图=I10（L3=code-analyzer），已读取快照，技术栈=<识别结果/未识别→已走获取协议>，深度档位=<快速导览/标准剖析/深度穿透>，证据锚=<已锚定>，已读教训=<N 条/无文件>」，若与快照冲突则停止并纠正。
 9. **教训文件读写闭环（经验沉淀 · 进化契约核心机制）**：
    - **启动读取**：版本检查第零步完成后、剖析开始前，MUST 读取 `.tribro/code-analyzer/lessons.md`（历史执行沉淀的经验教训文件）；目录或文件不存在时**静默跳过**——NEVER 报错、NEVER 阻断执行、NEVER 向用户追问。
@@ -50,7 +50,7 @@ license: MIT
 |---|---|
 | 「画项目架构图/生成架构可视化 HTML/项目全貌可视化报告」 | tri-html（I10 arch-viz 子类） |
 | 「生成审计 checklist/改动审查清单」 | tri-checklist（I10 audit-checklist 子类） |
-| 「分析这份数据/这段文本」（非代码库） | tri-content（I10 默认） |
+| 「分析这份数据/这段文本」（非代码库） | 本分支未包含（原 tri-content） |
 | 「审查这段代码的质量问题」 | tri-review（CR） |
 | 「修复这个 bug/新增功能」 | tri-fix / tri-coding |
 
@@ -83,7 +83,7 @@ license: MIT
 | `intent.L2_核心意图` | 必须为 I10，否则不应激活本 skill |
 | `intent.L3_子意图` | 必须为 code-analyzer，否则回退 tri-intent |
 | `dimensions.D1_任务领域` | 领域语境（编程/科研/办公），校准报告措辞 |
-| `dimensions.D2_输入形态` | 应含代码；纯文本/数据材料回退 tri-content |
+| `dimensions.D2_输入形态` | 应含代码；纯文本/数据材料在本分支未包含（原 tri-content） |
 | `dimensions.D4_输出期望` | 报告详略与格式约束（Markdown/分文件/单文件） |
 | `任务要点` | 用户关注的维度子集、技术栈线索、深度档位指定 |
 | `交付预期` | 交付形态（对话内报告 / 落盘文件） |
@@ -96,10 +96,10 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：对目标代码库做**代码级深度剖析**——架构拓扑与依赖、目录分层、路由与主链路穿透、实体与数据结构、状态管理、异步并发、配置管理、工具库与中间件、架构/代码风格审计、四张 Mermaid 图、上手与重构行动指南，产出五部分 Markdown 报告。
-- **不负责**：架构可视化 HTML 页面（tri-html）、通用非代码分析（tri-content）、修改代码（tri-coding/tri-fix）、审查代码质量打分（tri-review）、意图识别（tri-intent）。
+- **不负责**：架构可视化 HTML 页面（tri-html）、通用非代码分析（本分支未包含）、修改代码（tri-coding/tri-fix）、审查代码质量打分（tri-review）、意图识别（tri-intent）。
 - **与 tri-html（arch-viz）的关键边界**：arch-viz 的重心是**把架构画出来**（单文件 HTML 交互图表，呈现层）；本 skill 的重心是**把代码讲透**（代码级证据 + 工程细节 + 上手指南，理解层）。用户两样都要时：本 skill 交付剖析报告（内嵌 Mermaid 已覆盖图形需求），并提示可续接 tri-html 生成交互式可视化。
-- **MECE 认领**：仅认领 I10 的 `code-analyzer` 子类键；不与 `arch-viz`/`audit-checklist`/tri-content 默认路由重叠（冲突消解规则见 `tri-intent/doing/I10-analyze.md`）。
-- **不触发场景（Not-Trigger）**：本 skill 不接手「把架构画成交互式 HTML 页面」（转 tri-html arch-viz）；不接手「通用非代码分析」（属 tri-content）；不接手「直接修改代码」（属 tri-coding / tri-fix）；不接手「代码质量打分审查」（属 tri-review）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
+- **MECE 认领**：仅认领 I10 的 `code-analyzer` 子类键；不与 `arch-viz`/`audit-checklist`/I10 默认（原 tri-content）路由重叠（冲突消解规则见 `tri-intent/doing/I10-analyze.md`）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「把架构画成交互式 HTML 页面」（转 tri-html arch-viz）；不接手「通用非代码分析」（本分支未包含）；不接手「直接修改代码」（属 tri-coding / tri-fix）；不接手「代码质量打分审查」（属 tri-review）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 代码剖析方法论（核心能力 · 可扩展）
 

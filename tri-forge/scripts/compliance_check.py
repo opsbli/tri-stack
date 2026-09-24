@@ -44,7 +44,8 @@ LOCK_INSTALL = re.compile(r"(?<!api\.)skillhub\.cn|skills_store_lock|\.hub/skill
 # 自检句**已登记例外**（单一事实源：references/family-spec.md §五 待登记项表）。
 # 例外 MUST 在此与 family-spec 两处同步登记，NEVER 只改一处。
 SELFCHECK_EXEMPT = {
-    "tri-express": "即时对话回应型，设计上不作答前声明（上游审计 F4 已记录该例外）",
+    # 本分支（编程工作流专线）当前无「即时对话回应型」skill，故本表为空。
+    # 新增例外时 MUST 在此与 references/family-spec.md §五 两处同步登记。
 }
 
 
@@ -249,7 +250,7 @@ def check(d: Path) -> dict:
     # 5 契约存在且含自检句
     #    **不要求数字编号**——家族契约既有 `1.` 数字列举，也有 `- MUST …` 无序列举
     #    （实测 tri-article / tri-docx2md / tri-pdf2md 等用无序列举，曾被误判「编号 0 条」）。
-    #    tri-express 为**已登记例外**（family-spec §五）：设计上不作答前声明。
+    #    （历史）原 tri-express 曾为已登记例外（family-spec §五）：设计上不作答前声明；该 skill 未包含在本分支，例外表现为空。
     seg = find_sec(secs, "强制执行契约")
     has_sc = bool(SELFCHECK.search(seg))
     if not seg:
@@ -265,7 +266,7 @@ def check(d: Path) -> dict:
 
     # 6 上游检测态数匹配
     #    家族态名有变体：「引导安装」/「独立降级模式」/「待识别」皆合法；
-    #    另有「自包含型」（声明无强制上游依赖，如 tri-learn）与「根路由」（tri-intent）不适用。
+    #    另有「自包含型」（声明无强制上游依赖）与「根路由」（tri-intent）不适用。
     seg6 = find_sec(secs, "上游依赖检测")
     if role == "root":
         add(6, "上游检测态数与类型匹配", "N-A", "根路由，无上游依赖",

@@ -1,5 +1,10 @@
 ---
 ---
+
+> **分支范围提示（编程工作流专线）**：本文件描述的是**分类识别逻辑**，该逻辑完整保留；
+> 但其中提到的部分下游 skill **未包含在本分支**。路由真源以 `SKILL.md` §一 路由映射表为准；
+> 未包含的落点在快照中标注「本分支未包含」，全量实现见归档分支 `archive-full-skills-20260924`。
+
 name: tri-intent-full-testreport
 description: 基于 tri-intent-full-testcases.md 的 121 条测试用例逐条真实执行结果（含 2026-08-01 v1.7.1 增补 18 条 I21 蒸馏 / CR 代码审查 / I15 音乐子类 / 置信度门控）。Flow 字段全部经 hooks/intent-gate.py 实机运行验证，L1/L2/Gate/D1-D5 字段经路由步骤逐条判定。供人工审计。
 version: 1.11.2

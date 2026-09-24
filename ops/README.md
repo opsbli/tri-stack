@@ -79,7 +79,7 @@ python ops/version-lint.py --skill tri-coding
 ```bash
 python ops/skills-install.py --detect              # 只报告缺失集（只读）
 python ops/skills-install.py --detect --install     # 检出缺失并全部补装
-python ops/skills-install.py --slugs tri-pm,tri-wiki --install
+python ops/skills-install.py --slugs tri-coding,tri-fix --install
 python ops/skills-install.py --detect --dry-run     # 预演，不写盘
 ```
 

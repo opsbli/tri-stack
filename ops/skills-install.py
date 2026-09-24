@@ -8,7 +8,7 @@
 用法：
     python ops/skills-install.py --detect              # 只报告缺失集（只读）
     python ops/skills-install.py --detect --install    # 检出缺失并全部补装
-    python ops/skills-install.py --slugs tri-pm,tri-wiki --install
+    python ops/skills-install.py --slugs tri-coding,tri-review --install
     python ops/skills-install.py --detect --dry-run    # 预演，不写盘
 
 关键环境事实（实测，见 ops/patches/README.md 与本仓库 memory）：
@@ -52,7 +52,6 @@ UNAVAILABLE = {"tri-forge"}
 
 # tri-intent 里出现的非 skill slug（子技能、文件名、版本标签等）
 NOT_A_SKILL = {
-    "tri-audio", "tri-image", "tri-video", "tri-ppt",          # tri-mm children
     "tri-charter", "tri-require", "tri-design", "tri-devenv",   # tri-sdlc children
     "tri-impl", "tri-cr", "tri-test", "tri-release", "tri-ops",
     "tri-xxx", "tri-x", "tri-skill",

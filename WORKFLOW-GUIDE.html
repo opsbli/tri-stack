@@ -98,13 +98,13 @@
 <div class="wrap">
 
 <header class="top">
-  <div class="kicker">tri-stack · 自维护 · 46 skills</div>
+  <div class="kicker">tri-stack · 自维护 · 22 skills · 编程工作流专线</div>
   <h1>使用手册：从一句需求到落地交付</h1>
-  <p class="sub">本仓库（opsbli/tri-stack）为<b>完全自维护</b>：不依赖上游、不从平台下载、46 个 skill 全部经 junction 安装可用。手册按<b>仓库实测契约 + 真实项目实战教训</b>重写——所有数字、路径与坑均取自当前源码与 ops-pilot 实战校准，非历史稿抄改。</p>
+  <p class="sub">本仓库（opsbli/tri-stack）为<b>完全自维护</b>：不依赖上游、不从平台下载、22 个 skill 全部经 junction 安装可用。手册按<b>仓库实测契约 + 真实项目实战教训</b>重写——所有数字、路径与坑均取自当前源码与 ops-pilot 实战校准，非历史稿抄改。</p>
   <div class="meta">
     <span class="chip">入口 tri-intent v1.13.1</span>
     <span class="chip">27 个意图落点</span>
-    <span class="chip">46 个顶层 skill · 全部已安装</span>
+    <span class="chip">22 个顶层 skill · 编程工作流专线</span>
     <span class="chip">版本一致性 46/46 ✅</span>
     <span class="chip">tri-forge 已自建</span>
     <span class="chip">tri-prototype v1.1.0</span>
@@ -116,7 +116,7 @@
 <nav class="toc">
   <ol>
     <li><a href="#m">心智模型：三句话</a></li>
-    <li><a href="#map">全景：编程优先的 46 skill 分层</a></li>
+    <li><a href="#map">全景：编程工作流专线的 22 skill 分层</a></li>
     <li><a href="#codingflow">编程资产流转表</a></li>
     <li><a href="#contract">核心契约：快照 + LATEST 指针</a></li>
     <li><a href="#gate">版本门：自维护模式</a></li>
@@ -148,9 +148,12 @@
 
 <p>用不好这套 skill 的症状只有三种：<b>提问太泛</b>（动作无法映射 → 被降级到咨询）、<b>门上一言不发</b>（skill 卡在等你确认）、<b>跳轨</b>（小需求用了重装轨）。后面每条都有对治。</p>
 
-<h2 id="map"><span class="n">02</span>全景：编程优先的 46 skill 分层</h2>
+<h2 id="map"><span class="n">02</span>全景：编程工作流专线的 22 skill 分层</h2>
 
-<p>分层轴只有一条：<b>离编程主干的远近</b>。共 <b>11 组 / 46 个</b>顶层 skill——<b>G1 是主干，G2 / G3 是它的手和眼，G4–G6 是邻近支撑，G7 / G8 是工程之外的交付物，G9 与主线无关，G10 被所有组调用</b>。除 G0 唯一入口外，其余经 tri-intent 路由或用户直调；全部已在本机 junction 安装。</p>
+<div class="card note">
+  <div class="t">分支说明：本分支是编程工作流专线</div>
+  <p style="margin:0">本分支只携带编程线 <b>22 个</b> skill。全量 46 个（另含内容生成、格式转换族、多模态、表达陪伴、领域单入口、横向方法论）保存在归档分支 <code>archive-full-skills-20260924</code>。分层轴只有一条：<b>离编程主干的远近</b>——<b>G0 控制面，G1 是主干，G2 / G3 是它的手和眼，G4–G6 是邻近支撑</b>。</p>
+</div>
 
 <div class="card note">
   <div class="t">为什么撤掉原来的 L0–L6</div>
@@ -226,58 +229,6 @@
     <span class="sk"><b>tri-loop</b> <span class="v">1.2.2</span> <span class="v">I14 + loop</span></span>
   </div>
   <p style="margin:8px 0 0;font-size:12.5px">不专属于编程，但编程任务天天用。<b>tri-plan</b>=只出方案不动手（plan-brief / plan / task-checklist，每项带「建议执行 skill」字段）；<b>tri-action</b>=真去干（下单 / 设提醒 / 发消息 / 调 API）；<b>tri-workflow</b>=交付一份<b>流程定义</b>（CI 配置 / DAG / 审批模板），交付即结束；<b>tri-loop</b>=建<b>长期运行的知识库循环体</b>，无明确终点。<b>三者判据</b>：交付对象是「真实项目 / 一份流程定义 / 一个长期循环体」，与 G4 的 sdlc 子类冲突时 <b>sdlc 优先</b>。</p>
-</div>
-
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--cyan)"></span><span class="nm">G7 内容与文档 · 工程之外的交付物</span><span class="cnt">5</span></div>
-  <div class="skills">
-    <span class="sk"><b>tri-ask</b> <span class="v">1.2.2</span> <span class="v">I01–I05</span></span>
-    <span class="sk"><b>tri-content</b> <span class="v">1.2.4</span> <span class="v">I06–I10</span></span>
-    <span class="sk"><b>tri-article</b> <span class="v">1.4.1</span> <span class="v">I06 + L3=article</span></span>
-    <span class="sk"><b>tri-pm</b> <span class="v">1.1.1</span> <span class="v">I06 + L3=pm</span></span>
-    <span class="sk"><b>tri-wiki</b> <span class="v">1.1.0</span> <span class="v">I08 + L3=wiki</span></span>
-  </div>
-  <p style="margin:8px 0 0;font-size:12.5px">答疑建议 / 写改译总结析 / 去 AI 化长文 / PRD·OKR·竞品分析等 PM 产物 / 文档集→本地知识库。四者互斥由 <code>L3_子意图</code> 分流。<b>tri-wiki 在批量转换阶段反向委派 G8 的 x2md 族</b>，两层不竞争。</p>
-</div>
-
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--cyan)"></span><span class="nm">G8 格式转换族 · I08 一跳覆写</span><span class="cnt">5</span></div>
-  <div class="skills">
-    <span class="sk"><b>tri-pdf2md</b> <span class="v">1.4.5</span></span>
-    <span class="sk"><b>tri-docx2md</b> <span class="v">1.4.5</span></span>
-    <span class="sk"><b>tri-pptx2md</b> <span class="v">1.4.5</span></span>
-    <span class="sk"><b>tri-xlsx2md</b> <span class="v">1.3.5</span></span>
-    <span class="sk"><b>tri-html2md</b> <span class="v">1.3.5</span></span>
-  </div>
-  <p style="margin:8px 0 0;font-size:12.5px">五种源格式各认领一个，<b>MECE 不重叠</b>。统一范式：预检分级（魔数 / 加密 / 版面 / 规模判定）→ 多后端探测与编排 → 质量保障。<b>单文档转换</b>走这里；<b>文档集→知识库</b>走 G7 的 tri-wiki。</p>
-</div>
-
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--gray)"></span><span class="nm">G9 按需旁支 · 与编程主线无关</span><span class="cnt">7</span></div>
-  <div class="skills">
-    <span class="sk"><b>tri-mm</b> <span class="v">1.5.0</span> <span class="v">I15</span></span>
-    <span class="sk"><b>tri-music</b> <span class="v">2.2.3</span> <span class="v">I15 + L3=music</span></span>
-    <span class="sk"><b>tri-bs</b> <span class="v">1.2.2</span> <span class="v">I16</span></span>
-    <span class="sk"><b>tri-express</b> <span class="v">1.2.2</span> <span class="v">I17–I20 · 不落盘</span></span>
-    <span class="sk"><b>tri-learn</b> <span class="v">1.0.2</span> <span class="v">领域直调</span></span>
-    <span class="sk"><b>tri-jobhunt</b> <span class="v">1.0.3</span> <span class="v">领域直调</span></span>
-    <span class="sk"><b>tri-geo</b> <span class="v">1.0.3</span> <span class="v">领域直调</span></span>
-  </div>
-  <p style="margin:8px 0 0;font-size:12.5px">与编程方向无关，按需使用。<b>tri-mm</b>=图 / 表 / 视频 / PPT 四类子SKILL 的路由编排（music 为其二跳委派）；<b>tri-bs</b>=I16 创意发散；<b>tri-express</b>=表达陪伴，直接自然回应、<b>不落盘、无下游 skill</b>；<b>tri-learn / tri-jobhunt / tri-geo</b>=领域单入口（学习教练 / 求职全生命周期 / GEO 生成式引擎优化），<b>不经 L2 意图路由</b>，由用户显式调用。<br><span style="color:var(--tx3)">口径修正：tri-geo 此前被误挂在「子类一跳路由族」下，实际它属「不参与本表路由」，本轮已归位；tri-bs / tri-cost / tri-guard / tri-humanize 此前未在分层图中出现，本轮补齐。</span></p>
-</div>
-
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--gray)"></span><span class="nm">G10 横向基座 · 被所有组调用</span><span class="cnt">7</span></div>
-  <div class="skills">
-    <span class="sk"><b>tri-cache</b> <span class="v">2.1.1</span></span>
-    <span class="sk"><b>tri-cost</b> <span class="v">1.3.0</span></span>
-    <span class="sk"><b>tri-evolve</b> <span class="v">1.1.2</span></span>
-    <span class="sk"><b>tri-guard</b> <span class="v">1.0.1</span></span>
-    <span class="sk"><b>tri-humanize</b> <span class="v">1.1.1</span></span>
-    <span class="sk"><b>tri-translate</b> <span class="v">1.1.2</span></span>
-    <span class="sk"><b>tri-true</b> <span class="v">1.1.2</span></span>
-  </div>
-  <p style="margin:8px 0 0;font-size:12.5px"><b>不认领 L2 编码、不进路由表</b>，由下游委派或用户显式调用。对编程方向最相关的三个：<b>tri-cost</b>=token 成本审计 + 预算闸门；<b>tri-guard</b>=skill 安全审计（委派 skillspector 确定性扫描，装任何 skill 前跑）；<b>tri-true</b>=四道防线消除幻觉（置信度评估 + 事实源验证 + 交叉验证 + 自我反思）。其余：tri-cache=四层缓存 + 上下文压缩（<b>I11/I12 不缓存</b>，代码和故障会变）；tri-evolve=信号驱动持续改进；tri-humanize=去 AI 化（5 速查 + 35 模式）；tri-translate=三策略分层翻译。</p>
 </div>
 
 <h3 id="codingflow">编程资产流转：谁调用谁，产物落到哪</h3>
@@ -406,7 +357,7 @@
 
 <h2 id="gate"><span class="n">04</span>版本门：自维护模式</h2>
 
-<p>每个 skill 启动后的<b>第零步</b>都会跑 <code>scripts/check_update.py</code>。<b>全部 46 个 skill 内置 <code>SELF_MAINTAINED = True</code></b>：完全跳过远端请求，改为校验本 skill 自身 <b>5 处版本声明</b>的一致性。</p>
+<p>每个 skill 启动后的<b>第零步</b>都会跑 <code>scripts/check_update.py</code>。<b>全部 22 个 skill 内置 <code>SELF_MAINTAINED = True</code></b>：完全跳过远端请求，改为校验本 skill 自身 <b>5 处版本声明</b>的一致性。</p>
 
 <table>
 <thead><tr><th>文件</th><th>角色</th></tr></thead>
@@ -414,7 +365,7 @@
 <tr><td><code>&lt;skill&gt;/references/version-check-spec.md</code></td><td><b>该 skill 自带的执行规范</b>（内容一致）→ 满足「支持独立安装」</td></tr>
 <tr><td><code>tri-intent/references/version-gate.md</code></td><td><b>家族设计总纲</b>（设计原则 / 同步点 / junction 例外）</td></tr>
 <tr><td><code>scripts/check_update.py</code></td><td><b>可执行真源</b>——规范与脚本冲突时以脚本实际行为为准</td></tr>
-<tr><td><code>ops/version-lint.py</code></td><td><b>全仓五点一致性校验器</b>（P1 SKILL.md / P2 CHANGELOG / P3 _meta.json / P4 lock.json / P5 README 声明），当前 <b>46/46 全绿</b></td></tr>
+<tr><td><code>ops/version-lint.py</code></td><td><b>全仓五点一致性校验器</b>（P1 SKILL.md / P2 CHANGELOG / P3 _meta.json / P4 lock.json / P5 README 声明），当前 <b>22/22 全绿</b></td></tr>
 </tbody>
 </table>
 
@@ -486,7 +437,6 @@
 <tr><td>「需求有歧义，逐条质询到对齐再动手」</td><td><b>tri-grill</b></td><td>六维质询（歧义/边界/反例/术语/依赖/优先级），消除「PM 说 X、Dev 理解成 Y」</td></tr>
 <tr><td>「统一术语 / 记设计决策 / 补边界场景」</td><td><b>tri-domain</b></td><td>产出 CONTEXT.md 术语表 + docs/adr/ + 边界场景清单</td></tr>
 <tr><td>「首次把项目接入 tri-stack / 初始化」</td><td><b>tri-init</b>（<b>直调</b>，不经路由）</td><td>扫描技术栈 → 生成 AGENTS.md + project-profile + .tribro/；用户直接说「初始化这个项目」</td></tr>
-<tr><td>「长期学某门课 / 长期求职辅导」</td><td>tri-learn / tri-jobhunt</td><td><b>领域单入口</b>，不按单次意图</td></tr>
 </tbody>
 </table>
 
@@ -565,10 +515,6 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 <tbody>
 <tr><td>代码审查</td><td>门③「执行前确认」</td><td>被问到①是否调其它 skill 协同 → 答「调 tri-review」</td></tr>
 <tr><td>审计清单</td><td>任何改动前后</td><td>说「生成这次改动的审计 checklist」→ tri-checklist 四维覆盖</td></tr>
-<tr><td>幻觉消除</td><td>由下游委派或直说</td><td>说「验证这个结论」→ tri-true 四道防线</td></tr>
-<tr><td>成本审计</td><td>对话过长 / 关心开销时</td><td><code>tri-cost</code> 统计全过程 token 开销，可设预算闸门</td></tr>
-<tr><td>skill 安全审计</td><td>安装任何 skill 前</td><td><code>tri-guard</code> 委派 <code>skillspector</code> 确定性扫描</td></tr>
-<tr><td>去 AI 化改写</td><td>成稿后</td><td><code>tri-humanize</code>：5 条速查 + 35 种模式 <span class="sev s1">tri-article 已内置委派</span></td></tr>
 </tbody>
 </table>
 <p><b>tri-fix 值得单独记住</b>：第一性规则是「<b>没有能变红的反馈循环，就没有假设阶段</b>」。在一条你真实跑过、且在这个 bug 上失败的命令出现之前，它<b>只允许做一件事：构造这条命令</b>，不会凭代码阅读跳到根因。</p>
@@ -621,11 +567,6 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 <tr><td>提交前自检</td><td>生成这次改动的审计 checklist，基于暂存区</td><td>tri-intent(I10+L3=audit-checklist) → tri-checklist</td><td>Markdown 复选框清单，四维覆盖</td></tr>
 <tr><td>架构可视化</td><td>分析这个项目的架构，生成架构可视化 HTML</td><td>tri-intent(I10+L3=arch-viz) → tri-html</td><td>深度架构分析 + 可视化产物</td></tr>
 <tr><td>做 skill</td><td>把我们这套上线检查流程蒸馏成一个可复用的 skill</td><td>tri-intent(I21) → tri-god / tri-forge mode C</td><td>可独立调用的新 skill 包（过五门）</td></tr>
-<tr><td>长期学习</td><td>帮孩子系统学四年级数学，要错题追踪和检查站</td><td><code>tri-learn</code> 领域入口</td><td>学习路径 + 课程与检查站 + 掌握度判断 + 错题本</td></tr>
-<tr><td>求职辅导</td><td>帮我按目标 JD 优化简历并准备面试</td><td><code>tri-jobhunt</code> 领域入口</td><td>ATS 兼容简历 + 要点量化 + JD 匹配 + 面试准备</td></tr>
-<tr><td>去 AI 味</td><td>把这篇文章改写得更像人写的，别一眼看出是 AI</td><td><code>tri-humanize</code>（或 tri-article 内置委派）</td><td>5 条速查粗筛 + 35 种 AI 模式逐项处理后的稿</td></tr>
-<tr><td>审 skill 安全性</td><td>审一下这个第三方 skill 能不能装</td><td><code>tri-guard</code></td><td>skillspector 确定性扫描报告 + 可安装性判断</td></tr>
-<tr><td>省 token</td><td>统计这次对话的 token 开销，超预算就提醒我</td><td><code>tri-cost</code></td><td>全过程关口开销 + 优化建议 + 预算闸门</td></tr>
 </tbody>
 </table>
 
@@ -657,27 +598,6 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 ├── actions/&lt;命名&gt;/            <i># tri-action：操作执行记录</i>
 ├── workflows/&lt;命名&gt;/          <i># tri-workflow：result + env-profile + model + validation</i>
 ├── loops/&lt;命名&gt;/              <i># tri-loop：result（loop README 与 LOG.md 落知识库仓库根）</i>
-│
-├── <i>[内容 / 格式 / 多模态 / 领域 G7–G9]</i>
-├── content/                 <i># tri-content</i>
-├── article/                 <i># tri-article</i>
-├── pm/                      <i># tri-pm</i>
-├── wiki/                    <i># tri-wiki</i>
-├── pdf2md/  docx2md/  pptx2md/  xlsx2md/  html2md/   <i># G8 格式转换族</i>
-├── multimedia/              <i># tri-mm（image/ 为其 children tri-image）</i>
-├── music/                   <i># tri-music</i>
-├── geo/                     <i># tri-geo</i>
-├── jobhunt/                 <i># tri-jobhunt（含 6 个 children）</i>
-├── learning/                <i># tri-learn</i>
-│
-└── <i>[横向基座 G10]</i>
-    ├── cache/               <i># tri-cache：四层缓存</i>
-    ├── cost/                <i># tri-cost：token 开销与预算闸门</i>
-    ├── evolve/              <i># tri-evolve：signals.jsonl / profile.db / run-log.jsonl</i>
-    ├── guard/               <i># tri-guard：skill 安全扫描</i>
-    ├── humanize/            <i># tri-humanize</i>
-    ├── translate/           <i># tri-translate</i>
-    └── true/                <i># tri-true</i>
 </div>
 <div class="card warn">
   <div class="t">命名规则（照抄别改）</div>
@@ -697,7 +617,7 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 <tr><td><span class="sev s1">P1</span></td><td>只丢一个原型 URL 没有文字说明</td><td>缺意图描述，L3 子意图判定置信度下降</td><td>链接附一句话：「PM 给的原型链接，解析出编码需求文档」——三信号锁定 pm-prototype</td></tr>
 <tr><td><span class="sev s1">P1</span></td><td>门禁连续 FAIL 一直在回炉</td><td>需求/设计有结构性缺陷</td><td>连 3 轮 FAIL 会停机；<b>此时该回退到 P1/P2 改需求</b>，而非继续打回</td></tr>
 <tr><td><span class="sev s2">P2</span></td><td>交付物上看不到源码</td><td>源码应在<b>你的工作区</b>，不在 .tribro</td><td>去 <code>implements.md</code> / <code>release-report.md</code> 看记录的路径</td></tr>
-<tr><td><span class="sev s2">P2</span></td><td>想知道某 skill 版本是否漂移</td><td>自维护模式不与任何远端比对</td><td><code>ops/version-lint.py</code> 五点一致性校验（当前 46/46 全绿）；skill 内 <code>check_update.py</code> 返回 A/D 态</td></tr>
+<tr><td><span class="sev s2">P2</span></td><td>想知道某 skill 版本是否漂移</td><td>自维护模式不与任何远端比对</td><td><code>ops/version-lint.py</code> 五点一致性校验（当前 22/22 全绿）；skill 内 <code>check_update.py</code> 返回 A/D 态</td></tr>
 </tbody>
 </table>
 
@@ -709,8 +629,8 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 <footer>
   tri-stack 使用手册 · 自维护版 · 按仓库实测契约 + 真实项目实战教训重写<br>
   契约基线：tri-intent v1.13.1 ／ tri-coding v1.7.0 ／ tri-review v1.6.0 ／ tri-sdlc v1.1.3 ／ tri-prototype v1.1.0 ／ tri-forge v1.0.0 ／ tri-init v1.0.0<br>
-  46 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
-  <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ 46 个 skill 全部 junction 安装 ✅ 版本一致性 46/46 ✅ 实战校准：ops-pilot / ops-pilot-web</span>
+  22 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
+  <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ 22 个 skill 全部 junction 安装 ✅ 版本一致性 22/22 ✅ 实战校准：ops-pilot / ops-pilot-web</span>
 </footer>
 
 </div>

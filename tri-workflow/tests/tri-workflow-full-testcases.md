@@ -1,7 +1,7 @@
 ---
 name: tri-workflow-full-testcases
 slug: tri-workflow-full-testcases
-version: 1.2.3
+version: 1.2.4
 description: 基于 tri-workflow v1.2.3 全量扫描生成的全场景测试用例（能力清单 A–H + 7 阶段真实用例）
 license: MIT
 ---

@@ -134,7 +134,7 @@ nodes:
   - id: postmortem
     name: 复盘报告
     type: auto
-    role: { type: skill, target: tri-content }
+    role: { type: skill, target: tri-coding }
     action: 生成故障复盘报告（5 Why / 时间线 / 改进措施）
     inputs:
       - { name: alert_info, type: object, source: alert_trigger.outputs.alert_info, required: true }

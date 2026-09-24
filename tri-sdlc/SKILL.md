@@ -1,7 +1,7 @@
 ---
 name: 软件工程全生命周期驱动
 slug: tri-sdlc
-version: 1.1.3
+version: 1.1.4
 displayName: 软件工程全生命周期驱动
 description: 软件工程全生命周期编排 skill。读取 tri-intent 快照 §三，处理 L2 ∈ {I11 编码开发 / I13 规划拆解 / I14 操作执行} 且 L3_子意图 = sdlc（全生命周期 / 端到端交付）的意图，将项目拆为 P0 立项规划→P8 运维监控共 9 个阶段，逐阶段派发子SKILL 产出规定交付物，每阶段内置「自动审计 + 用户确认」双闸门，未过则携修订意见回炉重做，并以 manifest.md 状态机支持自然语言启动/查进度/确认/回退。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 九阶段 SDLC 编排器，逐阶段派发子SKILL、按 68 条必检项审计门禁产物、维护 manifest 状态机，支持自然语言启动/查进度/确认/打回/回退/跳过。
@@ -82,7 +82,7 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：阶段划分与顺序编排、子SKILL 派发、门禁自动审计与判定、manifest 状态机维护、自然语言流程指令解析、跨阶段一致性核对（需求 ID 贯穿）、最终交付汇总。
-- **不负责**：意图识别（tri-intent）、阶段内的专业产出（各 `children/` 子SKILL）、通用文本创作（tri-content）、多媒体（tri-mm）。
+- **不负责**：意图识别（tri-intent）、阶段内的专业产出（各 `children/` 子SKILL）、通用文本创作（本分支未包含）、多媒体（本分支未包含）。
 - **与相邻 skill 的关键边界**：
 
 | 相邻 skill | 边界判据 |
@@ -321,7 +321,7 @@ license: MIT
 
 ## 落盘规则
 
-> 与 tri-intent（`.tribro/snapshots/`）、tri-mm（`.tribro/multimedia/`）、tri-loop（`.tribro/loops/`）保持一致。
+> 与 tri-intent（`.tribro/snapshots/`）、tri-loop（`.tribro/loops/`）保持一致。
 
 - 快照由 tri-intent 已落盘于 `.tribro/snapshots/`，本 skill 只读不改。
 - **本 skill 链路文档**落盘于 `.tribro/sdlc/<命名>/`：`manifest.md`（覆盖写）、`summary.md`（覆盖写）。

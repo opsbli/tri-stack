@@ -1,9 +1,9 @@
 ---
 name: 调试修复
 slug: tri-fix
-version: 1.4.0
+version: 1.4.1
 displayName: 调试修复
-description: 调试修复下游执行 skill（I12）——先造出一条能变红的紧密反馈循环，再定位根因，最后最小化修复。当用户说「调试」「debug 一下」「查一下这个 bug」「帮我看看这个报错」，或报告程序报错/崩溃/抛异常/跑不通/结果不对/数据错乱/偶发失败/线上才复现/变慢了/接口超时时激活；也在 tri-intent 快照 §三 下游路由建议指向本 skill 时激活。目标代码尚不存在的新功能交 tri-coding，只看不改的代码审查交 tri-review，只求解释不求修复交 tri-ask。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
+description: 调试修复下游执行 skill（I12）——先造出一条能变红的紧密反馈循环，再定位根因，最后最小化修复。当用户说「调试」「debug 一下」「查一下这个 bug」「帮我看看这个报错」，或报告程序报错/崩溃/抛异常/跑不通/结果不对/数据错乱/偶发失败/线上才复现/变慢了/接口超时时激活；也在 tri-intent 快照 §三 下游路由建议指向本 skill 时激活。目标代码尚不存在的新功能交 tri-coding，只看不改的代码审查交 tri-review，只求解释不求修复的咨询在本分支未包含（原 tri-ask）。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 以「没有能变红的循环就没有假设阶段」为铁律的系统化调试方法论——6 阶段（建立反馈循环→复现最小化→假设生成→插桩验证→修复回归→清理复盘）串联三道审批门，强制因果确认与最小化修复。
 tags: [debugging, bug-fix, root-cause, feedback-loop, workflow, approval-gate, regression-test]
 license: MIT
@@ -53,7 +53,7 @@ license: MIT
 | 「加个功能」「实现一个 X」——目标代码尚不存在，无可复现故障 | tri-coding（I11） |
 | 「帮我 review 这段代码」——只看不改，无具体故障现象 | tri-review |
 | 「这个架构该怎么改」「先出个方案」——无可复现故障，求规划 | tri-plan（I13） |
-| 「这个报错是什么意思」——只求解释，不求定位与修复 | tri-ask（I01–I05） |
+| 「这个报错是什么意思」——只求解释，不求定位与修复 | 本分支未包含（原 tri-ask，I01–I05） |
 
 ## 上游依赖检测（独立使用时）
 
@@ -97,7 +97,7 @@ license: MIT
 - **不负责**：意图识别（由 tri-intent）、新功能编码开发（由 tri-coding 的 I11）、代码审查（由 tri-review）、规划方案（由 tri-plan）
 - **关键边界**：本 skill「先诊断后修复」——诊断归 bug-report.md/diagnosis.md，修复归 fix-tasks.md/执行阶段；诊断证据链完整之后才动代码
 - **与 tri-coding 的协作**：调试过程中可加载 tri-coding 的技术栈 skill（`tri-coding/tech-skills/`）辅助定位技术栈特定的问题模式，加载方式参考 tri-coding 的 registry 驱动机制
-- **不触发场景（Not-Trigger）**：本 skill 不接手「目标代码尚不存在的新功能开发」（属 tri-coding 的 I11，本 skill 只修复既有缺陷）；不接手「只审查不改的代码审查」（属 tri-review）；不接手「只求解释不求修复的咨询」（属 tri-ask）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「目标代码尚不存在的新功能开发」（属 tri-coding 的 I11，本 skill 只修复既有缺陷）；不接手「只审查不改的代码审查」（属 tri-review）；不接手「只求解释不求修复的咨询」（本分支未包含，原 tri-ask）；不接手「识别用户意图」（由 tri-intent / 自身快照驱动）。
 
 ## 系统化调试方法论（核心能力 · 可扩展）
 

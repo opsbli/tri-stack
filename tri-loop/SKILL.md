@@ -1,7 +1,7 @@
 ---
 name: 循环启动
 slug: tri-loop
-version: 1.2.2
+version: 1.2.3
 displayName: 循环启动
 description: 知识库 loop（domain）启动下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行·loop/domain 创建子类）意图，在基于文件的知识库中 bootstrap substrate、收集 loop charter、scaffold loop README、执行一次真实测试运行并记录到 Timeline 和 LOG.md。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照处理 I14 loop/domain 创建子类意图，含 substrate bootstrap、loop charter 收集、README scaffold、真实测试运行、Timeline+LOG.md 记录全链路，确保 loop 可验证运行。
@@ -29,7 +29,7 @@ license: MIT
    - **回报**：总结 charter、测试运行结果、创建的 artifact、缺失项、如何再次运行。
    - 完整链路：`substrate 检测 → charter 收集 → scaffold → 真实测试运行 → Timeline+LOG.md 记录 → 回报`。charter 不完整的 loop 不得 scaffold。
 3. **最小化原则（门禁规则）**：进入执行阶段前 MUST 校验操作范围是否最小化——只执行 `任务要点` 范围内的操作（创建指定的 loop、运行指定的测试），不执行未明确授权的附加操作（不擅自创建额外 domain、不擅自修改已有 loop、不擅自重构 substrate）。若执行中发现需扩大操作范围，MUST 向用户说明并确认，NEVER 默默扩大范围。
-4. **职责边界**：本 skill 负责「读取快照 → 检测 substrate → 收集 charter → scaffold README → 真实测试运行 → 记录 → 回报」全链路。意图识别（由 tri-intent）、编码开发（由 tri-coding）、内容文本产出（由 tri-content）不属于本 skill。
+4. **职责边界**：本 skill 负责「读取快照 → 检测 substrate → 收集 charter → scaffold README → 真实测试运行 → 记录 → 回报」全链路。意图识别（由 tri-intent）、编码开发（由 tri-coding）、内容文本产出（本分支未包含）不属于本 skill。
 5. **自检**：作答前用一句话声明「本次意图=I14 loop 创建，已读取快照，substrate 状态=<已就绪/已 bootstrap>，loop charter=<已收集 N 项>，测试运行=<已执行/已跳过>，Timeline+LOG=<已记录>」，若与上述规则冲突则停止并纠正。
 
 ## 触发时机
@@ -89,7 +89,7 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：依据快照结论或内联输入，bootstrap substrate、收集 charter、scaffold loop README、执行真实测试运行、记录 Timeline + LOG.md
-- **不负责**：意图识别（由 tri-intent）、编码开发（由 tri-coding）、内容文本产出（由 tri-content）、通用操作执行（由 tri-action）
+- **不负责**：意图识别（由 tri-intent）、编码开发（由 tri-coding）、内容文本产出（本分支未包含）、通用操作执行（由 tri-action）
 - **关键边界**：本 skill「创建并验证知识库 loop」——只创建指定的 loop 并做一次测试运行，不擅自创建额外 domain、不擅自修改已有 loop
 - **与 tri-action 的协作**：tri-action 处理通用 I14 操作；当 I14 任务要点含 loop/domain 创建语义时，tri-intent 路由到 tri-loop 而非 tri-action
 - **与 tri-coding 的协作**：对于提交代码的 loop，loop 的运行在隔离 git worktree 中进行，通过 `/verify` skill 提交

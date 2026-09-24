@@ -109,7 +109,7 @@ nodes:
   - id: report_generate
     name: 报表生成
     type: auto
-    role: { type: skill, target: tri-content }
+    role: { type: skill, target: tri-coding }
     action: 生成数据分析报表
     inputs:
       - { name: aggregated_data, type: file, source: data_aggregate.outputs.aggregated_data, required: true }
