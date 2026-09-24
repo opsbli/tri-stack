@@ -1,7 +1,7 @@
 ---
 name: 自进化学习
 slug: tri-evolve
-version: 1.1.2
+version: 1.1.3
 displayName: 自进化学习
 description: 横向学习/进化型 skill，为 tri-xxx 家族提供多渠道信号驱动的持续改进与用户画像构建能力；EVOLVE_OBSERVE 模式采集作答后信号，EVOLVE_LEARN 模式批量归因学习，EVOLVE_APPLY 模式向下游 skill 提供画像与经验复用；hook/定时/请求激活；支持独立安装，含上游依赖检测三态逻辑（完整模式/引导安装/降级模式）。
 summary: OODA 进化闭环（观察-归因-提议-验证-沉淀）+ 经验条目库（embedding 检索复用）+ 用户画像（静态/动态分层+时间衰减）+ A/B 验证门 + 安全回滚，纯自我批判禁沉淀。
@@ -70,25 +70,27 @@ license: MIT
 
 ## 上游依赖检测（独立使用时）
 
-> 本 skill 可独立安装。激活时 MUST 检测上游 tri-intent 与 tri-cache 是否可用，据检测结果选择执行模式：
+> 本 skill 可独立安装。激活时 MUST 检测上游 tri-intent 是否可用，据检测结果选择执行模式（原 tri-cache 缓存层本分支未包含，其「缓存命中」信号渠道随之不可用）：
 
 | 模式 | 触发条件 | 行为 |
 |------|----------|------|
-| **A · 完整模式** | 检测到 `tri-intent/` 且 `tri-cache/` 且 `.tribro/snapshots/` 有快照 | 六渠道信号全采集（显式/隐式/缓存命中/纠偏/快照分布/会话轨迹）；画像持久化；经验库 embedding 检索 |
-| **B · 引导安装** | 未检测到 tri-intent / tri-cache | MUST 向用户提示依赖并引导安装 |
+| **A · 完整模式** | 检测到 `tri-intent/` 且 `.tribro/snapshots/` 有快照 | 六渠道信号全采集（显式/隐式/缓存命中/纠偏/快照分布/会话轨迹）；画像持久化；经验库 embedding 检索 |
+| **B · 引导安装** | 未检测到 tri-intent | MUST 向用户提示依赖并引导安装 |
 | **C · 降级模式** | 用户拒绝安装 | 退化为仅会话内反馈学习（无跨会话沉淀、无画像持久化、无经验复用），声明降级精度低 |
+
+> 注：缓存层原 tri-cache 本分支未包含，「缓存命中」信号渠道（渠道 ③）在本分支不可用；其余五渠道不受影响。
 
 **模式 B 提示语**：
 
-> 本 skill 的完整进化能力依赖上游 tri-intent（快照分布信号）与 tri-cache（命中统计信号）。
-> 请安装：`skillhub install tri-intent tri-cache --dir <目标目录>`
+> 本 skill 的完整进化能力依赖上游 tri-intent（快照分布信号）；缓存命中统计信号原由 tri-cache 提供，该 skill 本分支未包含。
+> 请安装：`skillhub install tri-intent --dir <目标目录>`
 > 安装后方可采集六渠道信号、构建持久化画像、复用历史经验。若仅需会话内反馈学习可进入降级模式。
 
 **模式 C 降级声明**：
 
-> 未检测到 tri-intent / tri-cache，已进入降级模式：仅采集会话内显式/隐式反馈，无跨会话画像沉淀、无经验库检索、无 A/B 验证。进化精度低于标准链路，建议后续安装 tri-intent + tri-cache 以获得完整效果。
+> 未检测到 tri-intent，已进入降级模式：仅采集会话内显式/隐式反馈，无跨会话画像沉淀、无经验库检索、无 A/B 验证。进化精度低于标准链路，建议后续安装 tri-intent 以获得完整效果。
 
-> **对称双向检测**：本 skill 检上游；tri-intent / tri-cache 亦可检测本 skill 是否存在以决定是否触发 evolve-hook。任一端缺失都被发现。
+> **对称双向检测**：本 skill 检上游；tri-intent 亦可检测本 skill 是否存在以决定是否触发 evolve-hook。任一端缺失都被发现。
 
 ## 输入契约
 
@@ -106,7 +108,7 @@ license: MIT
 | 输入源 | 字段 | 用途 |
 |--------|------|------|
 | 信号库 | 信号窗口（近 N 条同 skill/intent） | 模式识别 |
-| tri-cache | 命中统计（hits / misses / stale 比例） | 命中率归因 |
+| 原 tri-cache（本分支未包含） | 命中统计（hits / misses / stale 比例） | 命中率归因 |
 | tri-meta | 纠偏记录 | 缺陷归因 |
 | 快照目录 | 意图分布 / 澄清门触发率 | 意图识别准确度信号 |
 | 会话历史 | 多轮交互轨迹 | 偏好线索挖掘 |
@@ -126,11 +128,11 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：多渠道进化信号采集；归因分析；改进提议生成与 A/B 验证；经验条目库沉淀与检索复用；用户画像构建（静态/动态分层+时间衰减）；配置覆盖建议；安全回滚。
-- **不负责**：意图识别（tri-intent）；业务作答（各下游 skill）；缓存存储（tri-cache）；元操作纠偏（tri-meta）。
-- **与 tri-cache 的边界**：tri-cache 是「记忆层」（存历史作答）；本 skill 是「学习层」（从历史中学习）。tri-cache 提供「命中率」信号给本 skill；本 skill 输出「调优建议」可影响 tri-cache 的差异化 TTL 配置。
+- **不负责**：意图识别（tri-intent）；业务作答（各下游 skill）；缓存存储（原 tri-cache，本分支未包含）；元操作纠偏（tri-meta）。
+- **与缓存层的边界**：原 tri-cache（本分支未包含）是「记忆层」（存历史作答）；本 skill 是「学习层」（从历史中学习）。设计上缓存层提供「命中率」信号给本 skill，本 skill 输出「调优建议」可影响缓存层的差异化 TTL 配置；该协作在本分支暂不可用。
 - **与 tri-meta 的边界**：tri-meta 处理 M01-M04 元操作（实时澄清/纠偏）；本 skill 处理离线归因与长期学习。tri-meta 的纠偏记录是本 skill 的信号源之一。
 - **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族全部路由型下游执行 skill 的 MECE 划分；它是横切关注点（学习层）。
-- **不触发场景（Not-Trigger）**：本 skill 不接手「意图识别」（转 tri-intent）；不接手「业务作答」（属各下游执行 skill）；不接手「历史作答缓存存储」（属 tri-cache，本 skill 是学习层不是记忆层）；不接手「元操作实时纠偏/细化」（属 tri-meta）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「意图识别」（转 tri-intent）；不接手「业务作答」（属各下游执行 skill）；不接手「历史作答缓存存储」（原属 tri-cache，本分支未包含，本 skill 是学习层不是记忆层）；不接手「元操作实时纠偏/细化」（属 tri-meta）。
 
 ## 自进化方法论（核心能力 · 可扩展）
 
@@ -163,7 +165,7 @@ license: MIT
 |------|------|------|
 | ① 显式反馈 | 赞 / 踩 / 评分 / 纠偏文本 | 用户主动输入 |
 | ② 隐式行为 | 采纳 / 修改 / 重试 / 中断 / 复制 | 作答后用户行为 |
-| ③ 缓存命中 | 命中率 / 未命中模式 / stale 比例 | tri-cache `cache_meta` |
+| ③ 缓存命中 | 命中率 / 未命中模式 / stale 比例 | 原 tri-cache `cache_meta`（本分支未包含） |
 | ④ 纠偏记录 | M02 纠偏事件 | tri-meta |
 | ⑤ 快照分布 | 意图识别分布 / 澄清门触发率 | `.tribro/snapshots/` |
 | ⑥ 会话轨迹 | 多轮交互偏好线索 | 会话历史 |
@@ -298,8 +300,8 @@ status: verified
 ab_result: {lift: 0.08, sample: 50, p_value: 0.03}
 embedding: <向量>
 source_channels: [explicit_feedback, cache_hit]
-target_skill: tri-ask
-target_intent: I01
+target_skill: tri-coding
+target_intent: I11
 created_at: <ISO时间>
 verified_at: <ISO时间>
 schema_version: 1

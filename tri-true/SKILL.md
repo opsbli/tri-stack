@@ -1,7 +1,7 @@
 ---
 name: 消除幻觉
 slug: tri-true
-version: 1.1.2
+version: 1.1.3
 displayName: 消除幻觉
 description: 横向方法论型 skill，为 tri-xxx 家族提供"置信度评估 + 事实源验证 + 多模型多方事实源交叉验证 + 自我反思修正"四道防线的幻觉消除能力；VERIFY_EXECUTE 模式执行深度验证（含段级置信度评估、RAG 句级引用、T1-T4 信源分级、UAF 多模型加权融合、CoVe/Reflexion 闭环修正、人审兜底），VERIFY_QUERY 模式查询历史验证，VERIFY_ADMIN 模式管理信源/校准/模型池；下游 skill 委派或用户直接调用激活；支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 四道防线（置信度/事实源/多模型/自反思）+ 三层置信度（VC+SC+CC 校准）+ 四级信源分级（T1-T4 可信度加权）+ 异构多模型交叉验证（UAF 融合 + 共识阈值）+ CoVe/Reflexion 闭环修正 + 人审兜底 + ECE/Brier 校准。
@@ -46,7 +46,7 @@ license: MIT
 
 | 触发源 | 模式 | 激活条件 |
 |--------|------|----------|
-| 下游 skill 委派（tri-ask 高风险问题、tri-content 事实内容） | VERIFY_EXECUTE | 调用方判定需幻觉消除，调用本 skill 执行接口 |
+| 下游 skill 委派（如 tri-coding 高风险技术结论、tri-code-analyzer 分析结论） | VERIFY_EXECUTE | 调用方判定需幻觉消除，调用本 skill 执行接口 |
 | 用户直接调用（"验证这个回答"/"消除幻觉"） | VERIFY_EXECUTE | 用户发起验证请求 |
 | 高风险场景 hook 触发 | VERIFY_EXECUTE | YMYL 场景自动激活 |
 | 查询历史验证（"X 之前验证过吗"） | VERIFY_QUERY | skill 或用户查询历史 |
@@ -118,14 +118,14 @@ license: MIT
 ## 职责边界
 
 - **本 skill 负责**：执行四道防线幻觉消除；管理信源库（T1-T4 分级）、校准表（各模型 ECE）、模型池（异构组合）；提供历史验证查询；人审兜底调度。
-- **不负责**：意图识别（由 tri-intent）；业务作答（由各下游执行 skill）；缓存（由 tri-cache）；翻译（由 tri-translate）。
-- **与 tri-ask 的边界**：tri-ask 处理一般咨询；本 skill 处理高风险咨询的幻觉消除。tri-ask 自行判定是否委派，**本 skill 不主动接管**。
-- **与 tri-content 的边界**：tri-content 生成事实性内容可委派本 skill 验证；本 skill 不生成内容。
-- **与 tri-cache 的边界**：tri-cache 可缓存历史验证结果，命中即跳过 RAG；本 skill 默认禁用 TM，可选启用。
+- **不负责**：意图识别（由 tri-intent）；业务作答（由各下游执行 skill）；缓存（原 tri-cache，本分支未包含）；翻译（原 tri-translate，本分支未包含）。
+- **与一般咨询类 skill 的边界**：原 tri-ask（本分支未包含）处理一般咨询；本 skill 处理高风险咨询的幻觉消除。委派由调用方自行判定，**本 skill 不主动接管**。
+- **与内容生成类 skill 的边界**：原 tri-content（本分支未包含）生成事实性内容可委派本 skill 验证；本 skill 不生成内容。
+- **与缓存层的边界**：原 tri-cache（本分支未包含）可缓存历史验证结果，命中即跳过 RAG；本 skill 默认禁用 TM，可选启用。
 - **与 tri-evolve 的边界**：tri-evolve 从验证结果学习调整校准系数；本 skill 的 ECE 是进化信号。
-- **与 tri-translate 的边界**：tri-translate 的 Hallucination 维度可委派本 skill 深度验证。
-- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族全部路由型下游执行 skill 的 MECE 划分；属横切关注点，同 tri-cache / tri-evolve / tri-translate 同属横向层。
-- **不触发场景（Not-Trigger）**：本 skill 不接手「一般咨询的常规作答」（属 tri-ask，本 skill 只做委派而来的高风险幻觉消除）；不接手「业务内容生成」（属 tri-content，本 skill 只验证不生成）；不接手「翻译转换本身」（属 tri-translate，本 skill 仅承接其 Hallucination 维度深度验证）；不接手「意图识别」（由 tri-intent / 快照驱动）。
+- **与翻译类 skill 的边界**：原 tri-translate（本分支未包含）的 Hallucination 维度可委派本 skill 深度验证。
+- **MECE 边界**：本 skill 不认领任何 L2 意图编码，不破坏家族全部路由型下游执行 skill 的 MECE 划分；属横切关注点，与 tri-evolve 同属本分支横向层（原 tri-cache / tri-translate 本分支未包含）。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「一般咨询的常规作答」（原属 tri-ask，本分支未包含，本 skill 只做委派而来的高风险幻觉消除）；不接手「业务内容生成」（原属 tri-content，本分支未包含，本 skill 只验证不生成）；不接手「翻译转换本身」（原属 tri-translate，本分支未包含，本 skill 仅承接其 Hallucination 维度深度验证）；不接手「意图识别」（由 tri-intent / 快照驱动）。
 
 ## 消除幻觉方法论（核心能力 · 可扩展）
 
@@ -479,7 +479,7 @@ tri-true/
 ## 依赖与兼容
 
 - **上游**：tri-intent（可选，提供快照上下文）
-- **横向协作**：tri-cache（缓存历史验证）、tri-evolve（学习校准系数）、tri-translate（委派幻觉检测）
-- **下游调用方**：tri-ask / tri-content / tri-coding / 用户直接调用
+- **横向协作**：tri-evolve（学习校准系数）；原 tri-cache（缓存历史验证，本分支未包含）、原 tri-translate（委派幻觉检测，本分支未包含）
+- **下游调用方**：tri-coding 等执行 skill / 用户直接调用（原 tri-ask / tri-content 本分支未包含）
 - **独立运行**：三态依赖检测，无 tri-intent 时降级为单模型 + 自反思仍可工作
 - **版本**：见 `CHANGELOG.md`（单一事实源），遵循 SemVer

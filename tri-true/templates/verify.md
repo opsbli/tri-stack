@@ -1,7 +1,7 @@
 ---
 verify_id: <UUID>
 task_name: <VERIFY_YYYYMMDD_HHMMSS_sessionid8>
-source_skill: <tri-ask|tri-content|user_direct|hook>
+source_skill: <tri-coding|tri-code-analyzer|user_direct|hook>
 risk_level: <low|medium|high|critical>
 domain: <medical|financial|legal|technical|general>
 upstream_mode: <A_snapshot|B_install_prompt|C_degraded>

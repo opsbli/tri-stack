@@ -45,7 +45,7 @@ description: tri-true 验证任务数据模型 schema。定义 5 表结构（ver
 |------|------|------|------|
 | `verify_id` | string (UUID) | PK, 非空 | 验证任务唯一 ID |
 | `task_name` | string | 非空 | 任务命名（`VERIFY_<日期>_<时间>_<会话ID>`） |
-| `source_skill` | string | 非空 | 来源 skill（如 tri-ask / tri-content / user_direct） |
+| `source_skill` | string | 非空 | 来源 skill（如 tri-coding / tri-code-analyzer / user_direct） |
 | `source_text` | text | 非空 | 待验证原文 |
 | `source_text_hash` | string (sha256) | 非空 | 原文哈希（用于去重与查询） |
 | `risk_level` | enum | 非空 | low / medium / high / critical |

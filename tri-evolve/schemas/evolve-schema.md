@@ -132,8 +132,8 @@ CREATE TABLE baseline (
 每行一信号事件 JSON：
 
 ```json
-{"event":"explicit_feedback","ts":1722497400,"user_id":"u1","session_id":"s1","skill":"tri-ask","intent_l2":"I01","signal":"thumbs_up","text":"回答很准确"}
-{"event":"implicit_behavior","ts":1722497500,"user_id":"u1","session_id":"s1","skill":"tri-content","intent_l2":"I08","behavior":"retry"}
+{"event":"explicit_feedback","ts":1722497400,"user_id":"u1","session_id":"s1","skill":"tri-coding","intent_l2":"I11","signal":"thumbs_up","text":"回答很准确"}
+{"event":"implicit_behavior","ts":1722497500,"user_id":"u1","session_id":"s1","skill":"tri-action","intent_l2":"I14","behavior":"retry"}
 {"event":"cache_hit","ts":1722497600,"hit":true,"intent_l2":"I01","cache_key":"a1b2c3d4"}
 {"event":"correction","ts":1722497700,"source":"tri-meta","skill":"tri-coding","intent_l2":"I11","correction":"..."}
 {"event":"snapshot_dist","ts":1722497800,"intent_l2":"I08","count":12,"clarify_gate_triggered":false}

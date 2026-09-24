@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.3] - 2026-09-24
+
+### 变更
+
+- **清理对已移除 skill 的引用**：正文中 `tri-cache` / `tri-ask` 的边界说明与示例改为「本分支未包含（原 tri-xxx）」标注或指向现存 skill；信号渠道③（缓存命中）加注「本分支不可用」。非功能性变更（文档）。
+
 ## [1.1.2] - 2026-09-18
 
 ### 新增

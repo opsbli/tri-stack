@@ -15,7 +15,7 @@
 - **幻觉类型分流**：Factuality（事实性，走防线二）/ Faithfulness（自洽性，走自洽性检测），NEVER 混淆处理
 - **三个独立调用接口**：VERIFY_EXECUTE / VERIFY_QUERY / VERIFY_ADMIN，可独立运行
 - **隐私过滤与成本控制**：第三方模型调用前扫描密钥脱敏，敏感度过高不外传；单任务多模型调用上限 5 次，超限降级
-- **委派关系**：作为 tri-ask/tri-content 等下游 skill 的可选委派目标，不主动接管
+- **委派关系**：作为 tri-coding 等下游执行 skill 的可选委派目标，不主动接管（原 tri-ask / tri-content 本分支未包含）
 - **独立安装三态依赖检测**：快照模式 / 引导安装 / 降级模式（自构造等价输入声明精度低）
 
 ## 目录结构

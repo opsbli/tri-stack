@@ -7,7 +7,7 @@
 ## 特性
 
 - **OODA 进化闭环**：观察（六渠道信号采集）→ 归因（模式识别）→ 提议（带置信度）→ 验证（A/B 小流量）→ 沉淀（verified 入库），五阶段闭环
-- **六渠道信号源**：用户显式反馈 / 隐式行为 / tri-cache 命中统计 / tri-meta 纠偏记录 / 快照分布 / 会话轨迹
+- **六渠道信号源**：用户显式反馈 / 隐式行为 / 缓存命中统计（原 tri-cache，本分支未包含）/ tri-meta 纠偏记录 / 快照分布 / 会话轨迹
 - **经验条目库**：Voyager 式可检索复用（非 append-only 日志），每条经验带 embedding 索引，相似场景语义检索复用
 - **用户画像四层**：静态属性 / 风格偏好 / 主题偏好 / 交互习惯；静态稳定、动态时间衰减（半衰期 30 天）；追踪偏好演变历史（应对 PERSONAMEM 揭示的动态演进问题）
 - **外部信号锚定**：改进提议 MUST 锚定外部信号（generator-verifier gap 防护），纯自我批判 NEVER 沉淀
@@ -51,12 +51,12 @@ tri-evolve/
 cp -r tri-evolve/ /path/to/your/skills/
 ```
 
-本 skill 可独立安装。激活时检测上游 tri-intent 与 tri-cache 是否可用，据检测结果选择执行模式：
+本 skill 可独立安装。激活时检测上游 tri-intent 是否可用，据检测结果选择执行模式（原 tri-cache 缓存层本分支未包含）：
 
 | 模式 | 触发条件 | 行为 |
 |------|----------|------|
-| A · 完整模式 | 检测到 `tri-intent/` 且 `tri-cache/` 且 `.tribro/snapshots/` 有快照 | 六渠道信号全采集；画像持久化；经验库 embedding 检索 |
-| B · 引导安装 | 未检测到 tri-intent / tri-cache | 向用户提示依赖并引导安装 `skillhub install tri-intent tri-cache` |
+| A · 完整模式 | 检测到 `tri-intent/` 且 `.tribro/snapshots/` 有快照 | 六渠道信号全采集（缓存命中渠道来源原 tri-cache 本分支未包含）；画像持久化；经验库 embedding 检索 |
+| B · 引导安装 | 未检测到 tri-intent | 向用户提示依赖并引导安装 `skillhub install tri-intent` |
 | C · 降级模式 | 用户拒绝安装 | 退化为仅会话内反馈学习（无跨会话沉淀、无画像持久化、无经验复用），声明降级精度低 |
 
 > 三态逻辑：本 skill 为学习型，支持降级——降级模式仍可采集会话内反馈学习，但精度低。
@@ -86,7 +86,7 @@ cp -r tri-evolve/ /path/to/your/skills/
 |------|------|------|
 | ① 显式反馈 | 赞 / 踩 / 评分 / 纠偏文本 | 用户主动输入 |
 | ② 隐式行为 | 采纳 / 修改 / 重试 / 中断 / 复制 | 作答后用户行为 |
-| ③ 缓存命中 | 命中率 / 未命中模式 / stale 比例 | tri-cache `cache_meta` |
+| ③ 缓存命中 | 命中率 / 未命中模式 / stale 比例 | 原 tri-cache `cache_meta`（本分支未包含） |
 | ④ 纠偏记录 | M02 纠偏事件 | tri-meta |
 | ⑤ 快照分布 | 意图识别分布 / 澄清门触发率 | `.tribro/snapshots/` |
 | ⑥ 会话轨迹 | 多轮交互偏好线索 | 会话历史 |
@@ -141,4 +141,4 @@ tri-evolve ab-status                 # 查看 A/B 实验状态
 - **改要有验**：A/B 验证门强制，lift≥5% 且显著才沉淀
 - **错要能回滚**：每次沉淀带版本，错误学习可回滚
 - **隐私要护住**：敏感属性 NEVER 推断，画像支持导出/删除
-- **可独立运行**：三态依赖检测，无 tri-intent/tri-cache 时降级为会话内学习仍可工作
+- **可独立运行**：三态依赖检测，无 tri-intent 时降级为会话内学习仍可工作（缓存层原 tri-cache 本分支未包含）
