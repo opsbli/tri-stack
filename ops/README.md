@@ -26,7 +26,7 @@ ops/
 ├── versions.json              自主版本线基线（24 个 skill 的版本快照）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 18 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 19 个 op）
     ├── apply.py                幂等重放器
     └── payload/
         └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）

@@ -191,9 +191,10 @@ NEVER 静默跳过、NEVER 以降级名义绕过 P2–P3、NEVER 在未真实尝
 
 **发布前门禁**：MUST 确认四处版本号零不一致——
 
-> ⚠️ **脚本门禁当前缺失**：原本由 `tri-forge/scripts/sync_registry.py` 提供，但 `tri-forge`
-> 未随任何可达源分发（本地磁盘、git 全历史、原作者 GitHub、平台 92/92 全量枚举均无命中）。
-> 在本仓库自行实现等效校验器之前，按下列清单逐条手工核对：
+> ✅ **脚本门禁已就位**（2026-09-24 更正）：上游该脚本名为 `sync_registry.py`；本仓库为自维护 fork，
+> 已重建为 **`tri-forge/scripts/check_registry.py`**（`--check` 报告漂移 / `--apply` 规则化回写 P3·P5）。
+> **单 skill 独立安装、无法调用 tri-forge 时**，用该 skill 自带的 `scripts/check_update.py`（自维护模式
+> 下已内置 P1–P5 自洽校验），或按下列清单逐条手工核对：
 
 | # | 核对项 | 期望 |
 |---|---|---|

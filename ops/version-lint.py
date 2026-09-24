@@ -20,9 +20,12 @@
   （「README 徽章 1.0.0 → 1.1.0，与 SKILL.md / CHANGELOG / _meta.json / tests 五处一致」），
   说明作者自己也把 README 版本声明当作同步点。
 
-原实现为 tri-forge 的 `scripts/sync_registry.py`。tri-forge 未随任何可达源分发
+原实现为 tri-forge 的 `scripts/sync_registry.py`。上游 tri-forge 从未随任何可达源分发
 （本地磁盘 / git 全历史 / 原作者仓库 / 平台 92 个 skill 全量枚举均无命中；且上游
-`.gitignore` 显式排除了 `tri-forge/`，属作者有意私有），故本仓库自行实现等效校验。
+`.gitignore` 显式排除了 `tri-forge/`，属作者有意私有）。**本仓库为自维护 fork，已于
+2026-09-23 自行重建 `tri-forge/`**；其中的 `tri-forge/scripts/check_registry.py` 实现同一套
+五点规则。**本文件是仓库运维侧的副本**——tri-forge 侧那份负责「单 skill 独立安装」场景，
+两者是刻意重复，修订规则时 MUST 同步两处。
 
 §六 的历史教训（保留）：tri-intent v1.9.0 发布时 CHANGELOG 写了 1.9.0 而 frontmatter
 仍是 1.8.0，漂移被打包进发布产物，导致任何人全新安装后自检都显示 1.8.0。

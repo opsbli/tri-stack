@@ -82,8 +82,8 @@
       "label": "version-gate.md §六：填补被清空的发布前门禁代码块",
       "glob": "tri-intent/references/version-gate.md",
       "old": "**发布前门禁**：MUST 运行同步器确认零不一致——\n\n```bash\n```\n",
-      "new": "**发布前门禁**：MUST 确认四处版本号零不一致——\n\n> ⚠️ **脚本门禁当前缺失**：原本由 `tri-forge/scripts/sync_registry.py` 提供，但 `tri-forge`\n> 未随任何可达源分发（本地磁盘、git 全历史、原作者 GitHub、平台 92/92 全量枚举均无命中）。\n> 在本仓库自行实现等效校验器之前，按下列清单逐条手工核对：\n\n| # | 核对项 | 期望 |\n|---|---|---|\n| 1 | `<skill>/SKILL.md` frontmatter `version:` | 基准值 |\n| 2 | `<skill>/CHANGELOG.md` 首个 `## [x.y.z]` | 与 1 相等，且为全文件最大版本 |\n| 3 | `<skill>/_meta.json` `version` | 与 1 相等 |\n| 4 | `~/.workbuddy/skills/.skills_store_lock.json` 对应条目 | 与 1 相等（该文件在自维护环境通常不存在，仅存在时校验） |\n",
-      "already_marker": "脚本门禁当前缺失"
+      "new": "**发布前门禁**：MUST 确认四处版本号零不一致——\n\n> ✅ **脚本门禁已就位**（2026-09-24 更正）：上游该脚本名为 `sync_registry.py`；本仓库为自维护 fork，\n> 已重建为 **`tri-forge/scripts/check_registry.py`**（`--check` 报告漂移 / `--apply` 规则化回写 P3·P5）。\n> **单 skill 独立安装、无法调用 tri-forge 时**，用该 skill 自带的 `scripts/check_update.py`（自维护模式\n> 下已内置 P1–P5 自洽校验），或按下列清单逐条手工核对：\n\n| # | 核对项 | 期望 |\n|---|---|---|\n| 1 | `<skill>/SKILL.md` frontmatter `version:` | 基准值 |\n| 2 | `<skill>/CHANGELOG.md` 首个 `## [x.y.z]` | 与 1 相等，且为全文件最大版本 |\n| 3 | `<skill>/_meta.json` `version` | 与 1 相等 |\n| 4 | `~/.workbuddy/skills/.skills_store_lock.json` 对应条目 | 与 1 相等（该文件在自维护环境通常不存在，仅存在时校验） |\n",
+      "already_marker": "脚本门禁已就位"
     },
     {
       "id": "sync-version-meta",
@@ -180,6 +180,15 @@
       "skip_prefixes": [
         "ops/"
       ]
+    },
+    {
+      "id": "f9-gate-script-rebuilt",
+      "type": "replace_text",
+      "label": "version-gate.md §六：更正已注入的「脚本门禁当前缺失」→ 已重建为 tri-forge/scripts/check_registry.py",
+      "glob": "tri-intent/references/version-gate.md",
+      "old": "> ⚠️ **脚本门禁当前缺失**：原本由 `tri-forge/scripts/sync_registry.py` 提供，但 `tri-forge`\n> 未随任何可达源分发（本地磁盘、git 全历史、原作者 GitHub、平台 92/92 全量枚举均无命中）。\n> 在本仓库自行实现等效校验器之前，按下列清单逐条手工核对：",
+      "new": "> ✅ **脚本门禁已就位**（2026-09-24 更正）：上游该脚本名为 `sync_registry.py`；本仓库为自维护 fork，\n> 已重建为 **`tri-forge/scripts/check_registry.py`**（`--check` 报告漂移 / `--apply` 规则化回写 P3·P5）。\n> **单 skill 独立安装、无法调用 tri-forge 时**，用该 skill 自带的 `scripts/check_update.py`（自维护模式\n> 下已内置 P1–P5 自洽校验），或按下列清单逐条手工核对：",
+      "already_marker": "脚本门禁已就位"
     }
   ]
 }

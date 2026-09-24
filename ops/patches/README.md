@@ -89,6 +89,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `f7-contract-mode` | replace_text | 契约 §0：「连接 skillhub 校验 + `skillhub upgrade`」→ 自维护本地校验（22 处） |
 | `f7b-contract-mode-intent` | replace_text | 契约 §0 变体（`tri-intent`）：远端校验/升级 + 端点内联 → 自维护口径 |
 | `f8-install-hint-self-maintained` | replace_regex | 引导安装提示：`skillhub install <slug> [--dir <目标目录>]` → 自维护安装器（58 文件 / 66 处） |
+| `f9-gate-script-rebuilt` | replace_text | `version-gate.md` §六：更正「脚本门禁当前缺失」→ 已重建为 `tri-forge/scripts/check_registry.py` |
 
 ## 每项补丁的依据
 
@@ -97,10 +98,16 @@ python ops/patches/apply.py --json      # 机器可读输出
 **事实**：
 - 上游 29 个顶层 SKILL.md 有 22 个指向 `tri-forge/references/version-check-spec.md`（**断链**），
   另 7 个用相对路径 `references/version-check-spec.md`（可用）
-- `tri-forge` 在**任何可达源**都不存在：本地磁盘 / git 全历史 / 原作者 GitHub（与本地同 commit `71e44af`）/
-  平台 `/api/v1/skills` 与 `/api/v1/download` 双 404；**作者名下 92/92 个 skill 全量枚举，`forge` 零命中**
+- `tri-forge` 在**任何可达源**都不存在（**当时结论，2026-09-23 之前**）：本地磁盘 / git 全历史 /
+  原作者 GitHub（与本地同 commit `71e44af`）/ 平台 `/api/v1/skills` 与 `/api/v1/download` 双 404；
+  **作者名下 92/92 个 skill 全量枚举，`forge` 零命中**
 - 上游自身对真源形态**三向矛盾**：4437B spec 写「不依赖任何外部 skill」（支持自带）；
   `tri-humanize/SKILL.md:219` 写「家族级单一事实源，NEVER 内联/自带 fork」（反对自带）；8 个 skill 实际各带一份
+
+> **后续（2026-09-23）**：本仓库已**自行重建 `tri-forge/`**（见 `.gitignore` 注记与
+> `tri-forge/CHANGELOG.md`），其中 `tri-forge/scripts/check_registry.py` 承接上游
+> `sync_registry.py` 的五点校验职能。⇒ 上文「不存在」的结论**仅属决策沿革**，不再是现状；
+> 后果之一见 §f9：`version-gate.md` §六 曾据此注入「脚本门禁当前缺失」的兜底清单，已更正。
 
 **裁定（用户 2026-09-23）**：**自带为主 + 总纲定位**
 - 每个 skill 自带 `references/version-check-spec.md` → 满足家族「支持独立安装」要求
@@ -327,3 +334,36 @@ skillhub[ \t]+install[ \t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \t]+--dir[ \t]+(?:<[^>
 | 纠错注记 | `tri-intent/references/version-gate.md:110` | 记载「`install --upgrade` 不存在」的正确结论 |
 | 机制自述 | `ops/**`（`skip_prefixes` 排除） | 本目录的说明文本 |
 | 历史快照 | `tri-mece-audit/tri-mece-audit.html` | `.html` 不在 glob 内；38 处版本引用属 46-skill 时代快照，且不在 `version-lint` D1–D4 覆盖范围 |
+
+---
+
+## §六 门禁叙述回归现状（`f9` · 一并修正 `f6` 的注入源）
+
+### 缘起：`f6` 注入的兜底文案随 `tri-forge` 重建而失真
+
+`f6-gate-fill-empty-block` 当年在填补上游清空的代码块时，注入了这样一段兜底说明：
+
+> ⚠️ **脚本门禁当前缺失**：原本由 `tri-forge/scripts/sync_registry.py` 提供，但 `tri-forge`
+> 未随任何可达源分发……在本仓库自行实现等效校验器之前，按下列清单逐条手工核对
+
+**但 2026-09-23 本仓库已重建 `tri-forge/`**，其中 `tri-forge/scripts/check_registry.py`
+就是那道门禁（P1–P5，`--check` / `--apply`）。⇒ 该段「缺失 + 只能手工」的叙述**与现状相反**，
+且它已由 `f6` **写进了 skill 文件** `tri-intent/references/version-gate.md`。
+按铁律，修正必须走补丁层，不能直接改文件。
+
+### 两步处置
+
+| 步 | op | 作用 |
+|---|---|---|
+| 1 | `f9-gate-script-rebuilt` | 把**已注入**的失真段替换为现状叙述（`old` = 旧 ⚠️ 段，`new` = 新 ✅ 段） |
+| 2 | `f6-gate-fill-empty-block`（改 `new` + `already_marker`） | 让**未来上游同步**在填补空块时**直接写入正确文本**，不再需要 f9 二次纠正 |
+
+新叙述同时给出两条真实路径（都保留手工清单作最后兜底）：
+- **家族侧**：`python tri-forge/scripts/check_registry.py --check`
+- **单 skill 独立安装侧**：该 skill 自带的 `scripts/check_update.py`（自维护模式下已内置 P1–P5 自洽校验）
+
+### 幂等判据
+
+`f6` 在**首次运行**会报 `not_found`——因为当前树既无上游空块（`old`）、也无新标记
+（`already_marker` 已改为 `脚本门禁已就位`）。这是**一次性**的：`f9` 随后完成替换，
+第二次起 `f6` 报 `已应用 1`。判据 = 连跑三次，`f6` / `f9` 均稳定在 `应用 0｜已应用 1`。
