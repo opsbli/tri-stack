@@ -382,3 +382,35 @@ skillhub[ \t]+install[ \t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \t]+--dir[ \t]+(?:<[^>
 `f6` 在**首次运行**会报 `not_found`——因为当前树既无上游空块（`old`）、也无新标记
 （`already_marker` 已改为 `脚本门禁已就位`）。这是**一次性**的：`f9` 随后完成替换，
 第二次起 `f6` 报 `已应用 1`。判据 = 连跑三次，`f6` / `f9` 均稳定在 `应用 0｜已应用 1`。
+
+---
+
+## `f3-*` 三个 op 为何**常驻** `not_found`（正常态，非缺陷）
+
+`apply.py` 汇总里有三行长期显示 ⬜ `应用 0｜已应用 0`，易被误读为「3 个 op 坏了」：
+
+```
+| `f3-clause-inline` | 移除发布前校验子句（行内分号引出版） | ⬜ 应用 0｜已应用 0 |
+| `f3-clause-sentence` | 移除发布前校验子句（句号引出版） | ⬜ 应用 0｜已应用 0 |
+| `f3-standalone-line` | 移除发布前校验独立行 | ⬜ 应用 0｜已应用 0 |
+```
+
+**这是预期终态**，原因是两层叠加：
+
+1. **目标文本已不存在于活跃树**。三者移除的都是 `；发布前 MUST 通过 \`python
+   tri-forge/scripts/sync_registry.py --check\`。` 家族子句；该子句在 F3 轮批量清除，
+   此后 §六 版本节又统一收敛为瘦指针 STUB（`converge-version-stub`），更不会重新出现。
+2. **残余出现处全部落在补丁层作用域之外**。实测全仓仍含该字面串的文件只有三类：
+   - `.workbuddy/memory/*.md`、`.workbuddy/proposals/*.md` —— 历史日志与提案；
+   - `.workbuddy/_upstream/**/SKILL.md` —— 上游快照（只读参照）。
+
+   而 `manifest.json` 顶层 `exclude_paths = [".workbuddy", ".git"]` 把整个 `.workbuddy/`
+   排除在外 ⇒ 即使 op 的 `glob` 写的是 `**/*.md`，也扫不到这些文件。
+   （另一处历史残留 `tri-article/CHANGELOG.md` 不在本分支——本分支为编程专线 24 skill。）
+
+**为何保留而不删除**：op 是「上游整树替换后不丢修正」的可重放账本，属**追加型历史**。
+若上游某次同步把旧子句带回来，这三个 op 会立即从 `not_found` 变为 `应用 N` 生效；
+删掉它们等于放弃该防御。故保留，仅在此说明其 ⬜ 为正常态。
+
+**判据**（可复验）：`grep -rn '发布前 MUST 通过' --include='*.md' .` 的命中应**全部**位于
+`.workbuddy/` 之下；`manifest.json` 的 `exclude_paths` 含 `.workbuddy`。两者同时成立即正常。
