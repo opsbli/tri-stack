@@ -260,5 +260,6 @@ tri-forge/
 │   ├── readme.md                  README.md 骨架
 │   └── changelog.md               CHANGELOG.md 骨架（Keep a Changelog）
 └── tests/
-    └── tri-forge-full-testcases.md  全场景测试用例（含 22 条硬约束自检用例）
+    ├── tri-forge-full-testcases.md  全场景测试用例（含 22 条硬约束自检用例）
+    └── mutation-gate.py             门④ 负向测试（mutation testing，验证判据有牙）
 ```
