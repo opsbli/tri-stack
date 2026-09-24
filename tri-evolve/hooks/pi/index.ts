@@ -33,6 +33,7 @@ export default function (pi: any) {
   let seen = new Set<string>();
   let sessionId = "unknown";
   let lastAssistant: { responseId?: string; text?: string } | null = null;
+  let lastSettled = "";                 // 最近一次已采集的 exchange_id（供反馈信号指向）
 
   function rebuildSeen(ctx: any) {
     seen = new Set<string>();
@@ -81,6 +82,7 @@ export default function (pi: any) {
 
       if (seen.has(key)) return;          // 幂等：同一轮只采集一次
       seen.add(key);
+      lastSettled = exchangeId;
 
       const answer = lastAssistant?.text ?? "";
       const rec = {
@@ -106,6 +108,24 @@ export default function (pi: any) {
     finally {
       lastAssistant = null;                // 每轮清零，防止跨轮串用
     }
+  });
+
+  // 显式反馈采集：用户下一条输入若含纠正标记，则对**上一轮**发一条独立反馈信号。
+  // 注意：写成独立条目而**不是**回改上一行 —— signals.jsonl 是追加式，永不重写历史行。
+  const NEG = ["不对", "错了", "应该是", "不是这样", "搞错", "wrong", "incorrect", "重做"];
+  pi.on("input", async (e: any, ctx: any) => {
+    try {
+      const text = String(e?.text ?? "");
+      if (!text || !lastSettled) return;
+      if (!NEG.some((m) => text.includes(m))) return;
+      const dir = join(String(ctx?.cwd ?? process.cwd()), ".tribro", "evolve");
+      mkdirSync(dir, { recursive: true });
+      appendFileSync(join(dir, "signals.jsonl"), JSON.stringify({
+        ts: new Date().toISOString(), kind: "feedback", polarity: "negative",
+        session_id: sessionId, target_exchange_id: lastSettled,
+        text_hash: sha8(text), produced_by: PRODUCED_BY,
+      }) + "\n", "utf8");
+    } catch { /* 契约 §五：静默降级，NEVER 中断代理循环 */ }
   });
 
   pi.on("session_shutdown", async () => {
