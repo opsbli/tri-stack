@@ -1,0 +1,145 @@
+---
+name: tri-domain
+slug: tri-domain
+version: 1.0.0
+displayName: 领域建模（tri-domain）
+description: "内部专用工具 skill（不注册为 tri-intent 下游路由项）。维护项目的领域模型：共享术语表（CONTEXT.md）、架构决策记录（docs/adr/）、边界场景清单。主动挑战模糊术语、发明边界场景、在决策定型的瞬间记录 ADR——NEVER 只在事后补写。供 tri-grill（质询对齐）、tri-coding（门② 设计）、tri-review（审查依据）消费。支持独立安装，两态上游依赖检测。"
+summary: 领域建模：术语表（CONTEXT.md）+ 架构决策记录（ADR）+ 边界场景清单，供 tri-grill / tri-coding / tri-review 消费。
+tags: [domain-modeling, glossary, adr, ubiquitous-language, internal-tool]
+license: MIT
+---
+
+# 领域建模（内部专用工具）
+
+> 本 skill 维护项目的**领域模型**三件套：术语表、架构决策记录、边界场景清单。
+> 它是 tri-grill（质询对齐）的**基础设施**，也是 tri-coding 门② 和 tri-review 的**审查依据**。
+
+## 强制执行契约（Execution Contract · 最高优先级）
+
+0. **版本检查前置硬门（第零步）**：MUST 先运行 `python scripts/check_update.py --slug tri-domain --json`，按 `references/version-check-spec.md` 处置。
+1. **主动挑战铁律**：遇到模糊术语 MUST 主动追问「这个词在这个项目里到底指什么」，NEVER 假设双方理解一致。
+2. **即时记录铁律**：决策定型的**瞬间** MUST 写入 ADR，NEVER 事后补写（事后会忘记「为什么」）。
+3. **边界场景发明铁律**：对每个核心概念 MUST 至少发明一个边界场景（如「如果数量为 0 怎么办？」「如果两个人同时修改怎么办？」）。
+4. **CONTEXT.md 单一事实源**：所有术语定义 MUST 写入 `CONTEXT.md`，NEVER 散落在多个文件中。
+5. **ADR 不可变铁律**：已写入的 ADR MUST NOT 修改正文——如果决策变更，MUST 新增一条 ADR 标注「取代 ADR-xxx」。
+6. **自检**：作答前 MUST 声明「本次操作=&lt;新增术语/新增ADR/挑战术语/查询&gt;，CONTEXT.md 条目数=&lt;N&gt;，ADR 总数=&lt;N&gt;」。
+
+## 触发时机
+
+| 触发分支 | 典型信号 |
+|---|---|
+| 新增术语 | 对话中出现新概念，或两个词可能指同一事物 |
+| 记录决策 | 做出技术选型 / 业务规则决定 / 架构取舍 |
+| 挑战术语 | 已有术语的定义被质疑，或发现了反例 |
+| 查询 | 需要确认某个术语的定义或某个决策的理由 |
+
+**不由本 skill 处理**：
+
+| 信号 | 归属 |
+|---|---|
+| 逐条质询需求（使用本 skill 产出的术语表和 ADR） | tri-grill |
+| 写业务代码 | tri-coding |
+| 审查代码是否遵循术语表 | tri-review |
+
+## 上游依赖检测（独立使用时 · 两态）
+
+| 模式 | 触发条件 | 行为 |
+|---|---|---|
+| **A · 独立模式**（默认） | 用户直接调用 | 自主完成领域建模 |
+| **B · 引导安装** | 用户想接入 tri-intent 路由 | 提示安装 |
+
+> 本 skill 为**自包含型**（声明无强制上游依赖）。
+
+## 输入契约
+
+| 字段 | 必填 | 说明 |
+|---|---|---|
+| 项目路径 | ✅ | CONTEXT.md 和 docs/adr/ 所在的项目根目录 |
+| 操作 | ✅ | 新增术语 / 新增ADR / 挑战术语 / 查询 |
+| 术语 / 决策 | ✅ | 要记录的内容 |
+
+## 职责边界
+
+- **本 skill 负责**：维护 CONTEXT.md（术语表）、docs/adr/（决策记录）、边界场景清单
+- **不负责**：质询需求（tri-grill）、写代码（tri-coding）、审查代码（tri-review）
+
+## 核心能力方法论（领域建模 · 可扩展）
+
+### 三件套
+
+| 产物 | 文件 | 格式 | 消费者 |
+|---|---|---|---|
+| 术语表 | `CONTEXT.md` | Markdown 表格（术语 / 定义 / 反例 / 出处） | tri-grill / tri-coding / tri-review |
+| 架构决策记录 | `docs/adr/NNNN-title.md` | Markdown（背景 / 决策 / 理由 / 替代方案 / 后果） | tri-coding 门② / tri-review |
+| 边界场景清单 | `CONTEXT.md` §边界场景 | Markdown 列表（场景 / 预期行为 / 状态） | tri-coding 门② / tests |
+
+### ADR 格式
+
+```markdown
+# NNNN. {决策标题}
+
+## 背景
+{为什么要做这个决策？遇到了什么问题？}
+
+## 决策
+{决定了什么？}
+
+## 理由
+{为什么选这个方案而不是别的？}
+
+## 替代方案
+{考虑过哪些其他方案？为什么不选？}
+
+## 后果
+{这个决策带来了什么正面/负面影响？}
+```
+
+### 可扩展性
+
+1. **新增字段类型**：在 CONTEXT.md 模板追加列（如「英文对照」「缩写」）
+2. **新增 ADR 类别**：在 docs/adr/ 用文件名前缀区分（如 `ARCH-` / `BIZ-` / `SEC-`）
+3. **新增场景类型**：在 CONTEXT.md §边界场景 追加分类
+
+## 处理流程
+
+| 操作 | 步骤 |
+|---|---|
+| 新增术语 | 检查 CONTEXT.md 是否已有 → 追问定义 → 写入 → 发明边界场景 |
+| 新增 ADR | 确定编号（递增）→ 按模板填写 → 保存 → 更新 CONTEXT.md 中的关联术语 |
+| 挑战术语 | 找到定义 → 提出反例 → 修改定义或新增边界场景 |
+| 查询 | 读 CONTEXT.md / docs/adr/ → 返回定义 |
+
+## 交付产物
+
+| 产物 | 位置 | 说明 |
+|---|---|---|
+| CONTEXT.md | `<项目根>/CONTEXT.md` | 术语表 + 边界场景清单 |
+| ADR 文件 | `<项目根>/docs/adr/NNNN-title.md` | 架构决策记录 |
+| project-profile 引用 | `.tribro/project-profile.json` | 指向 CONTEXT.md 和 docs/adr/ 的路径 |
+
+## 版本检查与更新机制（强制技术约束 · 硬红线）
+
+> **细则唯一真源**：`references/version-check-spec.md`（内部化持有）。
+> **可执行实现**：`scripts/check_update.py`。
+
+```bash
+python scripts/check_update.py --slug tri-domain --json
+```
+
+## 目录结构
+
+```
+tri-domain/
+├── SKILL.md                          主入口
+├── README.md
+├── CHANGELOG.md
+├── references/
+│   ├── version-check-spec.md         版本检查规范（内部化持有）
+│   └── adr-template.md               ADR 模板（完整格式 + 示例）
+├── scripts/
+│   └── check_update.py               版本门
+├── templates/
+│   └── CONTEXT.md                    术语表模板（含边界场景清单格式）
+└── tests/
+    └── tri-domain-full-testcases.md  测试用例
+```
