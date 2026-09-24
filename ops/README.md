@@ -32,6 +32,23 @@ ops/
         └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
 ```
 
+## 安装到 AI 工具（junction 方式）
+
+```bash
+# 安装全部 42 个 skill 到 WorkBuddy（推荐先 --dry-run）
+python ops/install-skills.py --target ~/.workbuddy/skills
+
+# 安装到其他 AI 工具（改 target 路径即可）
+python ops/install-skills.py --target ~/.trae/skills
+python ops/install-skills.py --target ~/.cursor/skills
+
+# 卸载
+python ops/install-skills.py --target ~/.workbuddy/skills --remove
+```
+
+> 使用 Windows junction（`mklink /J`），源始终在仓库（单源），改仓库即生效。
+> 安装后通过 junction 运行版本门、compliance_check 等脚本均可正常工作。
+
 ## 三个工具
 
 ### `version-lint.py` —— 四处（实为五处）版本一致性校验
