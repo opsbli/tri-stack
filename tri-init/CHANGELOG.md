@@ -2,6 +2,12 @@
 
 格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [1.0.1] - 2026-09-24
+
+### 变更
+
+- **AGENTS.md 模板工具链表更新**：`skills-install.py`（平台取包器，已移除）替换为 `install-skills.py`（junction 安装到 AI 工具）。
+
 ## [1.0.0] - 2026-09-24
 
 ### 新增

@@ -22,7 +22,8 @@
 - **自建基础设施**：`ops/` 目录包含版本校验器、补丁层、补装工具与版本线基线
 - **自建 tri-forge**：技能锻造 skill（三模式 + 五门流程 + 22 条合规门禁）
 - **自建 tri-prototype**：PM→Dev 桥接 skill（解析原型 + PRD → 产出 tri-coding 需求说明书）
-- **补装缺失 skill**：曾从平台补装 11 个 tri-intent 路由引用的子类 skill（顶层 29 → 42）
+- **补装缺失 skill（已废弃）**：曾从平台补装 11 个 tri-intent 路由引用的子类 skill（顶层 29 → 42）
+- **平台取包工具已移除（2026-09-24）**：`ops/skills-install.py` 与「停用远端比对」裁定冲突，已删除；本地安装统一走 `ops/install-skills.py`（junction 方式）
 - **分支收窄（2026-09-24）**：`main` 收窄为**编程工作流专线，22 个 skill**；全量 46 个保存在归档分支 `archive-full-skills-20260924`
 
 > 上游作者将 tri-forge 私有化（`.gitignore` 显式排除 + 平台未发布），本仓库依据
@@ -102,7 +103,7 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-init](tri-init/) | 1.0.0 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
+| [tri-init](tri-init/) | 1.0.1 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
 | [tri-forge](tri-forge/) | 1.0.1 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
 | [tri-god](tri-god/) | 1.2.2 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
 
@@ -122,10 +123,10 @@
 ```
 ops/
 ├── README.md                基础设施说明（工具 / 纪律 / 未完成项）
-├── skills-install.py        平台取包 / 补装 / 缺失检测
+├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          五点版本一致性校验（P1–P5）
 ├── versions.json            自主版本线基线（22 skill 快照）
-└── patches/                 本地补丁层（14 个 op，幂等重放）
+└── patches/                 本地补丁层（13 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器
@@ -135,8 +136,8 @@ ops/
 **日常操作**：
 
 ```bash
-# 补装缺失 skill
-python ops/skills-install.py --detect --install
+# 安装 skill 到 AI 工具（junction，源始终在仓库，改仓库即生效）
+python ops/install-skills.py --target ~/.workbuddy/skills --dry-run
 
 # 重放补丁层（装完必做）
 python ops/patches/apply.py
@@ -184,10 +185,10 @@ tri-skills/
 ├── tri-*/                    # 22 个顶层 skill（见上方技能目录）
 │   └── */children/           # 子 skill（tri-sdlc×9，随父包分发，非顶层 skill）
 ├── ops/                      # 自维护基础设施
-│   ├── skills-install.py     # 平台取包 / 补装
+│   ├── install-skills.py     # junction 安装到 AI 工具
 │   ├── version-lint.py       # 五点版本一致性校验
 │   ├── versions.json         # 自主版本线基线
-│   └── patches/              # 本地补丁层（14 op）
+│   └── patches/              # 本地补丁层（13 op）
 ├── tri-mece-audit/           # MECE 审计报告（HTML）
 ├── WORKFLOW-GUIDE.html       # 使用手册
 ├── ops/README.md             # 基础设施说明

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""tri-stack 批量安装脚本：为 42 个 skill 创建 junction 到 AI 工具的 skills 目录。
+"""tri-stack 批量安装脚本：为仓库内的 tri-* skill 创建 junction 到 AI 工具的 skills 目录。
 
 用法：
     python ops/install-skills.py --target ~/.workbuddy/skills   # 建议先 --dry-run

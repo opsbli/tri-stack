@@ -21,12 +21,12 @@
 ```
 ops/
 ├── README.md                   本文件
-├── skills-install.py           平台取包 / 补装 / 缺失检测
+├── install-skills.py            junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py            四处版本一致性校验（§六 + 本仓库补充的 P5）
-├── versions.json              自主版本线基线（40 个 skill 的版本快照）
+├── versions.json              自主版本线基线（22 个 skill 的版本快照）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 12 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 13 个 op）
     ├── apply.py                幂等重放器
     └── payload/
         └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
@@ -35,7 +35,7 @@ ops/
 ## 安装到 AI 工具（junction 方式）
 
 ```bash
-# 安装全部 42 个 skill 到 WorkBuddy（推荐先 --dry-run）
+# 安装全部 22 个 skill 到 WorkBuddy（推荐先 --dry-run）
 python ops/install-skills.py --target ~/.workbuddy/skills
 
 # 安装到其他 AI 工具（改 target 路径即可）
@@ -74,20 +74,17 @@ python ops/version-lint.py --skill tri-coding
 **不认**散文提及（「基于 xxx v1.4.4」）与历史升级记录（「当前版本：2.1.1」）——
 改动那些是篡改历史。实测该规则把 12 个「README 含版本号」的 skill 收敛为 4 个真漂移，避开 8 个误报。
 
-### `skills-install.py` —— 平台取包与补装
+### ~~`skills-install.py`~~ —— 平台取包与补装（**已于 2026-09-24 移除**）
 
-```bash
-python ops/skills-install.py --detect              # 只报告缺失集（只读）
-python ops/skills-install.py --detect --install     # 检出缺失并全部补装
-python ops/skills-install.py --slugs tri-coding,tri-fix --install
-python ops/skills-install.py --detect --dry-run     # 预演，不写盘
-```
+该脚本从 `api.skillhub.cn` 下载 skill 包，用于补装「被 tri-intent 路由表引用、但仓库未纳入」
+的 skill。**已删除**，理由：它与「停用远端比对」裁定（见 §版本门：自维护模式）**直接冲突**——
+既然不再请求平台，就不该保留一个以平台为唯一数据源的工具。
 
-「缺失集」= **被引用 − 本地已有 − 不可得**：从总路由 skill（`tri-intent`）全文抽取
-`tri-*` slug，剔除子技能名 / 文件名 / 日期标签，再减去显式黑名单（当前仅 `tri-forge`）。
+分支收窄为 22 个 skill 后，全部 skill 均在本仓库内，**无「缺失集」需补装**。
+本地安装统一由 `install-skills.py` 的 junction 方式承担（见 §安装到 AI 工具）。
 
-当前状态：**检出 0 个缺失**（11 个曾被引用的子类 skill 已补装；`tri-forge` 在
-任何可达源都不存在，且上游 `.gitignore` 显式排除了 `tri-forge/`，属作者有意私有）。
+> **历史**：曾用它从平台补装 11 个被 tri-intent 引用的子类 skill（顶层 29 → 42）。
+> 该记录保留于各 skill 的 `CHANGELOG.md`，属追加型历史、不改写。
 
 ### `patches/apply.py` —— 补丁层重放器
 
@@ -101,7 +98,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 1. **凡新增 / 同步 skill，装完立刻重放补丁层**
    ```bash
-   python ops/skills-install.py --detect --install && python ops/patches/apply.py
+   python ops/install-skills.py --target ~/.workbuddy/skills && python ops/patches/apply.py
    ```
    实证：补装 11 个 skill 时，它们自带 **11 个缺 spec、8 个 tri-forge 断链指针**，
    全部由一次重放自动修好，零手工介入。

@@ -66,7 +66,7 @@
 |---|---|---|
 | 版本一致性校验 | `python ops/version-lint.py` | 校验五点版本声明一致 |
 | 补丁层重放 | `python ops/patches/apply.py` | 重放本地修正（修改 skill 文件后必跑） |
-| 缺失 skill 检测 | `python ops/skills-install.py --detect` | 检测缺失的 skill |
+| skill 安装 | `python ops/install-skills.py --target ~/.workbuddy/skills --dry-run` | junction 安装到 AI 工具（源在仓库，单源） |
 | 门④ 合规自检 | `python tri-forge/scripts/compliance_check.py --all` | 全仓 22 条合规检查 |
 | 门④ 负向测试 | `python tri-forge/tests/mutation-gate.py` | 验证门④ 判据有牙 |
 
