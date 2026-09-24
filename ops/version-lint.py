@@ -29,10 +29,23 @@
 同批次 tri-music 2.2.0/2.1.1 同样中招。**这类漂移无法靠人工纪律避免。**
 
 用法：
-    python ops/version-lint.py                   # 人类可读报告
+    python ops/version-lint.py                   # 人类可读报告（P1–P5 + 文档层 D1–D4）
     python ops/version-lint.py --json            # 机器可读
     python ops/version-lint.py --emit-baseline   # 输出 ops/versions.json（自主版本线基线）
     python ops/version-lint.py --skill tri-coding  # 只查一个
+    python ops/version-lint.py --apply-docs      # 幂等修正文档层漂移（只写文档，不动 skill）
+    python ops/version-lint.py --no-docs         # 跳过文档层检查（只看 P1–P5）
+
+**文档层（D1–D4）**：P1–P5 只覆盖 skill 包**内部**的五处声明；仓库级文档另有一层版本引用，
+它在 2026-09-24 一天内**两次**因漏同步而产生漂移（与 §六 记载的 P5 类漂移同源），故纳入本工具：
+
+    D1  WORKFLOW-GUIDE.html §02 分层图 chip    <b>tri-x</b> <span class="v">1.2.3</span>
+    D2  WORKFLOW-GUIDE.html 正文与页脚契约基线  …… tri-x v1.2.3 ……
+    D3  WORKFLOW-GUIDE.html 头部 chip          入口 tri-intent v1.2.3
+    D4  README.md 技能目录表                    | [tri-x](tri-x/) | 1.2.3 | … |
+
+**边界（重要）**：只处理**当前存在**的 skill —— 已移除 skill 在文档中的出现属历史记录或
+「已移除」说明，NEVER 改写；含 `<s>` / `<del>` 的行一律视为历史，跳过。判定基准是 P1（唯一真源）。
 
 退出码：0 = 无漂移 / 1 = 存在漂移 / 2 = 参数或环境错误
 
@@ -199,12 +212,93 @@ def check_skill(d: Path, lock: dict):
     return r
 
 
+# ---- 文档层（D1–D4）：仓库级文档中的版本引用 ------------------------------------
+
+GUIDE = REPO / "WORKFLOW-GUIDE.html"
+ROOT_README = REPO / "README.md"
+
+D_CHIP = re.compile(r'<b>(tri-[a-z0-9-]+)</b> <span class="v">([0-9]+\.[0-9]+\.[0-9]+)</span>')
+D_PROSE = re.compile(r'(tri-[a-z0-9-]+)((?:</code>)? v)([0-9]+\.[0-9]+\.[0-9]+)')
+D_ROW = re.compile(r'\| \[(tri-[a-z0-9-]+)\]\(([^)]*)\) \| ([0-9]+\.[0-9]+\.[0-9]+) \|')
+HISTORY_TAGS = ("<s>", "<del>")
+
+
+def _rebuild(kind: str, m, new: str) -> str:
+    if kind == "D1":
+        return f'<b>{m.group(1)}</b> <span class="v">{new}</span>'
+    if kind == "D2":
+        return m.group(1) + m.group(2) + new
+    return f'| [{m.group(1)}]({m.group(2)}) | {new} |'
+
+
+def scan_docs(real: dict):
+    """返回 [(relpath, lineno, kind, slug, old, new)]"""
+    found = []
+    for path, kinds in ((GUIDE, ("D1", "D2")), (ROOT_README, ("D4",))):
+        t = read_text(path)
+        if t is None:
+            continue
+        for ln, line in enumerate(t.splitlines(), 1):
+            if any(h in line for h in HISTORY_TAGS):
+                continue
+            for kind in kinds:
+                rx, gi = (D_CHIP, 2) if kind == "D1" else ((D_PROSE, 3) if kind == "D2" else (D_ROW, 3))
+                for m in rx.finditer(line):
+                    s, v = m.group(1), m.group(gi)
+                    if s in real and real[s] != v:
+                        found.append((path.relative_to(REPO).as_posix(), ln, kind, s, v, real[s]))
+    return found
+
+
+def _read_raw(p: Path):
+    """按原样读文本，**不做换行转换**（`read_text` 会把 CRLF 归一为 LF，
+    导致回写时整文件行尾被改写——本工具只应改动版本号，不该动行尾）。"""
+    try:
+        return p.read_bytes().decode("utf-8")
+    except OSError:
+        return None
+
+
+def apply_docs(real: dict) -> list:
+    """幂等修正文档层；返回 [(relpath, kind, slug, old, new)]。保留原行尾。"""
+    changed = []
+    for path, kinds in ((GUIDE, ("D1", "D2")), (ROOT_README, ("D4",))):
+        t = _read_raw(path)
+        if t is None:
+            continue
+        out = []
+        for line in t.splitlines(keepends=True):
+            if any(h in line for h in HISTORY_TAGS):
+                out.append(line)
+                continue
+            for kind in kinds:
+                rx, gi = (D_CHIP, 2) if kind == "D1" else ((D_PROSE, 3) if kind == "D2" else (D_ROW, 3))
+
+                def repl(m, _k=kind, _gi=gi, _c=changed, _p=path.relative_to(REPO).as_posix()):
+                    s, v = m.group(1), m.group(_gi)
+                    if s not in real or real[s] == v:
+                        return m.group(0)
+                    _c.append((_p, _k, s, v, real[s]))
+                    return _rebuild(_k, m, real[s])
+
+                line = rx.sub(repl, line)
+            out.append(line)
+        new = "".join(out)
+        if new != t:
+            path.write_bytes(new.encode("utf-8"))
+    return changed
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--skill", default=None)
     ap.add_argument("--emit-baseline", action="store_true",
                     help="把当前 SKILL.md 版本写为 ops/versions.json（自主版本线基线）")
+    ap.add_argument("--apply-docs", action="store_true",
+                    help="幂等修正文档层（WORKFLOW-GUIDE / README）的版本引用；只写文档，不动 skill")
+    ap.add_argument("--no-docs", action="store_true",
+                    help="跳过文档层（D1–D4）检查，只校验 P1–P5")
     args = ap.parse_args()
 
     dirs = sorted(p for p in REPO.glob("tri-*") if (p / "SKILL.md").is_file())
@@ -216,6 +310,13 @@ def main() -> int:
 
     lock = load_lock()
     results = [check_skill(d, lock) for d in dirs]
+
+    # ---- 文档层（D1–D4）：以 P1 为基准扫描 / 修正仓库级文档 ----
+    real = {r["slug"]: r["P1"] for r in results if r["P1"]}
+    doc_fixed = []
+    if args.apply_docs and not args.no_docs:
+        doc_fixed = apply_docs(real)
+    doc_bad = [] if args.no_docs else scan_docs(real)
 
     if args.emit_baseline:
         base = {
@@ -229,11 +330,16 @@ def main() -> int:
 
     if args.json:
         print(json.dumps({"results": results,
-                          "drift_count": sum(1 for r in results if r["drift"])},
+                          "drift_count": sum(1 for r in results if r["drift"]),
+                          "doc_drift_count": len(doc_bad),
+                          "doc_results": [{"path": p, "line": l, "kind": k, "slug": s,
+                                           "old": o, "expected": n} for p, l, k, s, o, n in doc_bad],
+                          "doc_fixed": [{"path": p, "kind": k, "slug": s, "old": o, "new": n}
+                                        for p, k, s, o, n in doc_fixed]},
                          ensure_ascii=False, indent=2))
     else:
         bad = [r for r in results if r["drift"]]
-        print("# 四处版本一致性校验（version-gate.md §六）\n")
+        print("# 版本一致性校验（version-gate.md §六 · skill 包内 P1–P5）\n")
         print(f"检查 {len(results)} 个 skill；**存在漂移 {len(bad)} 个**\n")
         print("| skill | P1 SKILL.md | P2 CHANGELOG | P2 是最大 | P3 _meta | P4 lock | P5 README | 判定 |")
         print("|---|---|---|---|---|---|---|---|")
@@ -259,7 +365,26 @@ def main() -> int:
         if n3:
             print(f"> **P3（{n3} 个）可规则化修正**：`python ops/patches/apply.py`（op `sync_version_meta`）。")
 
-    return 1 if any(r["drift"] for r in results) else 0
+        # ---- 文档层（D1–D4）：仓库级文档的版本引用 ----
+        if args.no_docs:
+            print("\n## 文档层（D1–D4）\n\n> 已按 `--no-docs` 跳过。")
+        elif doc_fixed:
+            print(f"\n## 文档层（D1–D4）\n\n已幂等修正 **{len(doc_fixed)}** 处：\n")
+            print("| 文件 | 类型 | skill | 原 | 现值 |")
+            print("|---|---|---|---|---|")
+            for p, k, s, o, n in doc_fixed:
+                print(f"| `{p}` | {k} | `{s}` | {o} | **{n}** |")
+        elif doc_bad:
+            print(f"\n## 文档层（D1–D4）\n\n**存在漂移 {len(doc_bad)} 处**：\n")
+            print("| 文件 | 行 | 类型 | skill | 文档现值 | 应为 |")
+            print("|---|---|---|---|---|---|")
+            for p, l, k, s, o, n in doc_bad:
+                print(f"| `{p}` | {l} | {k} | `{s}` | {o} | **{n}** |")
+            print("\n> 修正：`python ops/version-lint.py --apply-docs`（幂等，只写文档）。")
+        else:
+            print("\n## 文档层（D1–D4）\n\n✅ 仓库级文档（WORKFLOW-GUIDE / README）的版本引用与 P1 一致，无漂移。")
+
+    return 1 if (any(r["drift"] for r in results) or doc_bad) else 0
 
 
 if __name__ == "__main__":

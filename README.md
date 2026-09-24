@@ -124,7 +124,7 @@
 ops/
 ├── README.md                基础设施说明（工具 / 纪律 / 未完成项）
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
-├── version-lint.py          五点版本一致性校验（P1–P5）
+├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
 ├── versions.json            自主版本线基线（22 skill 快照）
 └── patches/                 本地补丁层（13 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
@@ -142,8 +142,11 @@ python ops/install-skills.py --target ~/.workbuddy/skills --dry-run
 # 重放补丁层（装完必做）
 python ops/patches/apply.py
 
-# 版本一致性校验
+# 版本一致性校验（skill 包内 P1–P5 + 仓库级文档层 D1–D4）
 python ops/version-lint.py
+
+# 改了 skill 版本后同步文档层（幂等）
+python ops/version-lint.py --apply-docs
 
 # 版本一致性修复（P3/P5 自动）
 python tri-forge/scripts/check_registry.py --apply
@@ -186,7 +189,7 @@ tri-skills/
 │   └── */children/           # 子 skill（tri-sdlc×9，随父包分发，非顶层 skill）
 ├── ops/                      # 自维护基础设施
 │   ├── install-skills.py     # junction 安装到 AI 工具
-│   ├── version-lint.py       # 五点版本一致性校验
+│   ├── version-lint.py       # 版本一致性校验（P1–P5 + 文档层 D1–D4）
 │   ├── versions.json         # 自主版本线基线
 │   └── patches/              # 本地补丁层（13 op）
 ├── tri-mece-audit/           # MECE 审计报告（HTML）

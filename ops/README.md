@@ -22,7 +22,7 @@
 ops/
 ├── README.md                   本文件
 ├── install-skills.py            junction 安装到 AI 工具（--target / --dry-run / --remove）
-├── version-lint.py            四处版本一致性校验（§六 + 本仓库补充的 P5）
+├── version-lint.py            版本一致性校验（skill 包内 P1–P5 + 仓库级文档层 D1–D4）
 ├── versions.json              自主版本线基线（22 个 skill 的版本快照）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
@@ -51,7 +51,7 @@ python ops/install-skills.py --target ~/.workbuddy/skills --remove
 
 ## 三个工具
 
-### `version-lint.py` —— 四处（实为五处）版本一致性校验
+### `version-lint.py` —— 版本一致性校验（skill 包内 P1–P5 + 仓库级文档层 D1–D4）
 
 ```bash
 python ops/version-lint.py                   # 人类可读报告（退出码 0=无漂移 / 1=有漂移）
@@ -99,6 +99,9 @@ python ops/patches/apply.py --json      # 机器可读输出
 1. **凡新增 / 同步 skill，装完立刻重放补丁层**
    ```bash
    python ops/install-skills.py --target ~/.workbuddy/skills && python ops/patches/apply.py
+
+   # 改了任一 skill 的版本号后，同步仓库级文档层（幂等，只写文档）
+   python ops/version-lint.py --apply-docs
    ```
    实证：补装 11 个 skill 时，它们自带 **11 个缺 spec、8 个 tri-forge 断链指针**，
    全部由一次重放自动修好，零手工介入。
