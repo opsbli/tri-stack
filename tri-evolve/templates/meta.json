@@ -1,0 +1,44 @@
+{
+  "$schema": "tri-evolve-meta-v1",
+  "description": "tri-evolve 运行时配置模板。首次运行时复制到 .tribro/evolve/meta.json，可按需调整。",
+  "config": {
+    "config_ab_min_sample": 30,
+    "config_ab_lift_threshold": 0.05,
+    "config_ab_significance": 0.05,
+    "config_pref_half_life_days": 30,
+    "config_signal_window": 100,
+    "config_anomaly_sigma": 2,
+    "config_embedding_top_k": 5,
+    "config_risk_thresholds": {
+      "low": "auto_apply",
+      "medium": "ab_validate",
+      "high": "human_approve"
+    },
+    "config_sensitive_attrs": ["health", "political", "religious", "sexual"],
+    "config_default_profile": "default",
+    "config_signal_channels": [
+      "explicit_feedback",
+      "implicit_behavior",
+      "cache_hit",
+      "correction",
+      "snapshot_dist",
+      "session_trace"
+    ],
+    "config_sqlite_pragmas": {
+      "journal_mode": "WAL",
+      "synchronous": "NORMAL",
+      "temp_store": "MEMORY",
+      "cache_size": -20000
+    }
+  },
+  "stats": {
+    "total_signals": 0,
+    "total_lessons": 0,
+    "verified_lessons": 0,
+    "rejected_proposals": 0,
+    "rolled_back_lessons": 0,
+    "total_profiles": 0,
+    "last_learn_at": null
+  },
+  "schema_version": 1
+}

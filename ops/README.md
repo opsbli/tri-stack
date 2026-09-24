@@ -23,7 +23,7 @@ ops/
 ├── README.md                   本文件
 ├── install-skills.py            junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py            版本一致性校验（skill 包内 P1–P5 + 仓库级文档层 D1–D4）
-├── versions.json              自主版本线基线（22 个 skill 的版本快照）
+├── versions.json              自主版本线基线（24 个 skill 的版本快照）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
     ├── manifest.json           补丁清单（声明式，唯一事实源，当前 13 个 op）
@@ -35,7 +35,7 @@ ops/
 ## 安装到 AI 工具（junction 方式）
 
 ```bash
-# 安装全部 22 个 skill 到 WorkBuddy（推荐先 --dry-run）
+# 安装全部 24 个 skill 到 WorkBuddy（推荐先 --dry-run）
 python ops/install-skills.py --target ~/.workbuddy/skills
 
 # 安装到其他 AI 工具（改 target 路径即可）
@@ -80,7 +80,7 @@ python ops/version-lint.py --skill tri-coding
 的 skill。**已删除**，理由：它与「停用远端比对」裁定（见 §版本门：自维护模式）**直接冲突**——
 既然不再请求平台，就不该保留一个以平台为唯一数据源的工具。
 
-分支收窄为 22 个 skill 后，全部 skill 均在本仓库内，**无「缺失集」需补装**。
+分支收窄为 24 个 skill（编程线 22 + 横向 2）后，全部 skill 均在本仓库内，**无「缺失集」需补装**。
 本地安装统一由 `install-skills.py` 的 junction 方式承担（见 §安装到 AI 工具）。
 
 > **历史**：曾用它从平台补装 11 个被 tri-intent 引用的子类 skill（顶层 29 → 42）。

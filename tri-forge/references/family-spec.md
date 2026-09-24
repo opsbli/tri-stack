@@ -59,7 +59,6 @@
 |---|---|---|
 | `snapshots/` | `tri-intent` | 快照定位契约的固定路径，全部路由型下游读取 |
 | `skills/` | `tri-forge` | 生成物落盘位，`check_downstream.py` 的检测路径之一 |
-| `multimedia/` | （本分支未包含，原 `tri-mm`） | slug 为缩写 `mm`，展开名 `multimedia` 语义清晰优先 |
 
 **产物区共三类，命名判据同为「可推导」**：
 

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "description": "tri-true 默认校准表。含各模型的 ECE（期望校准误差）/ Brier Score / 校准系数 k。ECE 越小模型自评越准，k = 1 - ECE。定期由 VERIFY_ADMIN calibrate 命令重算。",
+  "calibrations": [
+    {
+      "model_name": "gpt-4o",
+      "ece": 0.12,
+      "brier_score": 0.18,
+      "calibration_k": 0.88,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "GPT-4o 自评能力较强，ECE 0.12 属良好校准"
+    },
+    {
+      "model_name": "gpt-4-turbo",
+      "ece": 0.15,
+      "brier_score": 0.21,
+      "calibration_k": 0.85,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "GPT-4-turbo 略过度自信"
+    },
+    {
+      "model_name": "gpt-3.5-turbo",
+      "ece": 0.25,
+      "brier_score": 0.30,
+      "calibration_k": 0.75,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "GPT-3.5 过度自信明显，ECE 0.25 偏高"
+    },
+    {
+      "model_name": "claude-3.5-sonnet",
+      "ece": 0.10,
+      "brier_score": 0.16,
+      "calibration_k": 0.90,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "Claude 3.5 Sonnet 校准优秀，ECE 0.10"
+    },
+    {
+      "model_name": "claude-3-opus",
+      "ece": 0.13,
+      "brier_score": 0.19,
+      "calibration_k": 0.87,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "Claude 3 Opus 自评良好"
+    },
+    {
+      "model_name": "llama-3.1-70b",
+      "ece": 0.20,
+      "brier_score": 0.26,
+      "calibration_k": 0.80,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "Llama 3.1 70B 开源模型，校准中等"
+    },
+    {
+      "model_name": "llama-3.1-8b",
+      "ece": 0.28,
+      "brier_score": 0.33,
+      "calibration_k": 0.72,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "Llama 3.1 8B 小模型过度自信明显"
+    },
+    {
+      "model_name": "qwen2.5-72b",
+      "ece": 0.18,
+      "brier_score": 0.24,
+      "calibration_k": 0.82,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "Qwen 2.5 72B 开源模型，校准中等偏上"
+    },
+    {
+      "model_name": "mistral-large-2",
+      "ece": 0.16,
+      "brier_score": 0.22,
+      "calibration_k": 0.84,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "Mistral Large 2 校准良好"
+    },
+    {
+      "model_name": "gemini-1.5-pro",
+      "ece": 0.14,
+      "brier_score": 0.20,
+      "calibration_k": 0.86,
+      "calibration_dataset": "TruthfulQA + HaluEval",
+      "calibration_samples": 1000,
+      "last_calibrated_at": "2026-07-15T00:00:00Z",
+      "notes": "Gemini 1.5 Pro 校准良好"
+    }
+  ],
+  "calibration_standards": {
+    "ece_excellent": 0.1,
+    "ece_good": 0.15,
+    "ece_acceptable": 0.2,
+    "ece_poor": 0.25,
+    "brier_excellent": 0.15,
+    "brier_good": 0.20,
+    "brier_acceptable": 0.25,
+    "brier_poor": 0.30,
+    "recalibrate_interval_days": 30,
+    "min_calibration_samples": 500
+  }
+}

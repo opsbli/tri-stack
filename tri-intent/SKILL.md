@@ -297,9 +297,11 @@ tri-intent/
 > → 原 `tri-<fmt>2md/`）与 I08 知识库搭建子类（`L3=wiki` → 原 `tri-wiki/`）。
 > I08 翻译转换在本分支**无下游**；原「翻译统一走 `tri-content`、`tri-translate` 作横向方法论支撑」的边界说明随之失效，参照物已不存。
 
-> **横向型 skill（本分支 0 个）**：全量版中的 `tri-cache`（缓存）、`tri-evolve`（自进化）、`tri-translate`（翻译方法论）、
-> `tri-true`（消除幻觉）、`tri-cost`（token 成本审计）、`tri-guard`（技能安全审计）、`tri-humanize`（去 AI 化改写）
-> 均**未包含在本分支**。故本分支**无横向型成员**，`check_downstream.py` 的横向枚举为空。
+> **横向型 skill（本分支 2 个）**：`tri-evolve`（自进化 / 用户画像）、`tri-true`（四道防线消除幻觉）。
+> 二者为横向基础设施 / 方法论型，**不认领 L2 意图、不进本表路由**，由 hook、下游 skill 委派或用户显式调用激活。
+>
+> 全量版中另有 `tri-cache`（缓存）、`tri-translate`（翻译方法论）、`tri-cost`（token 成本审计）、
+> `tri-guard`（技能安全审计）、`tri-humanize`（去 AI 化改写）共 5 个横向型，**未包含在本分支**。
 
 > **其余不参与本表路由的 skill 及理由（全量枚举，保证顶层 skill 路由状态逐一可查）**：
 > `tri-forge`——内部专用工具（skill 生成 / 合规自检 / 蒸馏门⑤），由用户直接调用，不承载用户任务语义，非下游。
@@ -390,4 +392,4 @@ graph LR
 > 计数口径（MUST 随 §一 枚举联动更新，NEVER 沿用历史值）：路由型 **16** = §一路由映射表全部下游 slug 去重
 > （`tri-coding` / `tri-frontend-design` / `tri-lottie` / `tri-prototype` / `tri-sdlc` / `tri-fix` / `tri-review` /
 > `tri-plan` / `tri-workflow` / `tri-action` / `tri-loop` / `tri-html` / `tri-checklist` / `tri-code-analyzer` /
-> `tri-god` / `tri-meta`）；横向型 **0** = 本分支未包含任何横向型 skill。任一枚举变更 MUST 同步本节。
+> `tri-god` / `tri-meta`）；横向型 **2** = `tri-evolve` / `tri-true`（不认领 L2 编码、不进路由表，由委派或显式调用激活）。任一枚举变更 MUST 同步本节。
