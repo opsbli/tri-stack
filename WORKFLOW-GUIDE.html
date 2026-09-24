@@ -92,6 +92,14 @@
   .toc li{font-size:13px;margin:3px 0}
 
   footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);color:var(--tx3);font-size:12px;font-family:var(--mono)}
+
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:14px 0}
+  @media(max-width:920px){.mgrid{grid-template-columns:1fr}}
+  .mcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .mcard h4{margin:0 0 4px;font-size:13px;color:var(--tx);font-weight:600}
+  .mcard .mtag{font-family:var(--mono);font-size:11px;color:var(--tx3);margin-bottom:10px}
+  .mermaid{background:#0f1216;border:1px solid var(--line);border-radius:10px;padding:14px 12px;overflow-x:auto;text-align:center}
+  .mermaid svg{max-width:none}
 </style>
 </head>
 <body>
@@ -598,6 +606,291 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 </tbody>
 </table>
 
+<h3 style="margin-top:30px">开发场景 · Mermaid 流程图（flowchart LR）</h3>
+<p>与上文 HTML 徽章流程图同源，用 Mermaid 重绘全部开发场景。深色主题对齐本页；<b>需联网</b>（mermaid 经 CDN 加载，离线时此区域空白）。颜色语义：紫=入口/路由、琥珀=审批门、绿=交付产物、灰=过程节点；菱形=门/决策，命中 FAIL 或打回即沿回边回炉。</p>
+
+<div class="mgrid">
+
+<div class="mcard">
+  <h4>① 新写功能 · 轻轨 tri-coding</h4>
+  <div class="mtag">tri-coding v1.8.0 · 3 门 + 交付前 tri-true 自动门</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I11"] --> R["requirements.md"]
+  R --> G1{"门① 需求审批"}
+  G1 -->|打回| R
+  G1 -->|通过| D["design.md"]
+  D --> G2{"门② 设计审批"}
+  G2 -->|打回| D
+  G2 -->|通过| T["tasks.md"]
+  T --> G3{"门③ 执行前确认"}
+  G3 -->|有补充| T
+  G3 -->|通过| E["执行 + 测试<br/>红绿循环"]
+  E -->|测试不过| T
+  E --> I["implements.md"]
+  I --> V["交付前风险预筛<br/>tri-true 自动门"]
+  V -->|未触发/验证通过| W["源码 · 落工作区"]
+  V -->|需人审| HU["人工确认"]
+  class TI intent
+  class G1,G2,G3,V gate
+  class W deliv
+  class R,D,T,E,I,HU play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>② 解析原型 / PRD → 编码</h4>
+  <div class="mtag">tri-prototype → tri-coding 门②</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I11+L3=pm-prototype"] --> P["tri-prototype 解析<br/>(Axure/摹客/墨刀/Figma/PRD)"]
+  P --> REQ["requirements.md<br/>(tri-coding 门② 读取位)"]
+  REQ --> G2{"门② 设计审计"}
+  G2 -->|通过| T["tasks.md 门③"]
+  T --> E["执行 + 测试"]
+  E --> IMP["implements.md + 源码落工作区"]
+  class TI intent
+  class G2 gate
+  class REQ,IMP deliv
+  class P,T,E play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>③ 修 bug · tri-fix（6 阶段 3 门）</h4>
+  <div class="mtag">tri-fix v1.5.0 · 红循环铁律 + 交付前 tri-true 自动门</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I12"] --> F1["阶段1 建反馈循环<br/>(先让命令变红)"]
+  F1 -->|无法变红| ESC["逃生舱<br/>索取环境/产物/插桩"]
+  F1 --> F2["阶段2 复现最小化"]
+  F2 --> F3["阶段3 假设生成"]
+  F3 --> F4["阶段4 插桩验证"]
+  F4 --> B["bug-report.md 门① 故障确认"]
+  B -->|通过| DG["diagnosis.md 门② 诊断审计"]
+  DG -->|通过| FT["fix-tasks.md 门③ 执行前确认"]
+  FT -->|通过| FX["修复 + 回归测试"]
+  FX -->|回归不过| FT
+  FX --> FR["fix-report.md"]
+  FR --> V["交付前风险预筛<br/>tri-true 自动门"]
+  V -->|通过| PATCH["补丁 · 落工作区"]
+  V -->|需人审| HU["人工确认"]
+  class TI intent
+  class B,DG,FT,V gate
+  class PATCH deliv
+  class F1,F2,F3,F4,ESC,FX,FR,HU play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>④ 审查改动 · tri-review（只读不改）</h4>
+  <div class="mtag">tri-review v1.6.1 · 无审批门 · 交付 review-report</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent CR"] --> SRC["读 coding/ 或 fixes/<br/>作规格来源"]
+  SRC --> P0["Phase 0 架构师审计<br/>(增量审计模式)"]
+  P0 --> P1["Phase 1 规格合规<br/>四维审查"]
+  P1 --> P2["Phase 2 代码质量<br/>6维度+12坏味+覆盖度账本"]
+  P2 --> REP["review-report.md<br/>(增量审计 → audit-report.md)"]
+  class TI intent
+  class P0,P1,P2 gate
+  class REP deliv
+  class SRC play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑤ 只要方案 · 规划轨 tri-plan</h4>
+  <div class="mtag">tri-plan v1.3.1 · 只出方案不写代码</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I13"] --> PB["plan-brief.md"]
+  PB --> G1{"门① 方向确认"}
+  G1 -->|打回| PB
+  G1 -->|通过| PL["plan.md"]
+  PL --> G2{"门② 规划审计"}
+  G2 -->|打回| PL
+  G2 -->|通过| TC["task-checklist.md"]
+  TC --> G3{"门③ 交付前确认"}
+  G3 -->|通过| OUT["task-checklist 各带<br/>建议执行 skill → 可喂 tri-coding/action"]
+  class TI intent
+  class G1,G2,G3 gate
+  class TC,OUT deliv
+  class PB,PL play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑥ 整项目端到端 · 重装轨 tri-sdlc</h4>
+  <div class="mtag">tri-sdlc v1.1.4 · P0–P8 · 每阶段三拍</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I11/I13/I14 + L3=sdlc"] --> PROF{"剖面选择"}
+  PROF -->|full| P["P0→P8 全量"]
+  PROF -->|standard| P
+  PROF -->|lite| PL["仅 P1 P2 P4 P6"]
+  P --> G{"阶段三拍<br/>派发→审计→确认"}
+  PL --> G
+  G -->|FAIL 携修订意见回炉| G
+  G -->|连 3 轮 FAIL| STOP["停机"]
+  G -->|通过| OUT["P4 源码 + P7 CHANGELOG<br/>→ 工作区"]
+  class TI intent
+  class PROF,G gate
+  class OUT deliv
+  class P,PL,STOP play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑦ 协作链 · 对齐→沉淀→规划→分派→编码</h4>
+  <div class="mtag">tri-init / prototype / grill / domain / plan / orchestrate / coding / review</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  INIT["tri-init 可选前置"] --> PT["tri-prototype 需求成形"]
+  PT --> GRL{"tri-grill 质询对齐"}
+  GRL --> DM["tri-domain 沉淀<br/>CONTEXT.md + ADR"]
+  DM --> PLAN["tri-plan 规划<br/>(接轨道B)"]
+  PLAN --> ORC["tri-orchestrate 分派<br/>N 份 spec"]
+  ORC --> COD["tri-coding × N 并行<br/>(接轨道A)"]
+  COD --> RV["tri-review 逐份收口"]
+  class GRL gate
+  class DM,ORC deliv
+  class INIT,PT,PLAN,COD,RV play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑧ 设计流水线 / 审批流 / DAG</h4>
+  <div class="mtag">tri-workflow · 交付流程定义即结束</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I13/I14 + L3=workflow"] --> WF["tri-workflow 七阶段混合流水线"]
+  WF --> O1["SKILL.md"]
+  WF --> O2["设计文档"]
+  WF --> O3["CI/CD 配置"]
+  WF --> O4["审批流模板"]
+  WF --> O5["DAG 配置"]
+  class TI intent
+  class WF gate
+  class O1,O2,O3,O4,O5 deliv
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑨ 提交前自检 · tri-checklist</h4>
+  <div class="mtag">tri-checklist · I10 audit-checklist 子类 · 四维覆盖</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I10+L3=audit-checklist"] --> OBJ{"操作对象"}
+  OBJ -->|暂存区| A1
+  OBJ -->|工作区| A2
+  OBJ -->|commit id| A3
+  A1 --> CL["tri-checklist 四维审计<br/>(改动/审查/测试/测试步骤)"]
+  A2 --> CL
+  A3 --> CL
+  CL --> OUT["Markdown 复选框清单"]
+  class TI intent
+  class OBJ,CL gate
+  class OUT deliv
+  class A1,A2,A3 play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑩ 架构剖析 / 架构可视化</h4>
+  <div class="mtag">tri-code-analyzer（剖析）/ tri-html（可视化）</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  TI["tri-intent I10"] --> SPLIT{"L3 子意图"}
+  SPLIT -->|code-analyzer| CA["tri-code-analyzer 七阶段剖析<br/>→ 五部分报告 + 风险预筛自动门"]
+  SPLIT -->|arch-viz| HI["tri-html 架构可视化<br/>→ 交互 HTML viewer"]
+  class TI intent
+  class SPLIT gate
+  class CA,HI deliv
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑪ 做 skill · tri-god / tri-forge</h4>
+  <div class="mtag">tri-god 蒸馏 → tri-forge mode C 五门锻造</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  U["方法论 / 工作流 / 专业技能"] --> GD["tri-god 蒸馏"]
+  GD --> FG["tri-forge mode C 五门流程<br/>22 条合规硬约束"]
+  FG --> NEW["新 skill 包"]
+  NEW --> REG["回填路由映射 + 下游依赖检测<br/>+ version-lint 四处一致"]
+  class FG gate
+  class NEW,REG deliv
+  class U,GD play
+  </div>
+</div>
+
+<div class="mcard">
+  <h4>⑫ 项目初始化 · tri-init（直调）</h4>
+  <div class="mtag">tri-init v1.0.1 · 不经 tri-intent 路由</div>
+  <div class="mermaid">
+flowchart LR
+  classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
+  classDef gate fill:#1d1a10,stroke:#5b3a12,color:#fbbf24
+  classDef deliv fill:#0f1f1a,stroke:#1f4d3c,color:#34d399
+  classDef play fill:#14171c,stroke:#262b33,color:#9aa3ae
+  U["「初始化某项目」"] --> TI["tri-init 直调"]
+  TI --> SCAN["扫描技术栈<br/>Java/TS/Go/Python/RuoYi"]
+  SCAN --> AG["AGENTS.md"]
+  SCAN --> PP["project-profile.json<br/>standards_doc 指针"]
+  SCAN --> TB[".tribro/ 目录树"]
+  class TI intent
+  class AG,PP,TB deliv
+  class U,SCAN play
+  </div>
+</div>
+
+</div>
+
 <h2 id="tribro"><span class="n">09</span>.tribro 目录地图</h2>
 <p>约定：<b>链路文档进 <code>.tribro/</code>，真实成果物进工作区</b>。判据是「这份东西是不是给人用的最终产品」。</p>
 <div class="tree">
@@ -666,5 +959,21 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 </footer>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#171430', primaryBorderColor: '#3a2f5c', primaryTextColor: '#e6e8ec',
+      secondaryColor: '#0f1f1a', secondaryBorderColor: '#1f4d3c', secondaryTextColor: '#34d399',
+      tertiaryColor: '#1d1a10', tertiaryBorderColor: '#5b3a12', tertiaryTextColor: '#fbbf24',
+      fontSize: '13px', fontFamily: 'ui-monospace,SFMono-Regular,Consolas,monospace',
+      lineColor: '#333a44', clusterBkg: '#14171c', clusterBorder: '#262b33'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true }
+  });
+</script>
 </body>
 </html>
