@@ -1,0 +1,58 @@
+{
+  "_comment": "项目元数据（由 tri-init 的 project-scan.py 扫描后自动填充）。tri-coding 门② 和 tri-review 消费此文件。",
+  "project_name": "",
+  "project_description": "",
+  "repo_path": "",
+  "generated_at": "",
+  "generated_by": "tri-init v1.0.0",
+  "tech_stack": [
+    {
+      "name": "",
+      "version": "",
+      "details": {}
+    }
+  ],
+  "directory_structure": {
+    "root_files": [],
+    "key_directories": [],
+    "entry_points": []
+  },
+  "coding_standards": {
+    "language": "",
+    "framework": "",
+    "naming_convention": "",
+    "layering_pattern": "",
+    "linter": "",
+    "formatter": ""
+  },
+  "build_commands": {
+    "build": "",
+    "test": "",
+    "lint": ""
+  },
+  "db_conventions": {
+    "source": "",
+    "tenant_fields": [],
+    "audit_fields": [],
+    "logical_delete": {},
+    "code_generator": ""
+  },
+  "tri_stack_config": {
+    "tri_intent_path": "",
+    "tribro_dir": ".tribro",
+    "self_maintained": true,
+    "skills_installed": []
+  },
+  "frontend": {
+    "path": "",
+    "framework": "",
+    "ui_library": "",
+    "css_framework": "",
+    "state_management": "",
+    "package_manager": ""
+  },
+  "team": {
+    "members": [],
+    "roles": []
+  }
+}
