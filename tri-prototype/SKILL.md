@@ -1,7 +1,7 @@
 ---
 name: tri-prototype
 slug: tri-prototype
-version: 1.0.0
+version: 1.1.0
 displayName: 原型解析（tri-prototype）
 description: "PM→Dev 桥接 skill：解析产品原型链接（Axure / 摹客 / 墨刀 / Figma / Figma Dev Mode）与 PRD 文档，提取页面结构、交互规则、业务规则与验收标准，产出 tri-coding 门② 可直接消费的 `requirements.md`（编码需求说明书）——无缝衔接 tri 家族开发流程。支持 Axure share 链接、Figma 文件链接、PRD 文档链接与本地文件输入。认领 I11 的 PM 原型解析子类（L3_子意图=pm-prototype，与 tri-frontend-design / tri-lottie / tri-code-analyzer 并列，非独占 I11）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。"
 summary: 解析 PM 原型与 PRD → 产出 tri-coding `requirements.md`（编码需求说明书），无缝衔接 tri-coding 门② 的设计审批流程。
@@ -130,26 +130,62 @@ license: MIT
      ↓
 ① 平台识别与保真度判定
      ↓
-② 原型解析（页面结构 + 交互标注）
+② 子资源发现与递归抓取  ←—— 关键步骤：识别 iframe / script src 并递归抓取
      ↓
-③ PRD 解析（业务规则 + 验收标准）
+③ 原型解析（页面结构 + 交互标注）
      ↓
-④ 规则合并与冲突标注（PRD 优先）
+④ PRD 解析（业务规则 + 验收标准）
      ↓
-⑤ 映射到 tri-coding requirements.md 模板
+⑤ 规则合并与冲突标注（PRD 优先）
+     ↓
+⑥ 映射到 tri-coding requirements.md 模板
      ↓
 产出 requirements.md（tri-coding 门② 可直接消费）
 ```
 
-**五步流水线**：
+**六步流水线**：
 
 | 步骤 | 输入 | 产出 | 判据 |
 |---|---|---|---|
 | ① 平台识别 | 原型 URL | 平台名 + 保真度等级 | URL 特征匹配 `references/prototype-platforms.md` |
-| ② 原型解析 | 原型内容 | 页面清单 + 交互规则（结构化） | 每页面 MUST 有名称 + 组件 + 交互 |
-| ③ PRD 解析 | PRD 文档 | 业务规则 + 验收标准（结构化） | 每规则 MUST 有 PRD 出处 |
-| ④ 规则合并 | ② + ③ 的产出 | 统一规则集（冲突标注） | 冲突 MUST 标注 PRD 优先 |
-| ⑤ 规范映射 | ④ 的产出 | `requirements.md`（tri-coding 九章） | 九章齐全，tri-coding 门② 可直接消费 |
+| **② 子资源发现** | 主页面 HTML | **子资源清单（PRD / 交互稿 / 数据文件）** | 解析 `<iframe src>` / `<script src>` / `<link href>`，**递归抓取**每个子资源 |
+| ③ 原型解析 | 全部子资源内容 | 页面清单 + 交互规则（结构化） | 每页面 MUST 有名称 + 组件 + 交互 |
+| ④ PRD 解析 | PRD 数据（spec-data.js 等） | 业务规则 + 验收标准（结构化） | 每规则 MUST 有 PRD 出处 |
+| ⑤ 规则合并 | ③ + ④ 的产出 | 统一规则集（冲突标注） | 冲突 MUST 标注 PRD 优先 |
+| ⑥ 规范映射 | ⑤ 的产出 | `requirements.md`（tri-coding 九章） | 九章齐全，tri-coding 门② 可直接消费 |
+
+### 步骤 ② 子资源发现（关键步骤 · v1.1 新增）
+
+> **为什么需要**：原型页面通常是**壳 + 子资源**架构。壳（`index.html`）只含导航结构和
+> `<iframe>`/`<script>` 引用，**实际内容（PRD、交互稿）在子资源文件里**。
+> 只抓壳而不跟进子资源，只能拿到 3–7% 的数据（实测：壳 13.7KB vs 实际 334.5KB，差 **24 倍**）。
+
+**发现规则**：
+
+| 子资源类型 | 发现方式 | 内容类型 |
+|---|---|---|
+| `<iframe src="...">` | 正则提取 src 属性 | 交互设计稿（HTML） |
+| `<script src="...">` | 正则提取 src 属性 | PRD 数据（JS 对象，如 `SPEC_DATA = {...}`） |
+| `<link href="...">` | 正则提取 href 属性 | CSS / 数据文件 |
+
+**递归深度**：最多 2 层（壳 → 子资源 → 子资源的子资源），NEVER 无限递归。
+
+**JS 数据文件解析**：若子资源是 `.js` 文件且含 `const VAR_NAME = {...}` 结构，
+MUST 提取该对象并解析为 JSON（JS 对象 → JSON 的键值对）。值中的 HTML 字符串
+MUST 去除标签后提取纯文本，按 `<h5 class="spec-func-title">` 等结构化标记分段。
+
+**实测案例**（资产管理系统原型）：
+
+```
+index.html（壳，13.7KB）
+├── <iframe src="ui/asset-mgmt.html">   → 186.7KB（交互设计稿）
+└── <script src="spec-data.js">          → 147.8KB（PRD，SPEC_DATA 对象）
+    └── 16 页 × 96 功能点 × 8 字段/功能点 = 852 个字段条目
+
+⇒ 只抓壳 = 13.7KB（3%）；跟随子资源 = 334.5KB（100%）
+```
+
+**保真度影响**：完成子资源发现后，保真度从「中（50–80%）」升级为「高（≥80%）」。
 
 ### 兜底处理（NEVER 静默失败）
 
