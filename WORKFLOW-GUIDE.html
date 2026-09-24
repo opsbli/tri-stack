@@ -116,7 +116,8 @@
 <nav class="toc">
   <ol>
     <li><a href="#m">心智模型：三句话</a></li>
-    <li><a href="#map">全景：46 个 skill 的分层结构</a></li>
+    <li><a href="#map">全景：编程优先的 46 skill 分层</a></li>
+    <li><a href="#codingflow">编程资产流转表</a></li>
     <li><a href="#contract">核心契约：快照 + LATEST 指针</a></li>
     <li><a href="#gate">版本门：自维护模式</a></li>
     <li><a href="#route">三条落地轨道 + 决策表</a></li>
@@ -147,66 +148,126 @@
 
 <p>用不好这套 skill 的症状只有三种：<b>提问太泛</b>（动作无法映射 → 被降级到咨询）、<b>门上一言不发</b>（skill 卡在等你确认）、<b>跳轨</b>（小需求用了重装轨）。后面每条都有对治。</p>
 
-<h2 id="map"><span class="n">02</span>全景：46 个 skill 的分层结构</h2>
+<h2 id="map"><span class="n">02</span>全景：编程优先的 46 skill 分层</h2>
 
-<p>七个分组，共 <b>46</b> 个顶层 skill。除 L0 唯一入口外，其余经 tri-intent 路由或用户直接调用；<b>全部已在本机 junction 安装，路由零缺口</b>。</p>
+<p>分层轴只有一条：<b>离编程主干的远近</b>。共 <b>11 组 / 46 个</b>顶层 skill——<b>G1 是主干，G2 / G3 是它的手和眼，G4–G6 是邻近支撑，G7 / G8 是工程之外的交付物，G9 与主线无关，G10 被所有组调用</b>。除 G0 唯一入口外，其余经 tri-intent 路由或用户直调；全部已在本机 junction 安装。</p>
 
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--purple)"></span><span class="nm">L0 入口层 · 唯一入口</span><span class="cnt">1</span></div>
-  <div class="skills"><span class="sk"><b>tri-intent</b> <span class="v">1.13.1</span></span><span class="sk">clarify-gate（子组件）</span></div>
-  <p style="margin:8px 0 0;font-size:12.5px">三分法（Asking / Doing / Expressing / Meta）→ 下钻二级意图（I01–I21/CR/M01–M05）→ 标注 D1–D5 → 打置信度 → 落快照 → 交接下游。项目 AGENTS.md 顶部的「强制入口规则」确保任何请求都先到这里。</p>
+<div class="card note">
+  <div class="t">为什么撤掉原来的 L0–L6</div>
+  <p style="margin:0">旧分层把<b>三根轴</b>压在了一起——<b>交付对象</b>（L1/L2）、<b>调用方式</b>（L4/L5/L6）、<b>skill 性质</b>（L3）。后果是「编程主线」被摊成三处（L1 主列表 / L1 子类族 / L2 编排层），一眼看不出主线有多重；同时 5 个「用户直调、不进路由」的内部工具被切成 L4「协作执行层」与 L6「内部工具层」两个名字。新分层只留一根轴，编程资产全部归到 G1–G5。</p>
 </div>
 
 <div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--blue)"></span><span class="nm">L1 执行层 · 按意图分派</span><span class="cnt">28</span></div>
+  <div class="lh"><span class="dot" style="background:var(--purple)"></span><span class="nm">G0 控制面 · 分流与自我修正</span><span class="cnt">2</span></div>
   <div class="skills">
-    <span class="sk"><b>tri-coding</b> <span class="v">1.7.0</span></span>
-    <span class="sk"><b>tri-fix</b> <span class="v">1.4.0</span></span>
-    <span class="sk"><b>tri-review</b> <span class="v">1.6.0</span></span>
-    <span class="sk"><b>tri-plan</b> <span class="v">1.3.0</span></span>
-    <span class="sk"><b>tri-prototype</b> <span class="v">1.1.0</span> <span class="v">I11+L3=pm-prototype</span></span>
-    <span class="sk"><b>tri-ask</b> <span class="v">1.2.2</span></span>
-    <span class="sk"><b>tri-content</b> <span class="v">1.2.4</span></span>
-    <span class="sk"><b>tri-article</b> <span class="v">1.4.1</span></span>
-    <span class="sk"><b>tri-action</b> <span class="v">1.2.2</span></span>
-    <span class="sk"><b>tri-bs</b> <span class="v">1.2.2</span></span>
-    <span class="sk"><b>tri-mm</b> <span class="v">1.5.0</span></span>
-    <span class="sk"><b>tri-music</b> <span class="v">2.2.3</span></span>
-    <span class="sk"><b>tri-express</b> <span class="v">1.2.2</span></span>
+    <span class="sk"><b>tri-intent</b> <span class="v">1.13.1</span></span>
     <span class="sk"><b>tri-meta</b> <span class="v">1.2.2</span></span>
-    <span class="sk"><b>tri-god</b> <span class="v">1.2.1</span></span>
-    <span class="sk"><b>tri-html</b> <span class="v">1.3.0</span></span>
-    <span class="sk"><b>tri-checklist</b> <span class="v">1.1.2</span></span>
   </div>
-  <p style="margin:8px 0 0;font-size:12.5px"><b>子类一跳路由族（11 个，均属 L1）：</b></p>
-  <div class="skills" style="margin-top:6px">
-    <span class="sk"><b>tri-frontend-design</b> <span class="v">1.1.1</span> <span class="v">I11 设计方向</span></span>
-    <span class="sk"><b>tri-lottie</b> <span class="v">1.0.2</span> <span class="v">I11 动效</span></span>
-    <span class="sk"><b>tri-code-analyzer</b> <span class="v">1.4.0</span> <span class="v">I10 深剖</span></span>
-    <span class="sk"><b>tri-pdf2md</b> <span class="v">1.4.5</span> <span class="v">I08</span></span>
+  <p style="margin:8px 0 0;font-size:12.5px"><b>tri-intent</b>=唯一入口：三分法（Asking / Doing / Expressing / Meta）→ 下钻 I01–I21/CR/M01–M05 → 标 D1–D5 → 打置信度 → 落快照 → 交接下游（含 <code>clarify-gate</code> 子组件）。<b>tri-meta</b>=针对「上一轮回复」的元操作 M01–M04，在原上下文响应并重路由回原 skill。两者都<b>在所有交付组之上</b>，不产出交付物。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--blue)"></span><span class="nm">G1 编程主干 · 写 → 修 → 审</span><span class="cnt">3</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-coding</b> <span class="v">1.7.0</span> <span class="v">I11</span></span>
+    <span class="sk"><b>tri-fix</b> <span class="v">1.4.0</span> <span class="v">I12</span></span>
+    <span class="sk"><b>tri-review</b> <span class="v">1.6.0</span> <span class="v">CR</span></span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px">唯一「必记」的一组。<b>tri-coding</b>=3 道审批门（需求 / 设计 / 执行前）逐级串行，门没过代码一行不写；<b>tri-fix</b>=第一性规则「<b>没有能变红的反馈循环，就没有假设阶段</b>」；<b>tri-review</b>=6 维度 + Fowler 12 坏味 + 覆盖度账本 + 反证据关闭门，<b>只记录不修改</b>。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--blue)"></span><span class="nm">G2 编码子类 · I11 一跳覆写</span><span class="cnt">3</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-frontend-design</b> <span class="v">1.1.1</span> <span class="v">L3=frontend-design</span></span>
+    <span class="sk"><b>tri-lottie</b> <span class="v">1.0.2</span> <span class="v">L3=motion</span></span>
+    <span class="sk"><b>tri-prototype</b> <span class="v">1.1.0</span> <span class="v">L3=pm-prototype</span></span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px">三者都与 I11 互斥、由 <code>L3_子意图</code> 分流：产出<b>设计方向与令牌规格</b>（CSS 令牌 / 动效基线 / 多变体）→ frontend-design；产出<b>动效代码与集成</b>（Lottie / 转场 / 微交互）→ lottie；产出<b>编码需求文档</b>（PM 原型链接 + PRD 双源合并）→ prototype，其 <code>requirements.md</code> 无缝衔接 tri-coding 门②。<b>「实现这个页面」仍走 tri-coding</b>，只有「先定设计方向」才覆写。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--blue)"></span><span class="nm">G3 代码洞察 · I10 一跳覆写</span><span class="cnt">3</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-code-analyzer</b> <span class="v">1.4.0</span> <span class="v">L3=code-analyzer</span></span>
+    <span class="sk"><b>tri-html</b> <span class="v">1.3.0</span> <span class="v">L3=arch-viz</span></span>
+    <span class="sk"><b>tri-checklist</b> <span class="v">1.1.2</span> <span class="v">L3=audit-checklist</span></span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px">「读懂代码 / 审视代码」走这一组，<b>都不改代码</b>。按产出物形态三选一：<b>代码级深剖 Markdown</b>（架构拓扑 + 工程实现 + 风格审计 + 上手指南）→ code-analyzer；<b>架构可视化 HTML</b> → html；<b>可勾选审计清单</b>（改动点 / 审查点 / 测试点 / 测试步骤四维，支持暂存区或指定 commit）→ checklist。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--coral)"></span><span class="nm">G4 全流程 / 协作对齐</span><span class="cnt">4</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-sdlc</b> <span class="v">1.1.3</span> <span class="v">I11/I13/I14 + L3=sdlc</span></span>
+    <span class="sk"><b>tri-orchestrate</b> <span class="v">1.0.0</span> <span class="v">直调</span></span>
+    <span class="sk"><b>tri-grill</b> <span class="v">1.0.0</span> <span class="v">直调</span></span>
+    <span class="sk"><b>tri-domain</b> <span class="v">1.0.0</span> <span class="v">直调</span></span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px"><b>tri-sdlc</b>=驱动真实项目走完 P0–P8（唯一<b>跨 L2</b> 的编排 skill，子类优先级最高：<b>sdlc &gt; workflow &gt; loop</b>）。其余三个<b>不进路由表、由用户直接调用</b>：<b>tri-orchestrate</b>=把 requirements.md 拆 N 份 spec 分派多人 + 总 todo 自动回写 + 冲突检测；<b>tri-grill</b>=六维质询（歧义 / 边界 / 反例 / 术语 / 依赖 / 优先级）把需求问到无歧义；<b>tri-domain</b>=CONTEXT.md 术语表 + ADR 决策记录 + 边界场景清单。<b>先对齐、再拆解、后编码</b>，比回炉便宜得多。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--amber)"></span><span class="nm">G5 内务 / 造物 · 直调</span><span class="cnt">3</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-init</b> <span class="v">1.0.0</span> <span class="v">项目接入</span></span>
+    <span class="sk"><b>tri-forge</b> <span class="v">1.0.0</span> <span class="v">skill 锻造</span></span>
+    <span class="sk"><b>tri-god</b> <span class="v">1.2.1</span> <span class="v">I21 蒸馏造物</span></span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px">三者<b>都不承载用户任务语义</b>，是维护这套体系本身的工具。<b>tri-init</b>=扫描技术栈 → 生成 AGENTS.md + project-profile.json + .tribro/（新项目第一步，对 AI 说「初始化 D:\path\to\project」）；<b>tri-forge</b>=在家族硬规范下生成 / 审计 skill（mode C 五门流程 + mutation 负向测试）；<b>tri-god</b>=I21，把人 / 工作流 / 方法论蒸馏成可独立调用的新 skill。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--teal)"></span><span class="nm">G6 相邻支撑 · 通用能力</span><span class="cnt">4</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-plan</b> <span class="v">1.3.0</span> <span class="v">I13</span></span>
+    <span class="sk"><b>tri-action</b> <span class="v">1.2.2</span> <span class="v">I14</span></span>
+    <span class="sk"><b>tri-workflow</b> <span class="v">1.2.3</span> <span class="v">I13/I14 + workflow</span></span>
+    <span class="sk"><b>tri-loop</b> <span class="v">1.2.2</span> <span class="v">I14 + loop</span></span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px">不专属于编程，但编程任务天天用。<b>tri-plan</b>=只出方案不动手（plan-brief / plan / task-checklist，每项带「建议执行 skill」字段）；<b>tri-action</b>=真去干（下单 / 设提醒 / 发消息 / 调 API）；<b>tri-workflow</b>=交付一份<b>流程定义</b>（CI 配置 / DAG / 审批模板），交付即结束；<b>tri-loop</b>=建<b>长期运行的知识库循环体</b>，无明确终点。<b>三者判据</b>：交付对象是「真实项目 / 一份流程定义 / 一个长期循环体」，与 G4 的 sdlc 子类冲突时 <b>sdlc 优先</b>。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--cyan)"></span><span class="nm">G7 内容与文档 · 工程之外的交付物</span><span class="cnt">5</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-ask</b> <span class="v">1.2.2</span> <span class="v">I01–I05</span></span>
+    <span class="sk"><b>tri-content</b> <span class="v">1.2.4</span> <span class="v">I06–I10</span></span>
+    <span class="sk"><b>tri-article</b> <span class="v">1.4.1</span> <span class="v">I06 + L3=article</span></span>
+    <span class="sk"><b>tri-pm</b> <span class="v">1.1.1</span> <span class="v">I06 + L3=pm</span></span>
+    <span class="sk"><b>tri-wiki</b> <span class="v">1.1.0</span> <span class="v">I08 + L3=wiki</span></span>
+  </div>
+  <p style="margin:8px 0 0;font-size:12.5px">答疑建议 / 写改译总结析 / 去 AI 化长文 / PRD·OKR·竞品分析等 PM 产物 / 文档集→本地知识库。四者互斥由 <code>L3_子意图</code> 分流。<b>tri-wiki 在批量转换阶段反向委派 G8 的 x2md 族</b>，两层不竞争。</p>
+</div>
+
+<div class="layer">
+  <div class="lh"><span class="dot" style="background:var(--cyan)"></span><span class="nm">G8 格式转换族 · I08 一跳覆写</span><span class="cnt">5</span></div>
+  <div class="skills">
+    <span class="sk"><b>tri-pdf2md</b> <span class="v">1.4.5</span></span>
     <span class="sk"><b>tri-docx2md</b> <span class="v">1.4.5</span></span>
     <span class="sk"><b>tri-pptx2md</b> <span class="v">1.4.5</span></span>
     <span class="sk"><b>tri-xlsx2md</b> <span class="v">1.3.5</span></span>
     <span class="sk"><b>tri-html2md</b> <span class="v">1.3.5</span></span>
-    <span class="sk"><b>tri-wiki</b> <span class="v">1.1.0</span> <span class="v">I08 知识库</span></span>
-    <span class="sk"><b>tri-pm</b> <span class="v">1.1.1</span></span>
-    <span class="sk"><b>tri-geo</b> <span class="v">1.0.3</span></span>
   </div>
-  <p style="margin:6px 0 0;font-size:12.5px"><b>tri-prototype</b> 是 PM→Dev 桥接：解析原型链接 + PRD → 产出 <code>requirements.md</code>，tri-coding 门② 直接消费。4 个 <code>x2md</code> 同属 I08 格式转换子类族（各认领一种源格式，MECE 不重叠）；<code>tri-wiki</code> 批量转换时反向委派 x2md 族。</p>
+  <p style="margin:8px 0 0;font-size:12.5px">五种源格式各认领一个，<b>MECE 不重叠</b>。统一范式：预检分级（魔数 / 加密 / 版面 / 规模判定）→ 多后端探测与编排 → 质量保障。<b>单文档转换</b>走这里；<b>文档集→知识库</b>走 G7 的 tri-wiki。</p>
 </div>
 
 <div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--coral)"></span><span class="nm">L2 编排层 · 长链路 / 流程定义</span><span class="cnt">3</span></div>
+  <div class="lh"><span class="dot" style="background:var(--gray)"></span><span class="nm">G9 按需旁支 · 与编程主线无关</span><span class="cnt">7</span></div>
   <div class="skills">
-    <span class="sk"><b>tri-workflow</b> <span class="v">1.2.3</span></span>
-    <span class="sk"><b>tri-sdlc</b> <span class="v">1.1.3</span></span>
-    <span class="sk"><b>tri-loop</b> <span class="v">1.2.2</span></span>
+    <span class="sk"><b>tri-mm</b> <span class="v">1.5.0</span> <span class="v">I15</span></span>
+    <span class="sk"><b>tri-music</b> <span class="v">2.2.3</span> <span class="v">I15 + L3=music</span></span>
+    <span class="sk"><b>tri-bs</b> <span class="v">1.2.2</span> <span class="v">I16</span></span>
+    <span class="sk"><b>tri-express</b> <span class="v">1.2.2</span> <span class="v">I17–I20 · 不落盘</span></span>
+    <span class="sk"><b>tri-learn</b> <span class="v">1.0.2</span> <span class="v">领域直调</span></span>
+    <span class="sk"><b>tri-jobhunt</b> <span class="v">1.0.3</span> <span class="v">领域直调</span></span>
+    <span class="sk"><b>tri-geo</b> <span class="v">1.0.3</span> <span class="v">领域直调</span></span>
   </div>
-  <p style="margin:8px 0 0;font-size:12.5px"><b>tri-workflow</b>=设计一个流程（产出 CI 配置/DAG/审批模板即结束）；<b>tri-sdlc</b>=驱动真实项目走完 P0–P8；<b>tri-loop</b>=建长期运行的知识库循环体。</p>
+  <p style="margin:8px 0 0;font-size:12.5px">与编程方向无关，按需使用。<b>tri-mm</b>=图 / 表 / 视频 / PPT 四类子SKILL 的路由编排（music 为其二跳委派）；<b>tri-bs</b>=I16 创意发散；<b>tri-express</b>=表达陪伴，直接自然回应、<b>不落盘、无下游 skill</b>；<b>tri-learn / tri-jobhunt / tri-geo</b>=领域单入口（学习教练 / 求职全生命周期 / GEO 生成式引擎优化），<b>不经 L2 意图路由</b>，由用户显式调用。<br><span style="color:var(--tx3)">口径修正：tri-geo 此前被误挂在「子类一跳路由族」下，实际它属「不参与本表路由」，本轮已归位；tri-bs / tri-cost / tri-guard / tri-humanize 此前未在分层图中出现，本轮补齐。</span></p>
 </div>
 
 <div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--gray)"></span><span class="nm">L3 横向方法论层</span><span class="cnt">7</span></div>
+  <div class="lh"><span class="dot" style="background:var(--gray)"></span><span class="nm">G10 横向基座 · 被所有组调用</span><span class="cnt">7</span></div>
   <div class="skills">
     <span class="sk"><b>tri-cache</b> <span class="v">2.1.1</span></span>
     <span class="sk"><b>tri-cost</b> <span class="v">1.3.0</span></span>
@@ -216,35 +277,93 @@
     <span class="sk"><b>tri-translate</b> <span class="v">1.1.2</span></span>
     <span class="sk"><b>tri-true</b> <span class="v">1.1.2</span></span>
   </div>
-  <p style="margin:8px 0 0;font-size:12.5px"><b>不认领 L2 编码、不进路由表</b>，由下游委派或用户显式调用。tri-cache=四层缓存+上下文压缩；tri-cost=token 成本审计+预算闸门；tri-guard=skill 安全审计（skillspector 确定性扫描）；tri-humanize=去 AI 化（5 速查+35 模式）；tri-evolve=信号驱动持续改进；tri-translate=三策略分层翻译；tri-true=四道防线消除幻觉。</p>
+  <p style="margin:8px 0 0;font-size:12.5px"><b>不认领 L2 编码、不进路由表</b>，由下游委派或用户显式调用。对编程方向最相关的三个：<b>tri-cost</b>=token 成本审计 + 预算闸门；<b>tri-guard</b>=skill 安全审计（委派 skillspector 确定性扫描，装任何 skill 前跑）；<b>tri-true</b>=四道防线消除幻觉（置信度评估 + 事实源验证 + 交叉验证 + 自我反思）。其余：tri-cache=四层缓存 + 上下文压缩（<b>I11/I12 不缓存</b>，代码和故障会变）；tri-evolve=信号驱动持续改进；tri-humanize=去 AI 化（5 速查 + 35 模式）；tri-translate=三策略分层翻译。</p>
 </div>
 
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--pink)"></span><span class="nm">L4 协作执行层 · 对齐与多人分工</span><span class="cnt">3</span></div>
-  <div class="skills">
-    <span class="sk"><b>tri-domain</b> <span class="v">1.0.0</span> <span class="v">领域建模</span></span>
-    <span class="sk"><b>tri-grill</b> <span class="v">1.0.0</span> <span class="v">质询对齐</span></span>
-    <span class="sk"><b>tri-orchestrate</b> <span class="v">1.0.0</span> <span class="v">协作编排</span></span>
-  </div>
-  <p style="margin:8px 0 0;font-size:12.5px">解决「PM 说 X、Dev 理解成 Y」的对齐缺口：<b>tri-domain</b>=CONTEXT.md 术语表 + docs/adr/ 决策记录 + 边界场景清单；<b>tri-grill</b>=六维质询（歧义/边界/反例/术语/依赖/优先级）把需求问到无歧义；<b>tri-orchestrate</b>=把 requirements.md 拆成 N 份 spec 分派给多人 + 总 todo 自动回写 + 冲突检测。</p>
-</div>
+<h3 id="codingflow">编程资产流转：谁调用谁，产物落到哪</h3>
 
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--cyan)"></span><span class="nm">L5 领域层 · 单入口长期陪伴</span><span class="cnt">2</span></div>
-  <div class="skills">
-    <span class="sk"><b>tri-learn</b> <span class="v">1.0.2</span></span>
-    <span class="sk"><b>tri-jobhunt</b> <span class="v">1.0.3</span></span>
-  </div>
-  <p style="margin:8px 0 0;font-size:12.5px">不按单次意图分派，覆盖领域完整生命周期：tri-learn=学习教练（掌握学习+间隔重复+错题追踪）；tri-jobhunt=求职全生命周期（含 6 个 children 子 skill）。按领域单入口使用，tri-intent 中仅家族枚举级提及。</p>
-</div>
+<p>把 G1–G5 的 15 个编程资产摊成可追溯的链。先记一条总规则：<b>链路文档进 <code>.tribro/</code>，真实成果物（源码 / 补丁 / 构建产物）一律落你的工作区</b>。下表每条落盘路径均取自对应 skill 的 SKILL.md 原文声明。</p>
 
-<div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--amber)"></span><span class="nm">L6 内部工具层 · 用户直调（不经路由）</span><span class="cnt">2</span></div>
-  <div class="skills">
-    <span class="sk"><b>tri-forge</b> <span class="v">1.0.0</span> <span class="v">skill 锻造</span></span>
-    <span class="sk"><b>tri-init</b> <span class="v">1.0.0</span> <span class="v">项目初始化</span></span>
-  </div>
-  <p style="margin:8px 0 0;font-size:12.5px"><b>tri-forge</b>=三模式（A 顾问 / B 审计 / C 锻造）+ 五门流程（需求→骨架→路由回流→22 条合规自检→落盘）+ mutation 负向测试；<b>tri-init</b>=扫描技术栈 → 生成 AGENTS.md + project-profile.json → 创建 .tribro/ → 衔接 tri-coding 门②。对 AI 说「初始化 D:\path\to\project」即可。</p>
+<h3 style="margin-top:20px">三条主链</h3>
+
+<div class="flow">
+  <span class="step p">tri-intent I11</span><span class="arw">→</span>
+  <span class="step">tri-prototype <span style="color:var(--tx3)">可选前置</span></span><span class="arw">→</span>
+  <span class="step g">门① 需求</span><span class="arw">→</span>
+  <span class="step g">门② 设计</span><span class="arw">→</span>
+  <span class="step g">门③ 执行前</span><span class="arw">→</span>
+  <span class="step d">源码 · 落工作区</span>
+</div>
+<p style="margin:0 0 16px;font-size:12.5px"><b>轻轨 · 写</b>　承接 <code>tri-coding</code>　链路文档 → <code>.tribro/coding/&lt;命名&gt;/</code>（requirements / design / tasks / implements / delivery-manifest）</p>
+
+<div class="flow">
+  <span class="step p">tri-intent I12</span><span class="arw">→</span>
+  <span class="step g">造复现循环</span><span class="arw">→</span>
+  <span class="step g">根因门</span><span class="arw">→</span>
+  <span class="step g">修复门</span><span class="arw">→</span>
+  <span class="step d">补丁 · 落工作区</span>
+</div>
+<p style="margin:0 0 16px;font-size:12.5px"><b>修</b>　承接 <code>tri-fix</code>（6 阶段 3 门）　链路文档 → <code>.tribro/fixes/&lt;命名&gt;/</code>（bug-report / diagnosis / fix-tasks / fix-report）</p>
+
+<div class="flow">
+  <span class="step p">tri-intent CR</span><span class="arw">→</span>
+  <span class="step">读 coding/ 或 fixes/ 作规格来源</span><span class="arw">→</span>
+  <span class="step d">review-report · 只记录不修改</span>
+</div>
+<p style="margin:0 0 16px;font-size:12.5px"><b>审</b>　承接 <code>tri-review</code>　<b>无审批门</b>　报告 → <code>.tribro/reviews/&lt;命名&gt;/review-report.md</code>（增量审计模式 → <code>audit-report.md</code>）</p>
+
+<div class="flow">
+  <span class="step p">tri-intent I11/I13/I14 + L3=sdlc</span><span class="arw">→</span>
+  <span class="step d">P0 → P8</span><span class="arw">→</span>
+  <span class="step g">闸门① 68 必检 + 21 建议</span>
+</div>
+<p style="margin:0;font-size:12.5px"><b>重装轨 · 全流程</b>　承接 <code>tri-sdlc</code>　每阶段「派发 → 审计 → 确认」三拍，<b>连 3 轮 FAIL 停机</b>　→ <code>.tribro/sdlc/&lt;命名&gt;/</code>（manifest 覆盖写 / summary / Pn-xxx/ / gate-report）；<b>P4 源码与 P7 CHANGELOG 落工作区</b></p>
+
+<h3 style="margin-top:26px">产物落点总表（15 个编程资产）</h3>
+<table>
+<thead><tr><th>资产</th><th>链上位置</th><th><code>.tribro/</code> 落点</th><th>真实成果物</th></tr></thead>
+<tbody>
+<tr><td><code>tri-coding</code></td><td>G1 · 写</td><td><code>coding/&lt;命名&gt;/</code>：requirements / design / tasks / implements / delivery-manifest</td><td>源码 → 工作区</td></tr>
+<tr><td><code>tri-fix</code></td><td>G1 · 修</td><td><code>fixes/&lt;命名&gt;/</code>：bug-report / diagnosis / fix-tasks / fix-report</td><td>补丁 → 工作区</td></tr>
+<tr><td><code>tri-review</code></td><td>G1 · 审</td><td><code>reviews/&lt;命名&gt;/</code>：review-report（增量审计 → audit-report）</td><td>无（只读不改）</td></tr>
+<tr><td><code>tri-prototype</code></td><td>G2 · 前置</td><td><code>coding/&lt;命名&gt;/requirements.md</code>（tri-coding 门② 的标准读取位置）</td><td>requirements.md</td></tr>
+<tr><td><code>tri-frontend-design</code></td><td>G2</td><td><span class="sev s1">无固定落点</span>设计令牌规格随对话交付或用户指定路径</td><td>令牌 / 动效基线</td></tr>
+<tr><td><code>tri-lottie</code></td><td>G2</td><td><code>forge/&lt;命名&gt;/</code>（链路审计）+ <code>skills/tri-lottie/</code>（skill 包自身）</td><td>动效代码 → 工作区</td></tr>
+<tr><td><code>tri-code-analyzer</code></td><td>G3</td><td><code>code-analyzer/&lt;命名&gt;-analysis.md</code> + <code>code-analyzer/lessons.md</code>（追加式，跨会话持久）</td><td>深度剖析报告</td></tr>
+<tr><td><code>tri-html</code></td><td>G3</td><td><code>html/&lt;命名&gt;/</code>（主报告 + viewer 成品 + analysis.json）</td><td>viewer HTML → 项目根</td></tr>
+<tr><td><code>tri-checklist</code></td><td>G3</td><td><code>checklist/&lt;命名&gt;/</code></td><td>可勾选 checklist</td></tr>
+<tr><td><code>tri-sdlc</code></td><td>G4</td><td><code>sdlc/&lt;命名&gt;/</code>：manifest / summary / Pn-xxx/ / Pn-xxx/gate-report</td><td>P4 源码 + P7 CHANGELOG → 工作区</td></tr>
+<tr><td><code>tri-orchestrate</code></td><td>G4</td><td><code>coding/&lt;命名&gt;/specs/</code>：dispatch-plan / spec-01..N / master-todo / receipt-*.json</td><td>无</td></tr>
+<tr><td><code>tri-grill</code></td><td>G4</td><td><span class="sev s1">无落盘声明</span>质询记录随对话交付</td><td>质询记录</td></tr>
+<tr><td><code>tri-domain</code></td><td>G4</td><td>被 <code>project-profile.json</code> 引用（不直接写 .tribro）</td><td>CONTEXT.md + docs/adr/ → 工作区</td></tr>
+<tr><td><code>tri-init</code></td><td>G5 · 最先跑</td><td>先生成 <code>project-profile.json</code> + <code>.tribro/</code> 目录树</td><td>AGENTS.md → 项目根</td></tr>
+<tr><td><code>tri-forge</code></td><td>G5</td><td><code>skills/&lt;slug&gt;/</code>（生成物）+ <code>forge/&lt;命名&gt;/</code></td><td>报告 → 仓库根 <code>reports/</code></td></tr>
+</tbody>
+</table>
+
+<h3 style="margin-top:26px">五个关键衔接点</h3>
+<table>
+<thead><tr><th>衔接</th><th>触发条件</th><th>交接物</th></tr></thead>
+<tbody>
+<tr><td><code>tri-prototype</code> → <code>tri-coding</code> 门②</td><td>原型链接 / PRD 解析完成</td><td><code>coding/&lt;命名&gt;/requirements.md</code></td></tr>
+<tr><td><code>tri-init</code> → <code>tri-coding</code> 门②</td><td>项目首次接入完成</td><td><code>project-profile.json</code> + <code>standards_doc</code> 指针（规范冲突以原文为准）</td></tr>
+<tr><td><code>tri-coding</code> 门③ → <code>tri-review</code></td><td>被问「是否调其它 skill 协同」→ 答「调 tri-review」</td><td>待审 diff</td></tr>
+<tr><td><code>tri-orchestrate</code> → 多人 / 多 agent</td><td><code>requirements.md</code> 就位后</td><td><code>coding/&lt;命名&gt;/specs/</code> 全套</td></tr>
+<tr><td><code>tri-god</code> / <code>tri-forge</code> → 新 skill</td><td>蒸馏 / 按家族规范锻造</td><td><code>skills/&lt;slug&gt;/</code></td></tr>
+</tbody>
+</table>
+
+<div class="card ok">
+  <div class="t"><span class="sev s2">已收敛</span> 命名判据：目录名可从 skill slug 机械推导</div>
+  <p style="margin:0 0 8px">链路文档目录的命名判据只有一条：<b>目录名能否从 skill slug 机械推导</b>（去掉 <code>tri-</code> 前缀，允许常规名词化）。规则<b>不是</b>「目录名 = skill 名」——<code>coding/</code> 同时装 <code>tri-coding</code> / <code>tri-prototype</code> / <code>tri-orchestrate</code> 三家产物，<code>sdlc/</code> 装全部阶段子 skill，「一 skill 一目录」本就不成立。</p>
+  <ul style="margin:0 0 8px">
+    <li><b>通过</b>（可按 skill 名推导）：<code>coding/</code> <code>fixes/</code> <code>reviews/</code> <code>plans/</code> <code>actions/</code> <code>workflows/</code> <code>loops/</code> <code>sdlc/</code> <code>content/</code> <code>cost/</code> <code>code-analyzer/</code> <code>pdf2md/</code> 等</li>
+    <li><b>已改名</b>（2026-09-24）：<code>arch-viz/</code>→<code>html/</code>、<code>audit-checklist/</code>→<code>checklist/</code>、<code>tri-article/</code>→<code>article/</code>、<code>tri-geo/</code>→<code>geo/</code>、<code>tri-jobhunt/</code>→<code>jobhunt/</code></li>
+    <li><b>豁免</b>（跨 skill 共享，登记于 <code>tri-forge/references/family-spec.md</code> §1.4）：<code>snapshots/</code>（tri-intent）、<code>skills/</code>（tri-forge 生成物位）、<code>multimedia/</code>（tri-mm，slug 为缩写）。另 <code>specs/</code> 嵌在 <code>coding/</code> 下，不占顶层</li>
+  </ul>
+  <p style="margin:0 0 8px"><b>规则已固化可判定</b>：合规清单第 10 条现在要求——新建 skill 的落盘目录名不可推导、又未登记豁免，即门④ <b>FAIL</b>；<b>skill 目录内出现 <code>.tribro/</code> 同样 FAIL</b>（会经 junction 安装暴露、被打包收录）。</p>
+  <p style="margin:0 0 8px"><b>第三类产物区（跨项目台账）</b>：除上表两类，家族还承认落在项目根、<b>不属 <code>.tribro/</code></b> 的跨项目台账，例如 <code>tri-geo</code> 的 <code>.geo-snapshots/&lt;品牌&gt;/</code>。它同样受可推导性判据约束，且 MUST 登记于 <code>family-spec.md</code> §1.4 第三类清单；<b>NEVER 迁入 <code>.tribro/</code></b>——判据是数据的生命周期跟随「业务实体」还是「项目」，跟随业务实体者迁入会被项目目录切碎。</p>
+  <p style="margin:0"><b>另有两处未解决（独立问题，不属命名范畴）</b>：<code>tri-frontend-design</code> 与 <code>tri-grill</code> 的交付物<b>没有固定 <code>.tribro/</code> 落点</b>，只随对话交付；两者若接入门禁审计，会因「定位不到固定产物」而无法取证。</p>
 </div>
 
 <div class="card note">
@@ -514,21 +633,51 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 <p>约定：<b>链路文档进 <code>.tribro/</code>，真实成果物进工作区</b>。判据是「这份东西是不是给人用的最终产品」。</p>
 <div class="tree">
 <b>.tribro/</b>
-├── <b>project-profile.json</b>   <i># tri-init 产物：技术栈/编码规范/DB 规范 + standards_doc 指针（tri-coding 门② 消费）</i>
-├── <b>LATEST.md</b>              <i># 指针文件，覆盖写，始终指向本会话最新快照</i>
-├── snapshots/                <i># tri-intent 产出（只读，不重识别）</i>
-├── plans/&lt;命名&gt;/              <i># tri-plan：plan-brief / plan / task-checklist</i>
-├── coding/&lt;命名&gt;/             <i># tri-coding：requirements / design / tasks / implements</i>
+├── <b>project-profile.json</b>  <i># tri-init：技术栈/编码规范/DB 规范 + standards_doc 指针（tri-coding 门② 消费）</i>
+├── <b>LATEST.md</b>             <i># 指针文件，覆盖写，始终指向本会话最新快照</i>
+│
+├── <i>[控制面]</i>
+├── snapshots/               <i># tri-intent：快照（只读，不重识别）</i>
+│
+├── <i>[编程链 G1–G5]</i>
+├── coding/&lt;命名&gt;/             <i># tri-coding：requirements / design / tasks / implements + delivery-manifest</i>
+│   └── specs/               <i># tri-orchestrate：dispatch-plan / spec-01..N / master-todo / receipt-*.json</i>
 ├── fixes/&lt;命名&gt;/              <i># tri-fix：bug-report / diagnosis / fix-tasks / fix-report</i>
-├── reviews/&lt;命名&gt;/            <i># tri-review：review-report</i>
-├── orchestration/&lt;命名&gt;/      <i># tri-orchestrate：dispatch-plan / spec-01..N / master-todo / receipts</i>
+├── reviews/&lt;命名&gt;/            <i># tri-review：review-report（增量审计模式 → audit-report）</i>
+├── plans/&lt;命名&gt;/              <i># tri-plan：plan-brief / plan / task-checklist</i>
+├── sdlc/&lt;命名&gt;/               <i># tri-sdlc：manifest + summary + Pn-xxx/ + 各阶段 gate-report</i>
+├── html/&lt;命名&gt;/               <i># tri-html：架构分析主报告 + viewer 成品 + analysis.json</i>
+├── checklist/&lt;命名&gt;/          <i># tri-checklist：audit-checklist_&lt;日期&gt;_&lt;时间&gt;.md</i>
+├── code-analyzer/           <i># tri-code-analyzer：&lt;命名&gt;-analysis.md + lessons.md（追加式，跨会话持久）</i>
+├── forge/&lt;命名&gt;/              <i># tri-forge / tri-lottie：需求卡 / 合规报告 / 测试报告 / delivery-manifest</i>
+├── god/                     <i># tri-god：蒸馏造物过程记录</i>
+├── skills/&lt;slug&gt;/            <i># tri-forge 生成物（毕业后迁入源码树）</i>
+│
+├── <i>[相邻支撑 G6]</i>
 ├── actions/&lt;命名&gt;/            <i># tri-action：操作执行记录</i>
 ├── workflows/&lt;命名&gt;/          <i># tri-workflow：result + env-profile + model + validation</i>
 ├── loops/&lt;命名&gt;/              <i># tri-loop：result（loop README 与 LOG.md 落知识库仓库根）</i>
-├── sdlc/&lt;命名&gt;/              <i># tri-sdlc：manifest + summary + P0..P8 + 各阶段 gate-report</i>
-├── multimedia/               <i># tri-mm 产出</i>
-├── cache/                    <i># tri-cache：四层缓存</i>
-└── evolve/                   <i># tri-evolve：signals.jsonl / profile.db / run-log.jsonl</i>
+│
+├── <i>[内容 / 格式 / 多模态 / 领域 G7–G9]</i>
+├── content/                 <i># tri-content</i>
+├── article/                 <i># tri-article</i>
+├── pm/                      <i># tri-pm</i>
+├── wiki/                    <i># tri-wiki</i>
+├── pdf2md/  docx2md/  pptx2md/  xlsx2md/  html2md/   <i># G8 格式转换族</i>
+├── multimedia/              <i># tri-mm（image/ 为其 children tri-image）</i>
+├── music/                   <i># tri-music</i>
+├── geo/                     <i># tri-geo</i>
+├── jobhunt/                 <i># tri-jobhunt（含 6 个 children）</i>
+├── learning/                <i># tri-learn</i>
+│
+└── <i>[横向基座 G10]</i>
+    ├── cache/               <i># tri-cache：四层缓存</i>
+    ├── cost/                <i># tri-cost：token 开销与预算闸门</i>
+    ├── evolve/              <i># tri-evolve：signals.jsonl / profile.db / run-log.jsonl</i>
+    ├── guard/               <i># tri-guard：skill 安全扫描</i>
+    ├── humanize/            <i># tri-humanize</i>
+    ├── translate/           <i># tri-translate</i>
+    └── true/                <i># tri-true</i>
 </div>
 <div class="card warn">
   <div class="t">命名规则（照抄别改）</div>
