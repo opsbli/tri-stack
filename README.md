@@ -31,7 +31,7 @@
 
 ## 简介
 
-**tri-stack** 是一个面向 AI 智能体的技能集合，提供 **42 个模块化、可组合的 skill**，覆盖意图路由、编码、审查、修复、规划、内容生成、翻译、工作流编排、原型解析、PM→Dev 桥接等多个领域。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
+**tri-stack** 是一个面向 AI 智能体的技能集合，提供 **46 个模块化、可组合的 skill**，覆盖意图路由、编码、审查、修复、规划、内容生成、翻译、工作流编排、原型解析、PM→Dev 桥接等多个领域。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
 
 ### 设计理念
 
@@ -43,7 +43,7 @@
 
 ---
 
-## 技能目录（42 个）
+## 技能目录（46 个）
 
 ### 入口层
 
@@ -89,6 +89,7 @@
 | [tri-workflow](tri-workflow/) | 1.2.3 | 工作流设计引擎：7 阶段混合智能流水线（I13/I14 子类） |
 | [tri-sdlc](tri-sdlc/) | 1.1.3 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面（I11/I13/I14 子类） |
 | [tri-loop](tri-loop/) | 1.2.2 | 知识库 loop 启动（I14 子类） |
+| [tri-orchestrate](tri-orchestrate/) | 1.0.0 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
 
 ### 横向方法论层
 
@@ -101,6 +102,8 @@
 | [tri-humanize](tri-humanize/) | 1.1.1 | 去 AI 化改写（35 种 AI 写作模式） |
 | [tri-translate](tri-translate/) | 1.1.2 | 三策略分层翻译 |
 | [tri-true](tri-true/) | 1.1.2 | 四道防线消除幻觉 |
+| [tri-domain](tri-domain/) | 1.0.0 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
+| [tri-grill](tri-grill/) | 1.0.0 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
 
 ### 领域层
 
@@ -115,6 +118,7 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-forge](tri-forge/) | 1.0.0 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
+| [tri-init](tri-init/) | 1.0.0 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
 
 ---
 
@@ -182,7 +186,7 @@ cd tri-stack
 
 ```
 tri-skills/
-├── tri-*/                    # 42 个顶层 skill（见上方技能目录）
+├── tri-*/                    # 46 个顶层 skill（见上方技能目录）
 │   └── */children/           # 子 skill（tri-mm×4 + tri-sdlc×9 + tri-jobhunt×6）
 ├── ops/                      # 自维护基础设施
 │   ├── skills-install.py     # 平台取包 / 补装
