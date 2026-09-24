@@ -48,7 +48,7 @@ tri-frontend-design/
 ## 安装
 
 ```bash
-skillhub install tri-frontend-design --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 ```
 
 ## 使用

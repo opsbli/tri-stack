@@ -51,7 +51,7 @@ tri-html/
 ## 安装
 
 ```bash
-skillhub install tri-html --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 ```
 
 ## 使用

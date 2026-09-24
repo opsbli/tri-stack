@@ -64,6 +64,6 @@ description: 【Doing·工作流设计子类路由】I13/I14 任务要点含工�
 
 ## 与 tri-workflow 上游依赖检测的对称关系
 
-- tri-intent 侧：产出快照后检测 `tri-workflow/` 目录是否存在，未安装时提示 `skillhub install tri-workflow --dir <目标目录>`
+- tri-intent 侧：产出快照后检测 `tri-workflow/` 目录是否存在，未安装时提示 `python ops/install-skills.py --target <目标目录>`
 - tri-workflow 侧：激活时检测上游 tri-intent 是否可用（模式 A 快照模式 / 模式 B 独立降级模式）
 - 双向检测确保：无论用户先安装哪一端，缺失的另一端都会被检测到并给出安装引导

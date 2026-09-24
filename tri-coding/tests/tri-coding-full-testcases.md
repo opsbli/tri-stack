@@ -47,7 +47,7 @@ version: 1.7.1
 |---|---|---|
 | C1 | 模式 A 快照模式 | 按快照定位契约命中可用快照 → 读 §三 按工作流推进 |
 | C2 | 模式 A0 待识别 | 有 tri-intent 但无可用快照 → 提示未经意图识别，NEVER 静默按空上下文执行 |
-| C3 | 模式 B 引导安装 | 未检测到 tri-intent → 输出 `skillhub install tri-intent --dir <目标目录>` 提示语 |
+| C3 | 模式 B 引导安装 | 未检测到 tri-intent → 输出 `python ops/install-skills.py --target <目标目录>` 提示语 |
 | C4 | 模式 C 降级模式 | 用户拒绝安装 → 自构造等价输入并声明降级 |
 | C5 | 输入契约字段 | L2 必须为 I11；D1 应为编程技术；D4 应为可执行代码/文件产物 |
 | C6 | 澄清门门控 | 快照 `澄清门状态`=待澄清 → 不激活，先由 clarify-gate 澄清 |
@@ -203,7 +203,7 @@ version: 1.7.1
 ### TC-C-03：模式 B 输出安装引导语【C3｜正例】
 - **能力点引用**：C3
 - **输入场景**：环境中未检测到 tri-intent，用户直接说「帮我写个订单服务」
-- **预期结果**：输出模式 B 提示语，含 `skillhub install tri-intent --dir <目标目录>`
+- **预期结果**：输出模式 B 提示语，含 `python ops/install-skills.py --target <目标目录>`
 - **通过标准**：PASS——提示语与安装命令齐全；FAIL——缺失或直接进入编码
 
 ### TC-C-04：模式 C 降级须显式声明【C4｜正例】

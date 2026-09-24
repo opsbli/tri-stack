@@ -56,5 +56,5 @@ session_id: 6a5c037d
 |---|---|---|
 | **A · 快照模式** | 一~三级定位命中可用快照 | 读取 §三，按标准工作流推进 |
 | **A0 · 待识别** | 存在 `tri-intent/` 但快照缺失/过期/损坏 | 提示「本次请求尚未经意图识别」，引导先经 tri-intent |
-| **B · 引导安装** | 未检测到 `tri-intent/` | 提示 `skillhub install tri-intent` |
+| **B · 引导安装** | 未检测到 `tri-intent/` | 提示 `python ops/install-skills.py --target <目标目录>` |
 | **C · 降级模式** | 用户明确拒绝安装 tri-intent | 自构造等价输入并显式声明降级 |

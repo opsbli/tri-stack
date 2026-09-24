@@ -42,7 +42,7 @@ cp -r tri-action/ /path/to/your/skills/
 | 模式 | 触发条件 | 行为 |
 |---|---|---|
 | A · 快照模式 | `.tribro/snapshots/` 有快照 或 skills 目录有 `tri-intent/` | 读取快照 §三，按工作流推进（标准模式） |
-| B · 引导安装 | 以上均不满足 | 向用户提示依赖并引导安装 `skillhub install tri-intent` |
+| B · 引导安装 | 以上均不满足 | 向用户提示依赖并引导安装 `python ops/install-skills.py --target <目标目录>` |
 
 > 本 skill 不支持降级模式——模式 B 为硬性阻断，MUST 安装 tri-intent 后方可使用。
 

@@ -88,11 +88,11 @@ license: MIT
 |------|------|------|
 | **A · 快照模式** | 按 tri-intent §快照定位契约 定位到**可用快照**（`.tribro/LATEST.md` 指针 → 会话内最新 → 全局最新且 ≤30 分钟） | 读取快照 §三，按工作流推进（标准模式） |
 | **A0 · 待识别** | 有 `tri-intent/` 但无可用快照（或快照已过期/损坏） | MUST 提示用户「本次请求尚未经意图识别」，引导先经 tri-intent 产出快照；NEVER 按空上下文静默执行 |
-| B · 引导安装 | 未检测到 tri-intent | 输出提示语引导 `skillhub install tri-intent` |
+| B · 引导安装 | 未检测到 tri-intent | 输出提示语引导 `python ops/install-skills.py --target <目标目录>` |
 | C · 降级模式 | 用户拒绝安装 | 自构造等价输入并声明降级精度低 |
 
 **模式 B 提示语**：
-> 本 skill 依赖上游 tri-intent 产出的快照。请先安装：`skillhub install tri-intent`，完成意图识别后再运行本 skill。
+> 本 skill 依赖上游 tri-intent 产出的快照。请先安装：`python ops/install-skills.py --target <目标目录>`，完成意图识别后再运行本 skill。
 
 **模式 C 降级声明**：
 > 未检测到 tri-intent 快照，已进入降级模式：本次基于自构造的等价输入执行，意图识别精度低于标准链路，结果可能偏差，建议后续安装 tri-intent 以获得完整效果。

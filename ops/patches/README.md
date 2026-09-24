@@ -79,6 +79,11 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `sync-readme-version` | sync_readme_version | P1↔P5：README 版本声明 = SKILL.md 版本（规则化） |
 | `self-maintained-const-func` | replace_text | 版本门：注入 `SELF_MAINTAINED` 常量与 `self_consistent_check()` |
 | `self-maintained-branch` | replace_text | 版本门：在节流检查前插入自维护分支（跳过远端比对） |
+| `converge-version-stub` | converge_version_section | 顶层 skill 版本节收敛为瘦指针 STUB（15 行），消除远端 skillhub 口径（当前 15 个） |
+| `converge-version-stub-children` | converge_version_section | `tri-sdlc/children/*` 9 个子阶段 skill 同款收敛（同缺陷类，scope 独立便于裁定） |
+| `f7-contract-mode` | replace_text | 契约 §0：「连接 skillhub 校验 + `skillhub upgrade`」→ 自维护本地校验（22 处） |
+| `f7b-contract-mode-intent` | replace_text | 契约 §0 变体（`tri-intent`）：远端校验/升级 + 端点内联 → 自维护口径 |
+| `f8-install-hint-self-maintained` | replace_regex | 引导安装提示：`skillhub install <slug> [--dir <目标目录>]` → 自维护安装器（58 文件 / 66 处） |
 
 ## 每项补丁的依据
 
@@ -188,3 +193,117 @@ Counter(p.read_text().count("def self_consistent_check(") for p in files)
 与两个额外 helper**，`decide()` 主体完全一致 ⇒ 一个字面锚点即可覆盖全部。
 锚点选在 `    state = load_state()` **之前**——必须在节流检查之前，
 否则旧的远端缓存态会先命中并 early return，自维护校验永不执行。
+
+---
+
+## 版本节收敛为瘦指针 STUB（`converge_version_section`）
+
+### 依据：自维护已落地，但 prompt 层口径没跟上
+
+`self-maintained-*` 两个 op 只改了**脚本**（`check_update.py` 不再请求平台）。
+但 SKILL.md **正文**仍是上游同步来的「远端 skillhub 口径」全量版，实测三处直接矛盾：
+
+| 位置 | 上游残留文本 | 实际行为 |
+|---|---|---|
+| 强制执行契约 §0 | 「MUST 先通过 §版本检查与更新机制（连接 skillhub 校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级…）」 | 脚本自维护模式下**不发任何请求**；`skillhub upgrade` 在本 fork 无意义 |
+| §版本检查与更新机制 | 端点读自 `~/.skillhub/metadata.json`、四态 A/B/C/D 细则、SemVer 逐段比较算法 | 全部被 `SELF_MAINTAINED` 短路，永不执行 |
+| 同上（节长） | 35 行 | 家族规范 `references/version-check-spec.md` §六 要求 **≤30 行**且**禁内联**四态/升级流程/比较算法 |
+
+### 判据（为什么是规则化而不是 13 份字面量）
+
+`converge_version_section` 按**语义**收敛，不写字面量：
+
+- `already_marker`（`<!-- version-stub v1`）命中 → 已收敛，跳过
+- 节内含 `legacy_markers`（`skillhub upgrade` / `~/.skillhub`）任一 → 收敛为 STUB
+- 两者皆无 → **不碰**（已合规的 9 行 STUB，或节内含 skill 专属内容者）
+- `{slug}` 占位由目录名填充 ⇒ 新增 / 同步 skill 后自动生效
+
+实测命中：顶层 **15** 个（14 个含远端标记 + `tri-forge` 经 `force_skills` 强制）
++ `tri-sdlc/children/*` **9** 个 = **24** 个版本节（34/23/31/20 行 → 14 行，`tri-forge` 保留专属段后 27 行）。
+契约 §0 由 `f7-*` 两个 op 覆盖 **23** 处（22 处同文 + `tri-intent` 的变体）。
+
+### `tri-forge` 为什么需要 `preserve`
+
+它的版本节里混有 **skill 专属职能**（`scripts/check_registry.py` 家族级 P1–P5 校验），
+一刀切会丢内容。故 `preserve: {"tri-forge": "**家族承接职能"}` —— STUB 之后的专属段原样保留。
+
+### 幂等判据
+
+连续跑两次 `apply.py`，第二次三个 op 均报 `写入 0｜跳过 N`（N = 24 / 9 / 23）。
+**不要只比输出文本**（见上文「锚点型注入的幂等陷阱」）——本次判据是「标注为已收敛的文件数」。
+
+### F4 残留（本次刻意不动）
+
+| 类别 | 位置 | 为什么不动 |
+|---|---|---|
+| 逃生舱文档 | 各 skill `references/version-check-spec.md`（×4 处/份）、`tri-intent/references/version-gate.md` | 远端模式仍由 `TRI_ALLOW_REMOTE=1` 保留，属**正确记载**而非漂移 |
+| 补丁层自述 | `ops/README.md`、`ops/patches/README.md`、`payload/version-check-spec.md` | 机制说明 |
+| 历史 | 各 skill `CHANGELOG.md` | 追加型历史，**不改写** |
+| 上游镜像 | `.workbuddy/_upstream/**` | 在 `exclude_paths` 内，非分发树 |
+
+---
+
+## 引导安装提示回归自维护口径（`replace_regex` + `f8`）
+
+### 缘起：修 9 个 children 时发现的是 66 处
+
+用户批准的原始范围是「`tri-sdlc/children/*` 的 9 个 `SKILL.md` 各有一行
+`skillhub install tri-sdlc --dir <目标目录>`」。但**全仓扫描后**同一缺陷类是 **58 文件 / 66 处**：
+
+| 位置类别 | 命中 | 说明 |
+|---|---|---|
+| 顶层 `SKILL.md` 「模式 B · 引导安装」提示 | 20 | `> 请安装：\`skillhub install tri-intent --dir <目标目录>\`` |
+| `children/*/SKILL.md` | 9 | `> 请先安装：\`skillhub install tri-sdlc --dir <目标目录>\`` |
+| `README.md` 安装段 | 24 | 含各 skill 自身安装命令 |
+| `tri-intent/doing/*.md`（下游路由说明） | 4 | |
+| `references/snapshot-contract.md` + `validators/dependency-checker.md` | 3 | 契约与验证器给用户的安装命令 |
+| `tests/*.md` 期望输出断言 | 8 | **必须同步改**，否则测试描述的是不可达字符串 |
+
+⇒ 与 `converge_version_section` 同一类问题：**脚本已自维护，但 prompt / 文档层口径没跟上**。
+拖到后面做会留下跨文件口径不一致，故一并收敛。
+
+### 为什么新增 op 类型而不是复用 `replace_text`
+
+`replace_text` 是**字面量**匹配，本场景有两个硬需求它满足不了：
+
+1. **slug 不同**：`tri-intent` / `tri-sdlc` / `tri-god` / `<slug>` 各不相同，
+   字面量方案需要十余条 op 且新增 skill 后失效；
+2. **必须与历史/纠错文本区分**：`CHANGELOG.md` 里
+   `\`skillhub install <slug> --upgrade\``（历史 bug 记录）与
+   `version-gate.md:110` 的纠错注记，**与主路径提示共享 `skillhub install` 前缀**，
+   只有「整行守卫」能分开——误改它们等于篡改历史/删掉正确的实测结论。
+
+故新增 `replace_regex`（与 `replace_text` 共用 `read_norm` / `write_keep`，行尾无关）：
+
+| 字段 | 作用 |
+|---|---|
+| `pattern` | 正则，逐行 `subn` 全局替换（一行可多处） |
+| `replacement` | 替换串 |
+| `already_marker` | 命中即整文件判「已应用」（幂等靠**内容指纹**，不靠输出比对） |
+| `skip_line_containing` | 命中任一子串的行**整行不动** → 本次用 `--upgrade` 排除历史与纠错注记 |
+| `skip_names` | 按文件名整文件跳过 → `CHANGELOG.md` |
+| `skip_prefixes` | 按相对路径前缀整文件跳过 → `ops/`（本目录自述，不应被自己的 op 改） |
+
+匹配模式（钉在 `--dir <目标目录>` 形态上，天然避开 `--upgrade`）：
+
+```
+skillhub[ \t]+install[ \t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \t]+--dir[ \t]+(?:<[^>]*>|[^\s`]+))?
+```
+
+⇒ 替换为 `python ops/install-skills.py --target <目标目录>`。
+本仓库的安装模型是 **junction 链入整个家族**（`ops/install-skills.py` 无按 slug 选择的能力），
+故「请安装 tri-intent」这类单 slug 提示统一改为家族安装器命令，语义上仍满足原意。
+
+### 幂等判据
+
+连续跑两次 `apply.py`，`f8` 第二次必须报 `应用 0｜已应用 60`（58 个被迁移 + 2 个本就含新指引：
+根 `README.md`、`tri-init/templates/AGENTS.md`）。首次为 `应用 66｜已应用 2`。
+
+### 本次刻意不动
+
+| 类别 | 位置 | 为什么不动 |
+|---|---|---|
+| 历史 | 各 `CHANGELOG.md` 的 `skillhub install <slug> --upgrade` | 追加型历史 |
+| 纠错注记 | `tri-intent/references/version-gate.md:110` | 记载「`install --upgrade` 不存在」的正确结论 |
+| 机制自述 | `ops/**`（`skip_prefixes` 排除） | 本目录的说明文本 |
+| 历史快照 | `tri-mece-audit/tri-mece-audit.html` | `.html` 不在 glob 内；38 处版本引用属 46-skill 时代快照，且不在 `version-lint` D1–D4 覆盖范围 |

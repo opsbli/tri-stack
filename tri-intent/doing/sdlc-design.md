@@ -92,7 +92,7 @@ description: 【Doing·全生命周期（SDLC）子类路由】I11/I13/I14 任�
 
 ## 与 tri-sdlc 上游依赖检测的对称关系
 
-- tri-intent 侧：产出快照后检测 `tri-sdlc/` 目录是否存在，未安装时提示 `skillhub install tri-sdlc --dir <目标目录>`
+- tri-intent 侧：产出快照后检测 `tri-sdlc/` 目录是否存在，未安装时提示 `python ops/install-skills.py --target <目标目录>`
 - tri-sdlc 侧：激活时检测上游 tri-intent 是否可用（模式 A 快照模式 / 模式 B 引导安装 / 模式 C 降级模式）
 - tri-sdlc 的 9 个阶段子SKILL（`children/tri-charter` … `children/tri-ops`）**随 tri-sdlc 包分发**，不是顶层 skill，**不参与 tri-intent 路由表**；其上游检测对象是 tri-sdlc 编排器（两态：编排模式 / 引导安装）
 - 双向检测确保：无论用户先安装哪一端，缺失的另一端都会被检测到并给出安装引导

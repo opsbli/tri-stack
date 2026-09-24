@@ -69,7 +69,7 @@ description: 【Doing·I21 蒸馏造物】用户要求把人/工作流/专业技
 
 ## 与 tri-god 上游依赖检测的对称关系
 
-- tri-intent 侧：产出快照后检测 `tri-god/` 目录是否存在，未安装时提示 `skillhub install tri-god --dir <目标目录>`
+- tri-intent 侧：产出快照后检测 `tri-god/` 目录是否存在，未安装时提示 `python ops/install-skills.py --target <目标目录>`
 - tri-god 侧：激活时检测上游 tri-intent 是否可用（模式 A 快照模式 / 模式 B 引导安装 / 模式 C 降级模式）
 - 双向检测确保：无论用户先安装哪一端，缺失的另一端都会被检测到并给出安装引导
 

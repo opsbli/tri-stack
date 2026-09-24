@@ -388,7 +388,7 @@ version: 1.1.5
 ### TC-05-05：模式 B 引导安装提示语
 - **前置条件**：未检测到 tri-intent
 - **测试步骤**：1. 校验提示语
-- **预期结果**：输出引导 `skillhub install tri-intent`
+- **预期结果**：输出引导 `python ops/install-skills.py --target <目标目录>`
 - **通过标准**：PASS——引导安装；FAIL——无提示
 
 ---

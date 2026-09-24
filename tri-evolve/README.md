@@ -56,7 +56,7 @@ cp -r tri-evolve/ /path/to/your/skills/
 | 模式 | 触发条件 | 行为 |
 |------|----------|------|
 | A · 完整模式 | 检测到 `tri-intent/` 且 `.tribro/snapshots/` 有快照 | 六渠道信号全采集（缓存命中渠道来源原 tri-cache 本分支未包含）；画像持久化；经验库 embedding 检索 |
-| B · 引导安装 | 未检测到 tri-intent | 向用户提示依赖并引导安装 `skillhub install tri-intent` |
+| B · 引导安装 | 未检测到 tri-intent | 向用户提示依赖并引导安装 `python ops/install-skills.py --target <目标目录>` |
 | C · 降级模式 | 用户拒绝安装 | 退化为仅会话内反馈学习（无跨会话沉淀、无画像持久化、无经验复用），声明降级精度低 |
 
 > 三态逻辑：本 skill 为学习型，支持降级——降级模式仍可采集会话内反馈学习，但精度低。

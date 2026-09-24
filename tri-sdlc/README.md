@@ -44,13 +44,13 @@ tri-sdlc/
 ## 安装
 
 ```bash
-skillhub install tri-sdlc --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 ```
 
 9 个子 SKILL 随包分发，无需单独安装。建议同时安装上游：
 
 ```bash
-skillhub install tri-intent --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 ```
 
 未安装 tri-intent 时本 skill 进入引导安装模式，用户拒绝安装则可降级执行（精度低于标准链路）。

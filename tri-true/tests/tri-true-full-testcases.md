@@ -86,7 +86,7 @@ version: 1.1.3
 | G2 | 声明时机 | 操作前声明 |
 | G3 | 冲突停止 | 与快照冲突停止并纠正 |
 | G4 | 降级声明 | 模式 C MUST 声明降级精度低 |
-| G5 | 模式 B 提示语 | 引导 `skillhub install tri-intent` |
+| G5 | 模式 B 提示语 | 引导 `python ops/install-skills.py --target <目标目录>` |
 
 ### F. 交付产物能力
 
@@ -121,7 +121,7 @@ version: 1.1.3
 |---|---|---|
 | IN1 | 三态依赖检测 | A 快照 / B 引导安装 / C 降级 |
 | IN2 | 降级独立运行 | 自构造等价输入仍可工作（单模型 + 自反思） |
-| IN3 | 模式 B 提示语 | 引导 skillhub install tri-intent |
+| IN3 | 模式 B 提示语 | 引导 python ops/install-skills.py --target <目标目录> |
 
 ---
 
@@ -456,7 +456,7 @@ version: 1.1.3
 ### TC-06-05：模式 B 提示语
 - **前置条件**：模式 B 引导安装
 - **测试步骤**：1. 校验提示语
-- **预期结果**：引导 `skillhub install tri-intent --dir <目标目录>`
+- **预期结果**：引导 `python ops/install-skills.py --target <目标目录>`
 - **通过标准**：PASS——引导；FAIL——未引导
 
 ---
@@ -570,7 +570,7 @@ version: 1.1.3
 ### TC-10-03：模式 B 提示语
 - **前置条件**：模式 B
 - **测试步骤**：1. 校验提示语内容
-- **预期结果**：提示 `skillhub install tri-intent --dir <目标目录>`
+- **预期结果**：提示 `python ops/install-skills.py --target <目标目录>`
 - **通过标准**：PASS——提示正确；FAIL——未提示
 
 ---

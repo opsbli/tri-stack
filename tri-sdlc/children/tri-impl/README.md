@@ -36,7 +36,7 @@ tri-impl/
 随 tri-sdlc 包分发，置于 `tri-sdlc/children/tri-impl/`。独立安装需先装 tri-sdlc：
 
 ```
-skillhub install tri-sdlc --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 ```
 
 > 只想直接写一段代码而不走全流程，请改用 `tri-coding`。

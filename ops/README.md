@@ -26,7 +26,7 @@ ops/
 ├── versions.json              自主版本线基线（24 个 skill 的版本快照）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 13 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 18 个 op）
     ├── apply.py                幂等重放器
     └── payload/
         └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
@@ -131,6 +131,46 @@ pat='^version: *(\\S+)'   -> 匹配
 ⇒ **凡含正则转义的 Python，一律写成文件再执行**，不要用 heredoc / `python -c`。
 本次因这个坑，一个交叉校验脚本对 40 个 skill 全部返回 `None`，差点据此误判。
 
+## 踩坑：悬空 junction 会让安装器「看不见」自己的产物（已修）
+
+**事故（2026-09-24）**：`~/.workbuddy/skills/` 下 46 个 `tri-*` 入口**全部悬空**
+（都指向已改名的 `codes/tri-skills/<slug>`，而实际源码树是 `codes/tri-stack/<slug>`），
+斜杠激活全线失效。而 `install-skills.py` 跑起来报「✅ 新建 24」，并未修复。
+
+**根因**：判定用了跟随链接的 API。对**悬空 junction**：
+
+| 判据 | 悬空 junction 的返回值 | 后果 |
+|---|---|---|
+| `Path.exists()` | **False** | 走「新建」分支 → `mklink` 报「已存在」而失败 |
+| `Path.is_symlink()` | **False** | 同上；**junction 不是 symlink**，Windows 上这条永远不成立 |
+| `Path.is_dir()` | False | 同上 |
+| `os.path.lexists()` | **True** ✅ | 唯一能同时覆盖「有效链接 / 悬空链接 / 真实目录」的判据 |
+
+⇒ 依次踩了两次：第一版修成 `exists() or is_symlink()`，**仍不生效**——因为 junction 的
+`is_symlink()` 也是 False。最终改用 `lexists` + `lstat` 的
+`FILE_ATTRIBUTE_REPARSE_POINT (0x400)`。
+
+**另一处**：`is_junction()` 原本以 `if not p.exists(): return False` 开头，
+对悬空链接直接短路返回 False ⇒ 连删除都判不出来。已改为不依赖 `exists()`。
+
+**删除方式**：junction 用 `os.rmdir()`（`RemoveDirectory` 语义，只摘重解析点、**不删源**），
+不再 `cmd /c rmdir`——少一层 shell 依赖，也避开中文 Windows 的编码问题。
+
+**验证**：修复后重放 → `🔄 重建 24 · 🔴 失败 0`；再跑一次 → `⏭ 跳过 24`（幂等）；
+经 junction 运行版本门，`dangling_link` 由 `true` → `false`、`warnings` 清空。
+
+> 复现要点：**凡对链接/重解析点做「存在性」判断，一律用 `os.path.lexists`**，
+> 不要用 `Path.exists()`。
+
+## 待裁决项 → 已执行（2026-09-24）
+
+| 项 | 处置 |
+|---|---|
+| **22 个孤儿入口** | ✅ **已移除**（`已移除 22｜失败 0`）。现 `~/.workbuddy/skills/` 下 `tri-*` 入口 = **24**，`仍悬空 0`、`指向别处 0`。需要时重放 `ops/install-skills.py` 即可重建 |
+| `codes/tri-skills/` 空目录 | ✅ **已迁移**至 `%TEMP%\tri-skills-moved-20260924`。实测其内仅 `.idea` 工程元数据（8 项），**非 git 跟踪路径**。采用「移动」而非硬删——`rm -rf` 被安全策略拦在非 Temp 路径；确认无用后可直接删除 |
+| 版本节形态未统一 | 🟡 **部分收敛**：33 个版本节中 **24** 个已是 `version-stub v1` 形态（19×14 行、4×15 行、`tri-forge` 26 行含专属段）；其余 **9** 个无遗留远端标记、属指针对齐形态（`tri-lottie` 4 / `tri-code-analyzer`·`tri-domain`·`tri-grill`·`tri-orchestrate` 8 / `tri-frontend-design` 11 / `tri-init` 12 / `tri-prototype` 15 / `tri-god` 16 行），按最小化原则未动 |
+| 引导安装提示残留 | ✅ **已收敛**：`f8-install-hint-self-maintained`（`replace_regex`）改 **58 文件 / 66 处** `skillhub install … --dir <目标目录>` → 自维护安装器 |
+
 ## 相关档案（在 gitignore 目录内，仅本机留存）
 
 `.workbuddy/` 保存一次性勘察与决策留档，**不进版本控制**：
@@ -157,6 +197,9 @@ pat='^version: *(\\S+)'   -> 匹配
 | ~~四处版本一致性校验~~ | ✅ **已完成**：`ops/version-lint.py`（仓库侧）+ `tri-forge/scripts/check_registry.py`（独立安装侧），五点校验（P1–P5） |
 | ~~远端版本比对停用~~ | ✅ **已完成**：43+1 份 `check_update.py` 注入 `SELF_MAINTAINED = True`，完全跳过远端请求 |
 | ~~版本号漂移清理~~ | ✅ **已完成**：P5 漂移 ×4（tri-god / tri-humanize / tri-music / tri-workflow）已由 `sync_readme_version` op 修复 |
+| ~~引导安装提示残留~~ | ✅ **已完成**：`f8-install-hint-self-maintained`（`replace_regex`）收敛 58 文件 / 66 处；CHANGELOG 历史与 `version-gate.md` 纠错注记按「整行守卫」豁免 |
+| ~~版本节远端口径~~ | ✅ **已完成**：`converge-version-stub{,-children}` 收敛 24 个版本节为瘦指针 STUB；`f7-*` 修正契约 §0 的 23 处 |
+| ~~版本线升版链~~ | ✅ **已完成**：15 个 skill 升 patch + `--apply-docs` 幂等修正 45 处文档层漂移 + `--emit-baseline` 重写基线（24 skill） |
 | ~~tri-forge 自建~~ | ✅ **已完成**：`tri-forge/`（15 文件），三模式 + 五门流程 + 22 条门④ + 门③ 路由回流 + 五点版本校验 |
 | ~~tri-forge 门④ 负向验证~~ | ✅ **已完成**：mutation testing **6/6** 项注入全部被抓到（见下表） |
 | 自建 tri-forge 走一次**生成型**实战（门①→⑤） | ⬜ tri-forge 已通过门④ 自审 + mutation testing，但「从零生成一个新 skill」的完整五门流程**尚未实战跑通** |

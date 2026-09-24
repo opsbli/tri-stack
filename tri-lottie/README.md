@@ -27,7 +27,7 @@ tri-lottie/
 ## 安装
 
 ```bash
-skillhub install tri-lottie --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 # 或经 tri-intent 快照路由自动检测安装
 ```
 

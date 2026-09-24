@@ -73,7 +73,7 @@ cp -r tri-true/ /path/to/your/skills/
 | 模式 | 触发条件 | 行为 |
 |------|----------|------|
 | A · 快照模式 | `.tribro/snapshots/` 有快照 或 skills 目录有 `tri-intent/` | 读取快照 §三 提取上下文（D1 任务领域 / D5 确定性），增强风险等级判定与领域适配 |
-| B · 引导安装 | 以上均不满足 | 向用户提示依赖并引导安装 `skillhub install tri-intent` |
+| B · 引导安装 | 以上均不满足 | 向用户提示依赖并引导安装 `python ops/install-skills.py --target <目标目录>` |
 | C · 降级模式 | 用户拒绝安装 | 从用户请求自构造等价输入，声明降级精度低 |
 
 > 三态逻辑：本 skill 为方法论型 skill，支持降级——降级模式仍可执行验证，但上下文感知精度低（风险等级=medium，domain=general）。

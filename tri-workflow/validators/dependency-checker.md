@@ -25,7 +25,7 @@ for each node in workflow-model where node.type == "auto" and node.role.type == 
 
 **阻断处理**：
 - 报告缺失 Skill 的名称
-- 提供安装命令：`skillhub install <slug> --dir <skills 目录>`
+- 提供安装命令：`python ops/install-skills.py --target <目标目录>`
 - 若 SkillHub 中未找到，提示用户手动创建
 
 ### 规则 2：Skill 版本兼容性校验
@@ -150,7 +150,7 @@ for each edge in workflow-model.edges:
 
 | # | 规则 | 节点 | 问题 | 解决方案 |
 |---|---|---|---|---|
-| 1 | Skill 存在性 | node_03 | 缺失 Skill「tri-review」 | `skillhub install tri-review --dir ...` |
+| 1 | Skill 存在性 | node_03 | 缺失 Skill「tri-review」 | `python ops/install-skills.py --target <目标目录>` |
 
 ## 🟡 警告项
 

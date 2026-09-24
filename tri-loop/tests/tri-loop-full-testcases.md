@@ -154,7 +154,7 @@ version: 1.2.3
   1. 检测到 tri-intent 不可用 → 询问是否降级
   2. 用户拒绝 → 进入 Mode B
   3. 输出引导安装提示语
-- **预期输出**：包含 `skillhub install tri-intent --dir <目标目录>` 的提示
+- **预期输出**：包含 `python ops/install-skills.py --target <目标目录>` 的提示
 - **验证点**：硬性阻断，不执行任何操作
 
 ### TC-1.4 Mode C · 降级模式（tri-intent 不可用，用户选择直接使用）

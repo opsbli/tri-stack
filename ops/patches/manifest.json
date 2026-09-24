@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-09-23",
+  "generated": "2026-09-24",
   "purpose": "把本仓库对上游 skill 的本地修正表达为可幂等重放的补丁，使 skillhub upgrade 整树替换后不丢失。",
   "exclude_paths": [
     ".workbuddy",
@@ -114,6 +114,72 @@
       "old": "    state = load_state()\n",
       "new": "    # ---- 自维护 fork：跳过远端比对，改为本地版本一致性校验 ----\n    # 必须放在节流检查**之前**：否则旧的远端缓存态会先命中并 early return。\n    if SELF_MAINTAINED and os.environ.get(_ALLOW_REMOTE_ENV, \"\").strip().lower() \\\n            not in (\"1\", \"true\", \"yes\"):\n        return self_consistent_check(skill_dir, slug, current, result)\n\n    state = load_state()\n",
       "already_marker": "if SELF_MAINTAINED and os.environ.get(_ALLOW_REMOTE_ENV"
+    },
+    {
+      "id": "converge-version-stub",
+      "type": "converge_version_section",
+      "label": "顶层 skill 版本节收敛为瘦指针 STUB（§六：≤30 行、禁内联细则），消除远端 skillhub 口径",
+      "glob": "tri-*/SKILL.md",
+      "already_marker": "<!-- version-stub v1",
+      "legacy_markers": [
+        "skillhub upgrade",
+        "~/.skillhub"
+      ],
+      "force_skills": [
+        "tri-forge"
+      ],
+      "preserve": {
+        "tri-forge": "**家族承接职能"
+      },
+      "template": "## 版本检查与更新机制（强制技术约束 · 硬红线）\n\n<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->\n\n> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；\n> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。\n> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY\n> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。\n\n```bash\npython scripts/check_update.py --slug {slug} --json\n```\n\n- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。\n"
+    },
+    {
+      "id": "converge-version-stub-children",
+      "type": "converge_version_section",
+      "label": "tri-sdlc 子阶段 skill 版本节收敛为同一 STUB（同缺陷类，scope 独立便于逐项裁定）",
+      "glob": "tri-sdlc/children/*/SKILL.md",
+      "already_marker": "<!-- version-stub v1",
+      "legacy_markers": [
+        "skillhub upgrade",
+        "~/.skillhub"
+      ],
+      "template": "## 版本检查与更新机制（强制技术约束 · 硬红线）\n\n<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->\n\n> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；\n> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。\n> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY\n> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。\n\n```bash\npython scripts/check_update.py --slug {slug} --json\n```\n\n- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。\n"
+    },
+    {
+      "id": "f7-contract-mode",
+      "type": "replace_text",
+      "label": "契约 §0：版本门「连接 skillhub 校验 + skillhub upgrade」→ 自维护本地校验",
+      "glob": "**/SKILL.md",
+      "old": "连接 skillhub 校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续",
+      "new": "运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置",
+      "already_marker": "本仓库为自维护 fork、不做远端比对"
+    },
+    {
+      "id": "f7b-contract-mode-intent",
+      "type": "replace_text",
+      "label": "契约 §0 变体（tri-intent）：远端校验/升级 + 端点内联 → 自维护本地校验（端点口径回归真源）",
+      "glob": "tri-intent/SKILL.md",
+      "old": "按 `references/version-check-spec.md` 契约连接 skillhub 官方通道校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。端点 MUST 读取自配置，NEVER 硬编码 `skillhub.cn` 官网域名（营销 SPA 非校验端点，实测 API 主机为 `api.skillhub.cn`）。",
+      "new": "按 `references/version-check-spec.md` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。",
+      "already_marker": "本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步"
+    },
+    {
+      "id": "f8-install-hint-self-maintained",
+      "type": "replace_regex",
+      "label": "引导安装提示：skillhub install <slug> [--dir <目标目录>] → 自维护安装器（排除 CHANGELOG 历史与 --upgrade 纠错注记）",
+      "glob": "**/*.md",
+      "pattern": "skillhub[ \\t]+install[ \\t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \\t]+--dir[ \\t]+(?:<[^>]*>|[^\\s`]+))?",
+      "replacement": "python ops/install-skills.py --target <目标目录>",
+      "already_marker": "ops/install-skills.py --target",
+      "skip_line_containing": [
+        "--upgrade"
+      ],
+      "skip_names": [
+        "CHANGELOG.md"
+      ],
+      "skip_prefixes": [
+        "ops/"
+      ]
     }
   ]
 }

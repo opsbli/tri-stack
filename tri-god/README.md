@@ -51,13 +51,13 @@ tri-god/
 将 `tri-god/` 目录放入你的 skills 目录，或通过 skillhub 安装：
 
 ```bash
-skillhub install tri-god
+python ops/install-skills.py --target <目标目录>
 ```
 
 本 skill 可独立安装，但依赖上游 tri-intent 产出的快照以获得完整效果。激活时检测上游 tri-intent 是否可用，据检测结果选择执行模式；未安装时建议先安装依赖：
 
 ```bash
-skillhub install tri-intent
+python ops/install-skills.py --target <目标目录>
 ```
 
 ## 使用

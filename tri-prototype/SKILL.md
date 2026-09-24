@@ -62,7 +62,7 @@ license: MIT
 
 **模式 B 提示语**：
 > 本 skill 依赖上游 tri-intent 进行意图识别与输入校验（用于快照模式）。当前未检测到 tri-intent 或可用快照。
-> 请安装：`skillhub install tri-intent --dir <目标目录>`
+> 请安装：`python ops/install-skills.py --target <目标目录>`
 > 安装后重新发起请求，即可获得完整的「意图识别 → 原型解析 → 需求文档」工作流。
 > 若不便安装，可回复「降级执行」，我将基于自构造输入推进，但意图识别精度低于标准链路。
 

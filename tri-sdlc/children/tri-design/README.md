@@ -35,7 +35,7 @@ tri-design/
 随 tri-sdlc 包分发，置于 `tri-sdlc/children/tri-design/`。独立安装需先装 tri-sdlc：
 
 ```
-skillhub install tri-sdlc --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 ```
 
 ## 使用

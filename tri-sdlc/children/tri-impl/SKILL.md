@@ -19,7 +19,7 @@ license: MIT
 
 > 本节优先级高于 Agent 通用默认行为。**tri-sdlc 派发 P4 阶段任务即视为激活本工作流**，不得仅将其当作参考文档。
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（连接 skillhub 校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
 &**：MUST 校验转交包 `阶段 = P4` 且 P3 `task-board.md` 存在、P3 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
 2. **面向门禁产出**：MUST 逐条覆盖 P4 门禁条目（`P4-M0`–`P4-M7` 必检 + `P4-R1`–`R2` 建议），两份交付物 MUST 一次性齐备。
@@ -52,7 +52,7 @@ license: MIT
 
 **模式 B 提示语**：
 > 本子SKILL 是 tri-sdlc 九阶段编排中的 P4 编码实现专家，需由 tri-sdlc 派发阶段任务（含任务看板与设计三件套）并统一做门禁审计。
-> 请先安装：`skillhub install tri-sdlc --dir <目标目录>`
+> 请先安装：`python ops/install-skills.py --target <目标目录>`
 > 若只想直接写一段代码而不走全流程，建议改用 `tri-coding`（通用编码工作流）；若坚持在此单出实现清单，可回复「仅出实现文档」，我将单出两份文件但不提供任务回链校验与门禁审计。
 
 ## 输入契约
@@ -196,24 +196,18 @@ license: MIT
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`references/version-check-spec.md`。本节为可独立执行的最小声明，NEVER 在此内联展开细则；修订规则只改真源一处。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
 
-**执行要点**
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
 
-1. **端点取自配置**：API 主机 MUST 读自 `~/.skillhub/metadata.json`，NEVER 硬编码域名。营销官网 `skillhub.cn` 与 API 主机 `api.skillhub.cn` 是两个站点——官网对任意路径都返回 `200 + HTML` 兜底页，绝不可作校验端点。读不到配置即判通道不可用。
-2. **校验请求**：`GET {api_host}/api/v1/skills/{slug}`，超时 ≤ 5s，失败重试 1 次，会话内仅校验一次。
-3. **最新版取值**：`latestVersion.version`，缺失时回退 `skill.tags.latest`。平台**不提供** `min_compatible` / `deprecated` / `checksum_sha256` / `signature`，NEVER 依赖这些字段。
-4. **响应有效性**（三条件同时成立）：HTTP 200 **且** `Content-Type` 含 `application/json` **且** 能解析出版本字段。仅看状态码会被 SPA 兜底页击穿。
-5. **版本比较**：按 [SemVer](https://semver.org/lang/zh-CN/) 逐段整数比较，NEVER 字符串比较。
-6. **四态判定**：
-   - **A 校验通过**（响应有效且 `current >= latest`）→ 放行。
-   - **B 离线降级**（网络不可达）→ 标注「版本校验未完成（离线）」后以当前版本继续。
-   - **C 通道降级**（可达但响应无效 / 404 / 405 / 读不到配置）→ 标注「版本校验未完成（通道不可用）」+ 输出通道异常告警后继续。
-   - **D 升级降级**（陈旧且已真实尝试自动升级但未完成）→ 标注「版本陈旧·自动升级失败」+ 输出手动升级指引后继续。
-   - 四态 NEVER 用于绕过「已检出陈旧却不尝试升级」——MUST 先真实执行一次自动升级，失败方可落 D 态。
-7. **更新通道（自动执行）**：检出陈旧 MUST 自动执行 `skillhub upgrade <slug>` → `skillhub verify <slug>`，升级前备份、签名明确不一致则回滚。CLI 不在 PATH 时回退 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`；CLI 缺失或升级失败 → 落 D 态降级继续，NEVER 阻断。以 junction 指向源码树的 `source: local` skill 跳过自动更新，改为提示维护者手动同步。命令细则、CLI 定位顺序与已知陷阱见真源。
-8. **阻断条件 P1–P4** 与四处版本同步点见真源。
+```bash
+python scripts/check_update.py --slug tri-impl --json
+```
+
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 ## 处理流程
 

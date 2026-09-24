@@ -35,7 +35,7 @@ tri-coding/
 ├── 代码合规自查小卡片.html   # 提交/发布前一页式合规速查卡
 ├── CHANGELOG.md          # 版本变更记录
 └── tests/
-    └── tri-coding-full-testcases.md   # 45 条全场景全能力测试用例（审计版）
+    └── tri-coding-full-testcases.md   # 49 条全场景全能力测试用例（审计版）
 ```
 
 ## 安装
@@ -90,7 +90,7 @@ cp -r tri-coding/ /path/to/your/skills/
 
 ## 测试
 
-完整测试用例见 `tests/tri-coding-full-testcases.md`（45 条），覆盖元数据、强制执行契约、上游依赖检测与输入契约、技术栈加载机制、双审批门+执行前确认逻辑、链路文档产物、职责边界（tri-fix / tri-review / tri-sdlc / tri-plan 等）、代码版权与许可证合规等全部能力点，含正例 / 诱饵反例 / 边界模糊三类。
+完整测试用例见 `tests/tri-coding-full-testcases.md`（49 条），覆盖元数据、强制执行契约、上游依赖检测与输入契约、技术栈加载机制、双审批门+执行前确认逻辑、链路文档产物、职责边界（tri-fix / tri-review / tri-sdlc / tri-plan 等）、代码版权与许可证合规等全部能力点，含正例 / 诱饵反例 / 边界模糊三类。
 
 ## 设计原则
 

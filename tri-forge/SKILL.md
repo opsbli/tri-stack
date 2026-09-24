@@ -1,7 +1,7 @@
 ---
 name: tri-forge
 slug: tri-forge
-version: 1.0.3
+version: 1.0.4
 displayName: 技能锻造（tri-forge）
 description: 内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于「按家族硬规范生成 / 补全 / 审计一个 skill」：以 references/family-spec.md 为生成单一事实源，通过三模式（A 规范顾问·不落盘 / B 补全审计 / C 锻造生成·五门流程）产出或修复**合规的 skill 包**，并以 references/compliance-checklist.md 的 22 条硬约束在门④逐条自检，全过方可落盘；生成物若具备 tri-intent 下游身份，MUST 在门③同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / README 表，NEVER 只生成 skill 而不接通路由。同时承接家族的四点版本一致性校验（原 sync_registry.py 职能）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。
 summary: 三模式技能锻造工具（A 规范顾问 / B 补全审计 / C 锻造生成五门流程）+ 家族硬规范单源 + 22 条合规硬约束门④自检 + 门③路由回流强制 + 四点版本一致性校验 + 四平台安装。
@@ -76,7 +76,7 @@ license: MIT
 
 **模式 B 提示语**：
 > 本 skill 依赖上游 tri-intent 进行意图识别与输入校验（用于快照模式）。当前未检测到 tri-intent 或可用快照。
-> 请安装：`skillhub install tri-intent --dir <目标目录>`
+> 请安装：`python ops/install-skills.py --target <目标目录>`
 > 安装后重新发起请求，即可获得完整的「意图识别 → 澄清 → 锻造」工作流。
 > 若不便安装，可回复「降级执行」，我将基于自构造输入推进，但意图识别精度低于标准链路。
 
@@ -151,23 +151,18 @@ license: MIT
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`references/version-check-spec.md`（本 skill **内部化**持有，不依赖外部上游 skill——满足家族硬约束第 22 条）。
-> **可执行实现**：`scripts/check_update.py`。
-> **铁律**：版本比较、判定、修正 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按状态处置」。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
 
-**执行方式（MUST）**
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
 
-1. 任一执行入口启动后、核心执行前，运行脚本并取 JSON：
-   ```bash
-   python scripts/check_update.py --slug tri-forge --json
-   ```
-2. 解析 JSON 的 `state` 字段，按态处置。**本仓库为自维护 fork**：脚本内置自维护模式，
-   完全跳过远端请求，改为校验本 skill 自身的 **5 处版本声明**是否一致：
-   - `0` A · 一致 → 放行
-   - `12` D · 存在漂移 → 放行但告警，并按 `actions` 给出的修订动作处理
-   - 逃生舱：`TRI_ALLOW_REMOTE=1` 可临时恢复远端比对（仅排障）
-3. 退出码语义：`<20` 放行，`>=20` 阻断（`block_code` 给出恢复指引）。
+```bash
+python scripts/check_update.py --slug tri-forge --json
+```
+
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 **家族承接职能（四点版本一致性校验）**
 

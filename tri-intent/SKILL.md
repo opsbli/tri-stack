@@ -1,7 +1,7 @@
 ---
 name: 意图识别总路由
 slug: tri-intent
-version: 1.14.0
+version: 1.14.1
 displayName: 意图识别总路由
 description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。**本分支为编程工作流专线**：仅 I10 三子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill，其余落点分类保留但无下游（全量版见归档分支 archive-full-skills-20260924）。
 summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约；本分支为编程工作流专线，仅 16 个下游 skill 可用。
@@ -17,7 +17,7 @@ license: MIT
 
 > 本节定义 skill「被激活后必须做什么」，优先级高于 Agent 的通用默认行为。**引用/读取本文件即视为激活本工作流**，不得仅将其当作参考文档。
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `references/version-check-spec.md` 契约连接 skillhub 官方通道校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。端点 MUST 读取自配置，NEVER 硬编码 `skillhub.cn` 官网域名（营销 SPA 非校验端点，实测 API 主机为 `api.skillhub.cn`）。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `references/version-check-spec.md` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入路由步骤。本条目优先级高于所有其他强制前置条目。
 1. **强制前置**：收到任何新用户提问，MUST 先执行「路由步骤」完成意图识别，再产出快照交接下游，NEVER 跳过直接给成果物。
 2. **唯一交付产物**：非「不落盘」类意图，MUST 产出 `.tribro/snapshots/<命名>.md`（模板见 `templates/snapshot.md`），并**同时覆盖写** `.tribro/LATEST.md` 指针文件（格式见 §快照定位契约），供下游 skill 无歧义定位。快照是本 skill 的**唯一交付产物**——内含用户原始提问、意图分析过程、结构化结论数据（intent + 置信度 + dimensions + 任务要点 + 下游路由建议 + 下游 slug）。若 `.tribro/` 目录不存在，MUST 先创建该目录再落盘。**禁止产出** requirements.md、design.md、tasks.md、implements.md、reports.md 等任何下游交付物——那些由下游 skill 依据快照自行产出。
 3. **可选轻量复述**：识别完成后，可至多一次将快照中的结构化结论复述给用户，供其发现明显误识别即可。不设回炉循环、不设多轮审批。当 clarify-gate 已完成澄清、需求已充分时，连这一次复述都可跳过。原则上无需再次向用户确认真实意图。
@@ -132,27 +132,18 @@ tri-intent/
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：`tri-intent/scripts/check_update.py`。
-> **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
 
-**执行方式（MUST）**
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
 
-1. 任一执行入口启动后、核心执行前，运行脚本并取 JSON：
-   ```bash
-   python tri-intent/scripts/check_update.py --json
-   ```
-   - 节流：结果持久化缓存（默认 1440 分钟 / 24h 仅校验一次），`--force` 强制重查，`--dry-run` 只判定不真升级。
-   - 脚本自动定位 skill 目录（默认脚本上级目录），可用 `--slug` / `--skill-dir` 显式指定。
-2. 解析 JSON 的 `state` 字段，按态处置：
-   - `A` 校验通过 / `B` 离线降级 / `C` 通道降级 / `D` 升级降级 → **一律放行**，进入后续阶段；并据 `warnings` / `notes` / `actions` 在交付物或日志标注对应口径（如「版本校验未完成（离线）」「版本陈旧·自动升级失败」）。
-   - `BLOCK` → **绝对禁止执行**，按 `block_code`（P2/P3/P4）输出结构化恢复指引（手动命令见 `actions` 字段）。
-3. 退出码语义（供 shell 编排）：`0`=A 放行；`10`=B；`11`=C；`12`=D；`20`=阻断。判定规则：`<20` 放行，`>=20` 阻断。脚本自身异常时兜底降级放行（退出码 11），NEVER 因版本门自身故障导致 skill 无法启动。
+```bash
+python scripts/check_update.py --slug tri-intent --json
+```
 
-**行为约束（细则与字段语义见真源，NEVER 在 prompt 重述）**
-
-- 端点 MUST 读自 `~/.skillhub/metadata.json`，NEVER 硬编码；营销官网 `skillhub.cn` 与 API 主机 `api.skillhub.cn` 是两站，官网 SPA 兜底页 NEVER 作校验端点。
-- 响应有效性三条件（§2.4）、SemVer 逐段比较（§2.6）、四态判定（§四）、junction/`source:local` 单源跳过自动升级（§三）、四处版本同步（§六）、P1–P4 阻断（§五）均由脚本忠实实现。
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 ## 意图确认卡（通用主模板 · 识别结果结构化呈现）
 

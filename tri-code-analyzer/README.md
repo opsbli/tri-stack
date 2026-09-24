@@ -39,7 +39,7 @@ tri-code-analyzer/
 ## 安装（Installation）
 
 ```bash
-skillhub install tri-code-analyzer --dir <目标目录>
+python ops/install-skills.py --target <目标目录>
 ```
 
 - 本 skill 是 tri-intent 下游（I10 · code-analyzer 子类），建议同时安装 `tri-intent` 以获得完整意图路由。

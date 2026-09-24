@@ -1,7 +1,7 @@
 ---
 name: 操作执行
 slug: tri-action
-version: 1.2.3
+version: 1.2.4
 displayName: 操作执行
 description: 操作执行下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行）意图，调用工具真实执行动作（下单/设提醒/发消息/调用 API 等）并返回操作结果。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测两态逻辑（快照模式/引导安装）。
 summary: 依据 tri-intent 快照处理 I14 操作执行意图，含 4 级操作分级（L0–L3）、L2/L3 确认门与失败不擅重试机制，确保高风险操作可追溯。
@@ -16,7 +16,7 @@ license: MIT
 
 ## 强制执行契约（Execution Contract · 最高优先级）
 
-0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（连接 skillhub 校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
+0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
 1. **强制前置**：收到 tri-intent 快照且 `下游路由建议` 指向本 skill，MUST 先读取快照 §三，再按操作执行工作流推进，NEVER 跳过直接调用工具。**核心铁律：没有分级判定的操作不执行——不可逆操作跳过确认门即失控。** 独立使用时（未经 tri-intent 路由）MUST 先走 §上游依赖检测 判定模式。
 2. **操作分级 + 确认门 + 结果返回（硬性规则）**：I14 涉及真实副作用，MUST 严格按「解析 → 校验 → 分级 → 确认门 → 执行 → 返回」串行推进：
@@ -56,7 +56,7 @@ license: MIT
 
 **模式 B 提示语**：
 > 本 skill 依赖 tri-intent 进行意图识别与输入校验。当前未检测到 tri-intent。
-> 请安装：`skillhub install tri-intent --dir <目标目录>`
+> 请安装：`python ops/install-skills.py --target <目标目录>`
 > 安装后重新发起请求，即可获得完整的意图识别→澄清→执行工作流。
 
 ## 输入契约
@@ -150,38 +150,18 @@ license: MIT
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-intent 同源一致，按 `--slug` 自动适配）。
-> **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。修订规则只改真源一处，脚本与真源保持同步。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
 
-**执行方式（MUST）**
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
 
-1. 任一执行入口启动后、核心执行前，运行脚本并取 JSON：
-   ```bash
-   python scripts/check_update.py --slug tri-action --json
-   ```
-   - 节流：结果持久化缓存（默认 1440 分钟 / 24h 仅校验一次），`--force` 强制重查，`--dry-run` 只判定不真升级。
-   - 脚本自动定位 skill 目录（默认脚本上级目录），`--slug` 显式指定自身 slug（如上）。
-2. 解析 JSON 的 `state` 字段，按态处置：
-   - `A` 校验通过 / `B` 离线降级 / `C` 通道降级 / `D` 升级降级 → **一律放行**，进入后续阶段；并据 `warnings` / `notes` / `actions` 在交付物或日志标注对应口径（如「版本校验未完成（离线）」「版本陈旧·自动升级失败」）。
-   - `BLOCK` → **绝对禁止执行**，按 `block_code`（P2/P3/P4）输出结构化恢复指引（手动命令见 `actions` 字段）。
-3. 退出码语义（供 shell 编排）：`0`=A 放行；`10`=B；`11`=C；`12`=D；`20`=阻断。判定规则：`<20` 放行，`>=20` 阻断。脚本自身异常时兜底降级放行（退出码 11），NEVER 因版本门自身故障导致 skill 无法启动。
+```bash
+python scripts/check_update.py --slug tri-action --json
+```
 
-**执行要点**
-
-1. **端点取自配置**：API 主机 MUST 读自 `~/.skillhub/metadata.json`，NEVER 硬编码域名。营销官网 `skillhub.cn` 与 API 主机 `api.skillhub.cn` 是两个站点——官网对任意路径都返回 `200 + HTML` 兜底页，绝不可作校验端点。读不到配置即判通道不可用。
-2. **校验请求**：`GET {api_host}/api/v1/skills/{slug}`，超时 ≤ 5s，失败重试 1 次，会话内仅校验一次。
-3. **最新版取值**：`latestVersion.version`，缺失时回退 `skill.tags.latest`。平台**不提供** `min_compatible` / `deprecated` / `checksum_sha256` / `signature`，NEVER 依赖这些字段。
-4. **响应有效性**（三条件同时成立）：HTTP 200 **且** `Content-Type` 含 `application/json` **且** 能解析出版本字段。仅看状态码会被 SPA 兜底页击穿。
-5. **版本比较**：按 [SemVer](https://semver.org/lang/zh-CN/) 逐段整数比较，NEVER 字符串比较。
-6. **四态判定**：
-   - **A 校验通过**（响应有效且 `current >= latest`）→ 放行。
-   - **B 离线降级**（网络不可达）→ 标注「版本校验未完成（离线）」后以当前版本继续。
-   - **C 通道降级**（可达但响应无效 / 404 / 405 / 读不到配置）→ 标注「版本校验未完成（通道不可用）」+ 输出通道异常告警后继续。
-   - **D 升级降级**（陈旧且已真实尝试自动升级但未完成）→ 标注「版本陈旧·自动升级失败」+ 输出手动升级指引后继续。
-   - 四态 NEVER 用于绕过「已检出陈旧却不尝试升级」——MUST 先真实执行一次自动升级，失败方可落 D 态。
-7. **更新通道（自动执行）**：检出陈旧 MUST 自动执行 `skillhub upgrade <slug>` → `skillhub verify <slug>`，升级前备份、签名明确不一致则回滚。CLI 不在 PATH 时回退 `python ~/.skillhub/skills_store_cli.py upgrade <slug>`；CLI 缺失或升级失败 → 落 D 态降级继续，NEVER 阻断。以 junction 指向源码树的 `source: local` skill 跳过自动更新，改为提示维护者手动同步。命令细则、CLI 定位顺序与已知陷阱见真源。
-8. **阻断条件 P1–P4** 与四处版本同步点见真源。
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 ## 处理流程
 

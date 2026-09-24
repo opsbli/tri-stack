@@ -6,6 +6,15 @@
 > **一致性硬约束**：本文件首个 `## [x.y.z]` MUST 与 `SKILL.md` frontmatter 的 `version` 相等，
 > 且 MUST 为本文件的最大版本。违反即触发门④ 第 11 条 FAIL。
 
+## [1.0.4] - 2026-09-24
+
+### 变更
+
+- **版本门节收敛为瘦指针 STUB**：`## 版本检查与更新机制` 由 35 行全量版收敛为 14 行（执行方式 + 真源指针），移除已失效的**远端 skillhub 内联细则**（端点解析 / 四态判定 / 升级流程 / SemVer 比较算法）。依据 `references/version-check-spec.md` §六（该节须 ≤30 行、禁内联细则）；本仓库已转自维护 fork（`scripts/check_update.py` 内置 `SELF_MAINTAINED = True`，完全跳过远端请求），原节描述的行为**永不执行**。
+- **强制执行契约 §0 同步修正**：版本门措辞由「连接 skillhub 校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级」改为「运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对」，消除 prompt 层与脚本实际行为的直接矛盾。
+- 节内 **skill 专属职能**（`scripts/check_registry.py` 家族级 P1–P5 校验）原样保留，未被本次收敛影响。
+- 非功能性变更（文档口径），无行为变更。
+
 ## [1.0.3] - 2026-09-24
 
 ### 变更

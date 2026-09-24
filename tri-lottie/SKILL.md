@@ -46,7 +46,7 @@ license: MIT
 |---|---|---|
 | A · 快照模式 | 快照 `L2=I11 & L3=motion` 指向本 skill | 读取快照 §三任务要点，按 §处理流程 推进 |
 | A0 · 待识别 | 有 tri-intent 但无可用快照 | 提示用户先经 tri-intent 产出快照；用户直接下达明确动效需求时，可按「直接触发」分支推进（视为降级输入） |
-| B · 引导安装 | 未检测到 tri-intent 且无快照 | 提示安装 `skillhub install tri-intent --dir <目标目录>`；用户可改用直接触发 |
+| B · 引导安装 | 未检测到 tri-intent 且无快照 | 提示安装 `python ops/install-skills.py --target <目标目录>`；用户可改用直接触发 |
 | C · 降级模式 | 用户明确拒绝安装 | 自构造等价输入（需求要点 + 目标端 + 人格关键词），声明降级模式后照常推进 |
 
 ## 输入契约

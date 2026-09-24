@@ -15,7 +15,7 @@
 - **可选轻量复述**：识别完成后可至多一次复述供用户发现误识别，不设审批门
 - **澄清对齐门**：需求模糊/矛盾时 AI 主动反问（G1 苏格拉底式 / G2 批判式）
 - **可运行工具**：`intent-gate.py` 提供落盘决策计算与路由建议，支持 JSON 输出
-- **103 条全场景测试**：覆盖正常命中、邻近消歧、异常兜底、边界跨界、维度标注、降级规则等全部能力点
+- **121 条全场景测试**：覆盖正常命中、邻近消歧、异常兜底、边界跨界、维度标注、降级规则等全部能力点
 - **下游依赖检测**：产出快照后检测下游 skill 是否已安装，未安装时提示用户安装命令（与下游 skill 的上游检测构成对称双向检测）
 
 ## 目录结构
@@ -48,7 +48,7 @@ tri-intent/
 ├── templates/            模板
 │   └── snapshot.md       快照模板（唯一交付产物）
 └── tests/                测试
-    ├── tri-intent-full-testcases.md   103 条全场景测试用例
+    ├── tri-intent-full-testcases.md   121 条全场景测试用例
     └── tri-intent-full-testreport.md  测试执行报告
 ```
 
@@ -154,7 +154,7 @@ python hooks/intent-gate.py --intent I11 --clarify --json
   ```
   意图识别已完成，快照已产出（.tribro/snapshots/I11_xxx.md）。
   路由建议指向 tri-coding，但当前未检测到该下游 skill。
-  请安装：skillhub install tri-coding --dir <目标目录>
+  请安装：python ops/install-skills.py --target <目标目录>
   安装后下游 skill 将读取快照自动接手执行。
   ```
 
@@ -172,7 +172,7 @@ python hooks/intent-gate.py --intent I11 --clarify --json  # 先澄清
 python hooks/intent-gate.py --intent XX9 --json   # 退出码 2
 ```
 
-完整测试用例见 `tests/tri-intent-full-testcases.md`（103 条），执行报告见 `tests/tri-intent-full-testreport.md`（100% 通过）。
+完整测试用例见 `tests/tri-intent-full-testcases.md`（121 条），执行报告见 `tests/tri-intent-full-testreport.md`（100% 通过）。
 
 ## 设计原则
 

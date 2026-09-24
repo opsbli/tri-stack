@@ -37,13 +37,27 @@ def get_skills() -> list[Path]:
 
 
 def is_junction(p: Path) -> bool:
-    """判断路径是否为 junction/symlink。"""
-    if not p.exists():
-        return False
+    """判断路径是否为本工具创建的 junction（重解析点）。
+
+    **MUST NOT 用 `p.exists()` 做前置**：悬空 junction 的 `exists()` 恒为 `False`
+    （它会跟随链接去解析目标），会把「待修的悬空链接」误判为「不存在」，
+    进而走新建分支、令 `mklink` 报「已存在」而失败。
+    同理 `Path.is_symlink()` 对 junction 也恒为 `False`（junction 不是 symlink）。
+    故直接看 `lstat` 的 `FILE_ATTRIBUTE_REPARSE_POINT (0x400)`。
+    """
     try:
-        return p.is_symlink() or bool(os.lstat(str(p)).st_file_attributes & 0x400)
+        return bool(os.lstat(str(p)).st_file_attributes & 0x400)
     except (OSError, AttributeError):
         return False
+
+
+def exists_as_link(p: Path) -> bool:
+    """入口是否已占用（含悬空链接）。
+
+    `os.path.lexists` 不解析目标，悬空 junction / symlink 均为 True；
+    这是唯一能同时覆盖「有效 junction」「悬空 junction」「真实目录」的判据。
+    """
+    return os.path.lexists(str(p))
 
 
 def create_junction(src: Path, dst: Path) -> str:
@@ -56,10 +70,13 @@ def create_junction(src: Path, dst: Path) -> str:
 
 def remove_entry(p: Path) -> str:
     if is_junction(p):
-        # junction 用 rmdir 删除（不删源）
-        r = subprocess.run(["cmd", "/c", "rmdir", str(p)],
-                           capture_output=True, text=True)
-        return "已移除" if r.returncode == 0 else f"失败: {r.stderr}"
+        # junction 用 RemoveDirectory 语义删除（os.rmdir）：只摘除重解析点，不删源。
+        # 不用 `cmd /c rmdir`——少一层 shell 依赖，且避免中文 Windows 的编码问题。
+        try:
+            os.rmdir(str(p))
+            return "已移除"
+        except OSError as e:
+            return f"失败: {e}"
     elif p.is_dir():
         return "⚠ 是真实目录（非 junction），请手动确认后删除"
     return "不存在"
@@ -80,7 +97,7 @@ def main() -> int:
         removed = 0
         for src in skills:
             dst = target / src.name
-            if dst.exists() or dst.is_symlink():
+            if exists_as_link(dst):
                 if not args.dry_run:
                     result = remove_entry(dst)
                     print(f"  {'✅' if '已移除' in result else '⚠'} {src.name}: {result}")
@@ -100,7 +117,7 @@ def main() -> int:
     ok = skip = fail = 0
     for src in skills:
         dst = target / src.name
-        if dst.exists():
+        if exists_as_link(dst):
             if is_junction(dst):
                 # 检查 junction 是否指向正确位置
                 try:
@@ -111,12 +128,19 @@ def main() -> int:
                         continue
                 except OSError:
                     pass
-                # junction 指向错误 → 重建
-                if not args.dry_run:
-                    remove_entry(dst)
-                    result = create_junction(src, dst)
+                # junction 指向错误或**悬空** → 重建（dry-run 只报告）
+                if args.dry_run:
+                    ok += 1
+                    print(f"  🔄 {src.name}（junction 指向错误/悬空，将重建 → {src}）")
+                    continue
+                remove_entry(dst)
+                result = create_junction(src, dst)
+                if "失败" in result:
+                    fail += 1
+                    print(f"  🔴 {src.name}: 移除后重建失败 → {result}")
+                    continue
                 ok += 1
-                print(f"  🔄 {src.name}（junction 指向错误，已重建）")
+                print(f"  🔄 {src.name}（junction 指向错误/悬空，已重建）")
             else:
                 print(f"  ⚠ {src.name}: 目标已是真实目录，跳过（请手动处理）")
                 fail += 1
