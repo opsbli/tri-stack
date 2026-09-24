@@ -10,6 +10,11 @@
 | 版本门自动升级 | `python <skill>/scripts/check_update.py`（D 态触发） | 整树替换该 skill 目录 |
 | 手动升级 | `skillhub upgrade <slug>` | 同上 |
 
+> ⚠️ **本仓库当前已自维护**：所有 `check_update.py` 均内置 `SELF_MAINTAINED = True`，
+> 版本门**不再请求平台、也不再自动升级**（D 态只报告漂移，不改文件）。
+> 上表描述的是「整树替换**仍可能发生**」的前提——设 `TRI_ALLOW_REMOTE=1` 恢复远端模式即成立，
+> 手动 `skillhub upgrade` 亦属此列。**故补丁层仍需按此设计保持可重放**，而非可以省去。
+
 ⇒ **直接改仓库里的 skill 文件，下次同步就会丢。** 所以本地修正必须表达成
 「记录 + 可重放」，而不是一次性编辑。本目录就是那个记录。
 
@@ -65,7 +70,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 | id | 类型 | 作用 |
 |---|---|---|
-| `spec-per-skill` | sync_spec | 为每个引用 `version-check-spec.md` 的 skill 部署校正版自带 spec（当前 42 个） |
+| `spec-per-skill` | sync_spec | 为每个引用 `version-check-spec.md` 的 skill 部署校正版自带 spec（当前 33 个 = 顶层 24 + `children/*` 9） |
 | `f2-pointer` | replace_text | 版本门真源指针 `tri-forge/references/version-check-spec.md` → `references/version-check-spec.md` |
 | `f3-clause-inline` | replace_text | 移除「；发布前 MUST 通过 python tri-forge/scripts/sync_registry.py --check。」 |
 | `f3-clause-sentence` | replace_text | 移除「。发布前 MUST 通过 …」句首变体 |
@@ -118,27 +123,41 @@ python ops/patches/apply.py --json      # 机器可读输出
 | 未提端点解析 | 读 `~/.skillhub/metadata.json` 取 origin | 补充第 3、5 条 |
 | `--simulate-*` 表把预期退出码与场景错位配对 | 4 类注入参数各自独立 | 改为「参数 / 取值 / 场景」三列，不断言退出码 |
 
-## 尚未纳入补丁层的残留（F4）
+## 关于 `tri-forge` 提及（F4 · 已重估，不再是待办）
 
-仓库仍有 **19 个 .md / 42 处** 提及 `tri-forge`，均为**描述性或历史性**引用，不影响运行：
+> **立论前提已变**：F4 形成时，`tri-forge` 在**任何可达源都不存在**
+> （本地磁盘 / git 全历史 / 原作者 GitHub / 平台 92/92 全量枚举均无命中），
+> 故当时把对它的引用一律视作「断链残留」。
+> **2026-09-23 已在本仓库重建 `tri-forge/`**（见 `.gitignore` 注记与 `tri-forge/CHANGELOG.md`），
+> 它现在是本仓库的一等 skill —— 在 `ops/version-lint.py` 与 `ops/versions.json` 覆盖内。
+> ⇒ 对 `tri-forge` 的引用**不再是断链**，本节从「待办」降级为「口径备忘」。
 
-| 类别 | 文件 | 处理建议 |
+实测（2026-09-24，排除 `.workbuddy/`）：**37 个 .md / 99 处**提及 `tri-forge`，按文件归类：
+
+| 类别 | 文件数 | 处理 |
 |---|---|---|
-| CHANGELOG 历史记录 | `tri-coding` / `tri-humanize` / `tri-intent` / `tri-jobhunt` / `tri-sdlc` 的 CHANGELOG | **不改**（追加型历史） |
-| 路由/协作说明 | `tri-intent/doing/I21-distill.md`（13）、`doing/SKILL.md`（3）、`SKILL.md`（2）、`version-gate.md`（1） | 建议加注「本仓库未随包分发」，待定 |
-| 测试用例 / README | `tri-guard` / `tri-jobhunt` 的 tests 与 README、`tri-checklist` / `tri-god` / `tri-learn` / `tri-jobhunt` 的 SKILL.md | 视上下文加注 |
+| SKILL.md / README.md / `doing/**` 等 | 18 | 正当引用（真源指针、协作关系） |
+| `CHANGELOG.md` 历史 | 10 | **不改**（追加型历史） |
+| `tri-forge/**` 自身 | 5 | 自指 |
+| `tests/*.md` | 2 | 正当引用 |
+| `ops/**` | 2 | 机制自述（本文件 + 补丁清单） |
 
-## ⚠️ 本目录未纳入 git
+> 早期版本的表格把这 37/99 记作 **19 个 / 42 处**——那是 `tri-forge` 尚未重建、
+> 且未计入 spec 副本与 CHANGELOG 时的口径，现已按实测更正。
 
-`.workbuddy/` 在 `.gitignore:6` 中被忽略，故**本补丁层不进 git**。
+## 本目录已纳入 git（此前不在，已迁移）
 
-| 场景 | 是否存活 |
-|---|---|
-| `skillhub upgrade` 整树替换 skill 目录 | ✅ 存活（不在 skill 目录内） |
-| 重新 clone 本仓库 | ❌ 丢失 |
+本补丁层原位于 `.workbuddy/patches/` —— 该路径被 `.gitignore:6` 命中，**故当时不进 git**。
+**已迁至 `ops/patches/` 并纳入版本控制**（同批迁移理由见 `ops/README.md` §为什么这个目录在 git 里）。
 
-若希望「重新 clone 也存活」，需把本目录迁到版本化路径（如仓库根 `patches/`）。
-**待裁决。**
+| 场景 | 迁移前（`.workbuddy/patches/`） | 现在（`ops/patches/`） |
+|---|---|---|
+| `skillhub upgrade` 整树替换 skill 目录 | ✅ 存活 | ✅ 存活 |
+| **重新 clone 本仓库** | ❌ **丢失** | ✅ **存活** |
+| 他人拉取本 fork | ❌ 拿不到 | ✅ 拿得到 |
+
+⇒ 原先写的「若希望重新 clone 也存活…**待裁决**」**已落地**：对自维护 fork 而言，
+补丁层丢失 = 全部本地修正丢失，与 `ops/` 其余工具的取舍一致。
 
 
 ---
@@ -146,7 +165,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 ## 锚点型注入的幂等陷阱（实测事故，必读）
 
 **事故**：新增「把 SELF_MAINTAINED 常量与函数注入 `check_update.py`」两个 op 时，
-第一次重放就把代码**重复注入 43 份 ×3**。
+第一次重放就把代码**重复注入 43 份 ×3**（事故发生在全量 43 份时期；分支收窄后该 op 覆盖 **24** 份）。
 
 **根因**：这类 op 的 `old` 是**锚点**（插入位置），而 `new = 注入内容 + 锚点` ——
 锚点在插入后**依然存在**。原判定逻辑是「`old` 未命中时才看 `already_marker`」，
@@ -172,7 +191,7 @@ n_old = txt.count(old_lf)
 ```python
 # 重放前后统计目标特征串的出现次数，必须恒为 1
 Counter(p.read_text().count("def self_consistent_check(") for p in files)
-# → 应为 {1: 43}；若为 {2: 43}、{3: 43} 即发生重复注入
+# → 应为 {1: 24}；若为 {2: 24}、{3: 24} 即发生重复注入
 ```
 
 **现已固化为验证方式**：凡新增**锚点型注入** op，重放后必须按内容指纹确认
@@ -189,7 +208,8 @@ Counter(p.read_text().count("def self_consistent_check(") for p in files)
 - 改为校验**本 skill 自身的 5 处版本声明**是否一致（P1–P5），返回 A（一致）/ D（漂移）
 - 排障逃生舱：`TRI_ALLOW_REMOTE=1` 临时恢复远端比对
 
-实现要点（为什么可行）：43 份 `check_update.py` 虽有 6 个变体，但差异**仅在模块 docstring
+实现要点（为什么可行）：当前 **24 份** `check_update.py` 实测只有 **2 种形态**
+（`tri-code-analyzer` / `tri-lottie` 与其余 22 份），差异**仅在模块 docstring
 与两个额外 helper**，`decide()` 主体完全一致 ⇒ 一个字面锚点即可覆盖全部。
 锚点选在 `    state = load_state()` **之前**——必须在节流检查之前，
 否则旧的远端缓存态会先命中并 early return，自维护校验永不执行。
