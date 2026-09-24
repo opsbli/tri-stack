@@ -171,10 +171,20 @@ play / pause / stop / loop / speed / seek / playSegments / reverse / colorTheme 
 2. **新增集成目标**：在接入说明追加平台（如小程序 / RN），审查清单自动适用
 3. **新增审查规则**：在质量标准追加条目，命中即回炉——判定逻辑零改动
 
-## 版本检查与更新机制（硬红线 · 细则唯一真源指针）
+## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 任一执行入口启动后的**第零步**：运行 `python scripts/check_update.py --slug tri-lottie --json`，解析 `state` 四态（A/B/C/D 放行，BLOCK 阻断）；退出码 `<20` 放行，`>=20` 阻断；脚本异常兜底降级放行。24h 节流，`--force` 强制重查。
-> 四态判定、升级流程、版本比较算法、节流缓存等完整细则**唯一真源**：`references/version-check-spec.md`（家族规范源，由 tri-forge 维护，源码树内兄弟目录相对路径）。本章节为瘦指针 STUB，NEVER 内联细则。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
+
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
+
+```bash
+python scripts/check_update.py --slug tri-lottie --json
+```
+
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 ## 目录结构
 

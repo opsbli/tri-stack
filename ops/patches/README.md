@@ -84,7 +84,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `sync-readme-version` | sync_readme_version | P1↔P5：README 版本声明 = SKILL.md 版本（规则化） |
 | `self-maintained-const-func` | replace_text | 版本门：注入 `SELF_MAINTAINED` 常量与 `self_consistent_check()` |
 | `self-maintained-branch` | replace_text | 版本门：在节流检查前插入自维护分支（跳过远端比对） |
-| `converge-version-stub` | converge_version_section | 顶层 skill 版本节收敛为瘦指针 STUB（15 行），消除远端 skillhub 口径（当前 15 个） |
+| `converge-version-stub` | converge_version_section | 顶层 skill 版本节统一为瘦指针 STUB（当前 **24** 个 = 顶层全部；含 `force_skills` 补齐的 9 个） |
 | `converge-version-stub-children` | converge_version_section | `tri-sdlc/children/*` 9 个子阶段 skill 同款收敛（同缺陷类，scope 独立便于裁定） |
 | `f7-contract-mode` | replace_text | 契约 §0：「连接 skillhub 校验 + `skillhub upgrade`」→ 自维护本地校验（22 处） |
 | `f7b-contract-mode-intent` | replace_text | 契约 §0 变体（`tri-intent`）：远端校验/升级 + 端点内联 → 自维护口径 |
@@ -245,8 +245,23 @@ Counter(p.read_text().count("def self_consistent_check(") for p in files)
 - 两者皆无 → **不碰**（已合规的 9 行 STUB，或节内含 skill 专属内容者）
 - `{slug}` 占位由目录名填充 ⇒ 新增 / 同步 skill 后自动生效
 
-实测命中：顶层 **15** 个（14 个含远端标记 + `tri-forge` 经 `force_skills` 强制）
-+ `tri-sdlc/children/*` **9** 个 = **24** 个版本节（34/23/31/20 行 → 14 行，`tri-forge` 保留专属段后 27 行）。
+实测命中（分两阶段）：
+- **阶段一**：顶层 **15** 个（14 个含远端标记 + `tri-forge` 经 `force_skills` 强制）
+  + `tri-sdlc/children/*` **9** 个 = **24** 个版本节；
+- **阶段二（形态统一）**：再经 `force_skills` 补齐剩余 **9** 个顶层节 —— 其中 **6** 个原为
+  **违规**形态（内联四态判定 / 退出码语义：`tri-god` 16 行、`tri-prototype` 15、
+  `tri-init` 12、`tri-frontend-design` 11、`tri-code-analyzer` 8、`tri-lottie` 4），
+  **3** 个已是合规纯指针（`tri-domain` / `tri-grill` / `tri-orchestrate`，各 8 行）；
+  统一为同一 STUB。
+- **终态**：**33** 个版本节全部为 `version-stub v1`；按 git 归一化口径
+  （`.gitattributes` 的 `*.md text eol=lf`，即去掉全部 CR）实测仅 **2 种形态** ——
+  **32** 个完全一致（14 行，仅 `{slug}` 不同）+ `tri-forge` **26** 行（保留专属段）。
+
+> ⚠️ **测形态时必须先归一化行尾**：本仓库 `core.autocrlf=true` 且 `.gitattributes` 强制
+> `*.md text eol=lf`，工作区字节可能是 `\r\r\n`（旧 CRLF blob 又被 smudge 一次）。
+> 直接按字节数行会把同一形态误判为多一种（曾因此把 4 个 `\r\r\n` 文件误读为「15 行」）。
+> **判据应以 `git hash-object` 与 HEAD blob 比对为准**。
+
 契约 §0 由 `f7-*` 两个 op 覆盖 **23** 处（22 处同文 + `tri-intent` 的变体）。
 
 ### `tri-forge` 为什么需要 `preserve`

@@ -168,7 +168,7 @@ pat='^version: *(\\S+)'   -> 匹配
 |---|---|
 | **22 个孤儿入口** | ✅ **已移除**（`已移除 22｜失败 0`）。现 `~/.workbuddy/skills/` 下 `tri-*` 入口 = **24**，`仍悬空 0`、`指向别处 0`。需要时重放 `ops/install-skills.py` 即可重建 |
 | `codes/tri-skills/` 空目录 | ✅ **已迁移**至 `%TEMP%\tri-skills-moved-20260924`。实测其内仅 `.idea` 工程元数据（8 项），**非 git 跟踪路径**。采用「移动」而非硬删——`rm -rf` 被安全策略拦在非 Temp 路径；确认无用后可直接删除 |
-| 版本节形态未统一 | 🟡 **部分收敛**：33 个版本节中 **24** 个已是 `version-stub v1` 形态（19×14 行、4×15 行、`tri-forge` 26 行含专属段）；其余 **9** 个无遗留远端标记、属指针对齐形态（`tri-lottie` 4 / `tri-code-analyzer`·`tri-domain`·`tri-grill`·`tri-orchestrate` 8 / `tri-frontend-design` 11 / `tri-init` 12 / `tri-prototype` 15 / `tri-god` 16 行），按最小化原则未动 |
+| 版本节形态未统一 | ✅ **已统一**：33 个版本节**全部**为 `version-stub v1`。按 git 归一化口径（`.gitattributes` 的 `*.md text eol=lf`）实测仅 **2 种形态** —— **32** 个完全一致（14 行，仅 `{slug}` 不同）+ `tri-forge` **26** 行（STUB + 保留的「家族承接职能」专属段）。收敛范围：顶层 **24**（含经 `force_skills` 补齐的 9 个）+ `children/*` **9** |
 | 引导安装提示残留 | ✅ **已收敛**：`f8-install-hint-self-maintained`（`replace_regex`）改 **58 文件 / 66 处** `skillhub install … --dir <目标目录>` → 自维护安装器 |
 
 ## 相关档案（在 gitignore 目录内，仅本机留存）

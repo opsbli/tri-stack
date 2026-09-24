@@ -118,7 +118,7 @@
     {
       "id": "converge-version-stub",
       "type": "converge_version_section",
-      "label": "顶层 skill 版本节收敛为瘦指针 STUB（§六：≤30 行、禁内联细则），消除远端 skillhub 口径",
+      "label": "顶层 skill 版本节统一为瘦指针 STUB（§六：≤30 行、禁内联细则）；force_skills 补齐使 24 个顶层节形态一致",
       "glob": "tri-*/SKILL.md",
       "already_marker": "<!-- version-stub v1",
       "legacy_markers": [
@@ -126,7 +126,16 @@
         "~/.skillhub"
       ],
       "force_skills": [
-        "tri-forge"
+        "tri-forge",
+        "tri-code-analyzer",
+        "tri-domain",
+        "tri-frontend-design",
+        "tri-god",
+        "tri-grill",
+        "tri-init",
+        "tri-lottie",
+        "tri-orchestrate",
+        "tri-prototype"
       ],
       "preserve": {
         "tri-forge": "**家族承接职能"

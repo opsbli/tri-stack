@@ -184,20 +184,18 @@ license: MIT
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 家族级强制技术约束，优先级与「强制执行契约」同级。skill 任一执行入口启动后的**第零步**，先于核心执行阶段。
-> **细则唯一真源**：`references/version-check-spec.md`。**可执行实现（single source of truth for logic）**：本 skill 自带 `scripts/check_update.py`（与 tri-forge 同源，按 `--slug` 自适配）。
-> **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
 
-**执行方式（MUST）**
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
 
-1. 任一执行入口启动后、核心执行前，运行脚本并取 JSON：
-   ```bash
-   python scripts/check_update.py --slug tri-god --json
-   ```
-   节流缓存默认 24h 仅校验一次；`--force` 强制重查，`--dry-run` 只判定不真升级。
-2. 解析 JSON 的 `state` 字段：`A`（校验通过）/ `B`（离线降级）/ `C`（通道降级）/ `D`（升级降级）**一律放行**进入后续阶段，并据 `warnings` / `notes` / `actions` 在交付物或日志标注对应口径；`BLOCK` → **绝对禁止执行**，按 `block_code` 输出结构化恢复指引（手动命令见 `actions` 字段）。
-3. 退出码语义（供 shell 编排）：`0`=A 放行；`10`=B；`11`=C；`12`=D；`20`=阻断。判定规则：`<20` 放行，`>=20` 阻断；脚本自身异常时兜底降级放行（退出码 11），NEVER 因版本门自身故障导致 skill 无法启动。
-4. 四态判定细则、校验请求与响应有效性、更新通道与升级/回滚流程、阻断条件与版本同步点：**一律见真源** `references/version-check-spec.md`，本节 NEVER 内联复述。
+```bash
+python scripts/check_update.py --slug tri-god --json
+```
+
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 ## 处理流程
 

@@ -214,19 +214,18 @@ index.html（壳，13.7KB）
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> **细则唯一真源**：`references/version-check-spec.md`（本 skill **内部化**持有）。
-> **可执行实现**：`scripts/check_update.py`。
-> **铁律**：版本比较、判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析 JSON + 按态处置」。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
 
-**执行方式（MUST）**
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
 
 ```bash
 python scripts/check_update.py --slug tri-prototype --json
 ```
 
-- `0` A · 一致 → 放行
-- `12` D · 存在漂移 → 放行但告警，按 `actions` 处置
-- 退出码 `<20` 放行，`>=20` 阻断
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 ## 目录结构
 

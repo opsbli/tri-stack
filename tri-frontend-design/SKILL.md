@@ -225,15 +225,18 @@ license: MIT
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
-> 家族级强制技术约束，优先级与「强制执行契约」同级，为执行流程**第零步**。
-> **细则唯一真源**：`references/version-check-spec.md`。**可执行实现**：本 skill 自带 `scripts/check_update.py`（与全家族同源一致，按 `--slug` 自动适配）。
-> **铁律**：版本比较、升级执行、回退、四态判定 MUST 由脚本完成；prompt 层 ONLY「调用脚本 + 解析其 JSON 输出 + 按 state 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
+<!-- version-stub v1 · 瘦指针节点；细则唯一真源见 references/version-check-spec.md -->
 
-**执行方式（MUST）**：任一执行入口启动后、核心执行前，运行
+> 任一执行入口启动后的**第零步**，先于核心执行阶段。细则唯一真源：`references/version-check-spec.md`；
+> 可执行实现（逻辑唯一真源）：`scripts/check_update.py`。
+> **铁律**：版本比较、升级执行、回退、状态判定 MUST 由脚本完成；prompt 层 ONLY
+> 「调用脚本 + 解析其 JSON 输出 + 按 `state` 处置」，NEVER 在 prompt 内联推断版本或拼接升级命令。
+
 ```bash
 python scripts/check_update.py --slug tri-frontend-design --json
 ```
-解析 `state`：A/B/C/D → 一律放行进入后续阶段；BLOCK → 绝对禁止执行并输出恢复指引。退出码 `<20` 放行，`>=20` 阻断；脚本自身异常兜底降级放行，NEVER 因版本门故障阻断启动。
+
+- 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
 ## 处理流程
 
