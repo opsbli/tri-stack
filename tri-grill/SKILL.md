@@ -125,6 +125,13 @@ license: MIT
 | 精化后的文档 | 原文档路径（就地更新） | 所有歧义已解决，标注 `[已对齐]` |
 | 质询记录 | `reports/<slug>-grill.md` | 逐条质询过程 + 结论 + 新增 ADR / 术语列表 |
 
+### 落盘规则
+
+- 精化后的文档：**就地更新**（原文档路径不变），更新处标注 `[已对齐 YYYY-MM-DD]`
+- 质询记录：`reports/<slug>-grill.md`
+- ADR：`<项目根>/docs/adr/`（由 tri-domain 管理）
+- 术语表：`<项目根>/CONTEXT.md`（由 tri-domain 管理）
+
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
 > **细则唯一真源**：`references/version-check-spec.md`（内部化持有）。
