@@ -1,0 +1,38 @@
+﻿dir,convention,refs,files,skills,owners,rename_A,rename_B
+snapshots,特例（共享契约）,133,79,28,WORKFLOW-GUIDE.html;tri-action;tri-ask;tri-bs;tri-cache;tri-checklist;tri-code-analyzer;tri-coding;tri-content;tri-cost;tri-evolve;tri-fix;tri-forge;tri-god;tri-guard;tri-html;tri-humanize;tri-intent;tri-loop;tri-meta;tri-mm;tri-music;tri-plan;tri-review;tri-sdlc;tri-translate;tri-true;tri-workflow,,
+sdlc,动作/域名词,75,39,2,WORKFLOW-GUIDE.html;tri-sdlc,,
+multimedia,特例（共享契约）,61,16,3,tri-mm;tri-music;tri-sdlc,,
+coding,动作/域名词,41,17,5,WORKFLOW-GUIDE.html;tri-coding;tri-orchestrate;tri-prototype;tri-review,,
+skills,skill 短名,39,28,16,tri-cost;tri-docx2md;tri-forge;tri-frontend-design;tri-god;tri-guard;tri-html2md;tri-intent;tri-jobhunt;tri-learn;tri-lottie;tri-pdf2md;tri-pm;tri-pptx2md;tri-wiki;tri-xlsx2md,,
+loops,动作/域名词,31,12,5,tri-loop;tri-mm;tri-music;tri-sdlc;tri-workflow,,loop
+fixes,动作/域名词,27,11,3,WORKFLOW-GUIDE.html;tri-fix;tri-review,,fix
+code-analyzer,skill 短名,23,6,1,tri-code-analyzer,,
+tri-article,全 slug,23,6,1,tri-article,article,article
+wiki,skill 短名,23,5,1,tri-wiki,,
+cache,skill 短名,22,7,1,tri-cache,,
+tri-geo,全 slug,22,5,1,tri-geo,geo,geo
+cost,skill 短名,20,3,1,tri-cost,,
+god,skill 短名,20,5,1,tri-god,,
+actions,动作/域名词,17,13,5,tri-action;tri-loop;tri-mm;tri-music;tri-workflow,,action
+reviews,动作/域名词,17,6,2,WORKFLOW-GUIDE.html;tri-review,,review
+learning,skill 短名,14,3,1,tri-learn,,
+translate,skill 短名,14,8,1,tri-translate,,
+plans,动作/域名词,13,4,1,tri-plan,,plan
+true,skill 短名,13,6,1,tri-true,,
+docx2md,skill 短名,11,2,1,tri-docx2md,,
+forge,skill 短名,11,8,2,tri-jobhunt;tri-lottie,,
+html2md,skill 短名,11,2,1,tri-html2md,,
+pdf2md,skill 短名,11,2,1,tri-pdf2md,,
+pptx2md,skill 短名,11,2,1,tri-pptx2md,,
+workflows,动作/域名词,11,3,1,tri-workflow,,workflow
+xlsx2md,skill 短名,11,2,1,tri-xlsx2md,,
+evolve,skill 短名,10,3,1,tri-evolve,,
+music,skill 短名,10,5,2,tri-mm;tri-music,,
+content,skill 短名,9,4,1,tri-content,,
+tri-jobhunt,全 slug,9,7,1,tri-jobhunt,jobhunt,jobhunt
+arch-viz,L3 子意图名,8,2,1,tri-html,html,html
+guard,skill 短名,8,3,1,tri-guard,,
+audit-checklist,L3 子意图名,7,2,1,tri-checklist,checklist,checklist
+pm,skill 短名,7,2,1,tri-pm,,
+humanize,skill 短名,5,2,1,tri-humanize,,
+image,skill 短名,4,3,1,tri-mm,,
