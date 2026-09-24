@@ -162,8 +162,8 @@ Approved: no
 | +2860ms | `input` | `type, text, images, source, streamingBehavior` | 1 |
 | +2860ms | `before_agent_start` | `type, prompt, images, systemPrompt, systemPromptOptions` | 1 |
 | +2861ms | `agent_start` | `type` | 1 |
-| +2861ms | `message_end` | `type, message` | **2 ⚠️** |
-| +3401ms | `message_end` | `type, message` | （同上） |
+| +2513ms | `message_end` | `type, message` · **`role=user`** | 1 |
+| +3414ms | `message_end` | `type, message` · **`role=assistant`**（含 `responseId`） | 1 |
 | +3403ms | `agent_end` | `type, messages` | 1 |
 | +3405ms | **`agent_settled`** | `type` | **1 ✅** |
 | +3405ms | `session_shutdown` | `type, reason` | 1 |
@@ -173,7 +173,8 @@ Approved: no
 **结论（三条硬事实）**：
 
 1. ✅ **`agent_settled` 是正确的落点**：一轮交互**恰好 1 次**，且在 `agent_end` 之后 —— 它就是「Pi 不会自动继续」的边界。`evolve-hook` 用它可天然幂等。
-2. 🔴 **`message_end` 触发 2 次 → 它是「坑 4：重复注入」的本机复现**。任何以消息数为计量单位的 hook（`cache-hook` / `cost-hook`）若直接用 `message_end` 计数，**会双倍记账**。MUST 按 `message.role`（用户 vs 助手）过滤，并配去重键。
+2. 🟠 **`message_end` 一轮触发 2 次 —— 已查明原因是 `role=user` 与 `role=assistant` 各一次**（+2513ms / +3414ms），**不是同一消息被重复投递**。（首版曾据次数误判为「坑 4 复现、会双倍记账」，经探测 #2 回读 payload 后更正。）
+   真实要求是：计量类 hook（`cache-hook` / `cost-hook`）**MUST 按 `message.role` 过滤**，否则会把用户消息也计入 —— 这是**过滤**问题，不是去重问题。
 3. ✅ **`session_shutdown` 在 print 模式（非交互）也会触发** → 幂等清理能落地，不必依赖 TUI 模式。
 
 **本次顺带确认**：`pi -p` 在 stdin 为管道时**必须显式重定向** `< /dev/null`，否则进程会挂住等待输入（首次探测即因此被 SIGTERM）。此坑应写进适配器 README。

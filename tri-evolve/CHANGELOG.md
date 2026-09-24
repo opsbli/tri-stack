@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.5] - 2026-09-24
+
+### 变更
+
+- **新增 evolve-hook 的 pi 适配器**：`hooks/spec.md`（平台无关契约）+ `hooks/pi/index.ts`（形态 B）。落点 `agent_settled` 经真机验证一轮恰好触发 1 次；去重状态用 `pi.appendEntry` 持久化到 session（跨 reload 存活），**不使用模块级变量**。§触发时机 降级列同步更新。
+
 ## [1.1.4] - 2026-09-24
 
 ### 变更

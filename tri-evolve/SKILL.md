@@ -1,7 +1,7 @@
 ---
 name: 自进化学习
 slug: tri-evolve
-version: 1.1.4
+version: 1.1.5
 displayName: 自进化学习
 description: 横向学习/进化型 skill，为 tri-xxx 家族提供多渠道信号驱动的持续改进与用户画像构建能力；EVOLVE_OBSERVE 模式采集作答后信号，EVOLVE_LEARN 模式批量归因学习，EVOLVE_APPLY 模式向下游 skill 提供画像与经验复用；hook/定时/请求激活；支持独立安装，含上游依赖检测三态逻辑（完整模式/引导安装/降级模式）。
 summary: OODA 进化闭环（观察-归因-提议-验证-沉淀）+ 经验条目库（embedding 检索复用）+ 用户画像（静态/动态分层+时间衰减）+ A/B 验证门 + 安全回滚，纯自我批判禁沉淀。
@@ -50,7 +50,7 @@ license: MIT
 
 | 触发源 | 模式 | 激活条件 | **无 hook / 无调度时的降级路径** |
 |--------|------|----------|----------------------------------|
-| evolve-hook（下游 skill 作答后触发） | EVOLVE_OBSERVE | hook 传入作答事件 + 用户行为 | ❌ **该 hook 不随本包交付** → 未配置时本模式**不可用**；信号采集改由用户显式录入或跳过，`LEARN` 将无原料 |
+| evolve-hook（下游 skill 作答后触发） | EVOLVE_OBSERVE | hook 传入作答事件 + 用户行为 | **pi（形态 B）：✅ 已交付**（`hooks/pi/index.ts`，落点 `agent_settled`，真机验证一轮恰好 1 条、幂等）。**其他宿主**：❌ 形态 A/C 未交付 → 该模式不可用，信号采集改由用户显式录入或跳过，`LEARN` 将无原料 |
 | 定时/批量触发（tri-evolve learn --batch） | EVOLVE_LEARN | 聚合信号窗口 + 历史经验（**默认手动触发**；定时为 opt-in，见 §调度安全门） | ✅ 默认即手动：`tri-evolve learn --batch` |
 | 下游 skill 请求画像/经验 | EVOLVE_APPLY | 请求含 user_id + 场景描述 | ✅ 本身即显式，无降级需求 |
 | 用户管理请求（stats/profile/rollback） | EVOLVE_ADMIN | 用户发起管理命令 | ✅ 本身即显式，无降级需求 |

@@ -100,7 +100,7 @@ hook 是家族的**外部触发源**：由宿主（WorkBuddy 等）在特定事�
 
 | hook | 归属 | 触发模式 | 入参 | 实现状态 | 降级路径 |
 |---|---|---|---|---|---|
-| `evolve-hook` | `tri-evolve` | `EVOLVE_OBSERVE` | 作答事件 + 用户行为 | ❌ 未交付 | 显式录入 / 跳过（`LEARN` 空转） |
+| `evolve-hook` | `tri-evolve` | `EVOLVE_OBSERVE` | `session_id` / `exchange_id` / `answer` / `user_feedback?` | ✅ **pi（形态 B）已交付** · ❌ 形态 A/C 未交付 | 其余宿主：显式录入 / 跳过（`LEARN` 空转） |
 | `cache-hook` | `tri-cache` | `CACHE_WRITE` | `{快照§三, 作答内容, source_skill}` | ❌ 未交付 | 显式写入（该 skill 不在本分支） |
 | `cost-hook` | `tri-cost` | `COST_TRACK` | `{node_id, input/output_tokens, source_skill}` | ❌ 未交付 | 显式 `COST_AUDIT`（该 skill 不在本分支） |
 | `guard-hook` | `tri-guard` | 安装前哨审计 | 待审 skill 的路径 / URL / 目录 / 源码 | ❌ 未交付 | 显式调用（该 skill 不在本分支） |

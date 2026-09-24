@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-24T18:59:26+08:00",
+  "generated": "2026-09-24T19:52:10+08:00",
   "purpose": "自维护 fork 的版本线基线。本仓库不再跟随上游版本号，此文件记录当前各 skill 版本，作为自主版本线的 v1 起点与一致性校验的参照。",
   "source_note": "版本取自各 tri-*/SKILL.md 的 frontmatter（§六 定义的唯一真源）。",
   "skills": {
@@ -8,9 +8,9 @@
     "tri-code-analyzer": "1.4.1",
     "tri-coding": "1.7.1",
     "tri-domain": "1.0.0",
-    "tri-evolve": "1.1.4",
+    "tri-evolve": "1.1.5",
     "tri-fix": "1.4.1",
-    "tri-forge": "1.0.2",
+    "tri-forge": "1.0.3",
     "tri-frontend-design": "1.1.2",
     "tri-god": "1.2.2",
     "tri-grill": "1.0.0",
