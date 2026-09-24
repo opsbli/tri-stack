@@ -23,7 +23,7 @@ description: 「智引」(tri-geo) 全场景测试用例——能力清单 A-H �
 | B4 | 合规红线（writing_rules R9 → 退出码 3 打回） | 契约 5 |
 | B5 | 评分来源规范 P3（脚本+证据路径+采样区间+文献环境） | 契约 6 |
 | B6 | 快照追加不覆盖（--revision；--force 显式） | 契约 7 |
-| B7 | 教训文件读写闭环（.tribro/tri-geo/lessons.md） | 契约 9、约束 23 |
+| B7 | 教训文件读写闭环（.tribro/geo/lessons.md） | 契约 9、约束 23 |
 | B8 | 结论置信标注三要素 | 契约 10、约束 27 |
 | B9 | prompt 白名单 4 处，白名单外一律脚本化 | 契约 3 |
 | C1 | 模式必填矩阵（validate_input REQUIRED_BY_MODE） | 输入契约 |
@@ -42,7 +42,7 @@ description: 「智引」(tri-geo) 全场景测试用例——能力清单 A-H �
 | D10 | 实测波动区间由采样 min/max 得出，NEVER 预设；样本空不记 0 分 | scoring-spec |
 | E1 | 自检句含模式/触发源/目标/引擎/版本门/参数校验/教训/脚本链 | 约束 5 |
 | E2 | 独立领域入口定位：不认领 L2、用户显式调用激活 | 职责边界 |
-| F1 | 证据落盘 .tribro/tri-geo/raw/ + .geo-snapshots/（目录自动创建） | 落盘规则、R2 |
+| F1 | 证据落盘 .tribro/geo/raw/ + .geo-snapshots/（目录自动创建） | 落盘规则、R2 |
 | F2 | 报告分数带证据路径；report_build 模板缺占位符即失败 | 评分与报告 |
 | F3 | NEVER 生成 LICENSE/.gitignore | 约束 11 |
 | F4 | 教训/快照/实测回答路径与文档声明一致（R0-3） | 落盘规则 |
@@ -76,4 +76,4 @@ description: 「智引」(tri-geo) 全场景测试用例——能力清单 A-H �
 | TC-15 | H4 | 人工（真机） | 2 个不同行业中文站 L2 全流程，偏差 ≤10 分 |
 | TC-16 | A2/R5 | 人工 | 任意文件改动后四件套 + CHANGELOG + README 联动复查 |
 
-> 人工用例执行后 MUST 将结果与教训追加至 `.tribro/tri-geo/lessons.md`（空泛内容禁写入）。
+> 人工用例执行后 MUST 将结果与教训追加至 `.tribro/geo/lessons.md`（空泛内容禁写入）。

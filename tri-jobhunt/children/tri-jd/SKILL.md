@@ -10,7 +10,7 @@ license: MIT
 ---
 
 # tri-jd · JD 匹配分析（children 子 skill）
-> 产物落盘：本 children 不独立落盘——用户成果物由主 skill `tri-jobhunt` 统一落 `.tribro/tri-jobhunt/`（`.tribro/` 不存在时由主 skill 先创建）；链路审计文档由主 skill 落 `.tribro/forge/tri-jobhunt/`。本 children 随主 skill 包分发，遵循主 skill §落盘规则。
+> 产物落盘：本 children 不独立落盘——用户成果物由主 skill `tri-jobhunt` 统一落 `.tribro/jobhunt/`（`.tribro/` 不存在时由主 skill 先创建）；链路审计文档由主 skill 落 `.tribro/forge/jobhunt/`。本 children 随主 skill 包分发，遵循主 skill §落盘规则。
 
 
 > 由主 skill `tri-jobhunt` 依 R3 委派激活（用户给 JD 问「值不值得投 / 匹配多少」），**不对外暴露**。

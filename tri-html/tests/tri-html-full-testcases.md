@@ -2,7 +2,7 @@
 ---
 name: tri-html-full-testcases
 description: tri-html 全场景测试用例。覆盖 SKILL.md 全部能力点（强制执行契约 / 上游依赖检测 / 输入契约 / 六维分析方法论 / 双渲染引擎 / HTML 组装 / 双审批门 / §3.13 代码版权 / 质量标准）。
-version: 1.3.0
+version: 1.3.1
 based_on: tri-html v1.3.0
 ---
 
@@ -35,7 +35,7 @@ based_on: tri-html v1.3.0
 | E 自检声明 | E2 | 降级模式自构造等价输入 | SKILL §外部检测 C |
 | F 交付产物 | F1 | 单文件 HTML（零外部依赖） | SKILL §契约3/交付产物 |
 | F 交付产物 | F2 | analysis.json 可选中间产物 | SKILL §交付产物 |
-| F 交付产物 | F3 | 落盘 .tribro/arch-viz/<命名>/ + 用户工作区 | compliance §7 |
+| F 交付产物 | F3 | 落盘 .tribro/html/<命名>/ + 用户工作区 | compliance §7 |
 | G 职责边界 | G1 | 只分析不改代码（修复由 tri-coding/tri-fix） | SKILL §职责边界 |
 | G 职责边界 | G2 | 与 tri-checklist 边界（I10 子类不同） | SKILL §职责边界 |
 | H 质量标准 | H1 | 六维覆盖/图表完整/单文件零依赖/双门/可双击/架构观察 | SKILL §质量标准 |
@@ -165,14 +165,14 @@ based_on: tri-html v1.3.0
 
 ### TC-F-02：analysis.json 中间产物
 
-- **步骤**：检查 `.tribro/arch-viz/<命名>/analysis.json` 落盘
+- **步骤**：检查 `.tribro/html/<命名>/analysis.json` 落盘
 - **预期**：可选产物存在，含六维结论 + Mermaid 源码
 - **判定**：存在且结构完整 = 通过
 
 ### TC-F-03：落盘路径
 
 - **步骤**：检查 HTML 落盘位置
-- **预期**：用户工作区（非 .tribro/）；链路文档落 `.tribro/arch-viz/<命名>/`
+- **预期**：用户工作区（非 .tribro/）；链路文档落 `.tribro/html/<命名>/`
 - **判定**：路径正确 = 通过
 
 ---

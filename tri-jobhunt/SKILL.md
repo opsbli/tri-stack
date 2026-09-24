@@ -1,7 +1,7 @@
 ---
 name: tri-jobhunt
 slug: tri-jobhunt
-version: 1.0.3
+version: 1.0.4
 displayName: 求职全流程路由
 description: 覆盖求职全生命周期的单入口领域 skill：ATS 兼容简历优化、要点量化、JD 匹配决策、定向定制、求职信/申请表/自荐邮件/LinkedIn/案例研究/推荐人产出、面试 STAR 故事库、薪资谈判、Offer 比较、专项角色（技术/高管/学术/创意/转行）定制。用户显式 `/tri-jobhunt` 调用后，按请求类型分发委派给 children 子 skill（tri-jd / tri-resume-core / tri-docs / tri-interview / tri-negotiate / tri-role）。支持独立安装，含上游依赖检测2态逻辑。
 summary: 求职材料生成与策略决策的唯一入口，单入口分发到 6 个 children 子 skill 完成简历/面试/谈判全流程。
@@ -133,9 +133,9 @@ license: MIT
 
 | 产物 | 位置 | 内容 |
 |---|---|---|
-| 求职物料 | 用户工作区 `.tribro/tri-jobhunt/` | 简历 / 求职信 / 面试题库 / 谈判方案等最终产物 |
+| 求职物料 | 用户工作区 `.tribro/jobhunt/` | 简历 / 求职信 / 面试题库 / 谈判方案等最终产物 |
 | 子 skill 产物 | 各 children 执行产出 | 报告头见 `jobhunt-routes.md` §三 |
-| legacy 追踪 | 用户工作区 `.tribro/tri-jobhunt/` | master 简历 + 追踪表（R10） |
+| legacy 追踪 | 用户工作区 `.tribro/jobhunt/` | master 简历 + 追踪表（R10） |
 
 > 文件名沿用用户提供的材料命名（必要处加 `[名称]_[角色]_[公司]_[日期]`），不强制快照命名。
 
@@ -163,8 +163,8 @@ license: MIT
 ## 落盘规则
 
 > 统一用 `## 落盘规则`。本 skill 为 tri-forge 生成的机器 skill，MUST 落盘 `.tribro/skills/<slug>/`
-> （NEVER `skills/` 源树或其它路径）。链路审计文档落 `.tribro/forge/tri-jobhunt/`。用户成果物
-> 落 `.tribro/tri-jobhunt/`（tri-forge 生成物的用户工作区）。
+> （NEVER `skills/` 源树或其它路径）。链路审计文档落 `.tribro/forge/jobhunt/`。用户成果物
+> 落 `.tribro/jobhunt/`（tri-forge 生成物的用户工作区）。
 > **NEVER 生成 `LICENSE` 或 `.gitignore`**；许可证由 frontmatter `license: MIT` 声明。
 
 ## 版本检查与更新机制
@@ -179,7 +179,7 @@ license: MIT
 
 - **反馈接收点**：用户对产出的改进建议、对路由/决策规则的纠偏，于任意轮次提出。
 - **经验沉淀位**：本次生成/使用中暴露的缺口、教训写入 `references/` 对应文件与
-  `CHANGELOG.md`；锻造侧同步沉淀至 `.tribro/forge/tri-jobhunt/forge-lessons.md`。
+  `CHANGELOG.md`；锻造侧同步沉淀至 `.tribro/forge/jobhunt/forge-lessons.md`。
 - **自我修订触发**：当同一决策/边界缺口重复出现（≥2 次）或用户明确要求时，修订本 SKILL 的
   路由表/决策规则并升级 MINOR 版本。
 

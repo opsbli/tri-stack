@@ -1,7 +1,7 @@
 ---
 name: tri-jobhunt-full-testcases
 description: tri-jobhunt v1.0.3 全量能力测试用例（基于 tri-jobhunt v1.0.3）
-version: 1.0.3
+version: 1.0.4
 ---
 
 # tri-jobhunt 全量测试用例

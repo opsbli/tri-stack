@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.0.4] - 2026-09-24
+
+### 变更
+
+- **落盘目录改名 `tri-geo/` → `geo/`**：过程产物默认落 `.tribro/geo/`（原 `.tribro/tri-geo/`），同步修改 `scripts/fetch_page.py` 的 `--raw-dir` 默认值。另：品牌级台账 `.geo-snapshots/<品牌>/` **保持原位不改**，已作为「非 `.tribro` 产物区」登记于 `tri-forge/references/family-spec.md` §1.4（该名可从 slug 推导；且台账为跨项目的品牌级数据，迁入项目级 `.tribro/` 会按项目切碎）。**旧目录不自动迁移**。
+
 ## [1.0.3] - 2026-09-18
 
 ### 新增
@@ -24,7 +30,7 @@
 ### 变更（tri-forge 家族合规审计修复 · 审计报告 `docs/audit-tri-geo-20260916.md`）
 
 - **frontmatter**：`name` 由「智引」改为 `tri-geo`（约束 1：name==slug kebab-case，中文名保留于 displayName）；description 删除「纳米」（与 `validate_input.py` 8 引擎白名单漂移，R3），追加「支持独立安装，含上游依赖检测三态逻辑」（约束 2）
-- **强制执行契约**：补激活语义与独立使用前置（约束 3）；自检句增「触发源」「已读教训」字段（约束 5）；新增条目 9「教训文件读写闭环」（`.tribro/tri-geo/lessons.md`，约束 23）与条目 10「结论置信标注」三要素（约束 27）
+- **强制执行契约**：补激活语义与独立使用前置（约束 3）；自检句增「触发源」「已读教训」字段（约束 5）；新增条目 9「教训文件读写闭环」（`.tribro/geo/lessons.md`，约束 23）与条目 10「结论置信标注」三要素（约束 27）
 - **新增章节**：上游依赖检测（三态）/ 输入契约 / 职责边界（含 tri-intent 豁免理由与相邻 skill 边界）/ 知识装配顺序（6 references 分层 + grep 模式 + 覆盖优先级，约束 25）/ 质量标准（约束 16）/ 版本检查与更新机制 STUB（≤30 行指向 version-check-spec.md，约束 22-③）/ 目录结构（与磁盘 diff 一致，约束 15）/ 进化契约（三要素，约束 23）
 - **章节更名**：「数据落盘约定」→「落盘规则」（约束 7 统一标题），增登 lessons.md 路径与「NEVER 生成 LICENSE/.gitignore」
 - **完成判据**：增补教训写入判据与「停车态 ≠ 结束态」区分（约束 24）

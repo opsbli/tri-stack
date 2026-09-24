@@ -2,7 +2,7 @@
 ---
 name: tri-article-full-testcases
 description: 基于 tri-article v1.4.1 全量扫描生成的覆盖全场景测试用例集，供人工审计。覆盖占位符/profile 机制、去AI化写作引擎、去AI化引擎委派（tri-humanize）、文末安装指引要素（TRI_INSTALL_NOTE）、产品植入开关、质量门禁、独立/接入两种模式、落盘规则，以及 hooks/index.py 脚本调用（add/dedup/search/edit_distance）等全部能力点。
-version: 1.4.1
+version: 1.4.2
 ---
 
 # tri-article 全场景测试用例
@@ -34,8 +34,8 @@ version: 1.4.1
 
 | 编号 | 场景 | 输入 | 预期 |
 |------|------|------|------|
-| TC-P01 | 首次运行 profile 缺失 | 无任何 profile | 进入初始化，反问必填项后落盘 `.tribro/tri-article/profile.md` |
-| TC-P02 | profile 已存在 | `.tribro/tri-article/profile.md` 齐全 | 直接替换占位符执行，不重复反问 |
+| TC-P01 | 首次运行 profile 缺失 | 无任何 profile | 进入初始化，反问必填项后落盘 `.tribro/article/profile.md` |
+| TC-P02 | profile 已存在 | `.tribro/article/profile.md` 齐全 | 直接替换占位符执行，不重复反问 |
 | TC-P03 | 必填项缺失 | profile 缺 `AUTHOR_PROFILE` | 仅反问缺失项，补齐后继续 |
 | TC-P04 | 占位符全部替换 | 含 `{{AUTHOR_PROFILE}}` 等 | 最终文章无任何 `{{}}` 残留 |
 | TC-P05 | DOMAIN_POOL 缺失 | profile 未配领域池 | 回退内置默认 6 领域，提示用户 |

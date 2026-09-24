@@ -16,7 +16,7 @@
     · 抓取失败 MUST 报错并建议用户粘贴正文，NEVER 伪造内容块
 
 用法：
-    python fetch_page.py --url https://example.com --raw-dir .tribro/tri-geo/raw --json
+    python fetch_page.py --url https://example.com --raw-dir .tribro/geo/raw --json
     python fetch_page.py --url https://example.com --assets --out page.json --json
     python fetch_page.py --file tests/fixtures/good-page.html --json
 
@@ -311,7 +311,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="「智引」页面抓取与结构化解析")
     ap.add_argument("--url", default=None, help="目标页面 URL")
     ap.add_argument("--file", default=None, help="本地 HTML 文件（离线解析，用于回归测试）")
-    ap.add_argument("--raw-dir", default=".tribro/tri-geo/raw", help="原始证据落盘目录")
+    ap.add_argument("--raw-dir", default=".tribro/geo/raw", help="原始证据落盘目录")
     ap.add_argument("--assets", action="store_true", help="同抓 robots.txt / llms.txt")
     ap.add_argument("--out", default=None, help="内容 JSON 落盘路径（默认仅 stdout）")
     ap.add_argument("--json", action="store_true", help="输出 JSON")

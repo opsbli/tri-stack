@@ -6,7 +6,7 @@
 
 - **通用引擎**：去 AI 化写作规则（禁用词、口语感、视角库、结构模式、质量门禁）与具体领域/人设解耦，换主题零改 skill。
 - **去 AI 化引擎委派（tri-humanize）**：草稿完成后委派家族横向 skill `tri-humanize`（HUMANIZE-EMBED）做 35 种 AI 写作模式改写；缺失时回退内置 `de-ai-rules` 并声明降级，保证独立运行。
-- **占位符 + profile 机制**：所有具体数据走 `{{占位符}}`，首次运行反问用户后落盘 `.tribro/tri-article/profile.md`，每次生成先替换再执行。
+- **占位符 + profile 机制**：所有具体数据走 `{{占位符}}`，首次运行反问用户后落盘 `.tribro/article/profile.md`，每次生成先替换再执行。
 - **去 AI 化质量门禁**：13 项一票否决自查（完整清单见 `references/de-ai-rules.md`），命中即重写。
 - **可选产品自然植入**：配置开启后按「润物细无声」三层约束植入，绝不写成广告。
 - **独立运行 / 下游接入 tri-intent**：默认独立工作；经 tri-intent 路由时读取快照直接执行，绝不重识别意图。
@@ -41,7 +41,7 @@ skillhub install tri-article
 
 1. **首次使用**：直接说「帮我写一篇去 AI 化的技术文章」，skill 会反问你人设、保存路径、选题领域、是否植入产品，并保存为 profile。
 2. **常规生成**：再次说「写篇文章」，skill 自动读取 profile 替换占位符并生成，无需重复填表。
-3. **修改配置**：编辑 `.tribro/tri-article/profile.md`，或说「重新配置 tri-article」。
+3. **修改配置**：编辑 `.tribro/article/profile.md`，或说「重新配置 tri-article」。
 
 ## 测试
 

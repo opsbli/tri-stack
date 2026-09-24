@@ -39,6 +39,48 @@
 - 二跳例外仅限「中介路由 + 具体执行」形态（如多媒体路由委派具体媒体 skill），MUST 在中介 skill 内显式声明
 - 新增下游 MUST 在 `tri-intent` 的路由映射表 / L3 子类说明中登记，**只生成 skill 而不登记路由即视为未完成**
 
+### 1.4 落盘产物区命名基准（三分类）
+
+**判据只有一条：目录名能否从 skill slug 机械推导**（去掉 `tri-` 前缀，允许常规名词化）。
+
+| 情形 | 处置 | 示例 |
+|---|---|---|
+| 可从 skill 名推导 | ✅ 通过 | `tri-coding`→`coding/`、`tri-fix`→`fixes/`、`tri-plan`→`plans/`、`tri-pdf2md`→`pdf2md/` |
+| 由多个 skill 共享 | ✅ 豁免（须在下表登记） | `snapshots/`（`tri-intent`）、`skills/`（`tri-forge` 生成物位） |
+| 不可推导 | ❌ MUST 改名 | `tri-html` 曾用 `arch-viz/`、`tri-article` 曾用 `tri-article/` |
+
+**为何规则不是「目录名 = skill 名」**：`coding/` 同时装 `tri-coding` / `tri-prototype` / `tri-orchestrate` 三家产物，
+`sdlc/` 装全部阶段子 skill，`skills/` 装全部生成物——**「一 skill 一目录」本就不成立**。
+规则只能是**可推导**，不能是**相等**。
+
+**登记豁免清单**（共享契约目录，改名要动全部调用方）：
+
+| 目录 | 归属 | 豁免理由 |
+|---|---|---|
+| `snapshots/` | `tri-intent` | 快照定位契约的固定路径，全部路由型下游读取 |
+| `skills/` | `tri-forge` | 生成物落盘位，`check_downstream.py` 的检测路径之一 |
+| `multimedia/` | `tri-mm` | slug 为缩写 `mm`，展开名 `multimedia` 语义清晰优先 |
+
+**产物区共三类，命名判据同为「可推导」**：
+
+| 类别 | 位置 | 作用域 | 例 |
+|---|---|---|---|
+| **一 · 链路文档** | `.tribro/<域>/` | 项目级 | `coding/` `fixes/` `snapshots/` |
+| **二 · 真实成果物** | 用户工作区 | 项目级 | 源码 / 补丁 / 构建产物 / `CHANGELOG.md` |
+| **三 · 跨项目台账** | 项目根 `<域>-snapshots/` | **跨项目** | `tri-geo` 的 `.geo-snapshots/<品牌>/` |
+
+**硬规则**（第三类此前无任何定义，属规则盲区；前两条限定第三类，第三条全类通用）：
+
+- **MUST 登记**（见下表）——它落在 `.tribro/` 之外，但仍是产物区，**同样受可推导性判据约束**：目录名 MUST 可从 skill slug 推导（`tri-geo` → `geo-snapshots`）
+- **MUST NOT 迁入 `.tribro/`**——`.tribro/` 是**项目级**目录，第三类数据是**跨项目**的。判据：数据的生命周期跟随**业务实体**（品牌 / 客户 / 站点）还是跟随**项目**；跟随业务实体者必须留在项目级目录之外，否则同一天然实体在不同项目下会被切碎成多份台账
+- **skill 目录内 NEVER 建 `.tribro/`**——`.tribro/` 属目标项目产物区；建在 skill 包内会经 junction 安装暴露、被打包收录
+
+**登记清单 · 第三类（跨项目台账）**：
+
+| 目录 | 归属 | 作用域 | 为何不迁入 `.tribro/` |
+|---|---|---|---|
+| `.geo-snapshots/<品牌>/` | `tri-geo` | 品牌级 | 按品牌聚合的历史台账，跨项目复用；迁入项目级 `.tribro/` 会按项目目录切碎 |
+
 ---
 
 ## 二、骨架清单（生成物目录结构）
@@ -75,7 +117,7 @@ NEVER 改名——门禁与路由按固定文件名定位。
 | 7 | 职责边界明确 | 「本 skill 负责」+「不负责」+ 边界表 |
 | 8 | **意图认领 MECE 不重叠** | MUST 交叉比对 **`tri-intent/SKILL.md` §路由映射表（路由真源）**，而非本文副本 |
 | 9 | 核心能力方法论含可扩展性 | 说明新增维度/条目的零改动路径 |
-| 10 | 交付产物含落盘规则 | 明确 `.tribro/` 与用户工作区的分工 |
+| 10 | 交付产物含落盘规则 | 明确 `.tribro/` 与用户工作区的分工；落盘目录名须符合 §1.4 可推导性基准 |
 | 11 | CHANGELOG 规范 | 首条 = frontmatter version，且为全文件最大 |
 | 12 | tests 全场景用例 | `tests/<slug>-full-testcases.md`，能力清单 + ≥10 条用例 |
 
@@ -111,8 +153,6 @@ NEVER 改名——门禁与路由按固定文件名定位。
 
 | 项 | 说明 |
 |---|---|
-| **根路由章节结构变体** | 上游总路由（`tri-intent`）以「第一层判定 → 路由步骤 → MECE 保证 → 兜底」组织，**不套用下游型九章**（无上游、无交付产物）。`compliance_check.py` 第 3 条对该角色判 N-A |
-| **自检句例外（`tri-express`）** | `tri-express` 为即时对话回应型，**设计上不作答前声明**（上游审计报告 F4 已记录该例外）。`compliance_check.py` 的 `SELFCHECK_EXEMPT` 常量与本节**两处同步登记**，NEVER 只改一处 |
 | **根路由章节结构变体** | 上游总路由（`tri-intent`）以「第一层判定 → 路由步骤 → MECE 保证 → 兜底」组织，**不套用下游型九章**（无上游、无交付产物）。`compliance_check.py` 第 3 条对该角色判 N-A |
 | **自检句例外（`tri-express`）** | `tri-express` 为即时对话回应型，**设计上不作答前声明**（上游审计报告 F4 已记录该例外）。`compliance_check.py` 的 `SELFCHECK_EXEMPT` 常量与本节**两处同步登记**，NEVER 只改一处 |
 | **「版本检查与更新机制」章节位置变体** | 家族实测存在两种合法位置：**(a) 紧跟「职责边界」之后**（多数 skill 采用）；**(b) 置于文件末**（如 `tri-pm`）。两者均视为合规；`compliance_check.py` 第 3 条按此判定 |

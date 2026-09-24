@@ -2,6 +2,12 @@
 
 本文件所有记录遵循 [Keep a Changelog](https://keepachangelog.com/) 格式，版本号遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [1.4.2] - 2026-09-24
+
+### 变更
+
+- **落盘目录改名 `tri-article/` → `article/`**：`profile.md` 与文章根目录默认改为 `.tribro/article/profile.md` / `.tribro/article/articles/`（目录名保留 `tri-` 前缀不满足 §1.4 可推导判据）。同步修改 `hooks/index.py` 的 `DEFAULT_ROOT`。**旧目录不自动迁移**。
+
 ## [1.4.1] - 2026-09-18
 
 ### 新增
@@ -97,7 +103,7 @@
 
 ### Changed
 
-- **文章存储重构到 `.tribro`**：原 `OUTPUT_DIR` / `HISTORY_DIR` 合并为单一 `ARTICLES_ROOT`（默认 `.tribro/tri-article/articles`），按「领域分桶 `<domain-slug>/` + `index.json` 全量索引」组织，专为**便于搜索与去重**设计。
+- **文章存储重构到 `.tribro`**：原 `OUTPUT_DIR` / `HISTORY_DIR` 合并为单一 `ARTICLES_ROOT`（默认 `.tribro/article/articles`），按「领域分桶 `<domain-slug>/` + `index.json` 全量索引」组织，专为**便于搜索与去重**设计。
 - 新增 §1.5「文章存储与检索」：定义领域分桶、时间排序文件名 `<YYYYMMDD>-<slug>.md`、`index.json` 记录字段、去重算法（标题归一化哈希硬重复 + 同领域 slug 编辑距离≤2 软重复）、检索方式。
 - 新增辅助脚本 `hooks/index.py`（纯标准库）：`dedup` / `add` / `search` / `list` 四个子命令，维护 `index.json` 单一事实源。
 - **对齐 tri-intent 路由**：次触发精确为 `L2=I06 内容生成` 且 `L3_子意图=article`；输入契约新增快照 `L3_子意图`、`DOMAIN_POOL` 兼作领域分桶名。
@@ -112,7 +118,7 @@
 ### Added
 
 - 通用「去 AI 化」技术文章生成 skill（tri-article）。
-- 占位符 + profile 机制：具体数据（`AUTHOR_PROFILE` / `PRODUCT_*` / `OUTPUT_DIR` / `HISTORY_DIR` / `DOMAIN_POOL` / `LICENSE_STMT` / `DISABLED_WORDS`）全部参数化，首次运行反问用户后落盘 `.tribro/tri-article/profile.md`，每次生成先替换再执行。
+- 占位符 + profile 机制：具体数据（`AUTHOR_PROFILE` / `PRODUCT_*` / `OUTPUT_DIR` / `HISTORY_DIR` / `DOMAIN_POOL` / `LICENSE_STMT` / `DISABLED_WORDS`）全部参数化，首次运行反问用户后落盘 `.tribro/article/profile.md`，每次生成先替换再执行。
 - 去 AI 化写作引擎：日期哈希选题轮转、文章类型轮换、去重检查、禁用词表、口语化风格、个性化视角库、结构自由化、随机化机制（人称/节奏）、结构模式 A/B、质量门禁 12 项自查。
 - 可选产品自然植入（三层约束 + 一票否决），由 `PRODUCT_ENABLED` 开关控制。
 - 上游依赖检测两态逻辑（独立运行 / 可选接入 tri-intent）。

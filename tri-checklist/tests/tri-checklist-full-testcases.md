@@ -36,7 +36,7 @@ based_on: tri-checklist v1.1.2
 | E 自检声明 | E2 | 降级模式自构造等价输入 | SKILL §上游检测 C |
 | F 交付产物 | F1 | 单文件 Markdown checklist（复选框 + 严重程度标签） | SKILL §契约3/交付产物 |
 | F 交付产物 | F2 | diff.json 可选中间产物 | SKILL §交付产物 |
-| F 交付产物 | F3 | 落盘 .tribro/audit-checklist/<命名>/ + 用户工作区 | compliance §7 |
+| F 交付产物 | F3 | 落盘 .tribro/checklist/<命名>/ + 用户工作区 | compliance §7 |
 | G 职责边界 | G1 | 只生成清单不执行审查（审查由 tri-review） | SKILL §职责边界 |
 | G 职责边界 | G2 | 与 tri-review/tri-html 边界清晰 | SKILL §职责边界 |
 | H 质量标准 | H1 | 四维覆盖/检查项完整/Git模式正确/双门/可渲染/对齐 tri-review | SKILL §质量标准 |
@@ -175,14 +175,14 @@ based_on: tri-checklist v1.1.2
 
 ### TC-F-02：diff.json 中间产物
 
-- **步骤**：检查 `.tribro/audit-checklist/<命名>/diff.json` 落盘
+- **步骤**：检查 `.tribro/checklist/<命名>/diff.json` 落盘
 - **预期**：可选产物存在，含 files/stats/sensitive_files/test_files 结构
 - **判定**：存在且结构完整 = 通过
 
 ### TC-F-03：落盘路径
 
 - **步骤**：检查 checklist 落盘位置
-- **预期**：用户工作区（非 .tribro/）；链路文档落 `.tribro/audit-checklist/<命名>/`
+- **预期**：用户工作区（非 .tribro/）；链路文档落 `.tribro/checklist/<命名>/`
 - **判定**：路径正确 = 通过
 
 ---

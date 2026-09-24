@@ -1,7 +1,7 @@
 ---
 name: 文章生成
 slug: tri-article
-version: 1.4.1
+version: 1.4.2
 displayName: 文章生成
 description: 通用「去 AI 化」技术文章生成器；读取用户配置 profile 后替换占位符并执行去 AI 化写作引擎；去 AI 化改写委派 tri-humanize（HUMANIZE-EMBED），缺失时回退内置 de-ai-rules；支持独立安装，含上游依赖检测两态逻辑；可经 tri-intent 下游路由建议接入
 summary: 把任意技术主题写成「像真人随手写」的去 AI 化文章，具体人设/产品/路径由 profile 占位符注入
@@ -22,7 +22,7 @@ license: MIT
 > 本契约优先级高于 Agent 通用默认行为。用户明确要求「写去 AI 化的文章 / 生成技术文章」即视为激活，不得仅当参考文档。
 
 - 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（连接 skillhub 校验版本，非最新版 MUST 自动执行 `skillhub upgrade <slug>` 升级；升级成功后继续，升级通道不可用则标注 D 态降级继续）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
-- MUST 每次生成前先执行 **§占位符替换前置**：读取 `.tribro/tri-article/profile.md`；缺失或必填项为空时 MUST 先走「§首次运行初始化」反问用户并落盘，未补齐不得生成。
+- MUST 每次生成前先执行 **§占位符替换前置**：读取 `.tribro/article/profile.md`；缺失或必填项为空时 MUST 先走「§首次运行初始化」反问用户并落盘，未补齐不得生成。
 - MUST 把本文件与 `templates/` 中所有形如 `{{字段名}}` 的占位符替换为 profile 对应值；未配置项回退到 §内置默认值，并在文末向用户提示「本次使用了哪些默认值」。
 - MUST 严格遵循「去 AI 化写作引擎」（§方法论）的全部禁用词、视角库、结构模式与质量门禁；命中任一否决项 MUST 重写。
 - MUST 草稿完成后执行 §去 AI 化引擎委派：优先委派 tri-humanize（HUMANIZE-EMBED 模式）对草稿做 35 模式改写；tri-humanize 不可用时回退内置 de-ai-rules（§2）并声明降级，NEVER 跳过改写直接交付。
@@ -45,7 +45,7 @@ license: MIT
 
 | 模式 | 条件 | 行为 |
 |------|------|------|
-| A · 标准模式 | 已存在 `.tribro/tri-article/profile.md` 且必填项齐全 | 读取并替换占位符，直接执行生成流程 |
+| A · 标准模式 | 已存在 `.tribro/article/profile.md` 且必填项齐全 | 读取并替换占位符，直接执行生成流程 |
 | B · 引导安装（硬阻断） | 未安装 `tri-intent` 且用户希望「意图识别 → 自动路由到本 skill」 | 停止并提示安装 tri-intent；纯独立写文章无需此步 |
 
 **模式 B 提示语**：
@@ -62,7 +62,7 @@ license: MIT
 |------|------|------|
 | profile | `AUTHOR_PROFILE` | 文末「个人介绍」段落的人设底稿 |
 | profile | `PRODUCT_*` | 产品自然植入的素材（仅当 `PRODUCT_ENABLED=true`） |
-| profile | `ARTICLES_ROOT` | 文章保存根目录（默认 `.tribro/tri-article/articles`，内部结构见 §1.5） |
+| profile | `ARTICLES_ROOT` | 文章保存根目录（默认 `.tribro/article/articles`，内部结构见 §1.5） |
 | profile | `DOMAIN_POOL` | 选题领域轮转池（同时作为「领域分桶」名，见 §1.5） |
 | profile | `LICENSE_STMT` / `DISABLED_WORDS` | 文末声明 / 禁用词表（可回退默认） |
 | profile | `TRI_INSTALL_NOTE` | 文末「tri-xxx 技能安装指引」文案（见 §文末要素第 3 条；为空则跳过该段） |
@@ -138,10 +138,10 @@ license: MIT
 
 ### 1.5 文章存储与检索（`.tribro` 结构 · 便于搜索去重）
 
-所有文章落盘于 `{{ARTICLES_ROOT}}`（默认 `.tribro/tri-article/articles/`），结构如下：
+所有文章落盘于 `{{ARTICLES_ROOT}}`（默认 `.tribro/article/articles/`），结构如下：
 
 ```
-.tribro/tri-article/
+.tribro/article/
 ├── profile.md                  # 用户配置（占位符填充值）
 └── articles/                   # = {{ARTICLES_ROOT}}
     ├── index.json              # 全量索引：搜索 + 去重 单一事实源
@@ -297,15 +297,15 @@ license: MIT
 
 ### 阶段一 · 首次运行初始化（Init）
 
-1. 检查 `.tribro/tri-article/profile.md` 是否存在且必填项齐全。
+1. 检查 `.tribro/article/profile.md` 是否存在且必填项齐全。
 2. 若缺失 → 用 `AskUserQuestion` 或自然语言**分批反问**用户，至少收集：
    - `AUTHOR_PROFILE`（文末人设底稿）
-   - `ARTICLES_ROOT`（文章保存根目录，默认 `.tribro/tri-article/articles`，内部按 §1.5 结构组织）
+   - `ARTICLES_ROOT`（文章保存根目录，默认 `.tribro/article/articles`，内部按 §1.5 结构组织）
    - `DOMAIN_POOL`（选题领域池，至少 3 项；可回退默认）
    - `PRODUCT_ENABLED` + 若开启则 `PRODUCT_NAME/DESC/TECH/RELATION`
    - `LICENSE_STMT`（可回退默认 MIT 声明）
    - `TRI_INSTALL_NOTE`（文末「tri-xxx 技能安装指引」，可选但推荐开启；为空则每篇跳过该段）
-3. 依据 `templates/profile-skeleton.md` 落盘到 `.tribro/tri-article/profile.md`。
+3. 依据 `templates/profile-skeleton.md` 落盘到 `.tribro/article/profile.md`。
 4. 告知用户「配置已保存，后续生成自动复用；如需修改可编辑该文件或说『重新配置 tri-article』」。
 
 ### 阶段二 · 常规生成（Generate）
@@ -324,7 +324,7 @@ license: MIT
 | 产物 | 文件名 | 内容 | 审批门 |
 |------|--------|------|--------|
 | 文章 | `{YYYY-MM-DD}-{slug}.md` | 去AI化正文 + 三版本摘要 + 标签 + 文末要素 | 无（轻量单轮） |
-| 用户配置 | `.tribro/tri-article/profile.md` | 占位符填充值（首次/修改时写入） | — |
+| 用户配置 | `.tribro/article/profile.md` | 占位符填充值（首次/修改时写入） | — |
 
 ---
 
@@ -343,8 +343,8 @@ license: MIT
 
 ## 落盘规则
 
-- 用户配置落盘于 `.tribro/tri-article/profile.md`（随工作区，不随 skill 包发布）。
-- 文章成果物落盘于 `{{ARTICLES_ROOT}}`（默认 `.tribro/tri-article/articles/`），按 §1.5 的「领域分桶 + index.json 索引」结构组织，便于搜索与去重。
+- 用户配置落盘于 `.tribro/article/profile.md`（随工作区，不随 skill 包发布）。
+- 文章成果物落盘于 `{{ARTICLES_ROOT}}`（默认 `.tribro/article/articles/`），按 §1.5 的「领域分桶 + index.json 索引」结构组织，便于搜索与去重。
 - 每次生成后 MUST 维护 `index.json` 与文件一致（新增/覆盖同步更新索引）。
 - 全程不生成 LICENSE / .gitignore。
 

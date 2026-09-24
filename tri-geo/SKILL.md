@@ -1,7 +1,7 @@
 ---
 name: tri-geo
 slug: tri-geo
-version: 1.0.3
+version: 1.0.4
 displayName: 智引
 description: 面向中国主流生成式引擎（DeepSeek、豆包、Kimi、智谱 GLM、文心一言、元宝、通义、百度 AI）的 GEO（生成式引擎优化）通用 skill。双轨评分：站内信号分由 site_signal.py 确定性计算（可引用性五维/技术基建/Schema/权威信号/爬虫与 llms.txt），引擎实测分由 probe_runner.py 调度真实提问 + answer_judge.py 规则判定（提及率/引用位次/情感/波动区间）。覆盖快检(60秒)、全站诊断、内容重写、国内模型引用适配(CN-Fit)、技术基建、渠道矩阵、监测迭代七大模块；参数校验、规范校验、来源核验、结果判定、流程控制全部脚本化，prompt 仅保留内容创作、竞品研判、渠道定制、疑难判定兜底四处且均有脚本打回闭环；禁捏造与广告法违规为硬阻断红线。支持独立安装，含上游依赖检测三态逻辑（直用/引导补参/讲解降级）。
 summary: 中国引擎 GEO 全链闭环：脚本化双轨评分 + 证据落盘 + 快照自成长，让内容被国内大模型优先引用与采纳。
@@ -34,11 +34,11 @@ license: MIT
 
 6. **评分来源规范（P3）**：对外呈现的每个分数 MUST 附带「产出脚本 + 证据路径 +（实测）采样轮数与波动区间 +（文献）来源与测试环境」。转引未核验数字 MUST 标注"转引未核验"且不得用于评分；实测波动区间由实测统计得出，NEVER 预设数值。
 
-7. **快照与落盘**：每次运行 MUST 用 `snapshot.py` 追加落盘（历史只读，NEVER 覆盖）；过程产物落 `.tribro/tri-geo/`，台账落 `.geo-snapshots/<品牌>/`。
+7. **快照与落盘**：每次运行 MUST 用 `snapshot.py` 追加落盘（历史只读，NEVER 覆盖）；过程产物落 `.tribro/geo/`，台账落 `.geo-snapshots/<品牌>/`。
 
 8. **自检句**：每次操作前 MUST 声明「本次模式=<quick|audit|optimize|cn_fit|infra|channels|monitor>，触发源=<用户显式调用|上游路由>，目标=<url/域名/品牌>，引擎=<...>，已执行 check_update=<A/B/C/D>，已执行 validate_input=<通过/补齐/报错>，已读教训=<N 条/无文件>，脚本链=<...>」；与契约/快照冲突时 MUST 停止并纠正。
 
-9. **教训文件读写闭环**：激活时（版本门第零步后）MUST 先读取 `.tribro/tri-geo/lessons.md`（历史执行沉淀的教训；目录或文件不存在则**静默跳过**——NEVER 报错、NEVER 阻断、NEVER 追问）；执行结束后 MUST 追加本次教训（含日期/场景/教训/可操作规避动作；空泛内容如「本次顺利」NEVER 写入，无新增写「无新增」占位留痕）；写入失败 MUST 提示用户但不阻断交付。
+9. **教训文件读写闭环**：激活时（版本门第零步后）MUST 先读取 `.tribro/geo/lessons.md`（历史执行沉淀的教训；目录或文件不存在则**静默跳过**——NEVER 报错、NEVER 阻断、NEVER 追问）；执行结束后 MUST 追加本次教训（含日期/场景/教训/可操作规避动作；空泛内容如「本次顺利」NEVER 写入，无新增写「无新增」占位留痕）；写入失败 MUST 提示用户但不阻断交付。
 
 10. **结论置信标注**：本 skill 产出的一切结论性表达/观点/判定（评分解读、适配建议、渠道判断、疑难兜底结论）MUST 附三要素：① 置信度（高/中/低）；② 依据类型六选一（`事实 known`/`计算 computed`/`推断 inferred`/`常识 common`/`框架 iframe`/`猜测 guess`）；③ 可验证事实源 URL 或本地证据锚（脚本名 + 证据路径）。`猜测 guess` 类 MUST 标低置信并提示人工验证；NEVER 引用无法访问的编造链接。
 
@@ -106,7 +106,7 @@ license: MIT
 |------|------|---------|--------|
 | check_update.py | 版本门第零步（家族共用逻辑） | `--slug tri-geo --json` | <20 放行 / ≥20 阻断 |
 | validate_input.py | 参数校验与规范化 | `--url X --brand Y --mode audit --json` | 0 通过 / 1 缺必填 / 2 非法 |
-| fetch_page.py | 抓取解析 + 原始 HTML 落盘 | `--url X --raw-dir .tribro/tri-geo/raw --assets --out page.json` | 0 / 2 失败 / 3 正文过少 |
+| fetch_page.py | 抓取解析 + 原始 HTML 落盘 | `--url X --raw-dir .tribro/geo/raw --assets --out page.json` | 0 / 2 失败 / 3 正文过少 |
 | site_signal.py | 站内信号确定性评分 | `--content page.json --robots robots.txt --llmstxt llms.txt --out scores.json` | 0 / 1 封顶 / 2 阻断 |
 | writing_rules.py | 写作规范校验（打回器） | `--file rewrite.md --target-query "..." --json` | 0 通过 / 2 打回 / 3 红线 |
 | citation_check.py | 来源核验与捏造检测 | `--file rewrite.md --sources sources.json --json` | 0 / 2 未核验 / 3 硬阻断 |
@@ -163,13 +163,13 @@ license: MIT
 
 
 ```
-.tribro/tri-geo/raw/        抓取原始证据（HTML / robots.txt / llms.txt）
-.tribro/tri-geo/lessons.md  执行教训台账（追加式：日期/场景/教训/规避动作）
+.tribro/geo/raw/        抓取原始证据（HTML / robots.txt / llms.txt）
+.tribro/geo/lessons.md  执行教训台账（追加式：日期/场景/教训/规避动作）
 .geo-snapshots/<品牌>/<YYYY-MM-DD>-<mode>.json     台账快照（追加，历史只读）
 .geo-snapshots/<品牌>/probe/<engine>/<Pxx>-r<N>.txt 实测原始回答
 ```
 
-- 过程产物统一落 `.tribro/tri-geo/` 与 `.geo-snapshots/`（目录不存在自动创建，NEVER 散落工作区根目录）；快照历史只读，同日重复运行用 `--revision`。
+- 过程产物统一落 `.tribro/geo/` 与 `.geo-snapshots/`（目录不存在自动创建，NEVER 散落工作区根目录）；快照历史只读，同日重复运行用 `--revision`。**`.geo-snapshots/<品牌>/` 为品牌级跨项目台账**（第三类产物区），已登记于 `tri-forge/references/family-spec.md` §1.4 —— 该名可从 slug 推导（`tri-geo`→`geo-snapshots`），且因其生命周期跟随**品牌**而非项目，**NEVER 迁入项目级 `.tribro/`**（否则同一品牌在不同项目下会被切碎成多份台账）。
 - **NEVER 生成 `LICENSE` 与 `.gitignore`**——许可证仅由 frontmatter `license: MIT` 声明。
 
 ## 错误恢复表
@@ -264,8 +264,8 @@ tri-geo/
 
 ## 进化契约
 
-- **反馈接收点**：用户对评分解读、重写稿、实测判定、渠道建议的任何反馈与纠错，MUST 记入 `.tribro/tri-geo/lessons.md`。
-- **经验沉淀位**：`.tribro/tri-geo/lessons.md`（启动读取 → 缺失静默跳过 → 结束追加写入，见契约条目 9）。
+- **反馈接收点**：用户对评分解读、重写稿、实测判定、渠道建议的任何反馈与纠错，MUST 记入 `.tribro/geo/lessons.md`。
+- **经验沉淀位**：`.tribro/geo/lessons.md`（启动读取 → 缺失静默跳过 → 结束追加写入，见契约条目 9）。
 - **自我修订触发条件**：① `writing_rules.py` / `citation_check.py` 词表漏报或误报 → 修订词表并同步 `references/anti-patterns.md`；② 引擎白名单或评分细则漂移 → 修订 `validate_input.py` / `references/scoring-spec.md`（脚本与文档 MUST 同改）；③ 章节或能力调整 → 按 SemVer bump（SKILL/CHANGELOG/tests/`_meta.json` 四处联动 + README 同步）。修订后 MUST 重跑 `tests/verify_tri_geo.py`。
 
 ## 完成判据（每次运行结束 MUST 自检）
@@ -277,7 +277,7 @@ tri-geo/
 5. 快照已追加且历史未被覆盖；
 6. 报告中的每个数字符合评分来源规范；
 7. 给出唯一下一步动作（学 geo-studio：NEVER 一次给 10 条建议）；
-8. 教训已写入 `.tribro/tri-geo/lessons.md`（或写入失败已提示用户）；
+8. 教训已写入 `.tribro/geo/lessons.md`（或写入失败已提示用户）；
 9. 交付形态明确「停车态」或「结束态」。
 
 **停车态 ≠ 结束态**：重写稿降级为「草稿+人工确认」、实测等待用户回填引擎回答、报告待用户确认发布——均为停车态，NEVER 在用户确认前宣告任务结束；脚本链跑完且判据 1-8 全绿方为结束态。

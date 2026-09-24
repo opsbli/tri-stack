@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-09-24
+
+### 变更
+
+- **落盘目录改名 `arch-viz/` → `html/`**：链路文档默认落 `.tribro/html/<命名>/`（原 `.tribro/arch-viz/<命名>/`）。命名判据见 `tri-forge/references/family-spec.md` §1.4 — 目录名 MUST 可从 skill slug 机械推导（`tri-html` → `html/`），原 L3 子意图名 `arch-viz` 不可推导。**旧目录不自动迁移**：已存在 `.tribro/arch-viz/` 的项目请手工改名，否则新产物会另起 `.tribro/html/`。
+
 ## [1.3.0] - 2026-09-22
 
 ### 新增

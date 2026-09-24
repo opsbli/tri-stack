@@ -1,7 +1,7 @@
 ---
 name: 架构可视化分析
 slug: tri-html
-version: 1.3.0
+version: 1.3.1
 displayName: 架构可视化分析
 description: 项目架构可视化分析下游执行 skill。以系统架构设计师视角对指定项目（默认当前项目）进行全面深度架构分析，涵盖架构设计/目录结构/技术栈选型/代码设计/功能设计/特殊设计（安全/性能等）六维，双引擎生成可视化产物：高精度 viewer 引擎（Typed JSON IR → 确定性校验 showcase 门禁 → 单文件交互 HTML：架构图/工作流/时序图/数据流/生命周期五类，深浅主题、聚焦、路径探查、角色透镜、故事播放、PNG/SVG/WebM 导出）+ Mermaid 兼容模式（目录树/类图/ER/旅程图）。当 tri-intent 快照下游路由建议指向本 skill（L2=I10、L3=arch-viz）时激活。支持独立安装，含上游依赖检测三态逻辑与渲染引擎 Node 探测降级链。
 summary: 六维架构分析方法论 + 双渲染引擎（viewer 确定性高精引擎 / Mermaid 兼容）+ showcase 客观门禁 + 结构化诊断修复回执（2 轮上限）+ 单文件 HTML 交付，含双审批门与 §3.13 代码版权合规。
@@ -240,7 +240,7 @@ viewer 高精图表（若有）：写候选 IR → validate showcase → 修复�
 调 scripts/build_html.py：deliver viewer 图表 → 组装主报告单文件 HTML（嵌入链接卡片）
   │
   ▼
-落盘至 `.tribro/arch-viz/<命名>/`（主报告 + viewer 独立成品 + 可选 analysis.json；用户指定交付目录时同步落一份）
+落盘至 `.tribro/html/<命名>/`（主报告 + viewer 独立成品 + 可选 analysis.json；用户指定交付目录时同步落一份）
   │
   ▼
 门②·HTML 交付确认 ──不通过──→ 携反馈补充分析/调整图表 → 再门②
@@ -266,7 +266,7 @@ viewer 高精图表（若有）：写候选 IR → validate showcase → 修复�
 .tribro/                                     # 若不存在则先创建
 ├── snapshots/                               tri-intent 产出（已存在）
 │   └── <命名>.md
-└── arch-viz/<命名>/                          # 默认落盘：主报告 + viewer 成品 + 链路文档
+└── html/<命名>/                              # 默认落盘：主报告 + viewer 成品 + 链路文档
     ├── <项目名>-arch-viz_<日期>_<时间>.html   # 主报告（单文件，可双击打开）
     ├── <主报告stem>-view-<n>-<类型>.html      # viewer 独立成品（每张单文件交互 HTML）
     ├── scope-confirmation.md                 # 门①载体（分析范围确认，含引擎模式）
@@ -274,7 +274,7 @@ viewer 高精图表（若有）：写候选 IR → validate showcase → 修复�
     └── .viewer-ir/                           # viewer 候选 IR 中间产物（deliver 由 build_html.py 托管）
 ```
 
-> 最终交付物（主报告 + viewer 成品）默认落盘 `.tribro/arch-viz/<命名>/`；用户显式指定交付目录时落用户指定位置（项目根目录），但 MUST 同时在 `.tribro/arch-viz/<命名>/` 保留副本。
+> 最终交付物（主报告 + viewer 成品）默认落盘 `.tribro/html/<命名>/`；用户显式指定交付目录时落用户指定位置（项目根目录），但 MUST 同时在 `.tribro/html/<命名>/` 保留副本。
 
 ### 三、产物清单
 
@@ -310,9 +310,9 @@ viewer 高精图表（若有）：写候选 IR → validate showcase → 修复�
 ## 落盘规则
 
 - 快照由 tri-intent 已落盘于 `.tribro/snapshots/`
-- 本 skill 链路文档落盘于 `.tribro/arch-viz/<命名>/`（可覆盖更新）
+- 本 skill 链路文档落盘于 `.tribro/html/<命名>/`（可覆盖更新）
 - **最终成果物（主报告 + viewer 独立成品）落盘至用户工作区**（项目根目录或用户指定目录，非 `.tribro/`）
-- analysis.json 与 viewer 候选 IR 作为可选中间产物落盘 `.tribro/arch-viz/<命名>/`
+- analysis.json 与 viewer 候选 IR 作为可选中间产物落盘 `.tribro/html/<命名>/`
 - NEVER 在用户工作区生成散装多文件（CSS/JS/Mermaid 必须内联进单 HTML；viewer 图表每张为独立单文件成品，属交付物而非散装文件）
 
 ## 目录结构

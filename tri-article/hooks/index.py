@@ -4,7 +4,7 @@
 tri-article 文章索引与去重辅助脚本（纯标准库，无第三方依赖）。
 
 职责：维护 {{ARTICLES_ROOT}}/index.json 单一事实源，支撑「便于搜索去重」的存储结构：
-  .tribro/tri-article/articles/
+  .tribro/article/articles/
     ├── index.json
     └── <domain-slug>/<YYYYMMDD>-<slug>.md
 
@@ -26,7 +26,7 @@ import os
 import re
 import sys
 
-DEFAULT_ROOT = os.path.join(".tribro", "tri-article", "articles")
+DEFAULT_ROOT = os.path.join(".tribro", "article", "articles")
 INDEX_FILE = "index.json"
 SOFT_DISTANCE = 2  # 同领域 slug 编辑距离阈值，≤2 视为软重复
 
@@ -168,7 +168,7 @@ def cmd_list(args):
 
 def main():
     ap = argparse.ArgumentParser(description="tri-article 文章索引与去重辅助")
-    ap.add_argument("--root", default=DEFAULT_ROOT, help="ARTICLES_ROOT，默认 .tribro/tri-article/articles")
+    ap.add_argument("--root", default=DEFAULT_ROOT, help="ARTICLES_ROOT，默认 .tribro/article/articles")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p_d = sub.add_parser("dedup", help="检查标题/领域是否重复")

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/spec/v2.0.0.html).
 
+## [1.1.3] - 2026-09-24
+
+### 变更
+
+- **落盘目录改名 `audit-checklist/` → `checklist/`**：链路文档默认落 `.tribro/checklist/<命名>/`（原 `.tribro/audit-checklist/<命名>/`）。命名判据见 `tri-forge/references/family-spec.md` §1.4（`tri-checklist` → `checklist/`）。**旧目录不自动迁移**。
+
 ## [1.1.2] - 2026-09-18
 
 ### 新增

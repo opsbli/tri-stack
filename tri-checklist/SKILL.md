@@ -1,7 +1,7 @@
 ---
 name: 审计清单生成
 slug: tri-checklist
-version: 1.1.2
+version: 1.1.3
 displayName: 审计清单生成
 description: 项目审计清单生成下游执行 skill。对当前项目进行全面审计，覆盖改动点/审查点/测试点/测试步骤四维；操作对象支持 Git 暂存区/工作区/指定 commit id；产出 Markdown 复选框 checklist 供开发者自检、代码审查及质量保障。当 tri-intent 快照下游路由建议指向本 skill（L2=I10、L3=audit-checklist）时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装/降级模式）。
 summary: 四维审计方法论（改动点/审查点/测试点/测试步骤）+ 三种 Git 输入模式（暂存区/工作区/commit id）+ Markdown 复选框产出，含双审批门与 §3.13 代码版权合规。
@@ -196,7 +196,7 @@ license: MIT
 调 scripts/build_checklist.py 组装 Markdown checklist
   │（骨架 + 复选框 + 严重程度标签 + 三级分组）
   ▼
-落盘 checklist 至 `.tribro/audit-checklist/<命名>/`（默认 audit-checklist_<日期>_<时间>.md；用户指定交付路径时同步落一份）
+落盘 checklist 至 `.tribro/checklist/<命名>/`（默认 audit-checklist_<日期>_<时间>.md；用户指定交付路径时同步落一份）
   │
   ▼
 门②·checklist 交付确认 ──不通过──→ 携反馈补充检查项 → 再门②
@@ -224,7 +224,7 @@ license: MIT
 .tribro/                                    # 若不存在则先创建
 ├── snapshots/                              tri-intent 产出（已存在）
 │   └── <命名>.md
-└── audit-checklist/                        本 skill 链路文档
+└── checklist/                              本 skill 链路文档
     └── <命名>/
         ├── scope-confirmation.md           # 门①载体（审计范围确认）
         └── diff.json                       # Git diff 解析结果（可选）
@@ -254,9 +254,9 @@ license: MIT
 ## 落盘规则
 
 - 快照由 tri-intent 已落盘于 `.tribro/snapshots/`
-- 本 skill 链路文档落盘于 `.tribro/audit-checklist/<命名>/`（可覆盖更新）
-- **最终成果物（Markdown checklist）默认落盘至 `.tribro/audit-checklist/<命名>/`**；用户显式指定交付路径时落用户指定目录（项目根目录），但 MUST 同时保留 `.tribro` 副本
-- diff.json 作为可选中间产物落盘 `.tribro/audit-checklist/<命名>/`
+- 本 skill 链路文档落盘于 `.tribro/checklist/<命名>/`（可覆盖更新）
+- **最终成果物（Markdown checklist）默认落盘至 `.tribro/checklist/<命名>/`**；用户显式指定交付路径时落用户指定目录（项目根目录），但 MUST 同时保留 `.tribro` 副本
+- diff.json 作为可选中间产物落盘 `.tribro/checklist/<命名>/`
 - 产物归档：`.tribro/` 不存在时 MUST 先创建
 - NEVER 在用户工作区生成多文件（checklist 必须单文件）
 

@@ -110,7 +110,7 @@ tri-geo/
 运行时数据目录（**不随包发布**）：
 
 ```
-.tribro/tri-geo/                     过程产物（抓取原始证据、评分 JSON、判定 JSON、报告）
+.tribro/geo/                     过程产物（抓取原始证据、评分 JSON、判定 JSON、报告）
 .geo-snapshots/<品牌>/               快照台账（追加，历史只读）
 .geo-snapshots/<品牌>/probe/<engine>/ 实测原始回答
 ```
@@ -150,12 +150,12 @@ python scripts/validate_input.py --url example.com --brand 格力 --mode quick -
 
 # 2. 抓取解析（同时抓 robots.txt / llms.txt）
 python scripts/fetch_page.py --url https://example.com/page \
-  --raw-dir .tribro/tri-geo/raw --assets --out page.json --json
+  --raw-dir .tribro/geo/raw --assets --out page.json --json
 
 # 3. 站内信号评分
 python scripts/site_signal.py --content page.json \
-  --robots .tribro/tri-geo/raw/robots.txt \
-  --llmstxt .tribro/tri-geo/raw/llms.txt \
+  --robots .tribro/geo/raw/robots.txt \
+  --llmstxt .tribro/geo/raw/llms.txt \
   --out scores.json --json
 
 # 4. 渲染结论卡
@@ -251,7 +251,7 @@ python scripts/citation_check.py --file rewrite.md --sources sources.json \
 |------|------|---------|--------|
 | `check_update.py` | 版本门第零步（家族共用逻辑） | `--slug tri-geo --json` | <20 放行 / ≥20 阻断 |
 | `validate_input.py` | 参数校验与规范化（URL 补全 scheme、域名 idna 校验、按模式校验必填、引擎白名单） | `--url X --brand Y --mode audit --json` | 0 通过 / 1 缺必填 / 2 非法 |
-| `fetch_page.py` | 抓取解析 + 原始 HTML 落盘（urllib + html.parser，10s 超时 2 次重试；支持 `--file` 离线解析） | `--url X --raw-dir .tribro/tri-geo/raw --assets --out page.json` | 0 / 2 失败 / 3 正文过少 |
+| `fetch_page.py` | 抓取解析 + 原始 HTML 落盘（urllib + html.parser，10s 超时 2 次重试；支持 `--file` 离线解析） | `--url X --raw-dir .tribro/geo/raw --assets --out page.json` | 0 / 2 失败 / 3 正文过少 |
 | `site_signal.py` | 站内信号五维评分 + 技术基建 + Schema + 权威信号 + 爬虫/llms.txt | `--content page.json --robots robots.txt --llmstxt llms.txt --out scores.json` | 0 / 1 封顶 / 2 阻断 |
 | `writing_rules.py` | 写作规范校验 R1-R10 | `--file rewrite.md --target-query "..." --json` | 0 通过 / 2 打回 / 3 红线 |
 | `citation_check.py` | 来源核验与捏造检测 | `--file rewrite.md --sources sources.json --offline --json` | 0 / 2 未核验 / 3 硬阻断 |
@@ -372,7 +372,7 @@ python scripts/citation_check.py --file rewrite.md --sources sources.json \
 ## 数据落盘约定
 
 ```
-.tribro/tri-geo/raw/                                    抓取原始证据（HTML / robots.txt / llms.txt）
+.tribro/geo/raw/                                    抓取原始证据（HTML / robots.txt / llms.txt）
 .geo-snapshots/<品牌>/<YYYY-MM-DD>-<mode>.json           台账快照（追加，历史只读）
 .geo-snapshots/<品牌>/probe/<engine>/<Pxx>-r<N>.txt      实测原始回答
 ```
@@ -400,7 +400,7 @@ python scripts/citation_check.py --file rewrite.md --sources sources.json \
 python tests/verify_tri_geo.py          # 退出码 0 = 全部通过
 ```
 
-全场景用例登记见 `tests/tri-geo-full-testcases.md`（能力清单 A-H 共 41 项 + 用例矩阵；标注「人工」的用例按其执行口径操作，执行结果与教训追加至 `.tribro/tri-geo/lessons.md`）。
+全场景用例登记见 `tests/tri-geo-full-testcases.md`（能力清单 A-H 共 41 项 + 用例矩阵；标注「人工」的用例按其执行口径操作，执行结果与教训追加至 `.tribro/geo/lessons.md`）。
 
 当前状态：**28/28 通过**，覆盖
 
