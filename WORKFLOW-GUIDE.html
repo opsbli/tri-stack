@@ -389,6 +389,7 @@
 <thead><tr><th>你的需求长相</th><th>走哪条</th><th>判据</th></tr></thead>
 <tbody>
 <tr><td>「写个 XX 功能 / 改一下这个模块」</td><td><b>轻轨</b> tri-coding</td><td>目标代码不存在，单功能/模块</td></tr>
+<tr><td>「PM 给了原型链接，帮我解析后开始编码」</td><td><b>tri-prototype</b> → tri-coding</td><td>有原型链接或 PRD，需先解析成 <code>requirements.md</code> 再进 tri-coding 门②</td></tr>
 <tr><td>「先出个方案 / 排个期 / 拆下任务」</td><td><b>规划轨</b> tri-plan</td><td>只要文档，不要动手</td></tr>
 <tr><td>「按完整流程做个项目 / 从零到上线」</td><td><b>重装轨</b> tri-sdlc</td><td>交付对象是一个真实项目</td></tr>
 <tr><td>「设计 CI 流水线 / 审批流 / DAG」</td><td>tri-workflow</td><td>交付物是<b>流程定义</b>，交付即结束</td></tr>
@@ -524,6 +525,8 @@ GET https://api.skillhub.cn/api/v1/download?slug=&lt;slug&gt;
 <tr><td>做 skill</td><td>把我们这套上线检查流程蒸馏成一个可复用的 skill</td><td>tri-intent(I21) → tri-god</td><td>可独立调用的新 skill 包</td></tr>
 <tr><td>长期学习</td><td>帮孩子系统学四年级数学，要错题追踪和检查站</td><td><code>tri-learn</code> 领域入口</td><td>学习路径 + 课程与检查站 + 掌握度判断 + 错题本</td></tr>
 <tr><td>求职辅导</td><td>帮我按目标 JD 优化简历并准备面试</td><td><code>tri-jobhunt</code> 领域入口</td><td>ATS 兼容简历 + 要点量化 + JD 匹配 + 面试准备</td></tr>
+<tr><td>解析原型</td><td>PM 给了 Axure 链接，帮我解析后开始编码</td><td>tri-intent(I11+L3=pm-prototype) → tri-prototype</td><td><code>requirements.md</code>（tri-coding 门② 可直接消费）</td></tr>
+<tr><td>解析 PRD</td><td>把这份 PRD 和原型转成需求说明书</td><td>tri-prototype（PRD + 原型双源合并）</td><td><code>requirements.md</code>（冲突标注 PRD 优先）</td></tr>
 <tr><td>去 AI 味</td><td>把这篇文章改写得更像人写的，别一眼看出是 AI</td><td><code>tri-humanize</code>（或 tri-article 内置委派）</td><td>5 条速查粗筛 + 35 种 AI 模式逐项处理后的稿</td></tr>
 <tr><td>审 skill 安全性</td><td>审一下这个第三方 skill 能不能装</td><td><code>tri-guard</code></td><td>skillspector 确定性扫描报告 + 可安装性判断</td></tr>
 <tr><td>省 token</td><td>统计这次对话的 token 开销，超预算就提醒我</td><td><code>tri-cost</code></td><td>全过程关口开销 + 优化建议 + 预算闸门</td></tr>
