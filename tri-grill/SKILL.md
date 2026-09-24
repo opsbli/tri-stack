@@ -1,7 +1,7 @@
 ---
 name: tri-grill
 slug: tri-grill
-version: 1.0.0
+version: 1.0.1
 displayName: 质询对齐（tri-grill）
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。对 requirements.md / design.md / plan.md 等规划文档进行逐条质询，直到 PM 和 Dev 对每一句话有相同理解。质询过程产出的新决策由 tri-domain 记录为 ADR / 术语表条目。产出精化后的文档 + 对齐记录。NEVER 在仍有未解决歧义时宣布对齐完成。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 逐条质询直到共识：挑战模糊术语 → 发明边界场景 → 记录 ADR → 精化文档 → 确认对齐完成。

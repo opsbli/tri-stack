@@ -1,7 +1,7 @@
 ---
 name: tri-orchestrate
 slug: tri-orchestrate
-version: 1.0.0
+version: 1.0.1
 displayName: 协作编排（tri-orchestrate）
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。将 requirements.md 或 task-checklist.md 按功能点边界和依赖关系拆分为 N 份独立 spec，分配给多个人/agent 并行执行，收集结构化回执并自动回写 master-todo。含拆分器（split-specs.py）+ 回执收集器（collect-receipts.py）+ 进度看板生成器。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 自动回写 → 进度看板。

@@ -1,7 +1,7 @@
 ---
 name: tri-init
 slug: tri-init
-version: 1.0.1
+version: 1.0.2
 displayName: 项目初始化（tri-init）
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于将任意项目接入 tri-stack 开发流程：扫描项目目录检测技术栈（Java/Maven/RuoYi、TS/Vite、Go、Python 等），生成 AGENTS.md（AI 协作编码规范）、project-profile.json（机器可读项目元数据）与 .tribro/ 产物目录结构。如果检测到代码生成器（如 RuoYi generator），严格遵循其规范（租户字段 / 审计字段 / 编码规范）生成 project-profile。已有 AGENTS.md 时提示用户确认是否覆盖重新生成。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/ → 无缝衔接 tri-coding / tri-review。

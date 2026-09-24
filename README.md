@@ -78,15 +78,15 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-frontend-design](tri-frontend-design/) | 1.1.2 | 前端设计方向：设计令牌 / 动效基线 / 多变体探索 |
-| [tri-lottie](tri-lottie/) | 1.0.2 | 动效实现 / Lottie 集成 |
-| [tri-prototype](tri-prototype/) | 1.1.1 | PM→Dev 桥接：解析原型 + PRD → tri-coding 需求说明书 |
+| [tri-frontend-design](tri-frontend-design/) | 1.1.3 | 前端设计方向：设计令牌 / 动效基线 / 多变体探索 |
+| [tri-lottie](tri-lottie/) | 1.0.3 | 动效实现 / Lottie 集成 |
+| [tri-prototype](tri-prototype/) | 1.1.2 | PM→Dev 桥接：解析原型 + PRD → tri-coding 需求说明书 |
 
 ### 代码洞察（I10 一跳覆写）
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-code-analyzer](tri-code-analyzer/) | 1.5.0 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
+| [tri-code-analyzer](tri-code-analyzer/) | 1.5.1 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
 | [tri-html](tri-html/) | 1.3.3 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
 | [tri-checklist](tri-checklist/) | 1.1.4 | 审计清单生成：改动点 / 审查点 / 测试点 / 测试步骤四维 |
 
@@ -95,17 +95,17 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-sdlc](tri-sdlc/) | 1.1.5 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
-| [tri-orchestrate](tri-orchestrate/) | 1.0.0 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
-| [tri-grill](tri-grill/) | 1.0.0 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
-| [tri-domain](tri-domain/) | 1.0.0 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
+| [tri-orchestrate](tri-orchestrate/) | 1.0.1 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
+| [tri-grill](tri-grill/) | 1.0.1 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
+| [tri-domain](tri-domain/) | 1.0.1 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
 
 ### 内务 / 造物
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-init](tri-init/) | 1.0.1 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
+| [tri-init](tri-init/) | 1.0.2 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
 | [tri-forge](tri-forge/) | 1.0.4 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
-| [tri-god](tri-god/) | 1.2.2 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
+| [tri-god](tri-god/) | 1.2.3 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
 
 ### 相邻支撑
 

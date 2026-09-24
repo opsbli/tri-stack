@@ -1,7 +1,7 @@
 ---
 name: tri-prototype
 slug: tri-prototype
-version: 1.1.1
+version: 1.1.2
 displayName: 原型解析（tri-prototype）
 description: "PM→Dev 桥接 skill：解析产品原型链接（Axure / 摹客 / 墨刀 / Figma / Figma Dev Mode）与 PRD 文档，提取页面结构、交互规则、业务规则与验收标准，产出 tri-coding 门② 可直接消费的 `requirements.md`（编码需求说明书）——无缝衔接 tri 家族开发流程。支持 Axure share 链接、Figma 文件链接、PRD 文档链接与本地文件输入。认领 I11 的 PM 原型解析子类（L3_子意图=pm-prototype，与 tri-frontend-design / tri-lottie / tri-code-analyzer 并列，非独占 I11）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。"
 summary: 解析 PM 原型与 PRD → 产出 tri-coding `requirements.md`（编码需求说明书），无缝衔接 tri-coding 门② 的设计审批流程。
