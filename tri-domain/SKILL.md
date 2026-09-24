@@ -3,7 +3,7 @@ name: tri-domain
 slug: tri-domain
 version: 1.0.0
 displayName: 领域建模（tri-domain）
-description: "内部专用工具 skill（不注册为 tri-intent 下游路由项）。维护项目的领域模型：共享术语表（CONTEXT.md）、架构决策记录（docs/adr/）、边界场景清单。主动挑战模糊术语、发明边界场景、在决策定型的瞬间记录 ADR——NEVER 只在事后补写。供 tri-grill（质询对齐）、tri-coding（门② 设计）、tri-review（审查依据）消费。支持独立安装，两态上游依赖检测。"
+description: "内部专用工具 skill（不注册为 tri-intent 下游路由项）。维护项目的领域模型：共享术语表（CONTEXT.md）、架构决策记录（docs/adr/）、边界场景清单。主动挑战模糊术语、发明边界场景、在决策定型的瞬间记录 ADR——NEVER 只在事后补写。供 tri-grill（质询对齐）、tri-coding（门② 设计）、tri-review（审查依据）消费。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 领域建模：术语表（CONTEXT.md）+ 架构决策记录（ADR）+ 边界场景清单，供 tri-grill / tri-coding / tri-review 消费。
 tags: [domain-modeling, glossary, adr, ubiquitous-language, internal-tool]
 license: MIT
@@ -109,6 +109,18 @@ license: MIT
 | 挑战术语 | 找到定义 → 提出反例 → 修改定义或新增边界场景 |
 | 查询 | 读 CONTEXT.md / docs/adr/ → 返回定义 |
 
+### 兜底处理（NEVER 静默失败）
+
+| 场景 | 处置 |
+|---|---|
+| 版本检查异常 | 放行（自维护模式），标注口径 |
+| CONTEXT.md 不存在 | 自动创建（从模板初始化） |
+| docs/adr/ 目录不存在 | 自动创建 |
+| 术语已存在 | 提示已存在；询问更新定义还是新增别名 |
+| ADR 编号冲突 | 递增取下一个可用编号 |
+| 术语定义与 ADR 决策冲突 | 标注冲突；请求用户裁决 |
+| 文件写入失败 | 报错并保留原始内容；NEVER 静默丢失
+
 ## 交付产物
 
 | 产物 | 位置 | 说明 |
@@ -116,6 +128,13 @@ license: MIT
 | CONTEXT.md | `<项目根>/CONTEXT.md` | 术语表 + 边界场景清单 |
 | ADR 文件 | `<项目根>/docs/adr/NNNN-title.md` | 架构决策记录 |
 | project-profile 引用 | `.tribro/project-profile.json` | 指向 CONTEXT.md 和 docs/adr/ 的路径 |
+
+### 落盘规则
+
+- CONTEXT.md 落**目标项目的根目录**（`<项目根>/CONTEXT.md`）
+- ADR 文件落**目标项目的 docs/adr/**（`<项目根>/docs/adr/NNNN-title.md`）
+- 命名规则：ADR 编号递增（0001, 0002…），NEVER 重用
+- 所有文件落**目标项目**（不是 tri-stack 仓库），因为领域模型跟着项目走
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
