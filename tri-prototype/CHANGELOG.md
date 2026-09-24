@@ -1,9 +1,9 @@
 # 变更日志
 
-格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
+格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，  
 版本号遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
-> **一致性硬约束**：本文件首个 `## [x.y.z]` MUST 与 `SKILL.md` frontmatter 的 `version` 相等，
+> **一致性硬约束**：本文件首个 `## [x.y.z]` MUST 与 `SKILL.md` frontmatter 的 `version` 相等，  
 > 且 MUST 为本文件的最大版本。违反即触发门④ 第 11 条 FAIL。
 
 ## [1.1.0] - 2026-09-24
@@ -33,6 +33,7 @@
 
 ### 来源说明
 
-本 skill 系 tri-forge 门①→⑤ 首次实战生成的产物（mode C · 锻造生成 · 五门流程）。
-用户需求：「PM 给出原型链接，自动解析原型页面，如果有 PRD 文档说明业务规则再结合原型，
+本 skill 系 tri-forge 门①→⑤ 首次实战生成的产物（mode C · 锻造生成 · 五门流程）。  
+用户需求：「PM 给出原型链接，自动解析原型页面，如果有 PRD 文档说明业务规则再结合原型，  
 产出适合 tri 家族开发流程的产物，无缝衔接得上 tri 开发流程」。
+

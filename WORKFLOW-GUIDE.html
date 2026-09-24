@@ -104,10 +104,11 @@
   <div class="meta">
     <span class="chip">入口 tri-intent v1.13.1</span>
     <span class="chip">27 个意图落点</span>
-    <span class="chip">40 个顶层 skill</span>
+    <span class="chip">42 个顶层 skill</span>
     <span class="chip">5 层结构</span>
     <span class="chip">11 个缺失路由目标已补装</span>
-    <span class="chip warn">⚠ 四处版本校验待补</span>
+    <span class="chip">tri-forge 已自建</span>
+    <span class="chip">tri-prototype v1.1.0</span>
   </div>
 </header>
 
@@ -142,7 +143,7 @@
 <nav class="toc">
   <ol>
     <li><a href="#m">心智模型：三句话</a></li>
-    <li><a href="#map">全景：40 个 skill 的五层结构</a></li>
+    <li><a href="#map">全景：42 个 skill 的六层结构</a></li>
     <li><a href="#contract">核心契约：快照 + LATEST 指针</a></li>
     <li><a href="#gate">版本门：现状与走向</a></li>
     <li><a href="#route">三条落地轨道</a></li>
@@ -173,7 +174,7 @@
 
 <p>用不好这套 skill 的症状也只有三种：<b>提问太泛</b>（动作无法映射 → 被降级到咨询）、<b>门上一言不发</b>（skill 卡在等你确认）、<b>跳轨</b>（小需求用了重装轨）。后面每条都有对治。</p>
 
-<h2 id="map"><span class="n">02</span>全景：40 个 skill 的五层结构</h2>
+<h2 id="map"><span class="n">02</span>全景：42 个 skill 的六层结构</h2>
 
 <p>本版相对上一版的变化：<b>横向层从 4 个扩到 7 个</b>（新增 <code>tri-cost</code> / <code>tri-guard</code> / <code>tri-humanize</code>），并出现一个<b>全新类别「领域 skill」</b>（<code>tri-learn</code> / <code>tri-jobhunt</code>）。</p>
 
@@ -203,6 +204,7 @@
     <span class="sk"><b>tri-html</b> <span class="v">1.3.0</span></span>
     <span class="sk"><b>tri-checklist</b> <span class="v">1.1.2</span></span>
   </div>
+  <p style="margin:8px 0 0;font-size:12.5px"><b>本版新增：</b><span class="sk"><b>tri-prototype</b> <span class="v">1.1.0</span> <span class="v">I11+L3=pm-prototype</span></span> PM→Dev 桥接 skill（解析原型+PRD → 产出 tri-coding 门② 的 requirements.md）</p>
   <p style="margin:8px 0 0;font-size:12.5px">拿快照、干专业活、产出成果物。<code>tri-html</code>（I10 架构可视化）与 <code>tri-checklist</code>（I10 审计清单）是子类一跳路由。</p>
   <p style="margin:8px 0 0;font-size:12.5px"><b>本版补装的 11 个子类/领域 skill（均已纳入，路由可落地）</b>：</p>
   <div class="skills" style="margin-top:6px">
@@ -314,7 +316,7 @@
 <p>每个 skill 启动后的**第零步**都会跑 <code>scripts/check_update.py</code>。本版这一机制有两处结构变化：</p>
 
 <h3>变化 1 · 真源改为「每 skill 自带」</h3>
-<p>上游把版本门细则真源放在 <code>tri-forge/references/version-check-spec.md</code>，而 tri-forge 未随任何可达源分发（本地磁盘 / git 全历史 / 原作者仓库 / 平台 92 个 skill 全量枚举，均无命中）。本仓库已改为：</p>
+<p>上游把版本门细则真源放在 <code>tri-forge/references/version-check-spec.md</code>，而 tri-forge 被上游私有化（<code>.gitignore</code> 显式排除，平台亦未发布）。本仓库为自维护 fork，<b>已自行重建 tri-forge</b> 并改为：</p>
 <table>
 <thead><tr><th>文件</th><th>角色</th></tr></thead>
 <tbody>
@@ -565,7 +567,7 @@ GET https://api.skillhub.cn/api/v1/download?slug=&lt;slug&gt;
 <tr><td><span class="sev s1">P1</span></td><td>小需求被拉成九阶段工程</td><td>任务要点带了「完整流程/端到端/上线」→ 命中 sdlc 子类</td><td>要么去掉那些词，要么接受并选 <code>lite</code> 剖面</td></tr>
 <tr><td><span class="sev s1">P1</span></td><td>说「搞定一下」结果只给了建议不动手</td><td>动作泛化无法映射 → 降级 I03 + 强制澄清</td><td>把动词说具体（写/改/修/翻译/审查/设计）+ 给对象</td></tr>
 <tr><td><span class="sev s1">P1</span></td><td>门禁连续 FAIL 一直在回炉</td><td>需求/设计有结构性缺陷</td><td>连 3 轮 FAIL 会停机；<b>此时该回退到 P1/P2 改需求</b>，而非继续打回</td></tr>
-<tr><td><span class="sev s1">P1</span></td><td>「按家族规范生成一个 skill」无人承接</td><td><b>tri-forge 未随包分发</b>，而 I21 路由指向它</td><td>已知缺口 3。暂用 <code>tri-god</code>（蒸馏）替代，或等 tri-forge 自建完成</td></tr>
+<tr><td><span class="sev s1">P1</span></td><td>「按家族规范生成一个 skill」无人承接</td><td>tri-forge 已自建（<code>tri-forge/</code>），路由已恢复</td><td>✅ 已解决。直接使用 tri-forge（mode C 锻造生成）</td></tr>
 <tr><td><span class="sev s2">P2</span></td><td>交付物上看不到源码</td><td>源码应在<b>你的工作区</b>，不在 .tribro</td><td>去 <code>implements.md</code> / <code>release-report.md</code> 看记录的路径</td></tr>
 <tr><td><span class="sev s2">P2</span></td><td>交付物标了「版本校验未完成（离线）」</td><td>网络不可达，B 态降级放行</td><td>这是标注不是错误</td></tr>
 <tr><td><span class="sev s2">P2</span></td><td>想知道某 skill 是否落后</td><td>自维护后不再与平台比对</td><td>改用四处版本一致性校验（待 tri-forge 自建完成）</td></tr>
@@ -580,8 +582,8 @@ GET https://api.skillhub.cn/api/v1/download?slug=&lt;slug&gt;
 <footer>
   tri-skills 使用手册 · 自维护 Fork 版 · 按仓库实测契约重写<br>
   契约基线：tri-intent v1.13.1 ／ tri-coding v1.7.0 ／ tri-review v1.6.0 ／ tri-sdlc v1.1.3 ／ tri-workflow v1.2.3<br>
-  40 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
-  <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）；⬜ 自建 tri-forge 尚未完成，完成后需再刷新本节。</span>
+  42 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
+  <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ tri-forge 已自建 ✅ tri-prototype v1.1.0 已生成</span>
 </footer>
 
 </div>
