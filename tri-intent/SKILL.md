@@ -242,7 +242,7 @@ tri-intent/
 |---|---|---|
 | I01–I05 | tri-ask | `tri-ask/` |
 | I06–I10 | tri-content | `tri-content/`（默认）；文章撰写子类→`tri-article/`（见下）；PM 产物子类→`tri-pm/`（见下）；格式转换子类族（I08）→ `tri-pdf2md/`、`tri-docx2md/`、`tri-pptx2md/`、`tri-xlsx2md/`、`tri-html2md/`（见下）；知识库搭建子类（I08）→`tri-wiki/`（见下）；架构可视化子类（I10）→`tri-html/`；审计清单子类（I10）→`tri-checklist/`；深度剖析子类（I10）→`tri-code-analyzer/`（见下） |
-| I11 | tri-coding | `tri-coding/`（默认）；前端设计方向子类→`tri-frontend-design/`（见下）；动效实现子类→`tri-lottie/`（见下）；全生命周期子类→`tri-sdlc/` |
+| I11 | tri-coding | `tri-coding/`（默认）；前端设计方向子类→`tri-frontend-design/`（见下）；动效实现子类→`tri-lottie/`（见下）；PM 原型解析子类→`tri-prototype/`（见下）；全生命周期子类→`tri-sdlc/` |
 | I12 | tri-fix | `tri-fix/` |
 | 代码审查（CR） | tri-review | `tri-review/` |
 | I13 | tri-plan | `tri-plan/`（默认）；工作流设计子类→`tri-workflow/`；全生命周期子类→`tri-sdlc/` |
@@ -293,6 +293,12 @@ tri-intent/
 > `L3_子意图` 标注为 `frontend-design`，`下游路由建议` **直接覆写为 tri-frontend-design**（一跳）。
 > 判定要点：产出物是设计方向与令牌规格（CSS 令牌/动效基线/多变体方案）→ tri-frontend-design；产出物是可运行代码实现 → tri-coding 默认。「实现这个页面」仍走 tri-coding，仅设计先行场景覆写。
 > 下游依赖检测在此场景仅需检测 `tri-frontend-design/`，缺失即提示安装。
+
+> **I11 PM 原型解析子类说明（pm-prototype · 子类路由）**：当 L2=I11 编码开发，且任务要点为「解析原型 / 原型转需求 / PM 给了原型链接 / PRD + 原型转成需求文档」等 **PM→Dev 桥接语义**而非代码实现时，
+> `L3_子意图` 标注为 `pm-prototype`，`下游路由建议` **直接覆写为 tri-prototype**（一跳）。
+> 与 frontend-design / motion 子类 MECE：产出设计方向与令牌规格 → tri-frontend-design；产出动效代码 → tri-lottie；产出**编码需求文档**（`requirements.md`）→ tri-prototype；一般编码 → tri-coding 默认。
+> tri-prototype 的产物 `requirements.md` **无缝衔接 tri-coding 门②**（tri-coding 读取该文件产出 design.md）。
+> 下游依赖检测在此场景需检测 `tri-prototype/`，缺失即提示安装。
 
 > **I11 动效实现子类说明（motion · 子类路由）**：当 L2=I11 编码开发，且任务要点含「生成动画/动效代码、Lottie 集成、转场/微交互/加载态实现、动画代码审查修复」等**动效实现语义**时，
 > `L3_子意图` 标注为 `motion`，`下游路由建议` 直接覆写为 `tri-lottie` （一跳）。

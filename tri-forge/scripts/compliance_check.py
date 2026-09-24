@@ -146,7 +146,7 @@ def check(d: Path) -> dict:
         role = "internal"
     elif "横向" in desc:
         role = "lateral"
-    elif "下游" in desc and ("认领" in desc or "处理 I" in desc or "处理 L2" in desc):
+    elif ("下游" in desc or "桥接" in desc) and ("认领" in desc or "处理 I" in desc or "处理 L2" in desc):
         role = "downstream"
     elif "子 skill" in desc or "children" in desc:
         role = "child"
@@ -160,7 +160,7 @@ def check(d: Path) -> dict:
         role = "internal"
     elif "横向" in desc:
         role = "lateral"
-    elif "下游" in desc and ("认领" in desc or "处理 I" in desc or "处理 L2" in desc):
+    elif ("下游" in desc or "桥接" in desc) and ("认领" in desc or "处理 I" in desc or "处理 L2" in desc):
         role = "downstream"
     elif "子 skill" in desc or "children" in desc:
         role = "child"
