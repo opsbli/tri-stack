@@ -401,23 +401,32 @@
 <tr><td>「分析项目架构 / 画架构图」</td><td>tri-html</td><td>架构可视化</td></tr>
 <tr><td>「把某人的方法论做成 skill」</td><td>tri-god</td><td>产物是一个可独立调用的 skill</td></tr>
 <tr><td>「长期学某门课 / 长期求职辅导」</td><td>tri-learn / tri-jobhunt</td><td><b>领域单入口</b>，不按单次意图</td></tr>
+<tr><td>「把需求拆给 N 个人并行做，总 todo 自动回写」</td><td><b>tri-orchestrate</b></td><td>协作编排：拆 spec + 分派 + 回执收集 + 汇总看板</td></tr>
+<tr><td>「需求有歧义，逐条质询到对齐再动手」</td><td><b>tri-grill</b></td><td>六维质询（歧义/边界/反例/术语/依赖/优先级），消除「PM 说 X、Dev 理解成 Y」</td></tr>
+<tr><td>「统一术语 / 记设计决策 / 补边界场景」</td><td><b>tri-domain</b></td><td>产出 CONTEXT.md 术语表 + docs/adr/ + 边界场景清单</td></tr>
+<tr><td>「首次把项目接入 tri-stack / 初始化」</td><td><b>tri-init</b>（<b>直调</b>，不经路由）</td><td>扫描技术栈 → 生成 AGENTS.md + project-profile + .tribro/；用户直接说「初始化这个项目」</td></tr>
 </tbody>
 </table>
 
 <div class="card warn">
   <div class="t"><span class="sev s0">优先级冲突</span> sdlc 子类最高</div>
-  <p style="margin:0">三个子类（sdlc / workflow / loop）可能同时命中：<b>sdlc &gt; workflow &gt; loop</b>，最终以「交付对象是<b>一个真实项目</b> / <b>一份流程定义</b> / <b>一个长期循环体</b>」三者择一。且 sdlc 子类靠<b>任务要点语义</b>触发，不是表层动词。</p>
+  <p style="margin:0">子类可能同时命中时的优先序：<b>sdlc &gt; workflow &gt; loop</b>；pm-prototype 子类（原型链接/PRD 转需求）命中时<b>直接覆写为 tri-prototype</b>。最终以「交付对象是<b>一个真实项目</b> / <b>一份流程定义</b> / <b>一个长期循环体</b> / <b>一份编码需求文档</b>」四者择一。sdlc 子类靠<b>任务要点语义</b>触发，不是表层动词。</p>
 </div>
 
 <h2 id="sop"><span class="n">06</span>SOP：7 步完成一次需求落地</h2>
 
 <h3>Step 0 · 环境准备</h3>
-<pre><code><span class="cmt"># 版本门读 ~/.skillhub/metadata.json 取 API 主机</span>
-<span class="cmt"># 缺该文件会落 C 态（放行但归因「读不到配置」）</span>
+<pre><code><span class="cmt"># 自维护模式（远端比对已停用）：skill 经 junction 安装在本地，无需从平台下载</span>
+<span class="cmt"># 检查安装状态：</span>
+python ops/install-skills.py --target ~/.workbuddy/skills
+<span class="cmt"># → 缺失的 skill 自动补装 junction；已存在的跳过</span>
 
-<span class="cmt"># 取包（纯 HTTP，无需装 CLI）——注意端点是 query 形式</span>
-GET https://api.skillhub.cn/api/v1/download?slug=&lt;slug&gt;
-<span class="cmt"># → 302 → https://skillhub-*.cos.accelerate.myqcloud.com/skills/&lt;nsId&gt;/&lt;slug&gt;/&lt;ver&gt;.zip</span>
+<span class="cmt"># 版本门为本地自校验（SELF_MAINTAINED），不发起任何远端请求：</span>
+python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
+<span class="cmt"># 退出码 &lt;20 放行，&gt;=20 阻断（A 一致 / D 漂移均放行，D 附加告警）</span>
+
+<span class="cmt"># 新项目首次接入（tri-init 直调，不经 tri-intent 路由）：</span>
+<span class="cmt"># 对 AI 说「初始化 D:\path\to\project」→ 生成 AGENTS.md + .tribro/project-profile.json</span>
 </code></pre>
 
 <h3>Step 1 · 把需求说出来（决定命中率）</h3>
