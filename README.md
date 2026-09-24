@@ -86,7 +86,7 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-code-analyzer](tri-code-analyzer/) | 1.4.1 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
+| [tri-code-analyzer](tri-code-analyzer/) | 1.5.0 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
 | [tri-html](tri-html/) | 1.3.2 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
 | [tri-checklist](tri-checklist/) | 1.1.3 | 审计清单生成：改动点 / 审查点 / 测试点 / 测试步骤四维 |
 
