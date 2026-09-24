@@ -5,17 +5,17 @@ tri-* 家族版本检查与强制自动更新脚本（check_update.py，按 --sl
 
 职责：把 `references/version-check-spec.md` 中原本仅以文字约定存在的「第零步版本门」
 落成确定性可执行逻辑。prompt 层只负责「调用本脚本 + 读取 JSON 结果 + 按态处置」，
-NEVER 自行推断版本、NEVER 自行拼接升级命令。脚本自身不绑定 tri-intent——
+NEVER 自行推断版本、NEVER 自行拼接升级命令。脚本自身不绑定任何外部上游 skill——
 它通过 --slug / --skill-dir（或自动从所在目录推导）适配任意 tri-* skill，
-因此全家族共用同一份逻辑、同一套四态与退出码。
+因此全家族共用同一份逻辑、同一套四态判定。
 
-四态判定（与 version-check-spec.md §四 逐条对应）：
+四态判定（与 version-check-spec.md §二 逐条对应）：
   A 校验通过   响应有效且 current >= latest
   B 离线降级   网络不可达（DNS/连接失败/超时），重试 1 次仍失败
   C 通道降级   可达但响应无效（非 200 / 非 JSON / 无版本字段 / 读不到配置）
   D 升级降级   确实陈旧且已真实尝试升级但未完成（CLI 缺失/升级失败/权限不足）
 
-用法（脚本按 --slug 自动适配任意 tri-* skill，自身不绑定 tri-intent）：
+用法（脚本按 --slug 自动适配任意 tri-* skill，自身不绑定任何外部上游 skill）：
     python check_update.py --json                                   # 自动定位所在 skill 目录
     python check_update.py --slug <slug> --skill-dir /path/to/<slug>
     python check_update.py --force --json          # 绕过节流强制检查
@@ -55,7 +55,7 @@ from typing import Dict, List, Optional, Tuple
 # 常量
 # ---------------------------------------------------------------------------
 
-DEFAULT_SLUG = "tri-intent"
+DEFAULT_SLUG = None  # 从 frontmatter 或 --slug 参数推导，不硬编码默认值
 
 # skillhub 客户端配置真源。NEVER 硬编码域名——营销官网 skillhub.cn 对任意路径
 # 都返回 200+HTML 兜底页，误用会让校验永远"假通过"。
@@ -66,11 +66,11 @@ STORE_CLI = SKILLHUB_HOME / "skills_store_cli.py"
 LOCK_REL = Path(".workbuddy") / "skills" / ".skills_store_lock.json"
 
 # 缓存根目录默认值；decide() 会按 slug（或 --cache-dir）重设为 ~/.cache/<slug>
-CACHE_DIR = Path.home() / ".cache" / "tri-intent"
+CACHE_DIR = Path.home() / ".cache" / "tri-skills"
 STATE_FILE = CACHE_DIR / "update-state.json"
 BACKUP_ROOT = CACHE_DIR / "backup"
 
-# 节流阈值，与 coding/scripts/check-updates.sh 的 STALE_MIN 一致
+# 节流阈值：24 小时（1440 分钟，与版本检查规范一致）
 STALE_MIN = 1440
 
 HTTP_TIMEOUT = 5          # §2.5 单次请求超时 MUST <= 5s
@@ -79,8 +79,7 @@ HTTP_RETRY = 1            # §2.5 失败重试 1 次
 VERSION_RE = re.compile(r"^version:\s*([0-9]+(?:\.[0-9]+)*)", re.MULTILINE)
 SLUG_RE = re.compile(r"^slug:\s*([A-Za-z0-9._-]+)", re.MULTILINE)
 
-# 移植自 coding/scripts/log.js versionCompare 的格式白名单：
-# 只允许数字和点号，且不能以点号开头或结尾
+# 版本号格式白名单：只允许数字和点号，且不能以点号开头或结尾
 SEMVER_RE = re.compile(r"^\d+(\.\d+)*$")
 
 STATE_PASS = "A"
@@ -107,14 +106,14 @@ SELF_CHECK_LABEL = {
 
 
 # ---------------------------------------------------------------------------
-# 版本比较：移植自 coding/scripts/log.js 的 versionCompare()
+# 版本比较（内部实现，逐段整数比较两个版本号）
 # ---------------------------------------------------------------------------
 
 
 def version_compare(a: Optional[str], b: Optional[str]) -> Optional[int]:
     """逐段整数比较两个版本号。
 
-    与 coding/scripts/log.js versionCompare() 行为完全一致：
+    行为约定（内部唯一真源，见 references/version-check-spec.md）：
       - 任一为空 → None（原实现 console.warn 后 return null）
       - 任一不匹配 ^\\d+(\\.\\d+)*$ → None
       - 逐段 int 比较，短的一侧缺位补 0
@@ -196,7 +195,7 @@ def detect_install_mode(skill_dir: Path, registry: Optional[dict]) -> dict:
         "is_link": linked,
         "source_local": src_local,
         "dangling_link": dangling,
-        # junction 单源安装 → 跳过自动升级（version-check-spec.md §三 junction 例外）
+        # junction 单源安装 → 跳过自动升级（version-check-spec.md junction 例外）
         "skip_auto_upgrade": linked or src_local,
     }
 
@@ -293,7 +292,7 @@ def fetch_latest(api_host: str, slug: str,
         try:
             req = urllib.request.Request(
                 url, headers={"Accept": "application/json",
-                              "User-Agent": "tri-skills-version-gate/1.0"})
+                              "User-Agent": "tri-skills-version-check/1.0"})
             with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
                 out["http_status"] = resp.getcode()
                 ctype = (resp.headers.get("Content-Type") or "").lower()
@@ -357,7 +356,7 @@ def fetch_latest(api_host: str, slug: str,
 
 
 # ---------------------------------------------------------------------------
-# 节流状态（移植 coding check-updates.sh 的时间戳门）
+# 节流状态（时间戳门：24h 内仅校验一次）
 # ---------------------------------------------------------------------------
 
 
@@ -395,7 +394,7 @@ def is_fresh(state: dict, slug: str, ttl_min: int) -> bool:
 
 
 def locate_cli() -> Tuple[Optional[List[str]], str]:
-    """按 version-check-spec.md §3.2 顺序定位 CLI。返回 (argv 前缀, 描述)。"""
+    """按 version-check-spec.md 顺序定位 CLI。返回 (argv 前缀, 描述)。"""
     exe = shutil.which("skillhub")
     if exe:
         return [exe], f"PATH: {exe}"
@@ -700,6 +699,11 @@ def decide(args) -> dict:
 
     current, fm_slug = read_frontmatter(skill_md)
     slug = args.slug or fm_slug or skill_dir.name or DEFAULT_SLUG
+    if not slug:
+        result["state"] = STATE_BLOCK
+        result["block_code"] = "ENV"
+        result["warnings"].append("无法推导 slug：请通过 --slug 参数或 SKILL.md frontmatter 指定")
+        return result
     result["slug"] = slug
     result["current"] = current
 
@@ -720,7 +724,7 @@ def decide(args) -> dict:
             f"user-level 链接悬空（指向不存在的目标）：{mode['user_level_path']}"
             " —— 斜杠激活将失效，需重指当前源码树")
 
-    # ---- 节流（对齐 coding STALE_MIN=1440） ----
+    # ---- 节流（对齐 version-check-spec.md 的 STALE_MIN=1440，内部真源） ----
     # ---- 自维护 fork：跳过远端比对，改为本地版本一致性校验 ----
     # 必须放在节流检查**之前**：否则旧的远端缓存态会先命中并 early return。
     if SELF_MAINTAINED and os.environ.get(_ALLOW_REMOTE_ENV, "").strip().lower() \
@@ -902,11 +906,11 @@ def render_human(r: dict) -> str:
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(
-        description="tri-* 家族版本检查与强制自动更新（version-gate 第零步的可执行实现，按 --slug 适配各 skill）")
+        description="tri-* 家族版本检查与强制自动更新（version-check-spec 第零步的可执行实现，按 --slug 适配各 skill）")
     ap.add_argument("--slug", default=None, help="skill slug，默认读 frontmatter")
     ap.add_argument("--skill-dir", default=None, help="skill 根目录，默认脚本上级目录")
     ap.add_argument("--ttl-min", type=int, default=STALE_MIN,
-                    help=f"节流阈值（分钟），默认 {STALE_MIN}，对齐 coding 的 STALE_MIN")
+                    help=f"节流阈值（分钟），默认 {STALE_MIN}，对齐 version-check-spec.md 的 STALE_MIN")
     ap.add_argument("--force", action="store_true", help="绕过节流强制重查")
     ap.add_argument("--dry-run", action="store_true", help="只判定不真正执行升级")
     ap.add_argument("--cache-dir", default=None,

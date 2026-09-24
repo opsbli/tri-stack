@@ -93,6 +93,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `f10-children-check-update` | sync_script | 为 `tri-sdlc/children/*` 的 9 个子 skill 各部署自带 `scripts/check_update.py`（对齐顶层；STUB 命令不再悬空） |
 | `f11-children-tests-version` | replace_regex | 子 skill 的 tests 描述版本引用 `v1.1.1` → `v1.1.2`（随版本线补升同步） |
 | `f12-children-readme-tree` | replace_text | 子 skill README 目录树：补列实际存在的 `references/` 与新增的 `scripts/check_update.py` |
+| `f13-check-update-decouple` | sync_script | 顶层 24 份 `check_update.py` 统一为去耦形态（清除 `tri-intent` 硬编码耦合；实际 `写入 22｜跳过 2`，跳过的即已去耦的 `tri-code-analyzer` / `tri-lottie`） |
 
 ## 每项补丁的依据
 
@@ -456,7 +457,24 @@ skillhub[ \t]+install[ \t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \t]+--dir[ \t]+(?:<[^>
 24 份脚本有两种形态，差异在 `DEFAULT_SLUG`（`"tri-intent"` vs `None`）、
 `CACHE_DIR`（`~/.cache/tri-intent` vs `~/.cache/tri-skills`）与若干注释文案。
 给 child 部署时取 `DEFAULT_SLUG = None` 的去耦版——**child 的默认 slug 不可能是 `tri-intent`**，
-硬编码默认值对它是错的。形态计数因此不变（仍 2 种），分布由 22/2 变为 **22/11**。
+硬编码默认值对它是错的。
+
+### 后续（`f13` · 同日）：顶层 22 份主形态一并统一去耦
+
+主形态与去耦形态的 40 行差异中，功能性仅 3 处：`DEFAULT_SLUG="tri-intent"` → `None`
+（去耦版**新增** slug 空值 BLOCK 防御）、`CACHE_DIR` 模块级默认值（实测 `decide()` 总会
+按 slug 重设为 `~/.cache/<slug>` ⇒ 默认值从不生效，无行为差异）、User-Agent 串
+（自维护模式不发网络，仅远端逃生舱用）。其余全是注释/docstring 文案。
+
+**行为等价双证明后才覆盖**：
+- 正向：同一 skill（tri-action）分别用两形态跑 `--json`，归一 `skill_dir` 后 **JSON 全等**、均 exit 0 / `state=A`
+- 负向（mutation）：复制 tri-god 注入 P5 漂移（badge `1.2.3→1.2.4`），两形态各校验同一副本，
+  **均 EXIT=12 / `state=D` / 归一后 JSON 全等**
+
+据此新增 `f13`（`sync_script`，`glob: tri-*/SKILL.md`）：顶层 24 份统一覆盖为 payload 去耦版，
+实测 `写入 22｜跳过 2`（跳过的即内容已一致的 `tri-code-analyzer` / `tri-lottie`）。
+**终态：33 份 skill 副本 + 1 份 payload = 34 份 hash 全等**（`98315f6c…`），
+全仓 `check_update.py` 仅存 1 种形态。
 
 ### 同一轮补齐的三处
 

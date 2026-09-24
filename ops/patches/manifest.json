@@ -224,6 +224,14 @@
       "old": "├── CHANGELOG.md\n└── tests/",
       "new": "├── CHANGELOG.md\n├── references/\n│   └── version-check-spec.md\n├── scripts/\n│   └── check_update.py\n└── tests/",
       "already_marker": "├── references/"
+    },
+    {
+      "id": "f13-check-update-decouple",
+      "type": "sync_script",
+      "label": "顶层 24 份 check_update.py 统一为去耦形态（DEFAULT_SLUG=None；清除 tri-intent 硬编码耦合，与 f10 的 child 9 份及 payload 同 hash）",
+      "glob": "tri-*/SKILL.md",
+      "payload": "assets/check_update.py",
+      "dest": "scripts/check_update.py"
     }
   ]
 }
