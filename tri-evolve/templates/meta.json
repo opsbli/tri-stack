@@ -29,6 +29,14 @@
       "synchronous": "NORMAL",
       "temp_store": "MEMORY",
       "cache_size": -20000
+    },
+    "schedule": {
+      "enabled": false,
+      "cadence": "0 2 * * *",
+      "timezone": "Asia/Shanghai",
+      "command": "python tri-evolve/scripts/evolve_learn.py --batch --from-schedule",
+      "max_signals_per_run": 500,
+      "on_failure": "disable_and_notify"
     }
   },
   "stats": {
@@ -38,7 +46,9 @@
     "rejected_proposals": 0,
     "rolled_back_lessons": 0,
     "total_profiles": 0,
-    "last_learn_at": null
+    "last_learn_at": null,
+    "last_schedule_run_at": null,
+    "schedule_consecutive_failures": 0
   },
   "schema_version": 1
 }
