@@ -1,5 +1,11 @@
 # 变更日志
 
+> **分支说明（2026-09-24）**：本分支 `main` 已收窄为**编程工作流专线，22 个 skill**。
+> 下方 1.0.0 的 Skill 清单是 2026-08-03 初始发布时的快照，属追加型历史、不予改写；
+> 其中 `tri-content` / `tri-article` / `tri-translate` / `tri-ask` / `tri-bs` / `tri-express` /
+> `tri-cache` / `tri-evolve` / `tri-mm` / `tri-music` / `tri-true` 等 24 个非编程 skill 已移出本分支，
+> 全量 46 个保存在归档分支 `archive-full-skills-20260924`。
+
 ## [1.0.0] - 2026-08-03
 
 ### 新增
