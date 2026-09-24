@@ -202,7 +202,7 @@ pat='^version: *(\\S+)'   -> 匹配
 | ~~版本线升版链~~ | ✅ **已完成**：15 个 skill 升 patch + `--apply-docs` 幂等修正 45 处文档层漂移 + `--emit-baseline` 重写基线（24 skill） |
 | ~~tri-forge 自建~~ | ✅ **已完成**：`tri-forge/`（15 文件），三模式 + 五门流程 + 22 条门④ + 门③ 路由回流 + 五点版本校验 |
 | ~~tri-forge 门④ 负向验证~~ | ✅ **已完成**：mutation testing **6/6** 项注入全部被抓到（见下表） |
-| 自建 tri-forge 走一次**生成型**实战（门①→⑤） | ⬜ tri-forge 已通过门④ 自审 + mutation testing，但「从零生成一个新 skill」的完整五门流程**尚未实战跑通** |
+| ~~自建 tri-forge 走一次**生成型**实战（门①→⑤）~~ | ✅ **已完成**：`tri-init`（1.0.0 首发 2026-09-24）即该实战产物。① **落盘位置**合规：`tri-forge/SKILL.md` 规定模式 C 产物默认落仓库根 `<slug>/`，`tri-init/` 正合；② **功能证据**：门④ `python tri-forge/scripts/compliance_check.py --skill tri-init` → **FAIL 0 · 需人工 0**（22 条全 PASS/N-A）；③ **包结构**齐备 `references/`+`templates/`+`scripts/`+`tests/`（`templates/` 为 family-spec 的「产出落盘型 skill 必须」项）；④ 时间线：`tri-forge` 1.0.0（2026-09-23）→ `tri-init` 1.0.0（2026-09-24）。⚠️ **判据说明**：仓内**无**门①→⑤ 的逐门执行日志（设计决策留痕在 `.workbuddy/proposals/PROPOSAL-tri-init-20260923.md`，属 D30 契约、未入版本控制），故本项依据 = 用户确认 + 上述功能证据 |
 
 ## 门④ 负向测试结果（mutation testing）
 
