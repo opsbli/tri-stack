@@ -1,10 +1,10 @@
 ---
 name: 代码审查
 slug: tri-review
-version: 1.6.2
+version: 1.7.0
 displayName: 代码审查
 description: 代码审查下游执行 skill。支持三模式：① 工作流集成模式——由 tri-coding/tri-fix 在门③执行前确认时调用；② 独立调用模式——读取 tri-intent 快照 §三；③ 增量审计模式——以系统架构设计师视角，文档驱动学习设计意图，对增量改动进行三维审计（代码设计改动/架构设计实现/功能设计实现），产出审计结果+修复建议+优先级。自主管理「Phase 0 架构师增量审计（可选）→ Phase 1 规格合规 → Phase 2 代码质量 → 审查/审计报告」完整链路，含双审批门。当 tri-intent 快照下游路由建议指向本 skill，或由 tri-coding/tri-fix 在门③确认时调用，或用户直接要求增量审计即激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
-summary: 三模式代码审查（工作流集成/独立调用/增量审计）+ Phase 0 架构师增量审计（文档驱动4级降级+三维审计+修复建议优先级）+ Phase 1 规格合规 + Phase 2 代码质量 + Fowler 坏味基线 + 覆盖度账本（双源分离+gaps）+ 反证据关闭门 + 严重度校准 rubric + 反规避机制 + 审查执行纪律八则（确定性验证/非对称复核/证据锚降级/分桶/预分析/注入防线/覆盖收尾/超限恢复）+ 双审批门。
+summary: 三模式代码审查（工作流集成/独立调用/增量审计）+ precision-first（宁可少报不可误报，recall 由覆盖度账本兜底）+ Phase 0 架构师增量审计（文档驱动4级降级+三维审计+修复建议优先级）+ Phase 1 规格合规 + Phase 2 代码质量 + Fowler 坏味基线 + 覆盖度账本（双源分离+gaps+skipped 封闭判据）+ 反证据关闭门 + 严重度校准 rubric + 反规避机制 + 审查执行纪律十则（确定性验证/非对称复核/证据锚降级/语义捆绑分桶/预分析/注入防线/发现定位分类与提交前反思/项目级评审规则/覆盖收尾/超限恢复）+ 双审批门。
 tags: [code-review, spec-compliance, code-quality, incremental-audit, architecture-audit, coverage-ledger, counterevidence, severity-calibration, workflow, approval-gate, two-stage]
 license: MIT
 ---
@@ -116,6 +116,8 @@ license: MIT
 ### 核心理念
 
 > **先学设计意图，再确认方向正确，最后确认步伐稳健。** Phase 0 学意图（架构师视角），Phase 1 确认做对了事（规格合规），Phase 2 确认做得对（代码质量）。
+>
+> **precision-first 原则**：本 skill 刻意**宁可少报、不可误报**——每条 BLOCKER/MAJOR 发现 MUST 过反证据关闭门（§4）与提交前反思（执行纪律 §九）方可入报告，precision 优先于 recall。recall 的缺口不由放宽定级来补，而由**覆盖度账本**兜底（四数必报 + gaps 显式暴露未覆盖区）：漏报会被账本看见并追责覆盖，误报只会浪费用户裁决时间。评论克制：少而精、必解释「为什么是问题」，NEVER 堆积风格偏好类噪音。
 
 ### 方法论概览
 
@@ -190,8 +192,8 @@ license: MIT
 
 ### 审查执行纪律（执行层补强）
 
-> 解决「怎么把审查跑得稳」：确定性验证优先 / 非对称复核证据标准 / 证据锚三级降级（L1 行锚 → L2 邻近重挂 → L3 内容锚，`[LOC-FAILED]` 显式处置）/ 逐文件通过与大变更分桶（≤10 文件/桶，不因首发现停手）/ 可选风险预分析（50/100 行双阈值）/ 不可信输入约束 / 覆盖强制收尾（total/reviewed/skipped/coverage_rate 四数必报 + 跳过带因）/ 超限上下文恢复协议。
-> 详见 `references/review-execution-discipline.md`，grep 模式：`执行纪律`、`确定性验证`、`非对称`、`证据锚`、`逐文件`、`分桶`、`不可信输入`、`覆盖率收尾`。本纪律是执行层补强，NEVER 引入新定级口径。
+> 解决「怎么把审查跑得稳」：确定性验证优先 / 非对称复核证据标准 / 证据锚三级降级（L1 行锚 → L2 邻近重挂 → L3 内容锚，`[LOC-FAILED]` 显式处置）/ 语义捆绑优先的逐文件通过与大变更分桶（先捆绑互为依据的文件为同单元，再 ≤10 文件/桶，不因首发现停手）/ 可选风险预分析（50/100 行双阈值）/ 不可信输入约束 / 发现定位分类（in-diff / out-of-diff）与提交前反思七问 / 项目级评审规则注入 / 覆盖强制收尾（total/reviewed/skipped/coverage_rate 四数必报 + skipped 封闭判据 + 跳过带因）/ 超限上下文恢复协议。
+> 详见 `references/review-execution-discipline.md`，grep 模式：`执行纪律`、`确定性验证`、`非对称`、`证据锚`、`逐文件`、`分桶`、`语义捆绑`、`提交前反思`、`OUT-DIFF`、`项目级评审规则`、`不可信输入`、`覆盖率收尾`。本纪律是执行层补强，NEVER 引入新定级口径。
 
 ### 覆盖度账本与关闭纪律（三模式通用）
 
@@ -235,7 +237,10 @@ license: MIT
 [PHASE2-BLOCKER:FUNCTIONAL] <审查项> — 证据：<...> — 描述：<功能性缺陷>
 [AUDIT-OK] <检查项> — 证据：<file:line / 设计意图条目>
 [AUDIT-ISSUE] <BLOCKER|MAJOR|MINOR> <维度> <检查项> — 证据：<...> — 描述：<...> — 修复方向：<...> — 修复方案：<...>
+[OUT-DIFF] <来源 Phase> <BLOCKER|MAJOR|MINOR> <发现项> — 位置：<diff 外 file:line> — 关联变更：<本次变更的哪个点放大/暴露了它> — 描述：<...>
 ```
+
+> **发现定位分类（in-diff / out-of-diff）**：默认发现均为 **in-diff**（位置在本次 diff 内，随 Phase 标记走）。审查中发现的 **out-of-diff** 问题（位置在 diff 外，但与本次变更相关——如本次调用方式放大了既有缺陷、变更暴露了相邻代码的既有问题）MUST 以 `[OUT-DIFF]` 标记并**单独汇总**于报告 §5（不计入 Phase 门禁判定、不改变 Phase 通过结论），门② 汇总 MUST 呈现。位置无法锚定（§三 降级后仍 `[LOC-FAILED]`）的发现 NEVER 进入任何结论列。
 
 ### 可扩展性
 
@@ -250,6 +255,7 @@ license: MIT
 7. **新增关闭纪律/覆盖度要求**：在 `references/review-checklists.md` §4/§5 追加规则，SKILL.md 的关闭门表同步加一行
 8. **扩展严重度校准 rubric**：在 `references/review-checklists.md` §3.3 增判据条目或升降级因子
 9. **新增账本列**：在 `references/review-checklists.md` §5.2 账本结构增列，两份模板 §6.1 同步
+10. **新增项目级评审规则**：项目在 `.tribro/review-rules.md` 声明「路径模式 → 必检项」映射（详见执行纪律 §十），本 skill 在门① 后自动加载匹配项注入对应 Phase；无此文件则跳过，NEVER 报错
 
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
@@ -362,7 +368,9 @@ python scripts/check_update.py --slug tri-review --json
 | 关闭门完整 | 每个「无问题」结论带关闭状态；`ruled_out` 含可补全的防护句 | grep `ruled_out` / `open_proof_gap`，抽查关闭句完整性 |
 | 覆盖度账本 | 双源分离 + gaps + 未覆盖声明 + 完成度四要素齐全，逐项落账无合并行 | 报告覆盖度账本章节逐列核对 |
 | 定级可追溯 | 每个 BLOCKER/MAJOR 定级能指出 rubric 判据条目 | grep 定级说明中的判据引用 |
-| 执行纪律自检 | §一–§八 执行纪律自检 8 项全过（确定性验证/非对称留痕/锚定处置/逐文件分桶/预分析/注入留痕/四数收尾/超限协议） | 门②总检前过 `references/review-execution-discipline.md` 执行自检清单 |
+| 执行纪律自检 | §一–§十 执行纪律自检全过（确定性验证/非对称留痕/锚定处置/捆绑与逐文件分桶/预分析/注入留痕/四数收尾/超限协议/发现反思/项目规则注入） | 门②总检前过 `references/review-execution-discipline.md` 执行自检清单 |
+| 提交前反思 | 每条 BLOCKER/MAJOR 发现入报告前过反思七问（位置/误报/重复/定级/why/定位域/中立性） | 报告 §7 审查过程记录含反思执行留痕 |
+| 发现定位分类 | out-of-diff 发现全部带 `[OUT-DIFF]` 标记且汇总于报告 §5 独立区块，未混入 Phase 门禁判定 | grep `[OUT-DIFF]` 与报告 out-diff 汇总块对账 |
 | 标记隔离 | Phase 0 `[AUDIT-*]` 与 Phase 1/2 `[PHASE*]` 标记不交叉 | grep 交叉标记应为空 |
 
 > 双审批门为硬性质量护栏：Phase 0 存在 BLOCKER → `[AUDIT-FAIL]` 建议先修；Phase 1 存在 BLOCKER → `[PHASE1-FAIL]` 直接退回；门②未通过不得交付。
@@ -396,7 +404,7 @@ tri-review/
 | 2 | 模式层 | `references/audit-dimensions.md` | Phase 0 增量审计模式 | `文档驱动`、`三维审计`、`修复建议` |
 | 3 | 模式层 | `references/code-smells.md` | 需坏味基线判定时 | `坏味`、`Fowler` |
 | 4 | 覆盖层 | `references/review-perspective-matrix.md` | Phase 2 需防维度内漏检时 | `视角`、`漏检`、`级别倾向`、`幂等`、`契约`、`可观测` |
-| 5 | 执行层 | `references/review-execution-discipline.md` | 全阶段执行纪律（大变更分桶 / 大型增量预分析 / 复核驳回 / 锚定失败 / 超限输入时必载） | `执行纪律`、`确定性验证`、`非对称`、`证据锚`、`逐文件`、`分桶`、`不可信输入`、`覆盖率收尾` |
+| 5 | 执行层 | `references/review-execution-discipline.md` | 全阶段执行纪律（大变更捆绑分桶 / 大型增量预分析 / 复核驳回 / 锚定失败 / 发现反思 / out-of-diff / 项目规则 / 超限输入时必载） | `执行纪律`、`确定性验证`、`非对称`、`证据锚`、`逐文件`、`分桶`、`语义捆绑`、`提交前反思`、`OUT-DIFF`、`项目级评审规则`、`不可信输入`、`覆盖率收尾` |
 | 6 | 外部覆盖层 | 用户在包外提供的同名文件 | 存在即替换内置同名文件 | 同上 |
 
 - **去重规则**：同名文件只装配一次，先出现者胜（序号小者优先）。

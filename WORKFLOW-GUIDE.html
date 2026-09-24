@@ -182,7 +182,7 @@
   <div class="skills">
     <span class="sk"><b>tri-coding</b> <span class="v">1.8.1</span> <span class="v">I11</span></span>
     <span class="sk"><b>tri-fix</b> <span class="v">1.5.1</span> <span class="v">I12</span></span>
-    <span class="sk"><b>tri-review</b> <span class="v">1.6.2</span> <span class="v">CR</span></span>
+    <span class="sk"><b>tri-review</b> <span class="v">1.7.0</span> <span class="v">CR</span></span>
   </div>
   <p style="margin:8px 0 0;font-size:12.5px">唯一「必记」的一组。<b>tri-coding</b>=3 道审批门（需求 / 设计 / 执行前）逐级串行，门没过代码一行不写；<b>tri-fix</b>=第一性规则「<b>没有能变红的反馈循环，就没有假设阶段</b>」；<b>tri-review</b>=6 维度 + Fowler 12 坏味 + 覆盖度账本 + 反证据关闭门，<b>只记录不修改</b>。</p>
 </div>
@@ -554,7 +554,7 @@ python &lt;skill&gt;/scripts/check_update.py --slug &lt;slug&gt; --json
 </tbody>
 </table>
 <p><b>tri-fix 值得单独记住</b>：第一性规则是「<b>没有能变红的反馈循环，就没有假设阶段</b>」。在一条你真实跑过、且在这个 bug 上失败的命令出现之前，它<b>只允许做一件事：构造这条命令</b>，不会凭代码阅读跳到根因。</p>
-<p><b>tri-review v1.6.2</b>：Phase 0/1/2 + Fowler 12 坏味 + <b>覆盖度账本</b>（双源分离 + gaps）+ <b>反证据关闭门</b> + <b>严重度校准 rubric</b> + 审查执行纪律八则。</p>
+<p><b>tri-review v1.7.0</b>：Phase 0/1/2 + Fowler 12 坏味 + <b>覆盖度账本</b>（双源分离 + gaps）+ <b>反证据关闭门</b> + <b>严重度校准 rubric</b> + 审查执行纪律八则。</p>
 
 <h3>Step 7 · 沉淀（可选，复利最高）</h3>
 <ul>
@@ -696,7 +696,7 @@ flowchart LR
 
 <div class="mcard">
   <h4>④ 审查改动 · tri-review（只读不改）</h4>
-  <div class="mtag">tri-review v1.6.2 · 无审批门 · 交付 review-report</div>
+  <div class="mtag">tri-review v1.7.0 · 无审批门 · 交付 review-report</div>
   <div class="mermaid">
 flowchart LR
   classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
@@ -953,7 +953,7 @@ flowchart LR
 
 <footer>
   tri-stack 使用手册 · 自维护版 · 按仓库实测契约 + 真实项目实战教训重写<br>
-  契约基线：tri-intent v1.14.1 ／ tri-coding v1.8.1 ／ tri-review v1.6.2 ／ tri-sdlc v1.1.5 ／ tri-prototype v1.1.2 ／ tri-forge v1.0.4 ／ tri-init v1.0.2<br>
+  契约基线：tri-intent v1.14.1 ／ tri-coding v1.8.1 ／ tri-review v1.7.0 ／ tri-sdlc v1.1.5 ／ tri-prototype v1.1.2 ／ tri-forge v1.0.4 ／ tri-init v1.0.2<br>
   24 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
   <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ 24 个顶层 skill 全部 junction 安装 ✅ 版本一致性 33/33（含 9 个子 skill）✅ 实战校准：ops-pilot / ops-pilot-web</span>
 </footer>

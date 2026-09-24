@@ -569,6 +569,16 @@ phase_status:
 | **Fowler 坏味** | **12** | **<N>** | **<N>** | **<N>** | **—** | **<N>** | **<N>** |
 | **总计** | **56** | **<N>** | **<N>** | **<N>** | **<N>** | **<N>** | **<N>** |
 
+> 上表仅统计 **in-diff** 发现（参与 Phase 门禁判定）。
+
+#### 5.1.1 diff 外发现汇总（[OUT-DIFF] · 不参与 Phase 门禁判定）
+
+> 位置在 diff 外、但与本次变更相关的发现（本次调用放大既有缺陷 / 变更暴露相邻既有问题）。无则填「无」。**与本次变更毫无关联的 diff 外问题不报**。
+
+| # | 来源 Phase | 严重程度 | 位置（diff 外） | 关联变更点 | 描述 |
+|---|---|---|---|---|---|
+| 1 | <Phase 1 / Phase 2> | <BLOCKER/MAJOR/MINOR> | <file:line> | <本次变更的哪个点放大/暴露了它> | <详情> |
+
 ### 5.2 各轴最严重问题
 
 > 不跨轴选出一个「最严重」——两个阶段是有意分开的，防止一个轴掩盖另一个轴。
@@ -581,7 +591,7 @@ phase_status:
 
 ### 5.3 问题清单（按严重程度排序）
 
-> 所有 BLOCKER 和 MAJOR 级问题逐条列出，MINOR 级问题汇总计数。
+> 所有 BLOCKER 和 MAJOR 级问题逐条列出，MINOR 级问题汇总计数。位置域标注：in-diff 默认不标；out-of-diff 发现的「来源」列 MUST 带 `[OUT-DIFF]` 前缀（与 §5.1.1 汇总对账）。
 
 #### BLOCKER 级问题
 
@@ -682,6 +692,7 @@ phase_status:
 | <YYYY-MM-DD HH:MM> | Phase 1 结束 | <判定=xxx，BLOCKER=<N>> |
 | <YYYY-MM-DD HH:MM> | Phase 2 开始 | — |
 | <YYYY-MM-DD HH:MM> | Phase 2 结束 | <判定=xxx，BLOCKER=<N>> |
+| <YYYY-MM-DD HH:MM> | 提交前反思（纪律 §九） | <反思 N 条 / 退回 M 条 / 降级 NOTE K 条> |
 | <YYYY-MM-DD HH:MM> | 反规避检测 | <全部通过/存在违规> |
 | <YYYY-MM-DD HH:MM> | 门②·审查结论确认 | <通过/不通过——第N轮> |
 | <YYYY-MM-DD HH:MM> | 最终交付 | <APPROVED/CHANGES_REQUESTED/REJECTED> |
