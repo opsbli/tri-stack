@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.4] - 2026-09-24
+
+### 变更
+
+- **补 hook 降级声明**：§触发时机 表新增「无 hook / 无调度时的降级路径」列，并显式声明 `evolve-hook` 不随包交付、未配置时仅 `APPLY`/`ADMIN` 可用。依 `family-spec.md` §1.5。
+
 ## [1.1.3] - 2026-09-24
 
 ### 变更

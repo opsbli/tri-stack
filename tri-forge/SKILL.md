@@ -1,7 +1,7 @@
 ---
 name: tri-forge
 slug: tri-forge
-version: 1.0.1
+version: 1.0.2
 displayName: 技能锻造（tri-forge）
 description: 内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于「按家族硬规范生成 / 补全 / 审计一个 skill」：以 references/family-spec.md 为生成单一事实源，通过三模式（A 规范顾问·不落盘 / B 补全审计 / C 锻造生成·五门流程）产出或修复**合规的 skill 包**，并以 references/compliance-checklist.md 的 22 条硬约束在门④逐条自检，全过方可落盘；生成物若具备 tri-intent 下游身份，MUST 在门③同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / README 表，NEVER 只生成 skill 而不接通路由。同时承接家族的四点版本一致性校验（原 sync_registry.py 职能）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。
 summary: 三模式技能锻造工具（A 规范顾问 / B 补全审计 / C 锻造生成五门流程）+ 家族硬规范单源 + 22 条合规硬约束门④自检 + 门③路由回流强制 + 四点版本一致性校验 + 四平台安装。

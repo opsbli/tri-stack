@@ -82,6 +82,33 @@
 
 ---
 
+### 1.5 hook 依赖契约（外部触发源）
+
+hook 是家族的**外部触发源**：由宿主（WorkBuddy 等）在特定事件后回调，用于激活那些「不该由用户显式发起」的模式
+（作答后采集信号、写缓存、计量成本、安装前安全审计）。**hook 不随 skill 包交付** —— 这是设计选择，不是缺陷；
+但**把 hook 当作已存在的基础设施来引用而不交代缺失后果，是缺陷**。故立约四条：
+
+1. **声明即须给降级路径**：任一 skill 若在「触发时机」表中以 hook 作为触发源，MUST **同时**声明
+   「无 hook 时的降级路径」（等价显式命令，或明确写「该模式不可用」）。NEVER 只写 hook 而不交代缺失后果。
+2. **登记**：hook 是家族级共享契约，MUST 在本表登记，不得各 skill 自行命名。
+3. **命名**：`<域>-hook`，域为该 hook 归属 skill 的短名。
+4. **目录名纪律**：`<skill>/hooks/` **只允许放宿主 hook 实现**；与 hook 无关的配套脚本 MUST 放 `<skill>/scripts/`。
+   仓库曾因 `tri-intent/hooks/intent-gate.py`（实为「识别结果呈现器」，自述非闸门）与
+   `tri-article/hooks/index.py`（实为文章索引 CLI）造成「hook 已实现」的误判。
+
+**登记清单（当前 4 个 · 实现数 0，2026-09-24 普查）**：
+
+| hook | 归属 | 触发模式 | 入参 | 实现状态 | 降级路径 |
+|---|---|---|---|---|---|
+| `evolve-hook` | `tri-evolve` | `EVOLVE_OBSERVE` | 作答事件 + 用户行为 | ❌ 未交付 | 显式录入 / 跳过（`LEARN` 空转） |
+| `cache-hook` | `tri-cache` | `CACHE_WRITE` | `{快照§三, 作答内容, source_skill}` | ❌ 未交付 | 显式写入（该 skill 不在本分支） |
+| `cost-hook` | `tri-cost` | `COST_TRACK` | `{node_id, input/output_tokens, source_skill}` | ❌ 未交付 | 显式 `COST_AUDIT`（该 skill 不在本分支） |
+| `guard-hook` | `tri-guard` | 安装前哨审计 | 待审 skill 的路径 / URL / 目录 / 源码 | ❌ 未交付 | 显式调用（该 skill 不在本分支） |
+
+> 审计报告：`reports/audit-hooks-20260924.md`（含方法学更正：命名后缀 ≠ 语义依赖）。
+
+---
+
 ## 二、骨架清单（生成物目录结构）
 
 ```

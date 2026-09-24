@@ -1,6 +1,6 @@
 # 技能锻造（tri-forge）
 
-![version](https://img.shields.io/badge/version-1.0.1-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-1.0.2-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 
 > 面向 tri-xxx 家族的**内部专用工具**：按家族硬规范**生成 / 补全 / 审计 skill 包**，并以 22 条硬约束自检后才交付。
 

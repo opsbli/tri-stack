@@ -1,7 +1,7 @@
 ---
 name: 自进化学习
 slug: tri-evolve
-version: 1.1.3
+version: 1.1.4
 displayName: 自进化学习
 description: 横向学习/进化型 skill，为 tri-xxx 家族提供多渠道信号驱动的持续改进与用户画像构建能力；EVOLVE_OBSERVE 模式采集作答后信号，EVOLVE_LEARN 模式批量归因学习，EVOLVE_APPLY 模式向下游 skill 提供画像与经验复用；hook/定时/请求激活；支持独立安装，含上游依赖检测三态逻辑（完整模式/引导安装/降级模式）。
 summary: OODA 进化闭环（观察-归因-提议-验证-沉淀）+ 经验条目库（embedding 检索复用）+ 用户画像（静态/动态分层+时间衰减）+ A/B 验证门 + 安全回滚，纯自我批判禁沉淀。
@@ -48,14 +48,18 @@ license: MIT
 
 本 skill 为横向学习型，不认领 L2 编码，激活由**触发源**决定：
 
-| 触发源 | 模式 | 激活条件 |
-|--------|------|----------|
-| evolve-hook（下游 skill 作答后触发） | EVOLVE_OBSERVE | hook 传入作答事件 + 用户行为 |
-| 定时/批量触发（tri-evolve learn --batch） | EVOLVE_LEARN | 聚合信号窗口 + 历史经验（**默认手动触发**；定时为 opt-in，见 §调度安全门） |
-| 下游 skill 请求画像/经验 | EVOLVE_APPLY | 请求含 user_id + 场景描述 |
-| 用户管理请求（stats/profile/rollback） | EVOLVE_ADMIN | 用户发起管理命令 |
+| 触发源 | 模式 | 激活条件 | **无 hook / 无调度时的降级路径** |
+|--------|------|----------|----------------------------------|
+| evolve-hook（下游 skill 作答后触发） | EVOLVE_OBSERVE | hook 传入作答事件 + 用户行为 | ❌ **该 hook 不随本包交付** → 未配置时本模式**不可用**；信号采集改由用户显式录入或跳过，`LEARN` 将无原料 |
+| 定时/批量触发（tri-evolve learn --batch） | EVOLVE_LEARN | 聚合信号窗口 + 历史经验（**默认手动触发**；定时为 opt-in，见 §调度安全门） | ✅ 默认即手动：`tri-evolve learn --batch` |
+| 下游 skill 请求画像/经验 | EVOLVE_APPLY | 请求含 user_id + 场景描述 | ✅ 本身即显式，无降级需求 |
+| 用户管理请求（stats/profile/rollback） | EVOLVE_ADMIN | 用户发起管理命令 | ✅ 本身即显式，无降级需求 |
 
 > 注：tri-intent 快照下游路由建议**不指向**本 skill（本 skill 非下游执行 skill）。本 skill 通过 hook、定时或显式请求独立激活。
+>
+> **hook 依赖声明（家族规则 §1.5）**：`EVOLVE_OBSERVE` 依赖 `evolve-hook`，该 hook **不随本包交付**，需宿主另行配置。
+> **未配置时本 skill 可正常工作的只有 `EVOLVE_APPLY`（下游取画像/经验）与 `EVOLVE_ADMIN`（管理命令）**；
+> `EVOLVE_OBSERVE` 不可用、`EVOLVE_LEARN` 因无信号原料而空转。此事实 MUST 显式声明，NEVER 让用户误以为拿到的是完整模式。
 
 ## 调度安全门（自主执行约束 · P0）
 
