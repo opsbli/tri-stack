@@ -1,7 +1,7 @@
 ---
 name: 编码实现
 slug: tri-impl
-version: 1.1.1
+version: 1.1.2
 displayName: 编码实现
 description: SDLC P4 编码实现子SKILL。读取 tri-sdlc 转交的阶段任务（P3 任务看板 + P2 设计三件套 + P1 需求 + P4 门禁条目清单），按任务看板逐项编码落盘至用户工作区，复用 tri-coding 技术栈规范与五条合规底线，完成分层产出映射、边界与异常分支处理、公共接口注释、单元测试执行与覆盖率统计，产出 implements.md / unit-test-report.md 并回写任务状态，供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P4 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 编码实现专家，按任务看板落源码至工作区并产出实现清单与单测报告，面向 P4 门禁 8 条必检项交付。

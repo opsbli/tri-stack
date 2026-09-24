@@ -375,7 +375,7 @@
 
 <h2 id="gate"><span class="n">04</span>版本门：自维护模式</h2>
 
-<p>每个 skill 启动后的<b>第零步</b>都会跑 <code>scripts/check_update.py</code>。<b>全部 24 个 skill 内置 <code>SELF_MAINTAINED = True</code></b>：完全跳过远端请求，改为校验本 skill 自身 <b>5 处版本声明</b>的一致性。</p>
+<p>每个 skill 启动后的<b>第零步</b>都会跑 <code>scripts/check_update.py</code>。<b>全部 33 个 skill（顶层 24 + tri-sdlc 子 skill 9）内置 <code>SELF_MAINTAINED = True</code></b>：完全跳过远端请求，改为校验本 skill 自身 <b>5 处版本声明</b>的一致性。</p>
 
 <table>
 <thead><tr><th>文件</th><th>角色</th></tr></thead>
@@ -955,7 +955,7 @@ flowchart LR
   tri-stack 使用手册 · 自维护版 · 按仓库实测契约 + 真实项目实战教训重写<br>
   契约基线：tri-intent v1.14.1 ／ tri-coding v1.8.1 ／ tri-review v1.6.2 ／ tri-sdlc v1.1.5 ／ tri-prototype v1.1.2 ／ tri-forge v1.0.4 ／ tri-init v1.0.2<br>
   24 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
-  <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ 24 个 skill 全部 junction 安装 ✅ 版本一致性 24/24 ✅ 实战校准：ops-pilot / ops-pilot-web</span>
+  <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ 24 个顶层 skill 全部 junction 安装 ✅ 版本一致性 33/33（含 9 个子 skill）✅ 实战校准：ops-pilot / ops-pilot-web</span>
 </footer>
 
 </div>

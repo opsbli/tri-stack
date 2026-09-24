@@ -1,7 +1,7 @@
 ---
 name: 运维与监控
 slug: tri-ops
-version: 1.1.1
+version: 1.1.2
 displayName: 运维与监控
 description: SDLC P8 运维与监控子SKILL。读取 tri-sdlc 转交的阶段任务（P7 发布报告与巡检结论 + P2 容量性能目标 + P6 缺陷台账 + P8 门禁条目清单），定义日志四要素方案、三类监控指标与采集方式、指标阈值与告警四要素、健康检查与失败处置、备份容灾与恢复演练计划，并沉淀 ≥3 条含现象/定位/处置的故障处置条目，产出 ops-runbook.md / monitoring.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P8 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 运维监控专家，产出日志与监控方案、告警阈值矩阵、健康检查、备份容灾与故障处置手册，面向 P8 门禁 7 条必检项交付。

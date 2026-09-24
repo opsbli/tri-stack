@@ -12,6 +12,8 @@
 
 幂等性：
     - sync_spec：按内容比对，已一致则跳过
+    - sync_script：同 sync_spec 同法，但目标由 glob 命中的 SKILL.md 推导父目录 + dest；
+      文件不存在时创建目录并新增（用于给 skill 补带自有 scripts/）
     - replace_text：old 命中则替换；old 未命中但 already_marker 命中则判「已应用」；
       old 与 new 都未命中则判「未找到」并计入 warnings
     - replace_regex：同 replace_text，但 pattern 为正则（一行可多处）；
@@ -96,6 +98,51 @@ def op_sync_spec(op, repo, skip, dry):
     written = skipped = 0
     details = []
     for t in spec_targets(repo, skip):
+        if t.is_file():
+            try:
+                cur = t.read_bytes().decode("utf-8", errors="replace").replace("\r\n", "\n")
+            except OSError:
+                cur = None
+            if cur == ptext:
+                skipped += 1
+                continue
+            details.append(f"覆盖 {t.relative_to(repo).as_posix()}")
+        else:
+            details.append(f"新增 {t.relative_to(repo).as_posix()}")
+        if not dry:
+            t.parent.mkdir(parents=True, exist_ok=True)
+            t.write_bytes(pbytes)          # 字节级写入：不做行尾翻译，内容可复现
+        written += 1
+    return {"status": "ok", "written": written, "skipped": skipped, "details": details}
+
+
+def script_targets(repo: Path, skip: set[str], glob: str, dest: str):
+    """按 glob 命中 SKILL.md，推导每个 skill 目录下的脚本落点。"""
+    targets = []
+    for sm in sorted(repo.glob(glob)):
+        if under_skip(sm, skip) or not sm.is_file():
+            continue
+        targets.append(sm.parent / dest)
+    return targets
+
+
+def op_sync_script(op, repo, skip, dry):
+    """部署自带脚本（如 scripts/check_update.py）到每个目标 skill 目录。
+
+    与 `sync_spec` 同法：按**归一化文本**（LF）比对、**字节写入**，
+    避免行尾风格差异造成无意义改写；目标不存在时创建父目录并新增。
+    用途：给「STUB 里引用了 `scripts/check_update.py` 但自身不带 scripts/」的
+    skill（如 tri-sdlc 的 9 个子 skill）补齐文件，使单 skill 独立安装成立。
+    """
+    payload = PATCH_DIR / op["payload"]
+    if not payload.is_file():
+        return {"status": "error", "detail": f"payload 缺失：{payload}", "written": 0, "skipped": 0}
+    dest = op["dest"]
+    pbytes = payload.read_bytes()
+    ptext = pbytes.decode("utf-8").replace("\r\n", "\n")
+    written = skipped = 0
+    details = []
+    for t in script_targets(repo, skip, op["glob"], dest):
         if t.is_file():
             try:
                 cur = t.read_bytes().decode("utf-8", errors="replace").replace("\r\n", "\n")
@@ -418,6 +465,7 @@ DISPATCH = {"sync_spec": op_sync_spec, "replace_text": op_replace_text,
             "replace_regex": op_replace_regex,
             "sync_version_meta": op_sync_version_meta,
             "converge_version_section": op_converge_version_section,
+            "sync_script": op_sync_script,
             "sync_readme_version": op_sync_readme_version}
 
 
@@ -452,7 +500,7 @@ def main() -> int:
         print("| op | 说明 | 结果 |")
         print("|---|---|---|")
         for r in results:
-            if r["type"] == "sync_spec":
+            if r["type"] in ("sync_spec", "sync_script"):
                 desc = f"写入 {r['written']}｜跳过 {r['skipped']}"
             elif r["type"] in ("sync_version_meta", "sync_readme_version",
                                "converge_version_section"):

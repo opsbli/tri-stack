@@ -1,7 +1,7 @@
 ---
 name: 代码评审
 slug: tri-cr
-version: 1.1.1
+version: 1.1.2
 displayName: 代码评审
 description: SDLC P5 代码评审子SKILL。读取 tri-sdlc 转交的阶段任务（P4 源码清单与实现报告 + P2 设计三件套 + P5 门禁条目清单），执行静态检查三项（lint/类型/构建）、四维人工审查（可读性与命名/逻辑正确性与边界/性能/安全）、Fowler 坏味基线核对与设计一致性核对，逐条给出级别与位置并跟踪至闭环，产出 review-report.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P5 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 代码评审专家，执行静态三项与四维审查并跟踪意见闭环，面向 P5 门禁 7 条必检项交付评审报告。

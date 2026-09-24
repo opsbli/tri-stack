@@ -23,13 +23,15 @@ ops/
 ├── README.md                   本文件
 ├── install-skills.py            junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py            版本一致性校验（skill 包内 P1–P5 + 仓库级文档层 D1–D4）
-├── versions.json              自主版本线基线（24 个 skill 的版本快照）
+├── versions.json              自主版本线基线（33 个 skill 的版本快照：顶层 24 + tri-sdlc 子 skill 9）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 19 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 22 个 op）
     ├── apply.py                幂等重放器
-    └── payload/
-        └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
+    ├── payload/
+    │   └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
+    └── assets/
+        └── check_update.py     去耦版脚本（f10 分发到 tri-sdlc 子 skill 的 scripts/）
 ```
 
 ## 安装到 AI 工具（junction 方式）
@@ -195,11 +197,12 @@ pat='^version: *(\\S+)'   -> 匹配
 | 项 | 说明 |
 |---|---|
 | ~~四处版本一致性校验~~ | ✅ **已完成**：`ops/version-lint.py`（仓库侧）+ `tri-forge/scripts/check_registry.py`（独立安装侧），五点校验（P1–P5） |
-| ~~远端版本比对停用~~ | ✅ **已完成**：43+1 份 `check_update.py` 注入 `SELF_MAINTAINED = True`，完全跳过远端请求 |
+| ~~远端版本比对停用~~ | ✅ **已完成**：43+1 份 `check_update.py` 注入 `SELF_MAINTAINED = True`，完全跳过远端请求；tri-sdlc 子 skill 的 9 份于 2026-09-25 随 `f10` 部署时即已内置 |
 | ~~版本号漂移清理~~ | ✅ **已完成**：P5 漂移 ×4（tri-god / tri-humanize / tri-music / tri-workflow）已由 `sync_readme_version` op 修复 |
 | ~~引导安装提示残留~~ | ✅ **已完成**：`f8-install-hint-self-maintained`（`replace_regex`）收敛 58 文件 / 66 处；CHANGELOG 历史与 `version-gate.md` 纠错注记按「整行守卫」豁免 |
-| ~~版本节远端口径~~ | ✅ **已完成**：`converge-version-stub{,-children}` 收敛 24 个版本节为瘦指针 STUB；`f7-*` 修正契约 §0 的 23 处 |
+| ~~版本节远端口径~~ | ✅ **已完成**：`converge-version-stub{,-children}` 收敛 33 个版本节（顶层 24 + 子 skill 9）为瘦指针 STUB；`f7-*` 修正契约 §0 的 23 处 |
 | ~~版本线升版链~~ | ✅ **已完成**：15 个 skill 升 patch + `--apply-docs` 幂等修正 45 处文档层漂移 + `--emit-baseline` 重写基线（24 skill） |
+| ~~children 版本线治理缺口~~ | ✅ **已完成（2026-09-25）**：① 校验覆盖 **24 → 33**（两校验器补扫 `tri-sdlc/children/*`，此前 9 个子 skill 无任何版本守卫）；② `f10`（新 op 类型 `sync_script`）为 9 个子 skill 部署自带 `scripts/check_update.py`（取去耦形态，STUB 命令不再悬空、独立安装成立）；③ 9 个子 skill 升 patch `1.1.1 → 1.1.2` 并记 CHANGELOG（`b80cfa9` 的实质变更此前未升版未记）+ `f11` 同步 tests 描述；④ `f12` 补 README 目录树（漏列 `references/` + 新增 `scripts/`） |
 | ~~tri-forge 自建~~ | ✅ **已完成**：`tri-forge/`（15 文件），三模式 + 五门流程 + 22 条门④ + 门③ 路由回流 + 五点版本校验 |
 | ~~tri-forge 门④ 负向验证~~ | ✅ **已完成**：mutation testing **6/6** 项注入全部被抓到（见下表） |
 | ~~自建 tri-forge 走一次**生成型**实战（门①→⑤）~~ | ✅ **已完成**：`tri-init`（1.0.0 首发 2026-09-24）即该实战产物。① **落盘位置**合规：`tri-forge/SKILL.md` 规定模式 C 产物默认落仓库根 `<slug>/`，`tri-init/` 正合；② **功能证据**：门④ `python tri-forge/scripts/compliance_check.py --skill tri-init` → **FAIL 0 · 需人工 0**（22 条全 PASS/N-A）；③ **包结构**齐备 `references/`+`templates/`+`scripts/`+`tests/`（`templates/` 为 family-spec 的「产出落盘型 skill 必须」项）；④ 时间线：`tri-forge` 1.0.0（2026-09-23）→ `tri-init` 1.0.0（2026-09-24）。⚠️ **判据说明**：仓内**无**门①→⑤ 的逐门执行日志（设计决策留痕在 `.workbuddy/proposals/PROPOSAL-tri-init-20260923.md`，属 D30 契约、未入版本控制），故本项依据 = 用户确认 + 上述功能证据 |

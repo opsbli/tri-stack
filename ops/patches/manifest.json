@@ -198,6 +198,32 @@
       "old": "> ⚠️ **脚本门禁当前缺失**：原本由 `tri-forge/scripts/sync_registry.py` 提供，但 `tri-forge`\n> 未随任何可达源分发（本地磁盘、git 全历史、原作者 GitHub、平台 92/92 全量枚举均无命中）。\n> 在本仓库自行实现等效校验器之前，按下列清单逐条手工核对：",
       "new": "> ✅ **脚本门禁已就位**（2026-09-24 更正）：上游该脚本名为 `sync_registry.py`；本仓库为自维护 fork，\n> 已重建为 **`tri-forge/scripts/check_registry.py`**（`--check` 报告漂移 / `--apply` 规则化回写 P3·P5）。\n> **单 skill 独立安装、无法调用 tri-forge 时**，用该 skill 自带的 `scripts/check_update.py`（自维护模式\n> 下已内置 P1–P5 自洽校验），或按下列清单逐条手工核对：",
       "already_marker": "脚本门禁已就位"
+    },
+    {
+      "id": "f10-children-check-update",
+      "type": "sync_script",
+      "label": "为 tri-sdlc 的 9 个子 skill 各部署自带 scripts/check_update.py（对齐顶层：STUB 命令不再是悬空引用、单 skill 可独立安装）",
+      "glob": "tri-sdlc/children/*/SKILL.md",
+      "payload": "assets/check_update.py",
+      "dest": "scripts/check_update.py"
+    },
+    {
+      "id": "f11-children-tests-version",
+      "type": "replace_regex",
+      "label": "tri-sdlc 子 skill tests 描述的版本引用 v1.1.1 → v1.1.2（随版本线补升同步）",
+      "glob": "tri-sdlc/children/*/tests/*.md",
+      "pattern": "v1\\.1\\.1( 全场景测试用例)",
+      "replacement": "v1.1.2\\1",
+      "already_marker": "v1.1.2 全场景测试用例"
+    },
+    {
+      "id": "f12-children-readme-tree",
+      "type": "replace_text",
+      "label": "tri-sdlc 子 skill README 目录树：补列实际存在的 references/ 与自带 scripts/check_update.py",
+      "glob": "tri-sdlc/children/*/README.md",
+      "old": "├── CHANGELOG.md\n└── tests/",
+      "new": "├── CHANGELOG.md\n├── references/\n│   └── version-check-spec.md\n├── scripts/\n│   └── check_update.py\n└── tests/",
+      "already_marker": "├── references/"
     }
   ]
 }

@@ -90,6 +90,9 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `f7b-contract-mode-intent` | replace_text | 契约 §0 变体（`tri-intent`）：远端校验/升级 + 端点内联 → 自维护口径 |
 | `f8-install-hint-self-maintained` | replace_regex | 引导安装提示：`skillhub install <slug> [--dir <目标目录>]` → 自维护安装器（58 文件 / 66 处） |
 | `f9-gate-script-rebuilt` | replace_text | `version-gate.md` §六：更正「脚本门禁当前缺失」→ 已重建为 `tri-forge/scripts/check_registry.py` |
+| `f10-children-check-update` | sync_script | 为 `tri-sdlc/children/*` 的 9 个子 skill 各部署自带 `scripts/check_update.py`（对齐顶层；STUB 命令不再悬空） |
+| `f11-children-tests-version` | replace_regex | 子 skill 的 tests 描述版本引用 `v1.1.1` → `v1.1.2`（随版本线补升同步） |
+| `f12-children-readme-tree` | replace_text | 子 skill README 目录树：补列实际存在的 `references/` 与新增的 `scripts/check_update.py` |
 
 ## 每项补丁的依据
 
@@ -414,3 +417,65 @@ skillhub[ \t]+install[ \t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \t]+--dir[ \t]+(?:<[^>
 
 **判据**（可复验）：`grep -rn '发布前 MUST 通过' --include='*.md' .` 的命中应**全部**位于
 `.workbuddy/` 之下；`manifest.json` 的 `exclude_paths` 含 `.workbuddy`。两者同时成立即正常。
+
+---
+
+## `sync_script` 新 op 类型与「children 对等化」（`f10`–`f12` · 2026-09-25）
+
+### 为什么必须新增 op
+
+铁律要求：对 skill 文件的任何修正 MUST 落成 op。而 `tri-sdlc` 的 9 个子 skill
+（`tri-sdlc/children/*`）此前**不带 `scripts/`**，其版本节 STUB 却写着
+`python scripts/check_update.py --slug <child> --json` ⇒ **悬空引用**：
+
+- child **独立安装**（junction 到 child 目录）时，该相对路径不存在；
+- 即便 cwd 落在 `tri-sdlc/` 根使路径成立，`--skill-dir` 默认 = 脚本上级目录 = `tri-sdlc`，
+  与 `--slug <child>` **校验对象错位**。
+
+顶层 24 个 skill 的 `scripts/check_update.py` 是 **24/24 齐备**，故正确修法是给 child **补件**，
+而不是把命令改成「指父脚本」——后者违反 `references/version-check-spec.md` 明写的
+「每个 tri-* skill 各带一份…以保证单个 skill 可独立安装、不依赖其他 skill 的文件」。
+
+### op 定义
+
+```json
+{
+  "id": "f10-children-check-update",
+  "type": "sync_script",
+  "glob": "tri-sdlc/children/*/SKILL.md",   // 命中即取其父目录为目标 skill 目录
+  "payload": "assets/check_update.py",      // 源文件，相对 ops/patches/
+  "dest": "scripts/check_update.py"         // 目标 skill 目录下的落点
+}
+```
+
+实现与 `sync_spec` 同法：**归一化文本（LF）比对 + 字节写入**，一致即跳过；目标不存在时
+创建父目录并新增。故连跑两次为 `写入 9｜跳过 0` → `写入 0｜跳过 9`。
+
+### 源形态取「去耦版」，不是 22 份主形态
+
+24 份脚本有两种形态，差异在 `DEFAULT_SLUG`（`"tri-intent"` vs `None`）、
+`CACHE_DIR`（`~/.cache/tri-intent` vs `~/.cache/tri-skills`）与若干注释文案。
+给 child 部署时取 `DEFAULT_SLUG = None` 的去耦版——**child 的默认 slug 不可能是 `tri-intent`**，
+硬编码默认值对它是错的。形态计数因此不变（仍 2 种），分布由 22/2 变为 **22/11**。
+
+### 同一轮补齐的三处
+
+| # | 现象 | op | 判据 |
+|---|---|---|---|
+| 1 | child 无 `scripts/`，STUB 命令悬空 | `f10` | 9 份 hash 全等且 = payload |
+| 2 | child 内容于 `b80cfa9` 名义变更但版本未升（P2 首条仍停在 2026-08-05） | 运维直接 bump 到 `1.1.2` + `f11` 同步 tests 描述 | `version-lint` 报 `1.1.2` 且 P1==P2 |
+| 3 | child README 目录树漏列实际存在的 `references/` | `f12` | 树中同时含 `references/` 与 `scripts/` |
+
+### 幂等判据
+
+`f10`：`写入 9｜跳过 0` → `写入 0｜跳过 9`；`f11` / `f12`：各
+`应用 9｜已应用 0` → `应用 0｜已应用 9`。即第二次重放**零写入**。
+`f10` 的源文件入库于 `ops/patches/assets/check_update.py`。
+
+### 配套：两个校验器的覆盖范围同步扩展
+
+`ops/version-lint.py` 与 `tri-forge/scripts/check_registry.py` 原先都用
+`REPO.glob("tri-*")` 发现 skill，而 children 位于 `tri-sdlc/children/` ⇒ **9 个子 skill
+从未被任何版本校验覆盖**（这是上述三处欠账长期未被发现的根因）。
+两者现均已追加 `REPO.glob("tri-sdlc/children/*")`，覆盖数由 **24 → 33**。
+

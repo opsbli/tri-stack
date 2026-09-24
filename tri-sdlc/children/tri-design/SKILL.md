@@ -1,7 +1,7 @@
 ---
 name: 方案设计
 slug: tri-design
-version: 1.1.1
+version: 1.1.2
 displayName: 方案设计
 description: SDLC P2 方案设计子SKILL。读取 tri-sdlc 转交的阶段任务（P1 需求四件套 + 快照§三 + P2 门禁条目清单），完成分层架构与模块划分、Must 级需求 100% 落点映射、数据模型（实体/字段/类型/约束/主外键/索引）、接口契约（方法/路径/入参/出参/错误码）、核心链路时序图或状态机、技术选型多候选对比、安全三项设计（鉴权/加密/越权防护）与可度量容量性能目标，产出 design.md / api-contract.md / data-model.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P2 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 方案设计专家，产出含需求全覆盖映射、数据模型、接口契约、时序图、多候选选型与安全性能设计的三件套，面向 P2 门禁 9 条必检项交付。

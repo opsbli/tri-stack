@@ -1,7 +1,7 @@
 ---
 name: 构建与发布
 slug: tri-release
-version: 1.1.1
+version: 1.1.2
 displayName: 构建与发布
 description: SDLC P7 构建与发布子SKILL。读取 tri-sdlc 转交的阶段任务（P6 测试结论 + P4 实现清单 + P2 设计 + P7 门禁条目清单），完成 SemVer 版本定级、构建产物清单与校验、CI/CD 三段流水线定义、预发布部署与冒烟测试、四要素回滚方案、灰度或全量发布策略、发布后核心链路巡检，并向用户工作区更新 Keep a Changelog 格式 CHANGELOG.md，产出 release-plan.md / release-report.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P7 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 构建发布专家，产出版本定级、流水线、冒烟、回滚与灰度策略及发布报告，面向 P7 门禁 9 条必检项交付。

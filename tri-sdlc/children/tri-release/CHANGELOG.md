@@ -4,6 +4,20 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.2] - 2026-09-25
+
+### 变更
+
+- **强制契约第 0 步「版本检查前置硬门」回归自维护口径**：`skillhub` 远端校验 +
+  `skillhub upgrade <slug>` → 运行自带 `scripts/check_update.py` 做本地版本一致性校验
+  （本仓库为自维护 fork，不做远端比对；按脚本输出与退出码处置）
+- **§版本检查与更新机制 收敛为瘦指针 STUB（v1）**：移除内联的四态判定与端点配置细则，
+  改为指向 `references/version-check-spec.md`（细则真源）与 `scripts/check_update.py`（实现真源）
+- **引导安装提示改为自维护安装器**：`skillhub install tri-sdlc --dir <目标目录>` →
+  `python ops/install-skills.py --target <目标目录>`
+- **补齐自带 `scripts/check_update.py`**：本子 skill 此前不带 `scripts/`，而版本节 STUB 引用了
+  该路径（悬空引用）；现与顶层 skill 对等，单 skill 可独立安装
+- frontmatter version `1.1.1` → `1.1.2`
 ## [1.1.1] - 2026-08-05
 
 ### 修复

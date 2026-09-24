@@ -1,7 +1,7 @@
 ---
 name: 测试验证
 slug: tri-test
-version: 1.1.1
+version: 1.1.2
 displayName: 测试验证
 description: SDLC P6 测试验证子SKILL。读取 tri-sdlc 转交的阶段任务（P1 验收标准 + P4 实现与单测报告 + P5 评审报告 + P6 门禁条目清单），编制覆盖全部验收标准的测试计划，执行单元/集成/用户验收三层测试，统计通过率并按四要素登记缺陷、跟踪复测闭环，产出 test-plan.md / test-report.md / defects.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P6 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 测试验证专家，产出验收标准 100% 覆盖的测试计划、三层执行报告与四要素缺陷台账，面向 P6 门禁 7 条必检项交付。

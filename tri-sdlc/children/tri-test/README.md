@@ -27,6 +27,10 @@ tri-test/
 ├── SKILL.md
 ├── README.md
 ├── CHANGELOG.md
+├── references/
+│   └── version-check-spec.md
+├── scripts/
+│   └── check_update.py
 └── tests/
     └── tri-test-full-testcases.md
 ```

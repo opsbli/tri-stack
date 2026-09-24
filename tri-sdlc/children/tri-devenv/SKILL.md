@@ -1,7 +1,7 @@
 ---
 name: 开发准备
 slug: tri-devenv
-version: 1.1.1
+version: 1.1.2
 displayName: 开发准备
 description: SDLC P3 开发准备子SKILL。读取 tri-sdlc 转交的阶段任务（P2 设计三件套 + P1 需求 + P3 门禁条目清单），完成仓库与三类分支策略定义、带版本号的可执行环境搭建步骤、代码规范工具与关键规则配置、commit message 格式与钩子配置、任务看板五要素拆分与需求 ID 回链校验，产出 devenv.md / task-board.md 并按需向工作区落工程配置骨架，供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P3 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 开发准备专家，产出分支策略、可执行环境步骤、规范与钩子配置及带需求回链的任务看板，面向 P3 门禁 7 条必检项交付。

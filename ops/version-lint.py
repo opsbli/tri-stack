@@ -304,7 +304,9 @@ def main() -> int:
                     help="跳过文档层（D1–D4）检查，只校验 P1–P5")
     args = ap.parse_args()
 
+    # 顶层 24 个 tri-* + tri-sdlc 的 9 个子 skill（children/ 下，此前未被纳入校验）
     dirs = sorted(p for p in REPO.glob("tri-*") if (p / "SKILL.md").is_file())
+    dirs += sorted(p for p in REPO.glob("tri-sdlc/children/*") if (p / "SKILL.md").is_file())
     if args.skill:
         dirs = [p for p in dirs if p.name == args.skill]
     if not dirs:

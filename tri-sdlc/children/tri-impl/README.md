@@ -27,6 +27,10 @@ tri-impl/
 ├── SKILL.md
 ├── README.md
 ├── CHANGELOG.md
+├── references/
+│   └── version-check-spec.md
+├── scripts/
+│   └── check_update.py
 └── tests/
     └── tri-impl-full-testcases.md
 ```

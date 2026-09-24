@@ -196,7 +196,9 @@ def main() -> int:
     if not (args.check or args.apply):
         args.check = True
 
+    # 顶层 24 个 tri-* + tri-sdlc 的 9 个子 skill（children/ 下，此前未被纳入校验）
     targets = sorted(p for p in REPO.glob("tri-*") if (p / "SKILL.md").is_file())
+    targets += sorted(p for p in REPO.glob("tri-sdlc/children/*") if (p / "SKILL.md").is_file())
     if args.skill:
         targets = [p for p in targets if p.name == args.skill]
     if not targets:

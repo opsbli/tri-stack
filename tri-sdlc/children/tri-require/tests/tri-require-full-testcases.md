@@ -1,6 +1,6 @@
 ---
 name: tri-require-full-testcases
-description: tri-require v1.1.1 全场景测试用例，覆盖 10 条强制契约、两态上游依赖检测、输入契约、六步需求工程（分类矩阵/ID 优先级/三段式故事/Given-When-Then/双向矩阵/基线冻结）、四件套落盘、范围核对、回炉闭环与职责边界
+description: tri-require v1.1.2 全场景测试用例，覆盖 10 条强制契约、两态上游依赖检测、输入契约、六步需求工程（分类矩阵/ID 优先级/三段式故事/Given-When-Then/双向矩阵/基线冻结）、四件套落盘、范围核对、回炉闭环与职责边界
 ---
 
 # 零、能力清单（全量扫描结果）
