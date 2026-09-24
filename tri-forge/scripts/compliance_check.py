@@ -36,7 +36,7 @@ SEMVER = re.compile(r"^\d+(\.\d+)*$")
 CL_HEAD = re.compile(r"^##[ \t]*\[([0-9]+(?:\.[0-9]+)*)\]", re.M)
 CL_ALL = re.compile(r"^##[ \t]*\[([0-9]+(?:\.[0-9]+)*)\]", re.M)
 HARDCODED_COUNT = re.compile(r"\d+\s*个(下游|skill|顶层目录|tri-\*)")
-SELFCHECK = re.compile(r"本次(意图|模式|操作)\s*=")
+SELFCHECK = re.compile(r"本次(意图|模式|操作|文档)\s*=")
 SECTIONS = ["强制执行契约", "触发时机", "上游依赖检测", "输入契约", "职责边界",
             "核心能力方法论", "处理流程", "交付产物", "版本检查与更新机制"]
 LOCK_INSTALL = re.compile(r"(?<!api\.)skillhub\.cn|skills_store_lock|\.hub/skills")
