@@ -1,4 +1,4 @@
-# tri-skills
+# tri-stack
 
 <div align="center">
 
@@ -31,7 +31,7 @@
 
 ## 简介
 
-**tri-skills** 是一个面向 AI 智能体的技能集合，提供 **42 个模块化、可组合的 skill**，覆盖意图路由、编码、审查、修复、规划、内容生成、翻译、工作流编排、原型解析、PM→Dev 桥接等多个领域。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
+**tri-stack** 是一个面向 AI 智能体的技能集合，提供 **42 个模块化、可组合的 skill**，覆盖意图路由、编码、审查、修复、规划、内容生成、翻译、工作流编排、原型解析、PM→Dev 桥接等多个领域。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
 
 ### 设计理念
 
@@ -161,8 +161,8 @@ python tri-forge/scripts/check_registry.py --apply
 ### 安装
 
 ```bash
-git clone https://github.com/opsbli/tri-skills.git
-cd tri-skills
+git clone https://github.com/opsbli/tri-stack.git
+cd tri-stack
 ```
 
 ### 使用
@@ -237,6 +237,6 @@ tri-skills/
 
 ## 维护
 
-- 仓库：<https://github.com/opsbli/tri-skills>
+- 仓库：<https://github.com/opsbli/tri-stack>
 - 状态：自维护 fork（不再跟随上游更新）
 - 上游：[TrisighT9527/tri-skills](https://github.com/TrisighT9527/tri-skills)（只读参考）
