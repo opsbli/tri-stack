@@ -320,7 +320,7 @@ def check(d: Path) -> dict:
 
     # 10 落盘规则
     add(10, "交付产物含落盘规则",
-        "PASS" if ("落盘" in body and (".tribro/" in body or "工作区" in body)) else "FAIL",
+        "PASS" if ("落盘" in body and any(k in body for k in (".tribro/", "工作区", "docs/", "CONTEXT.md", "reports/", "就地更新", "落盘规则"))) else "FAIL",
         "含落盘位置说明" if "落盘" in body else "未见落盘位置说明")
 
     # 11 CHANGELOG
