@@ -70,7 +70,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 | id | 类型 | 作用 |
 |---|---|---|
-| `spec-per-skill` | sync_spec | 为每个引用 `version-check-spec.md` 的 skill 部署校正版自带 spec（当前 33 个 = 顶层 24 + `children/*` 9） |
+| `spec-per-skill` | sync_spec | 为每个引用 `version-check-spec.md` 的 skill 部署校正版自带 spec（当前 34 个 = 顶层 25 + `children/*` 9；实测 `跳过 34`） |
 | `f2-pointer` | replace_text | 版本门真源指针 `tri-forge/references/version-check-spec.md` → `references/version-check-spec.md` |
 | `f3-clause-inline` | replace_text | 移除「；发布前 MUST 通过 python tri-forge/scripts/sync_registry.py --check。」 |
 | `f3-clause-sentence` | replace_text | 移除「。发布前 MUST 通过 …」句首变体 |
@@ -84,7 +84,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `sync-readme-version` | sync_readme_version | P1↔P5：README 版本声明 = SKILL.md 版本（规则化） |
 | `self-maintained-const-func` | replace_text | 版本门：注入 `SELF_MAINTAINED` 常量与 `self_consistent_check()` |
 | `self-maintained-branch` | replace_text | 版本门：在节流检查前插入自维护分支（跳过远端比对） |
-| `converge-version-stub` | converge_version_section | 顶层 skill 版本节统一为瘦指针 STUB（当前 **24** 个 = 顶层全部；含 `force_skills` 补齐的 9 个） |
+| `converge-version-stub` | converge_version_section | 顶层 skill 版本节统一为瘦指针 STUB（当前 **25** 个 = 顶层全部；含 `force_skills` 补齐的 9 个） |
 | `converge-version-stub-children` | converge_version_section | `tri-sdlc/children/*` 9 个子阶段 skill 同款收敛（同缺陷类，scope 独立便于裁定） |
 | `f7-contract-mode` | replace_text | 契约 §0：「连接 skillhub 校验 + `skillhub upgrade`」→ 自维护本地校验（22 处） |
 | `f7b-contract-mode-intent` | replace_text | 契约 §0 变体（`tri-intent`）：远端校验/升级 + 端点内联 → 自维护口径 |
@@ -93,7 +93,14 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `f10-children-check-update` | sync_script | 为 `tri-sdlc/children/*` 的 9 个子 skill 各部署自带 `scripts/check_update.py`（对齐顶层；STUB 命令不再悬空） |
 | `f11-children-tests-version` | replace_regex | 子 skill 的 tests 描述版本引用 `v1.1.1` → `v1.1.2`（随版本线补升同步） |
 | `f12-children-readme-tree` | replace_text | 子 skill README 目录树：补列实际存在的 `references/` 与新增的 `scripts/check_update.py` |
-| `f13-check-update-decouple` | sync_script | 顶层 24 份 `check_update.py` 统一为去耦形态（清除 `tri-intent` 硬编码耦合；实际 `写入 22｜跳过 2`，跳过的即已去耦的 `tri-code-analyzer` / `tri-lottie`） |
+| `f13-check-update-decouple` | sync_script | 顶层 25 份 `check_update.py` 统一为去耦形态（清除 `tri-intent` 硬编码耦合；首轮 2026-09-25 实际 `写入 22｜跳过 2`，跳过的即已去耦的 `tri-code-analyzer` / `tri-lottie`；后续新增 `tri-req-audit` 已自带去耦版 ⇒ 现 **全量跳过**） |
+| `f14-req-audit-two-hop` | replace_text | family-spec §五：登记 `tri-req-audit` 二跳路由例外（2026-09-25 补记，op 于 2026-09-25 随 tri-req-audit 锻造加入） |
+| `f15-agents-md-coding-rules` | replace_text | `tri-init` AGENTS.md 模板：新增「通用编码行为规则（8 条）」章节——写码纪律（最简实现 / 分层成长 / 先用已有依赖等），与项目特定编码规范正交；第 1 条采用兼容安全版（2026-09-25） |
+| `f15b-tests-t31` | replace_text | `tri-init` 测试用例：AGENTS.md 内容验证节追加 T31（该文件第六/七节本有历史性重复，`replace_text` 全量命中使两份同步获得 T31）（2026-09-25） |
+| `f16-tri-init-version` | replace_text | `tri-init` 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；**必须排在 `sync-version-meta` 之前**，P3 才能同轮跟随）（2026-09-25） |
+| `f17-tri-init-changelog` | replace_text | `tri-init` CHANGELOG：追加 `[1.0.3]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25） |
+| `f18-familyspec-shared-domain` | replace_text | `family-spec.md` §1.4：补「**判定顺序**」（**可推导优先** —— 共享但可推导者仍属「通过」，豁免只收「共享 ∩ 不可推导」）+ 给豁免清单两行补「不可推导」依据；消除 `coding/` 两行同时命中的歧义（2026-09-25） |
+| `f19-compliance-dedup` | replace_text | `compliance_check.py`：删去重复的「角色识别」if/elif 链（原 L143-155 与 L157-169 逐字重复、二次赋值同值、行为无差异）；保留处加注「单次赋值」作幂等标记（2026-09-25） |
 
 ## 每项补丁的依据
 
@@ -497,3 +504,16 @@ skillhub[ \t]+install[ \t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \t]+--dir[ \t]+(?:<[^>
 从未被任何版本校验覆盖**（这是上述三处欠账长期未被发现的根因）。
 两者现均已追加 `REPO.glob("tri-sdlc/children/*")`，覆盖数由 **24 → 33**。
 
+## 计数增量（2026-09-25）
+
+新增内部工具型 skill **`tri-req-audit`** 后：顶层 **24 → 25**、补丁层 op **28 → 30**（新增 `f18`/`f19`）、
+校验覆盖 **33 → 34**、`check_update.py` **34 → 35 份**（34 skill + 1 payload，hash 仍全等）。
+
+| 受影响位置 | 处置 |
+|---|---|
+| 「当前补丁清单」表 `spec-per-skill` / `converge-version-stub` / `f13` 三行 | ✅ 已改为当前值 |
+| 「当前补丁清单」表新增 `f18` / `f19` 两行 | ✅ 已补 |
+| §锚点型注入事故（`43 份 ×3`、`覆盖 24 份`）、§自维护模式（`当前 24 份`/`2 种形态`）、 |
+| §源形态取「去耦版」（`24 份脚本有两种形态`）、§后续 f13（`顶层 24 份`/`终态 33+1=34`） | ⬜ **冻结** —— 均为当时实测快照，改写即伪造 |
+
+> 冻结段落的现状读数：`check_update.py` **34 份 skill 副本 + 1 payload**、**仅 1 种形态**（`f13` 后全等）。

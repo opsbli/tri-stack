@@ -140,21 +140,7 @@ def check(d: Path) -> dict:
     body = t[fm_raw.end():] if fm_raw else t
     secs = sections(body)
 
-    # 角色识别（决定 #8 / #20 是否适用）
-    if "总路由" in desc and "识别" in desc and "路由" in desc:
-        role = "root"
-    elif "内部专用工具" in desc or "内部专用工具" in body[:1200]:
-        role = "internal"
-    elif "横向" in desc:
-        role = "lateral"
-    elif ("下游" in desc or "桥接" in desc) and ("认领" in desc or "处理 I" in desc or "处理 L2" in desc):
-        role = "downstream"
-    elif "子 skill" in desc or "children" in desc:
-        role = "child"
-    else:
-        role = "unknown"
-
-    # 角色识别（决定 #8 / #20 是否适用）
+    # 角色识别（决定 #8 / #20 是否适用）——单次赋值（去重后仅保留一处，勿再复制）
     if "总路由" in desc and "识别" in desc and "路由" in desc:
         role = "root"
     elif "内部专用工具" in desc or "内部专用工具" in body[:1200]:

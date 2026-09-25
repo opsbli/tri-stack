@@ -49,6 +49,7 @@
 | T23 | AGENTS.md 含技术栈表 | 与 project-scan.py 检出结果一致 |
 | T24 | AGENTS.md 含编码规范 | 命名规范 / 分层规范 / 代码风格 |
 | T25 | AGENTS.md 含目录结构说明 | 与实际目录结构一致 |
+| T31 | AGENTS.md 含通用编码行为规则（8 条） | 8 条齐全，第 1 条为兼容安全版 |
 
 ## 七、project-profile.json 验证
 
@@ -68,6 +69,7 @@
 | T23 | AGENTS.md 含技术栈表 | 与 project-scan.py 检出结果一致 |
 | T24 | AGENTS.md 含编码规范 | 命名规范 / 分层规范 / 代码风格 |
 | T25 | AGENTS.md 含目录结构说明 | 与实际目录结构一致 |
+| T31 | AGENTS.md 含通用编码行为规则（8 条） | 8 条齐全，第 1 条为兼容安全版 |
 
 ## 七、project-profile.json 验证
 

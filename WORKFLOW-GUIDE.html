@@ -106,25 +106,26 @@
 <div class="wrap">
 
 <header class="top">
-  <div class="kicker">tri-stack · 自维护 · 24 skills · 编程线 22 + 横向 2</div>
+  <div class="kicker">tri-stack · 自维护 · 25 skills · 编程线 23 + 横向 2</div>
   <h1>使用手册：从一句需求到落地交付</h1>
-  <p class="sub">本仓库（opsbli/tri-stack）为<b>完全自维护</b>：不依赖上游、不从平台下载、24 个 skill 全部经 junction 安装可用。手册按<b>仓库实测契约 + 真实项目实战教训</b>重写——所有数字、路径与坑均取自当前源码与 ops-pilot 实战校准，非历史稿抄改。</p>
+  <p class="sub">本仓库（opsbli/tri-stack）为<b>完全自维护</b>：不依赖上游、不从平台下载、25 个 skill 全部经 junction 安装可用。手册按<b>仓库实测契约 + 真实项目实战教训</b>重写——所有数字、路径与坑均取自当前源码与 ops-pilot 实战校准，非历史稿抄改。</p>
   <div class="meta">
     <span class="chip">入口 tri-intent v1.14.1</span>
     <span class="chip">27 个意图落点</span>
-    <span class="chip">24 个顶层 skill · 编程线 22 + 横向 2</span>
-    <span class="chip">版本一致性 24/24 ✅</span>
+    <span class="chip">25 个顶层 skill · 编程线 23 + 横向 2</span>
+    <span class="chip">版本一致性 25/25 ✅</span>
     <span class="chip">tri-forge 已自建</span>
     <span class="chip">tri-prototype v1.1.2</span>
-    <span class="chip">tri-init v1.0.2</span>
+    <span class="chip">tri-init v1.0.3</span>
     <span class="chip">协作层 tri-domain / tri-grill / tri-orchestrate</span>
+    <span class="chip">需求审核 tri-req-audit v1.0.0</span>
   </div>
 </header>
 
 <nav class="toc">
   <ol>
     <li><a href="#m">心智模型：三句话</a></li>
-    <li><a href="#map">全景：编程工作流专线的 24 skill 分层</a></li>
+    <li><a href="#map">全景：编程工作流专线的 25 skill 分层</a></li>
     <li><a href="#codingflow">编程资产流转表</a></li>
     <li><a href="#contract">核心契约：快照 + LATEST 指针</a></li>
     <li><a href="#gate">版本门：自维护模式</a></li>
@@ -156,11 +157,11 @@
 
 <p>用不好这套 skill 的症状只有三种：<b>提问太泛</b>（动作无法映射 → 被降级到咨询）、<b>门上一言不发</b>（skill 卡在等你确认）、<b>跳轨</b>（小需求用了重装轨）。后面每条都有对治。</p>
 
-<h2 id="map"><span class="n">02</span>全景：编程工作流专线的 24 skill 分层</h2>
+<h2 id="map"><span class="n">02</span>全景：编程工作流专线的 25 skill 分层</h2>
 
 <div class="card note">
   <div class="t">分支说明：本分支是编程工作流专线</div>
-  <p style="margin:0">本分支携带<b>编程线 22 个 + 横向方法论 2 个（<code>tri-evolve</code> / <code>tri-true</code>）</b>，共 24 个。全量 46 个（另含内容生成、格式转换族、多模态、表达陪伴、领域单入口，以及另外 5 个横向方法论）保存在归档分支 <code>archive-full-skills-20260924</code>。分层轴只有一条：<b>离编程主干的远近</b>——<b>G0 控制面，G1 是主干，G2 / G3 是它的手和眼，G4–G6 是邻近支撑</b>。</p>
+  <p style="margin:0">本分支携带<b>编程线 23 个 + 横向方法论 2 个（<code>tri-evolve</code> / <code>tri-true</code>）</b>，共 25 个。全量 46 个（另含内容生成、格式转换族、多模态、表达陪伴、领域单入口，以及另外 5 个横向方法论）保存在归档分支 <code>archive-full-skills-20260924</code>。分层轴只有一条：<b>离编程主干的远近</b>——<b>G0 控制面，G1 是主干，G2 / G3 是它的手和眼，G4–G6 是邻近支撑</b>。</p>
 </div>
 
 <div class="card note">
@@ -208,20 +209,21 @@
 </div>
 
 <div class="layer">
-  <div class="lh"><span class="dot" style="background:var(--coral)"></span><span class="nm">G4 全流程 / 协作对齐</span><span class="cnt">4</span></div>
+  <div class="lh"><span class="dot" style="background:var(--coral)"></span><span class="nm">G4 全流程 / 协作对齐</span><span class="cnt">5</span></div>
   <div class="skills">
     <span class="sk"><b>tri-sdlc</b> <span class="v">1.1.5</span> <span class="v">I11/I13/I14 + L3=sdlc</span></span>
     <span class="sk"><b>tri-orchestrate</b> <span class="v">1.0.1</span> <span class="v">直调</span></span>
     <span class="sk"><b>tri-grill</b> <span class="v">1.0.1</span> <span class="v">直调</span></span>
     <span class="sk"><b>tri-domain</b> <span class="v">1.0.1</span> <span class="v">直调</span></span>
+    <span class="sk"><b>tri-req-audit</b> <span class="v">1.0.0</span> <span class="v">直调</span></span>
   </div>
-  <p style="margin:8px 0 0;font-size:12.5px"><b>tri-sdlc</b>=驱动真实项目走完 P0–P8（唯一<b>跨 L2</b> 的编排 skill，子类优先级最高：<b>sdlc &gt; workflow &gt; loop</b>）。其余三个<b>不进路由表、由用户直接调用</b>：<b>tri-orchestrate</b>=把 requirements.md 拆 N 份 spec 分派多人 + 总 todo 自动回写 + 冲突检测；<b>tri-grill</b>=六维质询（歧义 / 边界 / 反例 / 术语 / 依赖 / 优先级）把需求问到无歧义；<b>tri-domain</b>=CONTEXT.md 术语表 + ADR 决策记录 + 边界场景清单。<b>先对齐、再拆解、后编码</b>，比回炉便宜得多。</p>
+  <p style="margin:8px 0 0;font-size:12.5px"><b>tri-sdlc</b>=驱动真实项目走完 P0–P8（唯一<b>跨 L2</b> 的编排 skill，子类优先级最高：<b>sdlc &gt; workflow &gt; loop</b>）。其余四个<b>不进路由表、由用户直接调用</b>：<b>tri-orchestrate</b>=把 requirements.md 拆 N 份 spec 分派多人 + 总 todo 自动回写 + 冲突检测；<b>tri-grill</b>=六维质询（歧义 / 边界 / 反例 / 术语 / 依赖 / 优先级）把需求问到无歧义；<b>tri-domain</b>=CONTEXT.md 术语表 + ADR 决策记录 + 边界场景清单；<b>tri-req-audit</b>=对 tri-prototype 产出的 <code>requirements.md</code> 做三重前置校验（结构完整性 / 证据溯源 / tri-coding 门② 可消费性），二跳委派市面 PRD 审核 skill 出 P0/P1/P2 问题清单，<b>只读不改</b>；无市面 skill 时自动降级为自带八维兜底审核。<b>先对齐、再审核、再拆解、后编码</b>，比回炉便宜得多。</p>
 </div>
 
 <div class="layer">
   <div class="lh"><span class="dot" style="background:var(--amber)"></span><span class="nm">G5 内务 / 造物 · 直调</span><span class="cnt">3</span></div>
   <div class="skills">
-    <span class="sk"><b>tri-init</b> <span class="v">1.0.2</span> <span class="v">项目接入</span></span>
+    <span class="sk"><b>tri-init</b> <span class="v">1.0.3</span> <span class="v">项目接入</span></span>
     <span class="sk"><b>tri-forge</b> <span class="v">1.0.4</span> <span class="v">skill 锻造</span></span>
     <span class="sk"><b>tri-god</b> <span class="v">1.2.3</span> <span class="v">I21 蒸馏造物</span></span>
   </div>
@@ -287,7 +289,7 @@
 </div>
 <p style="margin:0;font-size:12.5px"><b>重装轨 · 全流程</b>　承接 <code>tri-sdlc</code>　每阶段「派发 → 审计 → 确认」三拍，<b>连 3 轮 FAIL 停机</b>　→ <code>.tribro/sdlc/&lt;命名&gt;/</code>（manifest 覆盖写 / summary / Pn-xxx/ / gate-report）；<b>P4 源码与 P7 CHANGELOG 落工作区</b></p>
 
-<h3 style="margin-top:26px">产物落点总表（15 个编程资产）</h3>
+<h3 style="margin-top:26px">产物落点总表（16 个编程资产）</h3>
 <table>
 <thead><tr><th>资产</th><th>链上位置</th><th><code>.tribro/</code> 落点</th><th>真实成果物</th></tr></thead>
 <tbody>
@@ -295,6 +297,7 @@
 <tr><td><code>tri-fix</code></td><td>G1 · 修</td><td><code>fixes/&lt;命名&gt;/</code>：bug-report / diagnosis / fix-tasks / fix-report</td><td>补丁 → 工作区</td></tr>
 <tr><td><code>tri-review</code></td><td>G1 · 审</td><td><code>reviews/&lt;命名&gt;/</code>：review-report（增量审计 → audit-report）</td><td>无（只读不改）</td></tr>
 <tr><td><code>tri-prototype</code></td><td>G2 · 前置</td><td><code>coding/&lt;命名&gt;/requirements.md</code>（tri-coding 门② 的标准读取位置）</td><td>requirements.md</td></tr>
+<tr><td><code>tri-req-audit</code></td><td>G2 · 审核</td><td><code>req-audit/&lt;命名&gt;/</code>：req-audit-report / req-audit-fixes / delegation-receipts.json</td><td>无（只读不改）</td></tr>
 <tr><td><code>tri-frontend-design</code></td><td>G2</td><td><span class="sev s1">无固定落点</span>设计令牌规格随对话交付或用户指定路径</td><td>令牌 / 动效基线</td></tr>
 <tr><td><code>tri-lottie</code></td><td>G2</td><td><code>forge/&lt;命名&gt;/</code>（链路审计）+ <code>skills/tri-lottie/</code>（skill 包自身）</td><td>动效代码 → 工作区</td></tr>
 <tr><td><code>tri-code-analyzer</code></td><td>G3</td><td><code>code-analyzer/&lt;命名&gt;-analysis.md</code> + <code>code-analyzer/lessons.md</code>（追加式，跨会话持久）</td><td>深度剖析报告</td></tr>
@@ -309,11 +312,12 @@
 </tbody>
 </table>
 
-<h3 style="margin-top:26px">五个关键衔接点</h3>
+<h3 style="margin-top:26px">六个关键衔接点</h3>
 <table>
 <thead><tr><th>衔接</th><th>触发条件</th><th>交接物</th></tr></thead>
 <tbody>
 <tr><td><code>tri-prototype</code> → <code>tri-coding</code> 门②</td><td>原型链接 / PRD 解析完成</td><td><code>coding/&lt;命名&gt;/requirements.md</code></td></tr>
+<tr><td><code>tri-prototype</code> → <code>tri-req-audit</code> → <code>tri-coding</code> 门②</td><td>需求文档就位、开工前先验质量</td><td><code>req-audit/&lt;命名&gt;/req-audit-report.md</code>（P0 阻断开工 / P1 需澄清 / P2 建议改进）</td></tr>
 <tr><td><code>tri-init</code> → <code>tri-coding</code> 门②</td><td>项目首次接入完成</td><td><code>project-profile.json</code> + <code>standards_doc</code> 指针（规范冲突以原文为准）</td></tr>
 <tr><td><code>tri-coding</code> 门③ → <code>tri-review</code></td><td>被问「是否调其它 skill 协同」→ 答「调 tri-review」</td><td>待审 diff</td></tr>
 <tr><td><code>tri-orchestrate</code> → 多人 / 多 agent</td><td><code>requirements.md</code> 就位后</td><td><code>coding/&lt;命名&gt;/specs/</code> 全套</td></tr>
@@ -328,7 +332,7 @@
     <li><b>通过</b>（可按 skill 名推导）：<code>coding/</code> <code>fixes/</code> <code>reviews/</code> <code>plans/</code> <code>actions/</code> <code>workflows/</code> <code>loops/</code> <code>sdlc/</code> <code>code-analyzer/</code> <code>html/</code> <code>checklist/</code> 等（<b>本分支</b>实际会产生的全部落盘目录）</li>
     <li><b>同上，但对应 skill 本分支未包含</b>（仅归档分支适用）：<code>content/</code> <code>cost/</code> <code>pdf2md/</code> <code>article/</code> <code>geo/</code> <code>jobhunt/</code> 等</li>
     <li><b>已改名</b>（2026-09-24）：<code>arch-viz/</code>→<code>html/</code>、<code>audit-checklist/</code>→<code>checklist/</code>（本分支）；<code>tri-article/</code>→<code>article/</code>、<code>tri-geo/</code>→<code>geo/</code>、<code>tri-jobhunt/</code>→<code>jobhunt/</code>（对应 skill 本分支未包含，仅归档分支适用）</li>
-    <li><b>豁免</b>（跨 skill 共享，登记于 <code>tri-forge/references/family-spec.md</code> §1.4）：<code>snapshots/</code>（tri-intent）、<code>skills/</code>（tri-forge 生成物位）。<code>multimedia/</code>（原 tri-mm，slug 为缩写）<b>本分支未包含</b>。另 <code>specs/</code> 嵌在 <code>coding/</code> 下，不占顶层</li>
+    <li><b>豁免</b>（跨 skill 共享 <b>且不可推导</b>；可推导者即使共享也归「通过」——如 <code>coding/</code> / <code>sdlc/</code> / <code>forge/</code>。登记于 <code>tri-forge/references/family-spec.md</code> §1.4）：<code>snapshots/</code>（tri-intent）、<code>skills/</code>（tri-forge 生成物位）。<code>multimedia/</code>（原 tri-mm，slug 为缩写）<b>本分支未包含</b>。另 <code>specs/</code> 嵌在 <code>coding/</code> 下，不占顶层</li>
   </ul>
   <p style="margin:0 0 8px"><b>规则已固化可判定</b>：合规清单第 10 条现在要求——新建 skill 的落盘目录名不可推导、又未登记豁免，即门④ <b>FAIL</b>；<b>skill 目录内出现 <code>.tribro/</code> 同样 FAIL</b>（会经 junction 安装暴露、被打包收录）。</p>
   <p style="margin:0 0 8px"><b>第三类产物区（跨项目台账）</b>：除上表两类，家族还承认落在项目根、<b>不属 <code>.tribro/</code></b> 的跨项目台账。典型例子 <code>.geo-snapshots/&lt;品牌&gt;/</code> 来自原 <code>tri-geo</code>（<b>本分支未包含</b>，仅归档分支适用），本分支目前无第三类产物区实例。它同样受可推导性判据约束，且 MUST 登记于 <code>family-spec.md</code> §1.4 第三类清单；<b>NEVER 迁入 <code>.tribro/</code></b>——判据是数据的生命周期跟随「业务实体」还是「项目」，跟随业务实体者迁入会被项目目录切碎。</p>
@@ -375,7 +379,7 @@
 
 <h2 id="gate"><span class="n">04</span>版本门：自维护模式</h2>
 
-<p>每个 skill 启动后的<b>第零步</b>都会跑 <code>scripts/check_update.py</code>。<b>全部 33 个 skill（顶层 24 + tri-sdlc 子 skill 9）内置 <code>SELF_MAINTAINED = True</code></b>：完全跳过远端请求，改为校验本 skill 自身 <b>5 处版本声明</b>的一致性。</p>
+<p>每个 skill 启动后的<b>第零步</b>都会跑 <code>scripts/check_update.py</code>。<b>全部 34 个 skill（顶层 25 + tri-sdlc 子 skill 9）内置 <code>SELF_MAINTAINED = True</code></b>：完全跳过远端请求，改为校验本 skill 自身 <b>5 处版本声明</b>的一致性。</p>
 
 <table>
 <thead><tr><th>文件</th><th>角色</th></tr></thead>
@@ -471,6 +475,7 @@
 <tr><td>「把某人的方法论做成 skill」</td><td>tri-god</td><td>产物是一个可独立调用的 skill</td></tr>
 <tr><td>「把需求拆给 N 个人并行做，总 todo 自动回写」</td><td><b>tri-orchestrate</b></td><td>协作编排：拆 spec + 分派 + 回执收集 + 汇总看板</td></tr>
 <tr><td>「需求有歧义，逐条质询到对齐再动手」</td><td><b>tri-grill</b></td><td>六维质询（歧义/边界/反例/术语/依赖/优先级），消除「PM 说 X、Dev 理解成 Y」</td></tr>
+<tr><td>「这份需求文档 / PRD 能不能开工」</td><td><b>tri-req-audit</b>（<b>直调</b>）</td><td>三重前置校验 + 八维审核 → P0/P1/P2 问题清单；二跳委派市面 PRD 审核 skill，缺则降级兜底</td></tr>
 <tr><td>「统一术语 / 记设计决策 / 补边界场景」</td><td><b>tri-domain</b></td><td>产出 CONTEXT.md 术语表 + docs/adr/ + 边界场景清单</td></tr>
 <tr><td>「首次把项目接入 tri-stack / 初始化」</td><td><b>tri-init</b>（<b>直调</b>，不经路由）</td><td>扫描技术栈 → 生成 AGENTS.md + project-profile + .tribro/；用户直接说「初始化这个项目」</td></tr>
 </tbody>
@@ -871,7 +876,7 @@ flowchart LR
 
 <div class="mcard">
   <h4>⑫ 项目初始化 · tri-init（直调）</h4>
-  <div class="mtag">tri-init v1.0.2 · 不经 tri-intent 路由</div>
+  <div class="mtag">tri-init v1.0.3 · 不经 tri-intent 路由</div>
   <div class="mermaid">
 flowchart LR
   classDef intent fill:#171430,stroke:#3a2f5c,color:#e6e8ec
@@ -910,6 +915,7 @@ flowchart LR
 ├── sdlc/&lt;命名&gt;/               <i># tri-sdlc：manifest + summary + Pn-xxx/ + 各阶段 gate-report</i>
 ├── html/&lt;命名&gt;/               <i># tri-html：架构分析主报告 + viewer 成品 + analysis.json</i>
 ├── checklist/&lt;命名&gt;/          <i># tri-checklist：audit-checklist_&lt;日期&gt;_&lt;时间&gt;.md</i>
+├── req-audit/&lt;命名&gt;/          <i># tri-req-audit：req-audit-report / req-audit-fixes / delegation-receipts.json</i>
 ├── code-analyzer/           <i># tri-code-analyzer：&lt;命名&gt;-analysis.md + lessons.md（追加式，跨会话持久）</i>
 ├── forge/&lt;命名&gt;/              <i># tri-forge / tri-lottie：需求卡 / 合规报告 / 测试报告 / delivery-manifest</i>
 ├── god/                     <i># tri-god：蒸馏造物过程记录</i>
@@ -953,7 +959,7 @@ flowchart LR
 
 <footer>
   tri-stack 使用手册 · 自维护版 · 按仓库实测契约 + 真实项目实战教训重写<br>
-  契约基线：tri-intent v1.14.1 ／ tri-coding v1.8.1 ／ tri-review v1.7.0 ／ tri-sdlc v1.1.5 ／ tri-prototype v1.1.2 ／ tri-forge v1.0.4 ／ tri-init v1.0.2<br>
+  契约基线：tri-intent v1.14.1 ／ tri-coding v1.8.1 ／ tri-review v1.7.0 ／ tri-sdlc v1.1.5 ／ tri-prototype v1.1.2 ／ tri-forge v1.0.4 ／ tri-init v1.0.3<br>
   24 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
   <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ 24 个顶层 skill 全部 junction 安装 ✅ 版本一致性 33/33（含 9 个子 skill）✅ 实战校准：ops-pilot / ops-pilot-web</span>
 </footer>

@@ -16,6 +16,42 @@
       "skip_dirs": []
     },
     {
+      "id": "f15-agents-md-coding-rules",
+      "type": "replace_text",
+      "label": "AGENTS.md 模板：新增「通用编码行为规则（8 条）」章节（写码纪律，与项目特定编码规范正交）",
+      "glob": "tri-init/templates/AGENTS.md",
+      "old": "{{coding_standards}}\n\n---\n\n## 构建与验证命令",
+      "new": "{{coding_standards}}\n\n---\n\n## 通用编码行为规则（8 条 · 写码纪律）\n\n> 与「编码规范」正交：编码规范管**本项目代码长什么样**，本节管 **AI 怎么克制地写**。\n> 来源：社区 600 亿 token 实践总结（2026-09 收录）；第 1 条采用兼容安全版（英文原版「直接移除旧路径」仅适用个人项目）。\n\n1. **兼容性**：改动旧接口、数据结构或行为前，先确认兼容要求。只有明确不需要兼容时，才移除旧路径；不要自行删除迁移或回退方案。\n2. **最简实现**：选择能满足当前需求的最简单实现，别为尚未出现的需求增加抽象、配置和间接层。\n3. **分层成长**：先做出能从头到尾跑通的最小版本，再逐步添加能力；不要为了尚未完成的复杂设计拆掉现有可用功能。\n4. **职责分离**：保持组件职责清楚，相关代码放在合适的位置。\n5. **优先成熟库**：成熟且维护良好的库能降低复杂度或提高可靠性时，优先使用；没有明确理由不要重写常见功能。\n6. **先用已有依赖**：写新实现或加新依赖前，先检查项目已有依赖的文档、类型和现成能力，不要未经查证就假定它缺某个能力。\n7. **长期架构**：做架构选择时考虑后续维护，不用明知很快要推倒的临时方案糊弄过去。\n8. **先看先例**：设计方案前，先看成熟产品怎样解决同类问题；适合当前需求时，沿用已验证过的做法。\n\n---\n\n## 构建与验证命令",
+      "already_marker": "通用编码行为规则"
+    },
+    {
+      "id": "f15b-tests-t31",
+      "type": "replace_text",
+      "label": "tri-init 测试用例：AGENTS.md 内容验证节追加 T31（通用编码行为规则 8 条）",
+      "glob": "tri-init/tests/*.md",
+      "old": "| T25 | AGENTS.md 含目录结构说明 | 与实际目录结构一致 |\n",
+      "new": "| T25 | AGENTS.md 含目录结构说明 | 与实际目录结构一致 |\n| T31 | AGENTS.md 含通用编码行为规则（8 条） | 8 条齐全，第 1 条为兼容安全版 |\n",
+      "already_marker": "| T31 | AGENTS.md 含通用编码行为规则（8 条） |"
+    },
+    {
+      "id": "f16-tri-init-version",
+      "type": "replace_text",
+      "label": "tri-init 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；P3 由规则化 sync op 同轮跟随）",
+      "glob": "tri-init/SKILL.md",
+      "old": "version: 1.0.2",
+      "new": "version: 1.0.3",
+      "already_marker": "version: 1.0.3"
+    },
+    {
+      "id": "f17-tri-init-changelog",
+      "type": "replace_text",
+      "label": "tri-init CHANGELOG：追加 [1.0.3] 条目（P2 属人工内容）",
+      "glob": "tri-init/CHANGELOG.md",
+      "old": "## [1.0.2] - 2026-09-24",
+      "new": "## [1.0.3] - 2026-09-25\n\n### 新增\n\n- **AGENTS.md 模板新增「通用编码行为规则（8 条）」章节**：最简实现 / 分层成长 / 先用已有依赖等 8 条写码纪律（第 1 条采用兼容安全版），与项目特定编码规范正交；配套测试用例 T31。来源：社区 600 亿 token 实践总结（2026-09 收录）。\n\n## [1.0.2] - 2026-09-24",
+      "already_marker": "## [1.0.3]"
+    },
+    {
       "id": "f2-pointer",
       "type": "replace_text",
       "label": "版本门真源指针：tri-forge 绝对路径 → 自带相对路径",
@@ -118,7 +154,7 @@
     {
       "id": "converge-version-stub",
       "type": "converge_version_section",
-      "label": "顶层 skill 版本节统一为瘦指针 STUB（§六：≤30 行、禁内联细则）；force_skills 补齐使 24 个顶层节形态一致",
+      "label": "顶层 skill 版本节统一为瘦指针 STUB（§六：≤30 行、禁内联细则）；force_skills 补齐使 25 个顶层节形态一致",
       "glob": "tri-*/SKILL.md",
       "already_marker": "<!-- version-stub v1",
       "legacy_markers": [
@@ -228,10 +264,37 @@
     {
       "id": "f13-check-update-decouple",
       "type": "sync_script",
-      "label": "顶层 24 份 check_update.py 统一为去耦形态（DEFAULT_SLUG=None；清除 tri-intent 硬编码耦合，与 f10 的 child 9 份及 payload 同 hash）",
+      "label": "顶层 25 份 check_update.py 统一为去耦形态（DEFAULT_SLUG=None；清除 tri-intent 硬编码耦合，与 f10 的 child 9 份及 payload 同 hash）",
       "glob": "tri-*/SKILL.md",
       "payload": "assets/check_update.py",
       "dest": "scripts/check_update.py"
+    },
+    {
+      "id": "f14-req-audit-two-hop",
+      "type": "replace_text",
+      "label": "family-spec §五：登记 tri-req-audit 的二跳路由例外（中介路由 + 具体执行）",
+      "glob": "tri-forge/references/family-spec.md",
+      "old": "| 二跳路由例外 | 若采用「中介路由 + 具体执行」二跳形态，MUST 在此登记中介与被执行方 |",
+      "new": "| 二跳路由例外 | 若采用「中介路由 + 具体执行」二跳形态，MUST 在此登记中介与被执行方 |\n| **二跳路由例外 · `tri-req-audit`** | 中介 = `tri-req-audit`（需求文档审核）；被执行方 = 市面 PRD 审核 skill（`prd-review` / `requirement-testability-review` / `bg-requirement-review`），**不注册**为 tri-intent 下游；委派契约单一事实源 = `tri-req-audit/references/market-prd-review-skills.md`。登记理由：中介以「家族专有可消费性判据 + 市面通用产品视角」双层审核 tri-prototype 产出的 `requirements.md`，属「中介路由 + 具体执行」形态 |",
+      "already_marker": "二跳路由例外 · `tri-req-audit`"
+    },
+    {
+      "id": "f18-familyspec-shared-domain",
+      "type": "replace_text",
+      "label": "family-spec §1.4：补「**判定顺序**」（**可推导优先** —— 共享但可推导者仍属「通过」；豁免仅收「共享 ∩ 不可推导」）+ 给豁免清单两行补「不可推导」依据，消除 `coding/` 两行同时命中的歧义",
+      "glob": "tri-forge/references/family-spec.md",
+      "old": "**判据只有一条：目录名能否从 skill slug 机械推导**（去掉 `tri-` 前缀，允许常规名词化）。\n\n| 情形 | 处置 | 示例 |\n|---|---|---|\n| 可从 skill 名推导 | ✅ 通过 | `tri-coding`→`coding/`、`tri-fix`→`fixes/`、`tri-plan`→`plans/`、`tri-code-analyzer`→`code-analyzer/` |\n| 由多个 skill 共享 | ✅ 豁免（须在下表登记） | `snapshots/`（`tri-intent`）、`skills/`（`tri-forge` 生成物位） |\n| 不可推导 | ❌ MUST 改名 | `tri-html` 曾用 `arch-viz/` |\n\n**为何规则不是「目录名 = skill 名」**：`coding/` 同时装 `tri-coding` / `tri-prototype` / `tri-orchestrate` 三家产物，\n`sdlc/` 装全部阶段子 skill，`skills/` 装全部生成物——**「一 skill 一目录」本就不成立**。\n规则只能是**可推导**，不能是**相等**。\n\n**登记豁免清单**（共享契约目录，改名要动全部调用方）：\n\n| 目录 | 归属 | 豁免理由 |\n|---|---|---|\n| `snapshots/` | `tri-intent` | 快照定位契约的固定路径，全部路由型下游读取 |\n| `skills/` | `tri-forge` | 生成物落盘位，`check_downstream.py` 的检测路径之一 |",
+      "new": "**判据只有一条：目录名能否从 skill slug 机械推导**（去掉 `tri-` 前缀，允许常规名词化）。\n\n**判定顺序（两行同时命中时以此为准，消除歧义）**：① 先判**可推导性** —— 只要目录名可从**任一写方**的 skill slug 机械推导，即落入第一行，处置 = ✅ **通过**（**共享但可推导者同此，不需要登记**）；② 仅当**不可推导**时再看**共享性** —— 由 ≥2 个 skill 写入者落第二行（豁免 + MUST 登记），单一写方者落第三行（MUST 改名）。\n（历史缺口：`coding/` 既可推导（← `tri-coding`）、又由三 skill 共写，两行同时命中却无优先级规则。按本顺序 ⇒ **`coding/` 属「通过」**，与 `sdlc/`（← `tri-sdlc`，含 9 个子 skill 共写）、`forge/`（← `tri-forge`，并与 `tri-lottie` 共写）同类；豁免清单只收「共享 **且** 不可推导」者 —— `snapshots/` 不可由 `tri-intent` 推导、`skills/` 不可由 `tri-forge` 推导。）\n\n| 情形 | 处置 | 示例 |\n|---|---|---|\n| 可从 skill 名推导（**任一写方**即可） | ✅ 通过 —— **共享但可推导者同此，无需登记** | `tri-coding`→`coding/`（3 skill 共写）、`tri-fix`→`fixes/`、`tri-plan`→`plans/`、`tri-sdlc`→`sdlc/`（含 9 子 skill 共写）、`tri-code-analyzer`→`code-analyzer/` |\n| 由多个 skill 共享 **且不可推导** | ✅ 豁免（须在下表登记） | `snapshots/`（`tri-intent`）、`skills/`（`tri-forge` 生成物位） |\n| 不可推导 **且单一写方** | ❌ MUST 改名 | `tri-html` 曾用 `arch-viz/` |\n\n**为何规则不是「目录名 = skill 名」**：`coding/` 同时装 `tri-coding` / `tri-prototype` / `tri-orchestrate` 三家产物，\n`sdlc/` 装全部阶段子 skill，`skills/` 装全部生成物——**「一 skill 一目录」本就不成立**。\n规则只能是**可推导**，不能是**相等**。\n\n**登记豁免清单**（共享**且不可推导**的契约目录，改名要动全部调用方）：\n\n| 目录 | 归属 | 豁免理由 |\n|---|---|---|\n| `snapshots/` | `tri-intent` | 快照定位契约的固定路径，全部路由型下游读取；**不可**由 `tri-intent` 推导 |\n| `skills/` | `tri-forge` | 生成物落盘位，`check_downstream.py` 的检测路径之一；**不可**由 `tri-forge` 推导 |",
+      "already_marker": "判定顺序（两行同时命中时以此为准，消除歧义）"
+    },
+    {
+      "id": "f19-compliance-dedup",
+      "type": "replace_text",
+      "label": "compliance_check.py：删去重复的「角色识别」if/elif 链（原 L143-155 与 L157-169 逐字重复，二次赋值同值、行为无差异）；保留处加注「单次赋值」以提供幂等标记",
+      "glob": "tri-forge/scripts/compliance_check.py",
+      "old": "    # 角色识别（决定 #8 / #20 是否适用）\n    if \"总路由\" in desc and \"识别\" in desc and \"路由\" in desc:\n        role = \"root\"\n    elif \"内部专用工具\" in desc or \"内部专用工具\" in body[:1200]:\n        role = \"internal\"\n    elif \"横向\" in desc:\n        role = \"lateral\"\n    elif (\"下游\" in desc or \"桥接\" in desc) and (\"认领\" in desc or \"处理 I\" in desc or \"处理 L2\" in desc):\n        role = \"downstream\"\n    elif \"子 skill\" in desc or \"children\" in desc:\n        role = \"child\"\n    else:\n        role = \"unknown\"\n\n    # 角色识别（决定 #8 / #20 是否适用）\n    if \"总路由\" in desc and \"识别\" in desc and \"路由\" in desc:\n        role = \"root\"\n    elif \"内部专用工具\" in desc or \"内部专用工具\" in body[:1200]:\n        role = \"internal\"\n    elif \"横向\" in desc:\n        role = \"lateral\"\n    elif (\"下游\" in desc or \"桥接\" in desc) and (\"认领\" in desc or \"处理 I\" in desc or \"处理 L2\" in desc):\n        role = \"downstream\"\n    elif \"子 skill\" in desc or \"children\" in desc:\n        role = \"child\"\n    else:\n        role = \"unknown\"",
+      "new": "    # 角色识别（决定 #8 / #20 是否适用）——单次赋值（去重后仅保留一处，勿再复制）\n    if \"总路由\" in desc and \"识别\" in desc and \"路由\" in desc:\n        role = \"root\"\n    elif \"内部专用工具\" in desc or \"内部专用工具\" in body[:1200]:\n        role = \"internal\"\n    elif \"横向\" in desc:\n        role = \"lateral\"\n    elif (\"下游\" in desc or \"桥接\" in desc) and (\"认领\" in desc or \"处理 I\" in desc or \"处理 L2\" in desc):\n        role = \"downstream\"\n    elif \"子 skill\" in desc or \"children\" in desc:\n        role = \"child\"\n    else:\n        role = \"unknown\"",
+      "already_marker": "单次赋值（去重后仅保留一处"
     }
   ]
 }

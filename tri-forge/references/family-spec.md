@@ -43,22 +43,25 @@
 
 **判据只有一条：目录名能否从 skill slug 机械推导**（去掉 `tri-` 前缀，允许常规名词化）。
 
+**判定顺序（两行同时命中时以此为准，消除歧义）**：① 先判**可推导性** —— 只要目录名可从**任一写方**的 skill slug 机械推导，即落入第一行，处置 = ✅ **通过**（**共享但可推导者同此，不需要登记**）；② 仅当**不可推导**时再看**共享性** —— 由 ≥2 个 skill 写入者落第二行（豁免 + MUST 登记），单一写方者落第三行（MUST 改名）。
+（历史缺口：`coding/` 既可推导（← `tri-coding`）、又由三 skill 共写，两行同时命中却无优先级规则。按本顺序 ⇒ **`coding/` 属「通过」**，与 `sdlc/`（← `tri-sdlc`，含 9 个子 skill 共写）、`forge/`（← `tri-forge`，并与 `tri-lottie` 共写）同类；豁免清单只收「共享 **且** 不可推导」者 —— `snapshots/` 不可由 `tri-intent` 推导、`skills/` 不可由 `tri-forge` 推导。）
+
 | 情形 | 处置 | 示例 |
 |---|---|---|
-| 可从 skill 名推导 | ✅ 通过 | `tri-coding`→`coding/`、`tri-fix`→`fixes/`、`tri-plan`→`plans/`、`tri-code-analyzer`→`code-analyzer/` |
-| 由多个 skill 共享 | ✅ 豁免（须在下表登记） | `snapshots/`（`tri-intent`）、`skills/`（`tri-forge` 生成物位） |
-| 不可推导 | ❌ MUST 改名 | `tri-html` 曾用 `arch-viz/` |
+| 可从 skill 名推导（**任一写方**即可） | ✅ 通过 —— **共享但可推导者同此，无需登记** | `tri-coding`→`coding/`（3 skill 共写）、`tri-fix`→`fixes/`、`tri-plan`→`plans/`、`tri-sdlc`→`sdlc/`（含 9 子 skill 共写）、`tri-code-analyzer`→`code-analyzer/` |
+| 由多个 skill 共享 **且不可推导** | ✅ 豁免（须在下表登记） | `snapshots/`（`tri-intent`）、`skills/`（`tri-forge` 生成物位） |
+| 不可推导 **且单一写方** | ❌ MUST 改名 | `tri-html` 曾用 `arch-viz/` |
 
 **为何规则不是「目录名 = skill 名」**：`coding/` 同时装 `tri-coding` / `tri-prototype` / `tri-orchestrate` 三家产物，
 `sdlc/` 装全部阶段子 skill，`skills/` 装全部生成物——**「一 skill 一目录」本就不成立**。
 规则只能是**可推导**，不能是**相等**。
 
-**登记豁免清单**（共享契约目录，改名要动全部调用方）：
+**登记豁免清单**（共享**且不可推导**的契约目录，改名要动全部调用方）：
 
 | 目录 | 归属 | 豁免理由 |
 |---|---|---|
-| `snapshots/` | `tri-intent` | 快照定位契约的固定路径，全部路由型下游读取 |
-| `skills/` | `tri-forge` | 生成物落盘位，`check_downstream.py` 的检测路径之一 |
+| `snapshots/` | `tri-intent` | 快照定位契约的固定路径，全部路由型下游读取；**不可**由 `tri-intent` 推导 |
+| `skills/` | `tri-forge` | 生成物落盘位，`check_downstream.py` 的检测路径之一；**不可**由 `tri-forge` 推导 |
 
 **产物区共三类，命名判据同为「可推导」**：
 
@@ -185,6 +188,7 @@ NEVER 改名——门禁与路由按固定文件名定位。
 | 上游检测态数变体 | 若采用非「两态/三态」标准形态，MUST 在此登记 skill 名与变体定义 |
 | 自检句格式例外 | 横向型若使用非标准自检句（`本次操作=` 之外），MUST 在此登记 |
 | 二跳路由例外 | 若采用「中介路由 + 具体执行」二跳形态，MUST 在此登记中介与被执行方 |
+| **二跳路由例外 · `tri-req-audit`** | 中介 = `tri-req-audit`（需求文档审核）；被执行方 = 市面 PRD 审核 skill（`prd-review` / `requirement-testability-review` / `bg-requirement-review`），**不注册**为 tri-intent 下游；委派契约单一事实源 = `tri-req-audit/references/market-prd-review-skills.md`。登记理由：中介以「家族专有可消费性判据 + 市面通用产品视角」双层审核 tri-prototype 产出的 `requirements.md`，属「中介路由 + 具体执行」形态 |
 
 > **登记的意义**：家族内同类概念 MUST 有唯一表述。未登记的变体会让后续生成者
 > 误套模板，产生又一处定义漂移（F3 即此类）。

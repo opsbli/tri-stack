@@ -24,7 +24,7 @@
 - **自建 tri-prototype**：PM→Dev 桥接 skill（解析原型 + PRD → 产出 tri-coding 需求说明书）
 - **补装缺失 skill（已废弃）**：曾从平台补装 11 个 tri-intent 路由引用的子类 skill（顶层 29 → 42）
 - **平台取包工具已移除（2026-09-24）**：`ops/skills-install.py` 与「停用远端比对」裁定冲突，已删除；本地安装统一走 `ops/install-skills.py`（junction 方式）
-- **分支收窄（2026-09-24）**：`main` 收窄为**编程工作流专线（22 个）+ 横向方法论（2 个），共 24 个 skill**；全量 46 个保存在归档分支 `archive-full-skills-20260924`
+- **分支收窄（2026-09-24）**：`main` 收窄为**编程工作流专线（22 个）+ 横向方法论（2 个），共 24 个 skill**；全量 46 个保存在归档分支 `archive-full-skills-20260924`（2026-09-25 新增内部工具型 `tri-req-audit` ⇒ 本分支 **25**）
 
 > 上游作者将 tri-forge 私有化（`.gitignore` 显式排除 + 平台未发布），本仓库依据
 > `tri-mece-audit/tri-mece-audit.html` 记录的规格自行重建。
@@ -33,7 +33,7 @@
 
 ## 简介
 
-**tri-stack** 是一个面向 AI 智能体的技能集合。**本分支（`main`）为编程工作流专线，携带 24 个 skill（编程线 22 + 横向方法论 2）**，覆盖意图路由、编码、审查、修复、规划、代码洞察、全流程编排、项目接入与 skill 锻造。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
+**tri-stack** 是一个面向 AI 智能体的技能集合。**本分支（`main`）为编程工作流专线，携带 25 个 skill（编程线 23 + 横向方法论 2）**，覆盖意图路由、编码、审查、修复、规划、代码洞察、全流程编排、项目接入与 skill 锻造。每个 skill 都是一个独立的功能单元，遵循统一的接口规范，可被任意 AI 工具按需加载和调用。
 
 > **全量版（46 个 skill）** 保存在归档分支 **`archive-full-skills-20260924`**，额外包含内容生成、格式转换（PDF/Word/PPT/Excel/HTML → Markdown）、多模态生成、表达陪伴、领域单入口与横向方法论等 24 个 skill。
 
@@ -49,7 +49,7 @@
 
 ## 分支说明：编程工作流专线
 
-本分支面向**编程工作流的 skill 开发**，携带编程线 22 个 skill + 横向方法论 2 个（`tri-evolve` / `tri-true`），共 24 个。
+本分支面向**编程工作流的 skill 开发**，携带编程线 23 个 skill + 横向方法论 2 个（`tri-evolve` / `tri-true`），共 **25** 个（2026-09-25 新增 `tri-req-audit`，服务 tri-coding 门② 的需求文档审核）。
 
 - 全量版 46 个 skill 保存在归档分支 **`archive-full-skills-20260924`**（已推送远端）
 - 需要非编程能力的 skill 时，从归档分支取用或在该分支工作
@@ -57,7 +57,7 @@
 
 ---
 
-## 技能目录（24 个）
+## 技能目录（25 个）
 
 ### 控制面
 
@@ -97,13 +97,14 @@
 | [tri-sdlc](tri-sdlc/) | 1.1.5 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
 | [tri-orchestrate](tri-orchestrate/) | 1.0.1 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
 | [tri-grill](tri-grill/) | 1.0.1 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
+| [tri-req-audit](tri-req-audit/) | 1.0.0 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
 | [tri-domain](tri-domain/) | 1.0.1 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
 
 ### 内务 / 造物
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-init](tri-init/) | 1.0.2 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
+| [tri-init](tri-init/) | 1.0.3 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
 | [tri-forge](tri-forge/) | 1.0.4 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
 | [tri-god](tri-god/) | 1.2.3 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
 
@@ -132,8 +133,8 @@ ops/
 ├── README.md                基础设施说明（工具 / 纪律 / 未完成项）
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
-├── versions.json            自主版本线基线（33 skill 快照：顶层 24 + tri-sdlc 子 skill 9）
-└── patches/                 本地补丁层（23 个 op，幂等重放）
+├── versions.json            自主版本线基线（34 skill 快照：顶层 25 + tri-sdlc 子 skill 9）
+└── patches/                 本地补丁层（30 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器
