@@ -1,7 +1,7 @@
 ---
 name: 循环启动
 slug: tri-loop
-version: 1.2.4
+version: 1.2.5
 displayName: 循环启动
 description: 知识库 loop（domain）启动下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行·loop/domain 创建子类）意图，在基于文件的知识库中 bootstrap substrate、收集 loop charter、scaffold loop README、执行一次真实测试运行并记录到 Timeline 和 LOG.md。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照处理 I14 loop/domain 创建子类意图，含 substrate bootstrap、loop charter 收集、README scaffold、真实测试运行、Timeline+LOG.md 记录全链路，确保 loop 可验证运行。

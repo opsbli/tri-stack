@@ -1,7 +1,7 @@
 ---
 name: 规划拆解
 slug: tri-plan
-version: 1.3.2
+version: 1.3.3
 displayName: 规划拆解
 description: 规划拆解下游执行 skill。读取 tri-intent 快照 §三，处理 I13（规划拆解）意图，产出计划/方案/任务清单/排期等结构化规划成果物。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装）。
 summary: 依据 tri-intent 快照自主管理规划全链路（规划纲要→完整规划→任务清单），融合 WBS 分解与 SMART 目标校准方法论，含三门审批机制。
@@ -262,6 +262,18 @@ python scripts/check_update.py --slug tri-plan --json
 | 5 | `task-checklist.md` | 门③ | 据 plan.md 产出可执行任务清单 + 逐项验收标准 + 依赖标注 | — |
 | 6 | — | 门③·确认 | 主动询问：①是否调其它 skill ②是否有补充 | 有补充 → 更新 `task-checklist.md` 再门③；规划缺陷回退门② |
 | 7 | 规划成果物 | — | 交付 `plan.md` + `task-checklist.md` | — |
+
+## 兜底处理（NEVER 静默失败）
+
+本 skill 在下列五类异常下 MUST 走显式降级路径并**在计划文档中标注实际降级与假设**，NEVER 静默失败、NEVER 用不可度量的条目凑数：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |
+| ② 门禁不过 | WBS 条目不可度量 / 依赖关系不完整 | 回退补齐条目（可度量、可独立）后再交付；NEVER 带着不可度量的任务项交付 |
+| ③ 上游缺失 | 无 tri-intent 快照 / 缺需求或目标描述 | 走 §上游依赖检测 的降级模式，先向用户对齐目标与范围再拆解 |
+| ④ hook 缺失 | 本 skill 以快照路由（I13）为触发源，**不以 hook 为触发源** | 无 hook 环境功能完整；NEVER 假设自动触发 |
+| ⑤ 异常场景 | I13 子类语义应让渡 / 上游信息矛盾 | 命中让渡语义（工作流设计 → tri-workflow / sdlc → tri-sdlc）MUST 转出，NEVER 越界接管；上游信息矛盾 → 列出冲突点回退 tri-intent 澄清 |
 
 ## 交付产物
 

@@ -380,10 +380,13 @@ def check(d: Path) -> dict:
         "PASS" if has_gate else "N-A",
         "含门禁表述" if has_gate else "纯只读 / 无产物落盘型，判 N-A（理由：无需要审批的产物）")
 
-    # 14 兜底
-    add(14, "兜底处理覆盖",
-        "PASS" if ("兜底" in body and "NEVER" in body) else "FAIL",
-        "含兜底处理且明确 NEVER 静默失败" if "兜底" in body else "未见兜底处理小节")
+    # 14 兜底（结构判定：须存在专门的「兜底处理」章节且含 NEVER；2026-09-25 由存在性代理判据硬化）
+    m14 = re.search(r"(?m)^#{2,3}[ \t]*兜底处理[^\n]*\n(.*?)(?=\n#{1,3}[ \t]|\Z)", body, re.S)
+    _sect14 = m14.group(0) if m14 else ""
+    _cls14 = [k for k in ("版本检查异常", "门禁", "上游缺失", "hook", "异常场景") if k in _sect14]
+    _d14 = ("存在专门兜底处理章节且含 NEVER；五类关键词命中 %d/5（建议覆盖五类，非硬门槛）" % len(_cls14)) \
+        if _sect14 else "未见专门的「兜底处理」章节（正文出现关键词不算，须独立章节）"
+    add(14, "兜底处理覆盖", "PASS" if (_sect14 and "NEVER" in _sect14) else "FAIL", _d14)
 
     # 15 自检句格式
     m15 = SELFCHECK.search(body)

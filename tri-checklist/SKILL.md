@@ -1,7 +1,7 @@
 ---
 name: 审计清单生成
 slug: tri-checklist
-version: 1.1.4
+version: 1.1.5
 displayName: 审计清单生成
 description: 项目审计清单生成下游执行 skill。对当前项目进行全面审计，覆盖改动点/审查点/测试点/测试步骤四维；操作对象支持 Git 暂存区/工作区/指定 commit id；产出 Markdown 复选框 checklist 供开发者自检、代码审查及质量保障。当 tri-intent 快照下游路由建议指向本 skill（L2=I10、L3=audit-checklist）时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装/降级模式）。
 summary: 四维审计方法论（改动点/审查点/测试点/测试步骤）+ 三种 Git 输入模式（暂存区/工作区/commit id）+ Markdown 复选框产出，含双审批门与 §3.13 代码版权合规。

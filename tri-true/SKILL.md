@@ -1,7 +1,7 @@
 ---
 name: 消除幻觉
 slug: tri-true
-version: 1.1.4
+version: 1.1.5
 displayName: 消除幻觉
 description: 横向方法论型 skill，为 tri-xxx 家族提供"置信度评估 + 事实源验证 + 多模型多方事实源交叉验证 + 自我反思修正"四道防线的幻觉消除能力；VERIFY_EXECUTE 模式执行深度验证（含段级置信度评估、RAG 句级引用、T1-T4 信源分级、UAF 多模型加权融合、CoVe/Reflexion 闭环修正、人审兜底），VERIFY_QUERY 模式查询历史验证，VERIFY_ADMIN 模式管理信源/校准/模型池；下游 skill 委派或用户直接调用激活；支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 四道防线（置信度/事实源/多模型/自反思）+ 三层置信度（VC+SC+CC 校准）+ 四级信源分级（T1-T4 可信度加权）+ 异构多模型交叉验证（UAF 融合 + 共识阈值）+ CoVe/Reflexion 闭环修正 + 人审兜底 + ECE/Brier 校准。
@@ -318,6 +318,20 @@ python scripts/check_update.py --slug tri-true --json
 | `stats` | 验证统计（任务数/通过率/平均置信/各防线触发率） |
 | `test --suite truthqa` | 跑 TruthfulQA/HaluEval/FActScore 评估 |
 | `export` | 导出验证任务与索引 |
+
+## 兜底处理（NEVER 静默失败）
+
+> 本节的「五类异常」指**执行环境与链路**层面的兜底；与之正交的**结论层兜底**（拒答 / 多答案 / 人审）见 §兜底机制。
+
+本 skill 在下列五类异常下 MUST 走显式降级路径并在验证结论中**标注实际降级**，NEVER 静默失败、NEVER 以低置信结论冒充已消除幻觉：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止验证并报告 |
+| ② 门禁不过 | 修订后置信仍 < 阈值 / critical 风险未过人审 | 按 §兜底机制 走拒答或多答案；critical 高风险 MUST 强制人审，NEVER 自动交付 |
+| ③ 上游缺失 | 无委派方（tri-coding / tri-code-analyzer 等）/ 无待验证断言 | 走 §上游依赖检测 的降级模式，向用户索取待验证结论及其上下文 |
+| ④ hook 缺失 | 高风险场景（YMYL）本可由 hook 自动激活 VERIFY_EXECUTE | 无 hook 环境时高风险场景**不自动激活**，MUST 在结论中登记「未触发自动验证」；仍可由下游委派或用户直呼激活，NEVER 因缺 hook 而声称已验证 |
+| ⑤ 异常场景 | 多模型交叉验证不可用 / RAG 基础设施缺失 / 信源全不可达 | 按 §独立层诚实边界 降级为单模型 + 信源分级，**MUST 显式声明「未执行真实多模型交叉验证」**（NEVER 声称已执行）；信源全不可达 → 结论标注「无外部事实源支撑」并降低置信等级 |
 
 ## 交付产物
 

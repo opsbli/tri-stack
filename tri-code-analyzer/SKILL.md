@@ -1,7 +1,7 @@
 ---
 name: tri-code-analyzer
 slug: tri-code-analyzer
-version: 1.5.1
+version: 1.5.2
 displayName: 代码剖析（tri-code-analyzer）
 description: 代码库全维度深度剖析 skill（I10 分析处理 · code-analyzer 子类）——以架构师+程序员双视角对任意技术栈代码库执行七阶段剖析管道，产出五部分 Markdown 剖析报告（架构拓扑/工程实现/风格审计/Mermaid 可视化/上手指南），每条结论强制附 file:line 证据锚，对照内置技术栈知识库（arkts/electron/flutter/qt/react-native/taro/uni-app/通用后端/agent-skills-plugin）分析，未覆盖栈经官方文档联网补齐。读取快照 §三（L2=I10 且 L3=code-analyzer）直接执行；用户说「剖析这个代码库/帮我读懂这个项目/接手项目全维度分析/代码级深度剖析」时经 tri-intent 路由激活。支持独立安装，含上游依赖检测三态逻辑。
 summary: 双视角七阶段剖析管道 + file:line 证据锚定 + 技术栈知识库对照（本地 wikihub 外部层 + 官网补齐协议）+ Mermaid 四图引擎 + 上手/重构行动指南，技术栈无关的代码库深度剖析器。
@@ -209,6 +209,18 @@ license: MIT
 - 命中 R1/R2/R5 且综合置信度 < 0.8 → MUST 人审，NEVER 自动交付。
 - 本门为自动环节，MUST 在最终交付前执行；NEVER 因「用户没提」而跳过。
 - tri-true 未安装 → 标注「tri-true 未安装，已降级为内部置信度自检（以第 10 条行内标注兜底）」后继续，NEVER 阻断交付。
+
+## 兜底处理（NEVER 静默失败）
+
+本 skill 在下列五类异常下 MUST 走显式降级路径并在剖析报告中**标注实际降级与覆盖缺口**，NEVER 静默失败、NEVER 以空结论充当完成：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止剖析并报告，不产出半成品报告 |
+| ② 门禁不过 | §交付前风险预筛自动门（tri-true 自动委派）未通过，或 tri-true 未安装 | 未安装时按该节降级为内部置信度自检并**行内标注**；自检仍不达标 MUST 显式列出「未验证结论」清单，NEVER 静默放行 |
+| ③ 上游缺失 | 无 tri-intent 快照 / 用户直接给出代码库路径 | 走 §上游依赖检测 的降级模式，向用户确认剖析范围与深度后再执行 |
+| ④ hook 缺失 | 本 skill 以快照路由 / 用户直呼为触发源，**不以 hook 为触发源** | 无 hook 环境全部功能可用；若宿主提供 hook 但未注册，MUST 在报告中登记「hook 未启用」，NEVER 假设其生效 |
+| ⑤ 异常场景 | 目标目录不可读 / 语言不被支持 / 七阶段任一中途失败 | 停止后续阶段，**已完成的阶段结论照常交付并标注「管道中断于第 N 阶段」**；NEVER 用推测补齐未执行阶段 |
 
 ## 交付产物机制
 

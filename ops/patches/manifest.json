@@ -35,11 +35,11 @@
     },
     {
       "id": "f16-tri-init-version",
-      "type": "replace_text",
-      "label": "tri-init 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；P3 由规则化 sync op 同轮跟随）",
+      "type": "replace_regex",
+      "label": "tri-init 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；P3 由规则化 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
       "glob": "tri-init/SKILL.md",
-      "old": "version: 1.0.2",
-      "new": "version: 1.0.3",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.0.3",
       "already_marker": "version: 1.0.3"
     },
     {
@@ -122,21 +122,12 @@
       "already_marker": "脚本门禁已就位"
     },
     {
-      "id": "f24-fed-version-1-1-4",
-      "type": "replace_text",
-      "label": "tri-frontend-design 版本线 1.1.3 → 1.1.4（口径修正属 patch；**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随）（2026-09-25）",
-      "glob": "tri-frontend-design/SKILL.md",
-      "old": "version: 1.1.3\n",
-      "new": "version: 1.1.4\n",
-      "already_marker": "version: 1.1.4"
-    },
-    {
       "id": "f43-req-audit-version-1-1-0",
-      "type": "replace_text",
-      "label": "tri-req-audit 版本线 1.0.0 → 1.1.0（新增审核维度属 minor；**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随）（2026-09-25）",
+      "type": "replace_regex",
+      "label": "tri-req-audit 版本线 1.0.0 → 1.1.0（新增审核维度属 minor；**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随）（2026-09-25）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
       "glob": "tri-req-audit/SKILL.md",
-      "old": "slug: tri-req-audit\nversion: 1.0.0\n",
-      "new": "slug: tri-req-audit\nversion: 1.1.0\n",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.0",
       "already_marker": "version: 1.1.0"
     },
     {
@@ -171,6 +162,429 @@
       "pattern": "八维",
       "replacement": "九维",
       "already_marker": "九维"
+    },
+    {
+      "id": "f69-14-structural",
+      "type": "replace_text",
+      "label": "compliance_check.py 第 14 条判据硬化：由「正文出现兜底+NEVER」的存在性代理，改为「须存在专门的 `##/### 兜底处理` 章节且含 NEVER」的结构判定；五类关键词命中数作为建议项写入回执（非硬门槛），并如实报告是否命中专门章节",
+      "glob": "tri-forge/scripts/compliance_check.py",
+      "old": "    # 14 兜底\n    add(14, \"兜底处理覆盖\",\n        \"PASS\" if (\"兜底\" in body and \"NEVER\" in body) else \"FAIL\",\n        \"含兜底处理且明确 NEVER 静默失败\" if \"兜底\" in body else \"未见兜底处理小节\")",
+      "new": "    # 14 兜底（结构判定：须存在专门的「兜底处理」章节且含 NEVER；2026-09-25 由存在性代理判据硬化）\n    m14 = re.search(r\"(?m)^#{2,3}[ \\t]*兜底处理[^\\n]*\\n(.*?)(?=\\n#{1,3}[ \\t]|\\Z)\", body, re.S)\n    _sect14 = m14.group(0) if m14 else \"\"\n    _cls14 = [k for k in (\"版本检查异常\", \"门禁\", \"上游缺失\", \"hook\", \"异常场景\") if k in _sect14]\n    _d14 = (\"存在专门兜底处理章节且含 NEVER；五类关键词命中 %d/5（建议覆盖五类，非硬门槛）\" % len(_cls14)) \\\n        if _sect14 else \"未见专门的「兜底处理」章节（正文出现关键词不算，须独立章节）\"\n    add(14, \"兜底处理覆盖\", \"PASS\" if (_sect14 and \"NEVER\" in _sect14) else \"FAIL\", _d14)",
+      "already_marker": "2026-09-25 由存在性代理判据硬化"
+    },
+    {
+      "id": "f70-code-analyzer-fallback",
+      "type": "replace_text",
+      "label": "tri-code-analyzer：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-code-analyzer/SKILL.md",
+      "old": "\n## 交付产物机制\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并在剖析报告中**标注实际降级与覆盖缺口**，NEVER 静默失败、NEVER 以空结论充当完成：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止剖析并报告，不产出半成品报告 |\n| ② 门禁不过 | §交付前风险预筛自动门（tri-true 自动委派）未通过，或 tri-true 未安装 | 未安装时按该节降级为内部置信度自检并**行内标注**；自检仍不达标 MUST 显式列出「未验证结论」清单，NEVER 静默放行 |\n| ③ 上游缺失 | 无 tri-intent 快照 / 用户直接给出代码库路径 | 走 §上游依赖检测 的降级模式，向用户确认剖析范围与深度后再执行 |\n| ④ hook 缺失 | 本 skill 以快照路由 / 用户直呼为触发源，**不以 hook 为触发源** | 无 hook 环境全部功能可用；若宿主提供 hook 但未注册，MUST 在报告中登记「hook 未启用」，NEVER 假设其生效 |\n| ⑤ 异常场景 | 目标目录不可读 / 语言不被支持 / 七阶段任一中途失败 | 停止后续阶段，**已完成的阶段结论照常交付并标注「管道中断于第 N 阶段」**；NEVER 用推测补齐未执行阶段 |\n\n## 交付产物机制\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f71-coding-fallback",
+      "type": "replace_text",
+      "label": "tri-coding：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-coding/SKILL.md",
+      "old": "\n## 交付产物机制\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并在实现报告中**标注实际降级**，NEVER 静默失败、NEVER 以「已实现」掩盖未验证：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止编码并报告 |\n| ② 门禁不过 | 双审批门（门② 需求确认 / 门③ 执行前确认）未获放行 | 停止写码，保留已产出的设计 / 任务清单，等待用户重新确认；NEVER 绕过门禁自动放行 |\n| ③ 上游缺失 | 无 tri-intent 快照 / 缺 `requirements.md` | 走 §上游依赖检测 的降级模式，先与用户对齐需求边界再进入编码 |\n| ④ hook 缺失 | 本 skill 以快照路由为触发源，**不以 hook 为触发源** | 无 hook 环境功能完整；§交付前功能验证自动门（tri-verify 委派）在无 hook 时改由**显式调用**触发，MUST 在报告中登记实际调用方式 |\n| ⑤ 异常场景 | 技术栈无法识别 / 目标目录不可写 / 依赖安装失败 | 停止该任务项并登记为阻塞项，**其余可独立完成的任务项照常推进**；NEVER 用占位代码（TODO / `pass`）充当完成 |\n\n## 交付产物机制\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f72-frontend-design-fallback",
+      "type": "replace_text",
+      "label": "tri-frontend-design：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-frontend-design/SKILL.md",
+      "old": "\n## 交付产物\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在交付说明中标注实际降级**，NEVER 静默失败、NEVER 用无来源的风格断言充数：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 风格锚点未定 / 令牌与自检清单不达标 | 回退到「先定锚点、再出令牌」的上一步，NEVER 带着未定锚点继续产出；`variants` 模式至少产 2 个可比较变体 |\n| ③ 上游缺失 | 无 tri-intent 快照且无既有设计上下文 | 走 §上游依赖检测 的三态逻辑；C 态（降级）下先向用户索取风格参考（URL / 截图 / 既有站点）再产出 |\n| ④ hook 缺失 | 本 skill 由用户直呼 / 一跳路由激活，**不以 hook 为触发源** | 无 hook 环境功能完整；`hooks/intent-gate.py` 仅在路由入口参与，未启用时由用户直呼入口等价承接 |\n| ⑤ 异常场景 | 参考图不可访问 / 目标框架不明 / 动效评审无基线 | 标注「参考缺失，以通用最佳实践兜底」并列出所用假设；NEVER 凭空断言某风格「有辨识度」而不给令牌依据 |\n\n## 交付产物\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f73-god-fallback",
+      "type": "replace_text",
+      "label": "tri-god：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-god/SKILL.md",
+      "old": "\n## 交付产物\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在蒸馏产物说明中标注实际降级**，NEVER 静默失败、NEVER 以空模板充当可蒸馏成果：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止锻造并报告 |\n| ② 门禁不过 | 蒸馏门（对象类型判定 / 五门全过 / 落盘确认）未通过 | 停在未过的门并列出缺口；NEVER 以「general 兜底」掩盖对象类型识别失败 |\n| ③ 上游缺失 | 无快照 / 无来源素材 | 走 §上游依赖检测 的降级模式，向用户索取待蒸馏对象（人 / 工作流 / 技能 / 事物）与目标用途 |\n| ④ hook 缺失 | 本 skill 以快照路由（I21）/ 用户直呼为触发源，**不以 hook 为触发源** | 无 hook 环境功能完整；NEVER 假设存在自动触发 |\n| ⑤ 异常场景 | 来源素材不足 / 对象类型无法归类 / 与既有 skill 职责重叠 | 素材不足 → 按通用兜底方法论（`distill-general.md`）降级并标注证据缺口；类型无法归类 → 显式判 `general` 并在产物中登记理由；职责重叠 → 停止并回退 tri-intent 重新路由 |\n\n## 交付产物\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f74-html-fallback",
+      "type": "replace_text",
+      "label": "tri-html：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-html/SKILL.md",
+      "old": "\n## 交付产物机制\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在交付回执中标注实际降级与未通过的门**，NEVER 静默失败、NEVER 把未过闸门的产物描述为成功：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | viewer / showcase 的 validate → deliver → visual-check 任一非零退出，或容器化闸门（`scrollHeight ≤ 视口`）不达标 | 按诊断给出的修复项（`labelAt` / viewBox 高度等）迭代；重试仍不达标 → **如实报告未通过的门与实测值**，NEVER 把非零退出描述为成功 |\n| ③ 上游缺失 | 无 tri-intent 快照 / 无目标项目路径 | 走 §上游依赖检测 的降级模式，向用户确认待可视化的项目与图类型 |\n| ④ hook 缺失 | 本 skill 以快照路由 / 用户直呼为触发源，**不以 hook 为触发源** | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 异常场景 | 技术栈无法解析 / 生成器依赖缺失 / 图规模超出单屏 | 依赖缺失 → 走双引擎的降级引擎并登记；规模超限 → 拆图或降低细节层级，**在报告中登记实际采用的视口与缩放**，NEVER 用缩小字号蒙混 |\n\n## 交付产物机制\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f75-intent-fallback",
+      "type": "replace_text",
+      "label": "tri-intent：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-intent/SKILL.md",
+      "old": "\n## 产出物机制（意图识别的最终交付）\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并在快照中**标注实际降级与置信度**，NEVER 静默失败、NEVER 强行凑一个不确信的路由：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止识别并报告 |\n| ② 门禁不过 | 置信度低于交付阈值 / 竞争意图未消解（见 §置信度机制） | 走 clarify-gate 向用户追问以抬升置信度；仍低于阈值 MUST 如实标注低置信并列出候选意图，NEVER 静默选一个 |\n| ③ 上游缺失 | 本 skill 为家族**上游总路由**，无上游依赖 | 不适用；本 skill 即上游，任何新提问均可独立处理 |\n| ④ hook 缺失 | 触发源为「任何新提问的第一步」，**不以 hook 为触发源**；`hooks/intent-gate.py` 是路由真源的可执行载体 | 无 hook 环境（未注册 / 宿主不支持）时，识别与路由流程**照常按本 SKILL.md 执行**；`intent-gate.py` 缺失仅使路由校验命令不可用，MUST 在快照中登记「未做 hook 校验」，NEVER 因缺 hook 而拒答 |\n| ⑤ 异常场景 | 输入无法归入任一 I/M 项 / 快照写入失败 | 无法归类 → 落 `expressing/I19-chitchat` 边缘兜底，保证 100% 有落点；快照写入失败 → 报告失败原因并给出内存态识别结果，NEVER 假装已落盘 |\n\n## 产出物机制（意图识别的最终交付）\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f76-plan-fallback",
+      "type": "replace_text",
+      "label": "tri-plan：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-plan/SKILL.md",
+      "old": "\n## 交付产物\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在计划文档中标注实际降级与假设**，NEVER 静默失败、NEVER 用不可度量的条目凑数：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | WBS 条目不可度量 / 依赖关系不完整 | 回退补齐条目（可度量、可独立）后再交付；NEVER 带着不可度量的任务项交付 |\n| ③ 上游缺失 | 无 tri-intent 快照 / 缺需求或目标描述 | 走 §上游依赖检测 的降级模式，先向用户对齐目标与范围再拆解 |\n| ④ hook 缺失 | 本 skill 以快照路由（I13）为触发源，**不以 hook 为触发源** | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 异常场景 | I13 子类语义应让渡 / 上游信息矛盾 | 命中让渡语义（工作流设计 → tri-workflow / sdlc → tri-sdlc）MUST 转出，NEVER 越界接管；上游信息矛盾 → 列出冲突点回退 tri-intent 澄清 |\n\n## 交付产物\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f77-review-fallback",
+      "type": "replace_text",
+      "label": "tri-review：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-review/SKILL.md",
+      "old": "\n## 交付产物机制\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并在审查报告中**标注实际降级与覆盖缺口**，NEVER 静默失败、NEVER 以「未发现问题」掩盖未覆盖区：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止审查并报告 |\n| ② 门禁不过 | 双审批门未过 / Blocker 未清零 | 停止交付结论并列出未过门项；NEVER 以降低定级来「清零」Blocker（见 §反规避机制） |\n| ③ 上游缺失 | 无 tri-intent 快照 / 无 diff / 无设计文档 | 走 §上游依赖检测 的降级模式；文档驱动学习链按 4 级降级（L1 → L4 全量代码兜底）并在报告中登记所处层级 |\n| ④ hook 缺失 | 工作流集成模式由 tri-coding / tri-fix 调用，独立 / 增量模式由快照或用户直呼激活；**不以 hook 为触发源** | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 异常场景 | 改动规模超限 / 无 Git / 暂存区为空 | 超限 → 按 §超限恢复 按模块分批审查并登记未覆盖区；无 Git → 退化为全量代码审查（L4）；暂存区空 → 切工作区或 commit id 模式并登记实际对象 |\n\n## 交付产物机制\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f78-true-fallback",
+      "type": "replace_text",
+      "label": "tri-true：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径",
+      "glob": "tri-true/SKILL.md",
+      "old": "\n## 交付产物\n",
+      "new": "\n## 兜底处理（NEVER 静默失败）\n\n> 本节的「五类异常」指**执行环境与链路**层面的兜底；与之正交的**结论层兜底**（拒答 / 多答案 / 人审）见 §兜底机制。\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并在验证结论中**标注实际降级**，NEVER 静默失败、NEVER 以低置信结论冒充已消除幻觉：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止验证并报告 |\n| ② 门禁不过 | 修订后置信仍 < 阈值 / critical 风险未过人审 | 按 §兜底机制 走拒答或多答案；critical 高风险 MUST 强制人审，NEVER 自动交付 |\n| ③ 上游缺失 | 无委派方（tri-coding / tri-code-analyzer 等）/ 无待验证断言 | 走 §上游依赖检测 的降级模式，向用户索取待验证结论及其上下文 |\n| ④ hook 缺失 | 高风险场景（YMYL）本可由 hook 自动激活 VERIFY_EXECUTE | 无 hook 环境时高风险场景**不自动激活**，MUST 在结论中登记「未触发自动验证」；仍可由下游委派或用户直呼激活，NEVER 因缺 hook 而声称已验证 |\n| ⑤ 异常场景 | 多模型交叉验证不可用 / RAG 基础设施缺失 / 信源全不可达 | 按 §独立层诚实边界 降级为单模型 + 信源分级，**MUST 显式声明「未执行真实多模型交叉验证」**（NEVER 声称已执行）；信源全不可达 → 结论标注「无外部事实源支撑」并降低置信等级 |\n\n## 交付产物\n",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f79-version-discipline",
+      "type": "replace_text",
+      "label": "family-spec §六：新增步骤 6「变更时（版本纪律 · MUST）」——SKILL.md 正文章节级增删改 MUST 至少 PATCH 升版 + CHANGELOG 条目（此前无 MUST 条文，本轮实测 f15→f16→f17 三件套已是事实惯例，本次成文）",
+      "glob": "tri-forge/references/family-spec.md",
+      "old": "5. **交付**：产出交付摘要（产物清单 + 22 条结果 + 路由回填记录 + 安装评估）",
+      "new": "5. **交付**：产出交付摘要（产物清单 + 22 条结果 + 路由回填记录 + 安装评估）\n6. **变更时（版本纪律 · MUST）**：凡对 `SKILL.md` **正文**做章节级增 / 删 / 重写（含补章、并章、改章节结构）⇒ MUST **至少 PATCH 升版**（`version` 第三段 +1）并在 `CHANGELOG.md` 追加对应条目（首条 = frontmatter version，硬约束第 11 条）；纯字形 / 行尾 / 措辞微调不强制升版，但**一旦升版** MUST 同步 `_meta.json`（由 `sync-version-meta` 承接）与文档层（由 `version-lint --apply-docs` 承接）。",
+      "already_marker": "变更时（版本纪律 · MUST）"
+    },
+    {
+      "id": "f80-ver-action",
+      "type": "replace_regex",
+      "label": "tri-action 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-action/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.2.5",
+      "already_marker": "version: 1.2.5"
+    },
+    {
+      "id": "f98-cl-action",
+      "type": "replace_text",
+      "label": "tri-action CHANGELOG：追加 [1.2.5] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-action/CHANGELOG.md",
+      "old": "## [1.2.4] - 2026-09-24\n",
+      "new": "## [1.2.5] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.2.4] - 2026-09-24\n",
+      "already_marker": "## [1.2.5] - 2026-09-25"
+    },
+    {
+      "id": "f81-ver-checklist",
+      "type": "replace_regex",
+      "label": "tri-checklist 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-checklist/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
+    },
+    {
+      "id": "f99-cl-checklist",
+      "type": "replace_text",
+      "label": "tri-checklist CHANGELOG：追加 [1.1.5] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-checklist/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-24\n",
+      "new": "## [1.1.5] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.1.4] - 2026-09-24\n",
+      "already_marker": "## [1.1.5] - 2026-09-25"
+    },
+    {
+      "id": "f82-ver-evolve",
+      "type": "replace_regex",
+      "label": "tri-evolve 版本线 1.1.6 → 1.1.7（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-evolve/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
+    },
+    {
+      "id": "f100-cl-evolve",
+      "type": "replace_text",
+      "label": "tri-evolve CHANGELOG：追加 [1.1.7] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-evolve/CHANGELOG.md",
+      "old": "## [1.1.6] - 2026-09-24\n",
+      "new": "## [1.1.7] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.1.6] - 2026-09-24\n",
+      "already_marker": "## [1.1.7] - 2026-09-25"
+    },
+    {
+      "id": "f83-ver-fix",
+      "type": "replace_regex",
+      "label": "tri-fix 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-fix/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.5.2",
+      "already_marker": "version: 1.5.2"
+    },
+    {
+      "id": "f101-cl-fix",
+      "type": "replace_text",
+      "label": "tri-fix CHANGELOG：追加 [1.5.2] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-fix/CHANGELOG.md",
+      "old": "## [1.5.1] - 2026-09-24\n",
+      "new": "## [1.5.2] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.5.1] - 2026-09-24\n",
+      "already_marker": "## [1.5.2] - 2026-09-25"
+    },
+    {
+      "id": "f84-ver-loop",
+      "type": "replace_regex",
+      "label": "tri-loop 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-loop/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.2.5",
+      "already_marker": "version: 1.2.5"
+    },
+    {
+      "id": "f102-cl-loop",
+      "type": "replace_text",
+      "label": "tri-loop CHANGELOG：追加 [1.2.5] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-loop/CHANGELOG.md",
+      "old": "## [1.2.4] - 2026-09-24\n",
+      "new": "## [1.2.5] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.2.4] - 2026-09-24\n",
+      "already_marker": "## [1.2.5] - 2026-09-25"
+    },
+    {
+      "id": "f85-ver-lottie",
+      "type": "replace_regex",
+      "label": "tri-lottie 版本线 1.0.3 → 1.0.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-lottie/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.0.4",
+      "already_marker": "version: 1.0.4"
+    },
+    {
+      "id": "f103-cl-lottie",
+      "type": "replace_text",
+      "label": "tri-lottie CHANGELOG：追加 [1.0.4] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-lottie/CHANGELOG.md",
+      "old": "## [1.0.3] - 2026-09-24\n",
+      "new": "## [1.0.4] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.0.3] - 2026-09-24\n",
+      "already_marker": "## [1.0.4] - 2026-09-25"
+    },
+    {
+      "id": "f86-ver-meta",
+      "type": "replace_regex",
+      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-meta/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.2.5",
+      "already_marker": "version: 1.2.5"
+    },
+    {
+      "id": "f104-cl-meta",
+      "type": "replace_text",
+      "label": "tri-meta CHANGELOG：追加 [1.2.5] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-meta/CHANGELOG.md",
+      "old": "## [1.2.4] - 2026-09-24\n",
+      "new": "## [1.2.5] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.2.4] - 2026-09-24\n",
+      "already_marker": "## [1.2.5] - 2026-09-25"
+    },
+    {
+      "id": "f87-ver-sdlc",
+      "type": "replace_regex",
+      "label": "tri-sdlc 版本线 1.1.5 → 1.1.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-sdlc/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
+    },
+    {
+      "id": "f105-cl-sdlc",
+      "type": "replace_text",
+      "label": "tri-sdlc CHANGELOG：追加 [1.1.6] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-sdlc/CHANGELOG.md",
+      "old": "## [1.1.5] - 2026-09-24\n",
+      "new": "## [1.1.6] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.1.5] - 2026-09-24\n",
+      "already_marker": "## [1.1.6] - 2026-09-25"
+    },
+    {
+      "id": "f88-ver-workflow",
+      "type": "replace_regex",
+      "label": "tri-workflow 版本线 1.2.5 → 1.2.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-workflow/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.2.6",
+      "already_marker": "version: 1.2.6"
+    },
+    {
+      "id": "f106-cl-workflow",
+      "type": "replace_text",
+      "label": "tri-workflow CHANGELOG：追加 [1.2.6] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-workflow/CHANGELOG.md",
+      "old": "## [1.2.5] - 2026-09-24\n",
+      "new": "## [1.2.6] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.2.5] - 2026-09-24\n",
+      "already_marker": "## [1.2.6] - 2026-09-25"
+    },
+    {
+      "id": "f89-ver-code-analyzer",
+      "type": "replace_regex",
+      "label": "tri-code-analyzer 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-code-analyzer/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.5.2",
+      "already_marker": "version: 1.5.2"
+    },
+    {
+      "id": "f107-cl-code-analyzer",
+      "type": "replace_text",
+      "label": "tri-code-analyzer CHANGELOG：追加 [1.5.2] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-code-analyzer/CHANGELOG.md",
+      "old": "## [1.5.1] - 2026-09-24\n",
+      "new": "## [1.5.2] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.5.1] - 2026-09-24\n",
+      "already_marker": "## [1.5.2] - 2026-09-25"
+    },
+    {
+      "id": "f90-ver-coding",
+      "type": "replace_regex",
+      "label": "tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-coding/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.8.2",
+      "already_marker": "version: 1.8.2"
+    },
+    {
+      "id": "f108-cl-coding",
+      "type": "replace_text",
+      "label": "tri-coding CHANGELOG：追加 [1.8.2] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-coding/CHANGELOG.md",
+      "old": "## [1.8.1] - 2026-09-24\n",
+      "new": "## [1.8.2] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.8.1] - 2026-09-24\n",
+      "already_marker": "## [1.8.2] - 2026-09-25"
+    },
+    {
+      "id": "f91-ver-frontend-design",
+      "type": "replace_regex",
+      "label": "tri-frontend-design 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-frontend-design/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
+    },
+    {
+      "id": "f109-cl-frontend-design",
+      "type": "replace_text",
+      "label": "tri-frontend-design CHANGELOG：追加 [1.1.5] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-frontend-design/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-25\n",
+      "new": "## [1.1.5] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.1.4] - 2026-09-25\n",
+      "already_marker": "## [1.1.5] - 2026-09-25"
+    },
+    {
+      "id": "f92-ver-god",
+      "type": "replace_regex",
+      "label": "tri-god 版本线 1.2.3 → 1.2.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-god/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.2.4",
+      "already_marker": "version: 1.2.4"
+    },
+    {
+      "id": "f110-cl-god",
+      "type": "replace_text",
+      "label": "tri-god CHANGELOG：追加 [1.2.4] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-god/CHANGELOG.md",
+      "old": "## [1.2.3] - 2026-09-24\n",
+      "new": "## [1.2.4] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.2.3] - 2026-09-24\n",
+      "already_marker": "## [1.2.4] - 2026-09-25"
+    },
+    {
+      "id": "f93-ver-html",
+      "type": "replace_regex",
+      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-html/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.3.4",
+      "already_marker": "version: 1.3.4"
+    },
+    {
+      "id": "f111-cl-html",
+      "type": "replace_text",
+      "label": "tri-html CHANGELOG：追加 [1.3.4] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-html/CHANGELOG.md",
+      "old": "## [1.3.3] - 2026-09-24\n",
+      "new": "## [1.3.4] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.3.3] - 2026-09-24\n",
+      "already_marker": "## [1.3.4] - 2026-09-25"
+    },
+    {
+      "id": "f94-ver-intent",
+      "type": "replace_regex",
+      "label": "tri-intent 版本线 1.14.1 → 1.14.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-intent/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.14.2",
+      "already_marker": "version: 1.14.2"
+    },
+    {
+      "id": "f112-cl-intent",
+      "type": "replace_text",
+      "label": "tri-intent CHANGELOG：追加 [1.14.2] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-intent/CHANGELOG.md",
+      "old": "## [1.14.1] - 2026-09-24\n",
+      "new": "## [1.14.2] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.14.1] - 2026-09-24\n",
+      "already_marker": "## [1.14.2] - 2026-09-25"
+    },
+    {
+      "id": "f95-ver-plan",
+      "type": "replace_regex",
+      "label": "tri-plan 版本线 1.3.2 → 1.3.3（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-plan/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.3.3",
+      "already_marker": "version: 1.3.3"
+    },
+    {
+      "id": "f113-cl-plan",
+      "type": "replace_text",
+      "label": "tri-plan CHANGELOG：追加 [1.3.3] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-plan/CHANGELOG.md",
+      "old": "## [1.3.2] - 2026-09-24\n",
+      "new": "## [1.3.3] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.3.2] - 2026-09-24\n",
+      "already_marker": "## [1.3.3] - 2026-09-25"
+    },
+    {
+      "id": "f96-ver-review",
+      "type": "replace_regex",
+      "label": "tri-review 版本线 1.7.0 → 1.7.1（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-review/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.7.1",
+      "already_marker": "version: 1.7.1"
+    },
+    {
+      "id": "f114-cl-review",
+      "type": "replace_text",
+      "label": "tri-review CHANGELOG：追加 [1.7.1] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-review/CHANGELOG.md",
+      "old": "## [1.7.0] - 2026-09-25\n",
+      "new": "## [1.7.1] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.7.0] - 2026-09-25\n",
+      "already_marker": "## [1.7.1] - 2026-09-25"
+    },
+    {
+      "id": "f97-ver-true",
+      "type": "replace_regex",
+      "label": "tri-true 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "glob": "tri-true/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
+    },
+    {
+      "id": "f115-cl-true",
+      "type": "replace_text",
+      "label": "tri-true CHANGELOG：追加 [1.1.5] 条目（兜底章节补齐；P2 属人工内容）",
+      "glob": "tri-true/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-24\n",
+      "new": "## [1.1.5] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.1.4] - 2026-09-24\n",
+      "already_marker": "## [1.1.5] - 2026-09-25"
     },
     {
       "id": "sync-version-meta",

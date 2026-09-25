@@ -205,3 +205,4 @@ NEVER 改名——门禁与路由按固定文件名定位。
 3. **门③**：若为路由型下游，按 `references/tri-intent-integration.md` 回填路由真源
 4. **门④**：`python scripts/compliance_check.py --skill <slug>` 逐条自检，全过方可落盘
 5. **交付**：产出交付摘要（产物清单 + 22 条结果 + 路由回填记录 + 安装评估）
+6. **变更时（版本纪律 · MUST）**：凡对 `SKILL.md` **正文**做章节级增 / 删 / 重写（含补章、并章、改章节结构）⇒ MUST **至少 PATCH 升版**（`version` 第三段 +1）并在 `CHANGELOG.md` 追加对应条目（首条 = frontmatter version，硬约束第 11 条）；纯字形 / 行尾 / 措辞微调不强制升版，但**一旦升版** MUST 同步 `_meta.json`（由 `sync-version-meta` 承接）与文档层（由 `version-lint --apply-docs` 承接）。

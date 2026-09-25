@@ -1,7 +1,7 @@
 ---
 name: tri-lottie
 slug: tri-lottie
-version: 1.0.3
+version: 1.0.4
 displayName: 跨端动效执行
 description: >
   跨端动效决策与执行库——先把任意动效需求转化为技术栈无关的「动效规格单」（情绪→人格→属性→时长→缓动→层次），

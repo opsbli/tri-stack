@@ -210,7 +210,7 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `f14-req-audit-two-hop` | replace_text | family-spec §五：登记 `tri-req-audit` 二跳路由例外（2026-09-25 补记，op 于 2026-09-25 随 tri-req-audit 锻造加入） |
 | `f15-agents-md-coding-rules` | replace_text | `tri-init` AGENTS.md 模板：新增「通用编码行为规则（8 条）」章节——写码纪律（最简实现 / 分层成长 / 先用已有依赖等），与项目特定编码规范正交；第 1 条采用兼容安全版（2026-09-25） |
 | `f15b-tests-t31` | replace_text | `tri-init` 测试用例：AGENTS.md 内容验证节追加 T31（该文件第六/七节本有历史性重复，`replace_text` 全量命中使两份同步获得 T31）（2026-09-25） |
-| `f16-tri-init-version` | replace_text | `tri-init` 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；**必须排在 `sync-version-meta` 之前**，P3 才能同轮跟随）（2026-09-25） |
+| `f16-tri-init-version` | replace_regex | `tri-init` 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；**必须排在 `sync-version-meta` 之前**，P3 才能同轮跟随）（2026-09-25）；改用 **settle 形式**（`^version: \d+\.\d+\.\d+$` → 目标；任意旧版本收敛至目标，目标就地更新） |
 | `f17-tri-init-changelog` | replace_text | `tri-init` CHANGELOG：追加 `[1.0.3]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25） |
 | `f18-familyspec-shared-domain` | replace_text | `family-spec.md` §1.4：补「**判定顺序**」（**可推导优先** —— 共享但可推导者仍属「通过」，豁免只收「共享 ∩ 不可推导」）+ 给豁免清单两行补「不可推导」依据；消除 `coding/` 两行同时命中的歧义（2026-09-25） |
 | `f19-compliance-dedup` | replace_text | `compliance_check.py`：删去重复的「角色识别」if/elif 链（原 L143-155 与 L157-169 逐字重复、二次赋值同值、行为无差异）；保留处加注「单次赋值」作幂等标记（2026-09-25） |
@@ -218,7 +218,7 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `f21-fed-route-declaration` | replace_text | `tri-frontend-design/SKILL.md`：§触发时机 补「**tri-intent 路由（一跳覆写）**」触发行 + **路由归属**注记（原文自称「独立工具 skill，不注册为 tri-intent 下游路由项」属**滞后口径**，与 `tri-intent/SKILL.md` §一 路由映射表 / `doing/I11-coding.md` / `hooks/intent-gate.py` 可执行映射冲突）；旧文本内嵌「⚠️ 已废弃」防回流（2026-09-25） |
 | `f22-fed-boundary-mece` | replace_text | 同上：§职责边界 —— 「不认领任何 L2/L3 编码」→ 只认领 `I11` 的 `L3=frontend-design` 子类；「MECE：不认领下游路由，作为独立工具存在」→ **参与**路由并与同层五落点（tri-coding / tri-lottie / tri-prototype / tri-html / tri-sdlc）按**产出物形态**划分；Not-Trigger 末项改为「L1 识别 / L2 分流由 tri-intent 负责」（2026-09-25） |
 | `f23-fed-selfcheck-line` | replace_text | 同上：契约 §6 自检句 `下游=<否>` → `路由=<I11/frontend-design 子类｜用户直调>`（原字段编码的正是「不位于下游」这一滞后口径）（2026-09-25） |
-| `f24-fed-version-1-1-4` | replace_text | `tri-frontend-design` 版本线 1.1.3 → **1.1.4**（口径修正属 patch）。**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随——该 op 由 `manifest.json` **插序**（非追加）实现（2026-09-25） |
+| ~~`f24-fed-version-1-1-4`~~ | replace_text | （已移除：版本线 op 改 settle 形式后，该 op 的 `old`（1.1.3）被后序版本 op `f91` 销毁 ⇒ 值型 marker 永久失配；其目标（1.1.4 → 1.1.5）由 `f91-ver-frontend-design` 的 settle 形式承接，故从 `manifest.json` 删除） |
 | `f25-fed-changelog-1-1-4` | replace_text | `tri-frontend-design` CHANGELOG：追加 `[1.1.4]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25） |
 | `f26-coding-verify-gate-contract` | replace_text | `tri-coding` 契约新增 **§7 交付前功能验证自动门**（tri-verify 委派），原 §7 风险预筛顺延为 §8 —— 建立强制力来源（2026-09-25） |
 | `f27-coding-verify-workflow-ascii` | replace_text | `tri-coding` §编码工作流 ASCII 链路图：在 `implements.md` 与「§交付前风险预筛」之间插入**功能验证门**（含失败回流支线）（2026-09-25） |
@@ -230,7 +230,7 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `f33-fix-reverify-quality-row` | replace_text | `tri-fix` §质量标准追加「**修复后复验**」维度（前后运行对比无回归）（2026-09-25） |
 | `f34-family-spec-tri-verify-reg` | replace_text | `family-spec` §五 登记 `tri-verify` 两项：① **横向型委派契约**（含「自检句采用标准格式、无例外」的 #20 核实结论）② **引擎抽象与判据印章四概念**的单一事实源位置（2026-09-25） |
 
-| `f43-req-audit-version-1-1-0` | replace_text | `tri-req-audit` 版本线 1.0.0 → **1.1.0**（对抗层硬化属 minor）。**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随 —— 该 op 由 `manifest.json` **插序**实现（2026-09-25） |
+| `f43-req-audit-version-1-1-0` | replace_regex | `tri-req-audit` 版本线 1.0.0 → **1.1.0**（对抗层硬化属 minor）。**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随 —— 该 op 由 `manifest.json` **插序**实现（2026-09-25）；改用 **settle 形式**（`^version: \d+\.\d+\.\d+$` → 目标；任意旧版本收敛至目标，目标就地更新） |
 | `f46a-req-audit-rename-nine-md` | replace_regex | `tri-req-audit/**/*.md`（skip `CHANGELOG.md`）：「八维」→「九维」（D9 对抗维落地后的口径同步；CHANGELOG 属追加型历史，禁用 `skip_names` 豁免）（2026-09-25） |
 | `f46b-req-audit-rename-dimrange-md` | replace_regex | 同上：`D1–D8` → `D1–D9`（维数区间随 D9 扩容；`en-dash` 逐字，勿写成普通连字符）（2026-09-25） |
 | `f47a-req-audit-rename-nine-py` | replace_regex | `tri-req-audit/scripts/*.py`：「八维」→「九维」（脚本内提示文案同步）（2026-09-25） |
@@ -252,6 +252,62 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `f50b-req-audit-tests-cap-rows` | replace_text | 同上：增第 **14–15** 行（独立性声明 / 跨轮单调性）（2026-09-25） |
 | `f50c-req-audit-tests-case-a13` | replace_text | 同上：新增用例 **TC-A13**（DC 类校验同步）（2026-09-25） |
 | `f50d-req-audit-tests-cases-d06-08` | replace_text | 同上：新增用例 **TC-D06–D08**（对抗 / 独立性 / 单调性）；§六 用例数 TC-A 12→13、TC-D 5→8（2026-09-25） |
+| `f60-action-fallback` | replace_text | `tri-action` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f61-checklist-fallback` | replace_text | `tri-checklist` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f62-evolve-fallback` | replace_text | `tri-evolve` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f63-fix-fallback` | replace_text | `tri-fix` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f64-loop-fallback` | replace_text | `tri-loop` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f65-lottie-fallback` | replace_text | `tri-lottie` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f66-meta-fallback` | replace_text | `tri-meta` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f67-sdlc-fallback` | replace_text | `tri-sdlc` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f68-workflow-fallback` | replace_text | `tri-workflow` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口 |
+| `f69-14-structural` | replace_text | compliance_check.py 第 14 条判据硬化：由「正文出现兜底+NEVER」的存在性代理，改为「须存在专门的 `##/### 兜底处理` 章节且含 NEVER」的结构判定；五类关键词命中数作为建议项写入回执（非硬门槛），并如实报告是否命中专门章节 |
+| `f70-code-analyzer-fallback` | replace_text | tri-code-analyzer：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f71-coding-fallback` | replace_text | tri-coding：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f72-frontend-design-fallback` | replace_text | tri-frontend-design：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f73-god-fallback` | replace_text | tri-god：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f74-html-fallback` | replace_text | tri-html：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f75-intent-fallback` | replace_text | tri-intent：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f76-plan-fallback` | replace_text | tri-plan：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f77-review-fallback` | replace_text | tri-review：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f78-true-fallback` | replace_text | tri-true：新增「兜底处理（NEVER 静默失败）」章节（门④ 第 14 条须有专门章节）——按本 skill 触发源与既有机制定制五类异常降级路径 |
+| `f79-version-discipline` | replace_text | family-spec §六：新增步骤 6「变更时（版本纪律 · MUST）」——SKILL.md 正文章节级增删改 MUST 至少 PATCH 升版 + CHANGELOG 条目（此前无 MUST 条文，本轮实测 f15→f16→f17 三件套已是事实惯例，本次成文） |
+| `f80-ver-action` | replace_regex | tri-action 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f81-ver-checklist` | replace_regex | tri-checklist 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f82-ver-evolve` | replace_regex | tri-evolve 版本线 1.1.6 → 1.1.7（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f83-ver-fix` | replace_regex | tri-fix 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f84-ver-loop` | replace_regex | tri-loop 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f85-ver-lottie` | replace_regex | tri-lottie 版本线 1.0.3 → 1.0.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f86-ver-meta` | replace_regex | tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f87-ver-sdlc` | replace_regex | tri-sdlc 版本线 1.1.5 → 1.1.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f88-ver-workflow` | replace_regex | tri-workflow 版本线 1.2.5 → 1.2.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f89-ver-code-analyzer` | replace_regex | tri-code-analyzer 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f90-ver-coding` | replace_regex | tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f91-ver-frontend-design` | replace_regex | tri-frontend-design 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f92-ver-god` | replace_regex | tri-god 版本线 1.2.3 → 1.2.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f93-ver-html` | replace_regex | tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f94-ver-intent` | replace_regex | tri-intent 版本线 1.14.1 → 1.14.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f95-ver-plan` | replace_regex | tri-plan 版本线 1.3.2 → 1.3.3（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f96-ver-review` | replace_regex | tri-review 版本线 1.7.0 → 1.7.1（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f97-ver-true` | replace_regex | tri-true 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op） |
+| `f98-cl-action` | replace_text | tri-action CHANGELOG：追加 [1.2.5] 条目（兜底章节补齐；P2 属人工内容） |
+| `f99-cl-checklist` | replace_text | tri-checklist CHANGELOG：追加 [1.1.5] 条目（兜底章节补齐；P2 属人工内容） |
+| `f100-cl-evolve` | replace_text | tri-evolve CHANGELOG：追加 [1.1.7] 条目（兜底章节补齐；P2 属人工内容） |
+| `f101-cl-fix` | replace_text | tri-fix CHANGELOG：追加 [1.5.2] 条目（兜底章节补齐；P2 属人工内容） |
+| `f102-cl-loop` | replace_text | tri-loop CHANGELOG：追加 [1.2.5] 条目（兜底章节补齐；P2 属人工内容） |
+| `f103-cl-lottie` | replace_text | tri-lottie CHANGELOG：追加 [1.0.4] 条目（兜底章节补齐；P2 属人工内容） |
+| `f104-cl-meta` | replace_text | tri-meta CHANGELOG：追加 [1.2.5] 条目（兜底章节补齐；P2 属人工内容） |
+| `f105-cl-sdlc` | replace_text | tri-sdlc CHANGELOG：追加 [1.1.6] 条目（兜底章节补齐；P2 属人工内容） |
+| `f106-cl-workflow` | replace_text | tri-workflow CHANGELOG：追加 [1.2.6] 条目（兜底章节补齐；P2 属人工内容） |
+| `f107-cl-code-analyzer` | replace_text | tri-code-analyzer CHANGELOG：追加 [1.5.2] 条目（兜底章节补齐；P2 属人工内容） |
+| `f108-cl-coding` | replace_text | tri-coding CHANGELOG：追加 [1.8.2] 条目（兜底章节补齐；P2 属人工内容） |
+| `f109-cl-frontend-design` | replace_text | tri-frontend-design CHANGELOG：追加 [1.1.5] 条目（兜底章节补齐；P2 属人工内容） |
+| `f110-cl-god` | replace_text | tri-god CHANGELOG：追加 [1.2.4] 条目（兜底章节补齐；P2 属人工内容） |
+| `f111-cl-html` | replace_text | tri-html CHANGELOG：追加 [1.3.4] 条目（兜底章节补齐；P2 属人工内容） |
+| `f112-cl-intent` | replace_text | tri-intent CHANGELOG：追加 [1.14.2] 条目（兜底章节补齐；P2 属人工内容） |
+| `f113-cl-plan` | replace_text | tri-plan CHANGELOG：追加 [1.3.3] 条目（兜底章节补齐；P2 属人工内容） |
+| `f114-cl-review` | replace_text | tri-review CHANGELOG：追加 [1.7.1] 条目（兜底章节补齐；P2 属人工内容） |
+| `f115-cl-true` | replace_text | tri-true CHANGELOG：追加 [1.1.5] 条目（兜底章节补齐；P2 属人工内容） |
 
 ## 每项补丁的依据
 
@@ -763,3 +819,41 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 > **幂等复核**：连跑两次 `apply.py`，第二次全表 `应用 0｜已应用 N` / `写入 0｜跳过 N`；
 > 常驻 `not_found` 仅 `f3-clause-inline` / `f3-clause-sentence` / `f3-standalone-line` 三行
 > （目标子句已清，属正常态，见前文）。`ops/version-lint.py` 退出码 0。
+
+
+## 计数增量（2026-09-25 · 第六轮 · 门④ #14 判据硬化 + 版本纪律成文 + 回溯补版）
+
+### 本轮三件事
+
+1. **门④ 第 14 条判据硬化**（`f69-14-structural`）：由「正文出现 `兜底` + `NEVER`」的**存在性代理**，
+   改为**结构判定** —— 须存在专门的 `##` / `### 兜底处理` 章节且该章节含 `NEVER`。五类关键词的命中数
+   写入回执作为**建议项**（非硬门槛，避免误伤以「场景兜底表」呈现的既有章节：`tri-grill` 命中 0/5 仍合规）。
+2. **9 个缺口 skill 补章**（`f70`–`f78`）：`tri-code-analyzer` / `tri-coding` / `tri-frontend-design` /
+   `tri-god` / `tri-html` / `tri-intent` / `tri-plan` / `tri-review` / `tri-true` 各补一节定制「兜底处理」。
+   各按其触发源与既有机制填五类异常（如 `tri-intent` 明写「不以 hook 为触发源，缺 hook 时照常执行并登记
+   「未做 hook 校验」」；`tri-true` 显式区分「执行环境层兜底」与既有的「结论层 §兜底机制」）。
+3. **版本纪律成文 + 回溯补版**（`f79` + `f80`–`f115`）：`family-spec` §六 新增步骤 6（MUST：`SKILL.md`
+   正文增改章节 ⇒ 至少 PATCH 升版 + CHANGELOG 条目）；18 个 skill（本轮 9 + 上轮 9）各升 PATCH 并补 CHANGELOG。
+
+### 版本线 op 改用 settle 形式（本轮新约定）
+
+**缺陷实证**：`f24`（`tri-frontend-design` 1.1.3 → 1.1.4，`replace_text`，`already_marker = "version: 1.1.4"`）
+在本轮 `f91`（1.1.4 → 1.1.5）生效后，`old`（1.1.3）与 marker（1.1.4）**双双不在树上** ⇒ 永久 `not_found`。
+根因：版本线 op 是**就地破坏型**（后序 op 覆盖同一行 ⇒ 销毁前序 op 的 `old`），与 CHANGELOG op 的
+**前置插入型**（`old` 保留在下方）不同。
+
+**新约定**：版本线 op 一律用 `replace_regex` —— `pattern = ^version: \d+\.\d+\.\d+$`、
+`replacement = version: <目标>`、`already_marker = version: <目标>`。**任意旧版本收敛至目标**（settle），
+目标**就地更新**、**NEVER 追加链式 op**。本轮已把 `f16` / `f43` 与 `f80`–`f97` 共 **20** 个 op 转为该形式。
+
+### 计数（本轮）
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 76 | **122** | 本轮 +47（判据 1 + 补章 9 + 规则 1 + 版本线 18 + CHANGELOG 18）− 退役 1（`f24`） |
+| 顶层 skill 数 | 26 | **26** | 不变 |
+| 校验覆盖（顶层 + `children`） | 35 | **35** | 不变 |
+| §当前补丁清单 数据行数 | 68 | **124** | +9（`f60`–`f68` 补记）+47（本轮）= 124 行 = manifest **122** + 划除行 **2**（`f5-humanize-wording` / `f24-fed-version-1-1-4`） |
+
+> 回执：`apply.py` 二次跑**零真写入 / 零真应用**；`version-lint` 退出 0（漂移 0）；
+> `compliance_check --all` = 审计 **26** · **FAIL 0**。本轮由**单会话**完成，无并发写入。
