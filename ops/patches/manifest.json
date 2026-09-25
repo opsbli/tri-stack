@@ -373,11 +373,11 @@
     {
       "id": "f86-ver-meta",
       "type": "replace_regex",
-      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.2.5→1.2.6）",
       "glob": "tri-meta/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.5",
-      "already_marker": "version: 1.2.5"
+      "replacement": "version: 1.2.6",
+      "already_marker": "version: 1.2.6"
     },
     {
       "id": "f104-cl-meta",
@@ -571,11 +571,11 @@
     {
       "id": "f97-ver-true",
       "type": "replace_regex",
-      "label": "tri-true 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）",
+      "label": "tri-true 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.1.5→1.1.6）",
       "glob": "tri-true/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "f115-cl-true",
@@ -585,6 +585,148 @@
       "old": "## [1.1.4] - 2026-09-24\n",
       "new": "## [1.1.5] - 2026-09-25\n\n### 变更\n\n- **新增「兜底处理（NEVER 静默失败）」章节**：补齐家族合规判据第 14 条要求的五类异常显式降级路径（版本检查异常 / 门禁不过 / 上游缺失 / hook 缺失 / 异常场景），并按本 skill 的触发源与既有机制定制。属文档补全，无行为变更（无代码改动）。\n\n## [1.1.4] - 2026-09-24\n",
       "already_marker": "## [1.1.5] - 2026-09-25"
+    },
+    {
+      "id": "dw-true-contract-fix",
+      "type": "replace_text",
+      "label": "`tri-true` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置（按模式分流）**：`（模板复制事故；darwin P0 批）",
+      "glob": "tri-true/SKILL.md",
+      "old": "&**：",
+      "new": "1. **强制前置（按模式分流）**："
+    },
+    {
+      "id": "dw-true-dedupe-runtime",
+      "type": "replace_text",
+      "label": "`tri-true` 去重：删除与 §交付产物·二、存放目录 重复的「运行时落盘结构」目录树，收敛为指针（darwin P0 批）",
+      "glob": "tri-true/SKILL.md",
+      "old": "### 运行时落盘结构（`.tribro/true/`）\n\n```\n.tribro/true/\n├── verify-index.db                   SQLite 主索引（WAL）\n├── verify-index.jsonl                JSONL 增量日志（容灾）\n├── meta.json                          配置\n└── <命名>/\n    ├── verify.md                      验证报告\n    ├── sources.md                     引用清单\n    ├── alignment.md                   段落对照\n    ├── confidence.md                  置信度明细\n    ├── revisions.md                   修订记录\n    └── quality.md                     质量报告\n```",
+      "new": "### 运行时落盘结构（`.tribro/true/`）\n\n见 §交付产物 · 二、存放目录（唯一事实源，勿双源维护）。\n\n<!-- darwin-p0-dedupe-20260925 -->",
+      "already_marker": "<!-- darwin-p0-dedupe-20260925 -->"
+    },
+    {
+      "id": "dw-true-changelog",
+      "type": "replace_text",
+      "label": "`tri-true` CHANGELOG：追加 [1.1.6] 条目（契约修复 + 去重；P2 属人工内容）",
+      "glob": "tri-true/CHANGELOG.md",
+      "old": "## [1.1.5] - 2026-09-25\n\n### 变更\n",
+      "new": "## [1.1.6] - 2026-09-25\n\n### 修复\n\n- **契约第 1 条修复**：`&**：` 损坏行恢复为 `1. **强制前置（按模式分流）**：`（模板复制事故；darwin-skill 基线评估 P0 批）。\n- **去重**：删除「目录结构」之后与 §交付产物 · 二、存放目录 重复的「运行时落盘结构」目录树，收敛为指针引用（消除双源漂移风险）。\n\n## [1.1.5] - 2026-09-25\n\n### 变更\n"
+    },
+    {
+      "id": "dw-orchestrate-dedupe",
+      "type": "replace_text",
+      "label": "`tri-orchestrate` 去重：删除「交付产物」下逐字重复的第二份「兜底处理」表（拼装残留；darwin P0 批）",
+      "glob": "tri-orchestrate/SKILL.md",
+      "old": "### 兜底处理（NEVER 静默失败）\n\n| 场景 | 处置 |\n|---|---|\n| 版本检查异常 | 放行（自维护模式），标注口径 |\n| 需求文档解析失败 | 澄清；NEVER 凭想象拆分 |\n| 回执 JSON 格式错误 | 跳过该回执；报警 |\n| 回执的 spec_id 未知 | 跳过；报警 |\n| files_changed 交集非空 | 标注潜在合并冲突；建议合并顺序 |\n| 全部 spec 已完成 | 输出 100% 进度看板 |\n\n### 兜底处理（NEVER 静默失败）\n\n| 场景 | 处置 |\n|---|---|\n| 版本检查异常 | 放行（自维护模式），标注口径 |\n| 需求文档解析失败 | 澄清；NEVER 凭想象拆分 |\n| 回执 JSON 格式错误 | 跳过该回执；报警 |\n| 回执的 spec_id 未知 | 跳过；报警 |\n| files_changed 交集非空 | 标注潜在合并冲突；建议合并顺序 |\n| 全部 spec 已完成 | 输出 100% 进度看板 |\n\n### 落盘规则",
+      "new": "### 兜底处理（NEVER 静默失败）\n\n| 场景 | 处置 |\n|---|---|\n| 版本检查异常 | 放行（自维护模式），标注口径 |\n| 需求文档解析失败 | 澄清；NEVER 凭想象拆分 |\n| 回执 JSON 格式错误 | 跳过该回执；报警 |\n| 回执的 spec_id 未知 | 跳过；报警 |\n| files_changed 交集非空 | 标注潜在合并冲突；建议合并顺序 |\n| 全部 spec 已完成 | 输出 100% 进度看板 |\n\n<!-- darwin-p0-dedupe-20260925 -->\n\n### 落盘规则",
+      "already_marker": "<!-- darwin-p0-dedupe-20260925 -->"
+    },
+    {
+      "id": "dw-tri-orchestrate-version",
+      "type": "replace_regex",
+      "label": "`tri-orchestrate` 版本线 settle → 1.0.2（darwin P0 批；settle 形式，任意旧版收敛）",
+      "glob": "tri-orchestrate/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.0.2",
+      "already_marker": "version: 1.0.2"
+    },
+    {
+      "id": "dw-orchestrate-changelog",
+      "type": "replace_text",
+      "label": "`tri-orchestrate` CHANGELOG：追加 [1.0.2] 条目（兜底表去重；P2 属人工内容）",
+      "glob": "tri-orchestrate/CHANGELOG.md",
+      "old": "## [1.0.1] - 2026-09-24\n\n### 变更\n",
+      "new": "## [1.0.2] - 2026-09-25\n\n### 修复\n\n- **去重**：删除「交付产物」下逐字重复的第二份「兜底处理（NEVER 静默失败）」表（拼装残留；darwin-skill 基线评估 P0 批）。\n\n## [1.0.1] - 2026-09-24\n\n### 变更\n"
+    },
+    {
+      "id": "dw-meta-dirtree",
+      "type": "replace_text",
+      "label": "`tri-meta` 目录结构节纠偏：补登实际存在的 references/version-check-spec.md 与 scripts/check_update.py（darwin P0 批）",
+      "glob": "tri-meta/SKILL.md",
+      "old": "├── CHANGELOG.md                   Keep a Changelog + SemVer\n└── tests/\n    └── tri-meta-full-testcases.md 全场景全能力测试用例（审计版）",
+      "new": "├── CHANGELOG.md                   Keep a Changelog + SemVer\n├── references/\n│   └── version-check-spec.md      版本检查规范（内部化持有）\n├── scripts/\n│   └── check_update.py            版本门\n└── tests/\n    └── tri-meta-full-testcases.md 全场景全能力测试用例（审计版）"
+    },
+    {
+      "id": "dw-meta-changelog",
+      "type": "replace_text",
+      "label": "`tri-meta` CHANGELOG：追加 [1.2.6] 条目（目录结构节纠偏；P2 属人工内容）",
+      "glob": "tri-meta/CHANGELOG.md",
+      "old": "## [1.2.5] - 2026-09-25\n\n### 变更\n",
+      "new": "## [1.2.6] - 2026-09-25\n\n### 修复\n\n- **目录结构节纠偏**：补登实际存在但未登记的 `references/version-check-spec.md` 与 `scripts/check_update.py`（文档与实际目录失真；darwin-skill 基线评估 P0 批）。\n\n## [1.2.5] - 2026-09-25\n\n### 变更\n"
+    },
+    {
+      "id": "dw-design-contract-fix",
+      "type": "replace_text",
+      "label": "`tri-design` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin P0 批）",
+      "glob": "tri-sdlc/children/tri-design/SKILL.md",
+      "old": "&**：MUST 校验转交包 `阶段 = P2` 且 P1 四件套齐备、P1 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。",
+      "new": "1. **强制前置**：MUST 校验转交包 `阶段 = P2` 且 P1 四件套齐备、P1 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。"
+    },
+    {
+      "id": "dw-tri-design-version",
+      "type": "replace_regex",
+      "label": "`tri-design` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）",
+      "glob": "tri-sdlc/children/tri-design/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.3",
+      "already_marker": "version: 1.1.3"
+    },
+    {
+      "id": "dw-design-changelog",
+      "type": "replace_text",
+      "label": "`tri-design` CHANGELOG：追加 [1.1.3] 条目（契约第 1 条修复；P2 属人工内容）",
+      "glob": "tri-sdlc/children/tri-design/CHANGELOG.md",
+      "old": "## [1.1.2] - 2026-09-25\n\n### 变更\n",
+      "new": "## [1.1.3] - 2026-09-25\n\n### 修复\n\n- **契约第 1 条修复**：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin-skill 基线评估 P0 批）。\n\n## [1.1.2] - 2026-09-25\n\n### 变更\n"
+    },
+    {
+      "id": "dw-impl-contract-fix",
+      "type": "replace_text",
+      "label": "`tri-impl` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin P0 批）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "old": "&**：MUST 校验转交包 `阶段 = P4` 且 P3 `task-board.md` 存在、P3 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。",
+      "new": "1. **强制前置**：MUST 校验转交包 `阶段 = P4` 且 P3 `task-board.md` 存在、P3 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。"
+    },
+    {
+      "id": "dw-tri-impl-version",
+      "type": "replace_regex",
+      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.3",
+      "already_marker": "version: 1.1.3"
+    },
+    {
+      "id": "dw-impl-changelog",
+      "type": "replace_text",
+      "label": "`tri-impl` CHANGELOG：追加 [1.1.3] 条目（契约第 1 条修复；P2 属人工内容）",
+      "glob": "tri-sdlc/children/tri-impl/CHANGELOG.md",
+      "old": "## [1.1.2] - 2026-09-25\n\n### 变更\n",
+      "new": "## [1.1.3] - 2026-09-25\n\n### 修复\n\n- **契约第 1 条修复**：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin-skill 基线评估 P0 批）。\n\n## [1.1.2] - 2026-09-25\n\n### 变更\n"
+    },
+    {
+      "id": "dw-test-contract-fix",
+      "type": "replace_text",
+      "label": "`tri-test` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin P0 批）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "&**：MUST 校验转交包 `阶段 = P6` 且 P4 交付物齐备、P5 状态为 `已通过`/`已跳过`（lite 剖面）；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。",
+      "new": "1. **强制前置**：MUST 校验转交包 `阶段 = P6` 且 P4 交付物齐备、P5 状态为 `已通过`/`已跳过`（lite 剖面）；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。"
+    },
+    {
+      "id": "dw-tri-test-version",
+      "type": "replace_regex",
+      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.3",
+      "already_marker": "version: 1.1.3"
+    },
+    {
+      "id": "dw-test-changelog",
+      "type": "replace_text",
+      "label": "`tri-test` CHANGELOG：追加 [1.1.3] 条目（契约第 1 条修复；P2 属人工内容）",
+      "glob": "tri-sdlc/children/tri-test/CHANGELOG.md",
+      "old": "## [1.1.2] - 2026-09-25\n\n### 变更\n",
+      "new": "## [1.1.3] - 2026-09-25\n\n### 修复\n\n- **契约第 1 条修复**：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin-skill 基线评估 P0 批）。\n\n## [1.1.2] - 2026-09-25\n\n### 变更\n"
     },
     {
       "id": "sync-version-meta",

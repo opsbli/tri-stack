@@ -64,7 +64,7 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-intent](tri-intent/) | 1.14.2 | 意图识别总路由。第一层三分法（Asking/Doing/Expressing/Meta）→ 下钻二级意图 → 产出快照交接下游 |
-| [tri-meta](tri-meta/) | 1.2.5 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
+| [tri-meta](tri-meta/) | 1.2.6 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
 
 ### 编程主干（写 → 修 → 审）
 
@@ -95,7 +95,7 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-sdlc](tri-sdlc/) | 1.1.6 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
-| [tri-orchestrate](tri-orchestrate/) | 1.0.1 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
+| [tri-orchestrate](tri-orchestrate/) | 1.0.2 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
 | [tri-grill](tri-grill/) | 1.0.1 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
 | [tri-req-audit](tri-req-audit/) | 1.1.0 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
 | [tri-domain](tri-domain/) | 1.0.1 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
@@ -122,7 +122,7 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-evolve](tri-evolve/) | 1.1.7 | 自进化 / 用户画像：OODA 闭环 + 经验条目库 + A/B 验证门 + 回滚（不认领 L2、不进路由） |
-| [tri-true](tri-true/) | 1.1.5 | 四道防线消除幻觉：置信度 → 事实源（T1–T4）→ 多模型交叉 → 自反思修正（不认领 L2、不进路由） |
+| [tri-true](tri-true/) | 1.1.6 | 四道防线消除幻觉：置信度 → 事实源（T1–T4）→ 多模型交叉 → 自反思修正（不认领 L2、不进路由） |
 | [tri-verify](tri-verify/) | 1.0.0 | 运行中应用验证：V1–V5 触发 + 三类归因 + 有界循环 + 五态印章；引擎可插拔（本地 / TestSprite） |
 
 ---

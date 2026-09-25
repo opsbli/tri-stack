@@ -1,7 +1,7 @@
 ---
 name: 元操作处理
 slug: tri-meta
-version: 1.2.5
+version: 1.2.6
 displayName: 元操作处理
 description: 元操作下游执行 skill。处理 M01–M04（澄清追问/纠错反馈/追加细化/能力询问）元操作意图，针对「上一轮回复」或「AI 本身」发问做出响应。M05 中止确认 → 空（不落盘），由 tri-intent 直接处理，本 skill 不认领。当 tri-intent 判定为 Meta 类（M01–M04）时激活。支持独立安装，含上游依赖检测两态逻辑（标准模式/引导安装）。
 summary: 依据 tri-intent 判定处理 M01–M04 元操作意图，含 4 子意图差异化响应策略与 M02/M03 重路由机制（含回环护栏）；M05 不认领。
@@ -226,6 +226,10 @@ tri-meta/
 ├── SKILL.md                       主入口：执行契约 + 4 子意图响应策略 + M02/M03 重路由
 ├── README.md                      特性/目录结构/安装/使用/测试/设计原则
 ├── CHANGELOG.md                   Keep a Changelog + SemVer
+├── references/
+│   └── version-check-spec.md      版本检查规范（内部化持有）
+├── scripts/
+│   └── check_update.py            版本门
 └── tests/
     └── tri-meta-full-testcases.md 全场景全能力测试用例（审计版）
 ```

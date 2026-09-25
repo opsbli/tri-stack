@@ -5,6 +5,12 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
 
+## [1.2.6] - 2026-09-25
+
+### 修复
+
+- **目录结构节纠偏**：补登实际存在但未登记的 `references/version-check-spec.md` 与 `scripts/check_update.py`（文档与实际目录失真；darwin-skill 基线评估 P0 批）。
+
 ## [1.2.5] - 2026-09-25
 
 ### 变更

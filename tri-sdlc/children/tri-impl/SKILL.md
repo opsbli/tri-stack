@@ -1,7 +1,7 @@
 ---
 name: 编码实现
 slug: tri-impl
-version: 1.1.2
+version: 1.1.3
 displayName: 编码实现
 description: SDLC P4 编码实现子SKILL。读取 tri-sdlc 转交的阶段任务（P3 任务看板 + P2 设计三件套 + P1 需求 + P4 门禁条目清单），按任务看板逐项编码落盘至用户工作区，复用 tri-coding 技术栈规范与五条合规底线，完成分层产出映射、边界与异常分支处理、公共接口注释、单元测试执行与覆盖率统计，产出 implements.md / unit-test-report.md 并回写任务状态，供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P4 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 编码实现专家，按任务看板落源码至工作区并产出实现清单与单测报告，面向 P4 门禁 8 条必检项交付。
@@ -21,7 +21,7 @@ license: MIT
 
 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
-&**：MUST 校验转交包 `阶段 = P4` 且 P3 `task-board.md` 存在、P3 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
+1. **强制前置**：MUST 校验转交包 `阶段 = P4` 且 P3 `task-board.md` 存在、P3 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
 2. **面向门禁产出**：MUST 逐条覆盖 P4 门禁条目（`P4-M0`–`P4-M7` 必检 + `P4-R1`–`R2` 建议），两份交付物 MUST 一次性齐备。
 3. **任务驱动**：MUST 按 `task-board.md` 逐任务实现，**每段代码可回指至少一个任务 ID**；NEVER 实现看板外的功能（需要新增时 MUST 先回 tri-sdlc 申请补任务）。
 4. **看板回写**：完成的任务 MUST 回写 `task-board.md` 状态为 `完成`；本阶段范围内 NEVER 遗留 `未开始`/`进行中`（`P4-M1`）。

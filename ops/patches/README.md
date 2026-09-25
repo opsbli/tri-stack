@@ -308,6 +308,23 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `f113-cl-plan` | replace_text | tri-plan CHANGELOG：追加 [1.3.3] 条目（兜底章节补齐；P2 属人工内容） |
 | `f114-cl-review` | replace_text | tri-review CHANGELOG：追加 [1.7.1] 条目（兜底章节补齐；P2 属人工内容） |
 | `f115-cl-true` | replace_text | tri-true CHANGELOG：追加 [1.1.5] 条目（兜底章节补齐；P2 属人工内容） |
+| `dw-true-contract-fix` | replace_text | tri-true 契约第 1 条修复：`&**：` → `1. **强制前置（按模式分流）**：`（模板复制事故；darwin P0 批） |
+| `dw-true-dedupe-runtime` | replace_text | tri-true 去重：与 §交付产物·二 重复的「运行时落盘结构」目录树收敛为指针 |
+| `dw-true-changelog` | replace_text | tri-true CHANGELOG：追加 [1.1.6] 条目（契约修复 + 去重） |
+| `dw-orchestrate-dedupe` | replace_text | tri-orchestrate 去重：删除「交付产物」下逐字重复的第二份「兜底处理」表 |
+| `dw-tri-orchestrate-version` | replace_regex | tri-orchestrate 版本线 settle → 1.0.2（darwin P0 批） |
+| `dw-orchestrate-changelog` | replace_text | tri-orchestrate CHANGELOG：追加 [1.0.2] 条目（兜底表去重） |
+| `dw-meta-dirtree` | replace_text | tri-meta 目录结构节纠偏：补登实际存在的 `references/version-check-spec.md` 与 `scripts/check_update.py` |
+| `dw-meta-changelog` | replace_text | tri-meta CHANGELOG：追加 [1.2.6] 条目（目录结构节纠偏） |
+| `dw-design-contract-fix` | replace_text | tri-design 契约第 1 条修复：`&**：` → `1. **强制前置**：` |
+| `dw-tri-design-version` | replace_regex | tri-design 版本线 settle → 1.1.3（darwin P0 批） |
+| `dw-design-changelog` | replace_text | tri-design CHANGELOG：追加 [1.1.3] 条目（契约第 1 条修复） |
+| `dw-impl-contract-fix` | replace_text | tri-impl 契约第 1 条修复：`&**：` → `1. **强制前置**：` |
+| `dw-tri-impl-version` | replace_regex | tri-impl 版本线 settle → 1.1.3（darwin P0 批） |
+| `dw-impl-changelog` | replace_text | tri-impl CHANGELOG：追加 [1.1.3] 条目（契约第 1 条修复） |
+| `dw-test-contract-fix` | replace_text | tri-test 契约第 1 条修复：`&**：` → `1. **强制前置**：` |
+| `dw-tri-test-version` | replace_regex | tri-test 版本线 settle → 1.1.3（darwin P0 批） |
+| `dw-test-changelog` | replace_text | tri-test CHANGELOG：追加 [1.1.3] 条目（契约第 1 条修复） |
 
 ## 每项补丁的依据
 
@@ -857,3 +874,16 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 
 > 回执：`apply.py` 二次跑**零真写入 / 零真应用**；`version-lint` 退出 0（漂移 0）；
 > `compliance_check --all` = 审计 **26** · **FAIL 0**。本轮由**单会话**完成，无并发写入。
+
+### 计数（2026-09-25 · darwin-skill P0 批增量）
+
+> darwin-skill 全仓基线评估（35 skill）后的 P0 硬伤修复批。上节「计数（本轮）」为第六轮时点表，**冻结**。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 122 | **139** | +17（`dw-*`：契约修复 4 + 去重 2 + 目录纠偏 1 + 版本线 4 + CHANGELOG 6）。`f86`/`f97` settle 目标**就地更新**（1.2.5→1.2.6 / 1.1.5→1.1.6，不占新行）；曾误追加 2 个重复版本 op（与 `f86`/`f97` 同 glob 同 pattern），按「settle 目标就地更新、NEVER 链式追加」约定删除 |
+| §当前补丁清单 数据行数 | 124 | **141** | +17；对账恒等式：141 − 划除 2 = manifest **139** ✅ |
+
+回执：`apply.py` 连跑两次**零真写入 / 零真应用**（`dw-*` 与 `f86`/`f97` 均 `应用 0｜已应用 1`）；
+`version-lint` 包内漂移 0、`--apply-docs` 修文档层 6 处（WORKFLOW-GUIDE D1 ×3 + README D4 ×3）后 EXIT=0。
+涉及 skill：`tri-true` 1.1.6 / `tri-orchestrate` 1.0.2 / `tri-meta` 1.2.6 / `tri-design`·`tri-impl`·`tri-test` 1.1.3。

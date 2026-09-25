@@ -1,7 +1,7 @@
 ---
 name: 消除幻觉
 slug: tri-true
-version: 1.1.5
+version: 1.1.6
 displayName: 消除幻觉
 description: 横向方法论型 skill，为 tri-xxx 家族提供"置信度评估 + 事实源验证 + 多模型多方事实源交叉验证 + 自我反思修正"四道防线的幻觉消除能力；VERIFY_EXECUTE 模式执行深度验证（含段级置信度评估、RAG 句级引用、T1-T4 信源分级、UAF 多模型加权融合、CoVe/Reflexion 闭环修正、人审兜底），VERIFY_QUERY 模式查询历史验证，VERIFY_ADMIN 模式管理信源/校准/模型池；下游 skill 委派或用户直接调用激活；支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 四道防线（置信度/事实源/多模型/自反思）+ 三层置信度（VC+SC+CC 校准）+ 四级信源分级（T1-T4 可信度加权）+ 异构多模型交叉验证（UAF 融合 + 共识阈值）+ CoVe/Reflexion 闭环修正 + 人审兜底 + ECE/Brier 校准。
@@ -21,7 +21,7 @@ license: MIT
 
 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
-&**：
+1. **强制前置（按模式分流）**：
    - VERIFY_EXECUTE 模式：MUST 先执行上下文收集（风险等级/领域/段落切分），再走防线一置信度评估，NEVER 跳过任何一道防线直接交付。
    - VERIFY_QUERY 模式：MUST 先读 `verify-index.db`，NEVER 全量扫描 verify-tasks/。
    - VERIFY_ADMIN 模式：MUST 先校验操作合法性（增删信源/校准/模型须 schema 通过）。
@@ -456,19 +456,9 @@ tri-true/
 
 ### 运行时落盘结构（`.tribro/true/`）
 
-```
-.tribro/true/
-├── verify-index.db                   SQLite 主索引（WAL）
-├── verify-index.jsonl                JSONL 增量日志（容灾）
-├── meta.json                          配置
-└── <命名>/
-    ├── verify.md                      验证报告
-    ├── sources.md                     引用清单
-    ├── alignment.md                   段落对照
-    ├── confidence.md                  置信度明细
-    ├── revisions.md                   修订记录
-    └── quality.md                     质量报告
-```
+见 §交付产物 · 二、存放目录（唯一事实源，勿双源维护）。
+
+<!-- darwin-p0-dedupe-20260925 -->
 
 ## 依赖与兼容
 
