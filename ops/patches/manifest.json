@@ -163,7 +163,7 @@
     {
       "id": "converge-version-stub",
       "type": "converge_version_section",
-      "label": "顶层 skill 版本节统一为瘦指针 STUB（§六：≤30 行、禁内联细则）；force_skills 补齐使 25 个顶层节形态一致",
+      "label": "顶层 skill 版本节统一为瘦指针 STUB（§六：≤30 行、禁内联细则）；force_skills 补齐使 26 个顶层节形态一致",
       "glob": "tri-*/SKILL.md",
       "already_marker": "<!-- version-stub v1",
       "legacy_markers": [
@@ -273,7 +273,7 @@
     {
       "id": "f13-check-update-decouple",
       "type": "sync_script",
-      "label": "顶层 25 份 check_update.py 统一为去耦形态（DEFAULT_SLUG=None；清除 tri-intent 硬编码耦合，与 f10 的 child 9 份及 payload 同 hash）",
+      "label": "顶层 26 份 check_update.py 统一为去耦形态（DEFAULT_SLUG=None；清除 tri-intent 硬编码耦合，与 f10 的 child 9 份及 payload 同 hash）",
       "glob": "tri-*/SKILL.md",
       "payload": "assets/check_update.py",
       "dest": "scripts/check_update.py"
@@ -349,6 +349,87 @@
       "old": "## [1.1.3] - 2026-09-24\n",
       "new": "## [1.1.4] - 2026-09-25\n\n### 变更\n\n- **更正路由归属自述（口径修正，无行为变更）**：原文自称「独立工具 skill，不注册为 tri-intent 下游路由项」「不认领任何 L2/L3 编码」「不认领 tri-intent 下游路由」，与**路由真源**冲突 —— `tri-intent/SKILL.md` §一 路由映射表与 `tri-intent/doing/I11-coding.md` 均把本 skill 列为 `I11` 的 `L3=frontend-design` 子类**一跳覆写**下游，`tri-intent/hooks/intent-gate.py` 另有 `(\"I11\",\"frontend-design\") → \"tri-frontend-design\"` 可执行映射，`tri-intent/CHANGELOG` 亦记载该路由是「真空断链修复」的有意新增（此前本 skill 无任何路由入口）。\n- 现改为：**本 skill 参与 I11 子类路由，同时也支持用户直接调用**（三态上游依赖检测保留，两条入口并存）；§触发时机 补「tri-intent 路由」触发行 + 路由归属注记；§职责边界 补齐与同层五落点（tri-coding / tri-lottie / tri-prototype / tri-html / tri-sdlc）的产出物形态 MECE；自检句 `下游=<否>` 改为 `路由=<I11/frontend-design 子类|用户直调>`。\n- 非功能性变更（文档口径），无行为变更。\n\n## [1.1.3] - 2026-09-24\n",
       "already_marker": "## [1.1.4] - 2026-09-25"
+    },
+    {
+      "id": "f26-coding-verify-gate-contract",
+      "type": "replace_text",
+      "label": "`tri-coding` 契约新增 §7 交付前功能验证自动门（tri-verify 委派），原 §7 风险预筛顺延为 §8 —— 建立强制力来源",
+      "glob": "tri-coding/SKILL.md",
+      "old": "7. **交付前风险预筛自动门（tri-true 自动委派）**：产出 `implements.md` 后、向用户最终交付前，MUST 自动执行一次风险预筛（见 §交付前风险预筛自动门）——命中确定性触发规则即自动委派 tri-true 进行事实核查并盖章，NEVER 因用户未提及而跳过，NEVER 假装已调用未就绪的多模型交叉验证能力。",
+      "new": "7. **交付前功能验证自动门（tri-verify 自动委派 · 功能可用性硬门）**：产出 `implements.md` 后、§交付前风险预筛之前，MUST 自动执行一次功能验证（见 §交付前功能验证自动门）——按 V1–V5 确定性触发规则判定，命中即委派 `tri-verify` 驱动运行中的应用并驱动有界修复循环，NEVER 因用户未提及而跳过，NEVER 把「未执行」/「未触发」当作「通过」。\n7. **交付前风险预筛自动门（tri-true 自动委派）**：产出 `implements.md` 后、向用户最终交付前，MUST 自动执行一次风险预筛（见 §交付前风险预筛自动门）——命中确定性触发规则即自动委派 tri-true 进行事实核查并盖章，NEVER 因用户未提及而跳过，NEVER 假装已调用未就绪的多模型交叉验证能力。",
+      "already_marker": "7. **交付前功能验证自动门（tri-verify 自动委派 · 功能可用性硬门）**"
+    },
+    {
+      "id": "f27-coding-verify-workflow-ascii",
+      "type": "replace_text",
+      "label": "`tri-coding` §编码工作流 ASCII 链路图：在 implements.md 与 §交付前风险预筛之间插入功能验证门（含失败回流支线）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "    执行（按 tasks.md 逐项编码+测试）\n        │              测试不过 ──→ 回炉 tasks.md → 再执行\n        ▼\n    implements.md（编码实现清单报告）",
+      "new": "    执行（按 tasks.md 逐项编码+测试）\n        │              测试不过 ──→ 回炉 tasks.md → 再执行\n        ▼\n    implements.md（编码实现清单报告）\n        │\n        ▼\n  §交付前功能验证自动门（tri-verify 自动委派）\n        │         失败 ──→ 三类归因 ──→ 有界循环（≤2 轮）──→ 超限升级人审\n        │通过 / 盖章「未执行 · 未触发」\n        ▼\n  §交付前风险预筛自动门（tri-true 自动委派）\n        │\n        ▼\n      交付",
+      "already_marker": "§交付前功能验证自动门（tri-verify 自动委派）\n        │         失败"
+    },
+    {
+      "id": "f28-coding-verify-gate-section",
+      "type": "replace_text",
+      "label": "`tri-coding` 新增 §交付前功能验证自动门 章节（时机 / V1–V5 触发规则 / 五态消费表 / 强制规则），插入 §交付前风险预筛自动门 之前",
+      "glob": "tri-coding/SKILL.md",
+      "old": "## 交付前风险预筛自动门（tri-true 自动委派 · 防幻觉硬门）",
+      "new": "## 交付前功能验证自动门（tri-verify 自动委派 · 功能可用性硬门）\n\n> 横向验证型 skill `tri-verify` 负责「驱动运行中的应用」，回答单测 / 静态审查 / 事实核查都回答不了的问题：\n> **用户真的能登录？表单真的能提交？布局真的没崩？** 本门与 §交付前风险预筛自动门 并列，但**先于**它执行\n> ——因为 tri-verify 产出的同源证据包可直接作为 tri-true 的 T1 级信源。\n> **诚实边界**：本门不做事实核查（属 tri-true），不做代码修复（属 tri-fix 或回炉本 skill 的 tasks.md）。\n\n### 执行时机（自动，与第零步版本门同级的自动环节）\n\n产出 `implements.md`（及 `delivery-manifest.md`）之后、§交付前风险预筛自动门 之前运行，无人工开关。\n\n### 触发规则（确定性判定 · 与 tri-verify V1–V5 同源）\n\n| # | 触发条件 | 判定来源 |\n|---|---|---|\n| V1 | 交付物含可运行入口（dev server / build 产物 / HTTP endpoint / CLI 入口） | `implements.md` 交付物清单 |\n| V2 | `tasks.md` §3.3 验收测试存在 ≥1 条端到端用户路径 | `tasks.md` |\n| V3 | 交付物为纯库 / 纯类型 / 纯静态资源，无运行时入口 → **跳过** | `implements.md` |\n| V4 | 用户显式要求端到端验证 | 快照 §三 / 用户原话 |\n| V5 | 快照 `D1` ∈ {medical, financial, legal}，或属高风险操作（删除/发布/支付/迁移/权限变更） | 快照 §三 + `tasks.md` |\n\n**V3 优先于 V1/V2**（无运行时入口则无从驱动），但 MUST 在 `verdict.md` 写明判 V3 的依据。\n全部未命中 → 盖 `功能验证: 未触发（可交付）`，零打扰继续。\n\n### 自动执行动作（命中后）\n\n1. 委派 `tri-verify`，传入：交付物清单 / `tasks.md` §3.3 / `requirements.md` 验收标准 / 快照 `D1`。\n2. `tri-verify` 按 **引擎探测 → 契约编写 + 本地零成本校验 → 可达性预检 → 派发执行 → 三类归因 → 有界循环** 推进。\n3. 消费其 `verdict.md` 五态盖章：\n\n| 盖章 | 本 skill 的处置 |\n|---|---|\n| `功能验证: 通过（…）` | 继续进入 §交付前风险预筛自动门 |\n| `功能验证: 修复后通过（…）` | 继续；`implements.md` MUST 补记修复轮次与归因 |\n| `功能验证: 已升级人审（…）` | **停止自动交付**，向用户展示 `escalation.md` 与失败证据包并等待裁定 |\n| `功能验证: 未执行（<原因>）` | 继续交付，但 MUST 在 `implements.md` 显式标注残余风险；**V5 命中时转人审** |\n| `功能验证: 未触发（可交付）` | 继续 |\n\n### 强制规则\n\n- 本门为自动环节，MUST 在最终交付前执行；NEVER 因「用户没提」而跳过。\n- **NEVER 把 `未执行` / `未触发` 当作 `通过` 消费**——五态 MUST 区分，不得只判断「有没有红」。\n- `已升级人审` 时 **NEVER 自动交付**。\n- 验证失败需修复时 MUST 回炉 `tasks.md` 并委派 `tri-fix`；本 skill NEVER 自行改码绕过门禁。\n- `tri-verify` 未安装 → 标注「tri-verify 未安装，功能验证门已降级为跳过」并**显式盖章**，NEVER 阻断交付，也 NEVER 假装已验证。\n\n## 交付前风险预筛自动门（tri-true 自动委派 · 防幻觉硬门）",
+      "already_marker": "## 交付前功能验证自动门（tri-verify 自动委派 · 功能可用性硬门）"
+    },
+    {
+      "id": "f29-coding-verify-stage-row",
+      "type": "replace_text",
+      "label": "`tri-coding` §阶段速查表追加阶段 9（功能验证自动门 + verdict.md 载体）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "| 8 | `implements.md` | — | 汇总执行记录+测试结果+变更说明+交付物清单 | `templates/implements.md` |",
+      "new": "| 8 | `implements.md` | — | 汇总执行记录+测试结果+变更说明+交付物清单 | `templates/implements.md` |\n| 9 | `.tribro/verify/<命名>/verdict.md` | — | **功能验证自动门**（tri-verify 委派）：V1–V5 判定 + 三类归因 + 有界循环 + 判据印章 | `tri-verify/templates/verdict.md` |",
+      "already_marker": "| 9 | `.tribro/verify/<命名>/verdict.md` |"
+    },
+    {
+      "id": "f30-coding-verify-quality-row",
+      "type": "replace_text",
+      "label": "`tri-coding` §质量标准追加「功能验证」维度（五态区分 + 已升级人审不得自动交付 + 可执行判据）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "| 工具结果治理 | 长输出经限幅+溢出暂存处理，异常可见化，完成判据为产物与校验结果 | `## 工具结果治理` 六条纪律逐项核对 |",
+      "new": "| 工具结果治理 | 长输出经限幅+溢出暂存处理，异常可见化，完成判据为产物与校验结果 | `## 工具结果治理` 六条纪律逐项核对 |\n| 功能验证 | 功能验证门已执行，或有明确盖章（未执行 / 未触发须附原因）；`已升级人审` 时不得自动交付 | `verdict.md` 五态盖章 + `tri-verify/scripts/verify_gate.py self-test` |",
+      "already_marker": "| 功能验证 | 功能验证门已执行"
+    },
+    {
+      "id": "f31-coding-verify-boundary",
+      "type": "replace_text",
+      "label": "`tri-coding` §职责边界「不负责」清单补入 tri-verify（功能验证由 tri-verify 委派执行，本 skill 只消费判据）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "- **不负责**：意图识别（由 tri-intent）、调试修复（由 tri-fix）、非编码类文本产物（本分支未包含）、规划方案不写代码（由 tri-plan）、多媒体产物（本分支未包含）、代码审查（由 tri-review）",
+      "new": "- **不负责**：意图识别（由 tri-intent）、调试修复（由 tri-fix）、非编码类文本产物（本分支未包含）、规划方案不写代码（由 tri-plan）、多媒体产物（本分支未包含）、代码审查（由 tri-review）、**运行中应用的功能验证（由 tri-verify 委派执行，本 skill 只消费其 `verdict.md` 判据，NEVER 自行代跑或代判）**",
+      "already_marker": "运行中应用的功能验证（由 tri-verify 委派执行"
+    },
+    {
+      "id": "f32-fix-reverify-contract",
+      "type": "replace_text",
+      "label": "`tri-fix` 契约新增 §8 修复后复验（tri-verify 委派 · 防回归硬门），原 §8 风险预筛顺延为 §9 —— 补上「修好 A 破坏 B」的机械判据",
+      "glob": "tri-fix/SKILL.md",
+      "old": "8. **交付前风险预筛自动门（tri-true 自动委派）**：产出 `fix-report.md` 后、向用户最终交付前，MUST 自动执行一次风险预筛（见 §交付前风险预筛自动门）——命中确定性触发规则即自动委派 tri-true 进行事实核查并盖章，NEVER 因用户未提及而跳过，NEVER 假装已调用未就绪的多模型交叉验证能力。",
+      "new": "8. **修复后复验（tri-verify 自动委派 · 防回归硬门）**：产出 `fix-report.md` 后 MUST 委派 `tri-verify` 对**被修复的路径及其邻接路径**做定向复验——取修复前后的运行 id 做引擎级**运行对比**，机械判定有无回归。**这是强制收尾环节，NEVER 以「原来那条已经好了」为由跳过**：能变红的循环只能证明 bug 存在，只有复验能证明「修好 A 没破坏 B」。复验结论按其 `verdict.md` 五态处置；`功能验证: 已升级人审` 时 MUST 停止交付。\n8. **交付前风险预筛自动门（tri-true 自动委派）**：产出 `fix-report.md` 后、向用户最终交付前，MUST 自动执行一次风险预筛（见 §交付前风险预筛自动门）——命中确定性触发规则即自动委派 tri-true 进行事实核查并盖章，NEVER 因用户未提及而跳过，NEVER 假装已调用未就绪的多模型交叉验证能力。",
+      "already_marker": "8. **修复后复验（tri-verify 自动委派 · 防回归硬门）**"
+    },
+    {
+      "id": "f33-fix-reverify-quality-row",
+      "type": "replace_text",
+      "label": "`tri-fix` §质量标准追加「修复后复验」维度（前后运行对比无回归）",
+      "glob": "tri-fix/SKILL.md",
+      "old": "| 事后复盘 | 已回答「什么本可以避免这个 bug」并给出防御或架构建议 | `fix-report.md` 复盘章节 |",
+      "new": "| 事后复盘 | 已回答「什么本可以避免这个 bug」并给出防御或架构建议 | `fix-report.md` 复盘章节 |\n| 修复后复验 | 已委派 tri-verify 对被修复路径及邻接路径做定向复验，前后运行对比无回归 | `verdict.md` 复验对比章节 + tri-verify 的 `run-log.jsonl` |",
+      "already_marker": "| 修复后复验 | 已委派 tri-verify"
+    },
+    {
+      "id": "f34-family-spec-tri-verify-reg",
+      "type": "replace_text",
+      "label": "family-spec §五 登记 tri-verify 两项：① 横向型委派契约（含「自检句采用标准格式、无例外」的 #20 核实结论）② 引擎抽象与判据印章四概念的单一事实源位置",
+      "glob": "tri-forge/references/family-spec.md",
+      "old": "| **二跳路由例外 · `tri-req-audit`** | 中介 = `tri-req-audit`（需求文档审核）；被执行方 = 市面 PRD 审核 skill（`prd-review` / `requirement-testability-review` / `bg-requirement-review`），**不注册**为 tri-intent 下游；委派契约单一事实源 = `tri-req-audit/references/market-prd-review-skills.md`。登记理由：中介以「家族专有可消费性判据 + 市面通用产品视角」双层审核 tri-prototype 产出的 `requirements.md`，属「中介路由 + 具体执行」形态 |",
+      "new": "| **二跳路由例外 · `tri-req-audit`** | 中介 = `tri-req-audit`（需求文档审核）；被执行方 = 市面 PRD 审核 skill（`prd-review` / `requirement-testability-review` / `bg-requirement-review`），**不注册**为 tri-intent 下游；委派契约单一事实源 = `tri-req-audit/references/market-prd-review-skills.md`。登记理由：中介以「家族专有可消费性判据 + 市面通用产品视角」双层审核 tri-prototype 产出的 `requirements.md`，属「中介路由 + 具体执行」形态 |\n| **横向型委派契约 · `tri-verify`** | 角色 = **横向验证型**，**不注册** tri-intent 下游路由；委派方 = `tri-coding`（交付前门）/ `tri-fix`（修复后复验）/ `tri-sdlc`（P6-P7），亦可用户直调。**自检句采用标准格式**（`本次模式=`），**无例外**——故本表无需为其登记自检句例外，`compliance_check.py` 第 20 条据此由 MANUAL 核实为「已登记（无例外）」；登记理由：它是家族内首个以**「横向型被下游委派为硬门」**形态存在的 skill，此前的横向型（`tri-true` / `tri-evolve`）仅以「自动环节委派 / hook 激活」出现，未形成门禁契约。 |\n| **引擎抽象与判据印章登记 · `tri-verify`** | 新增四个家族级概念的单一事实源位置：① **引擎七方法契约**（可达性预检 / 创建 / 执行 / 快速分流 / 取失败证据 / 运行对比 / 停止）→ `tri-verify/references/engine-contract.md`；② **三类归因**（产品 / 契约 / 环境，其中环境类由**退出码机械判定**）→ `tri-verify/references/attribution-rules.md`；③ **有界循环五规则**（连续同类 2 轮 / B·C 打断连续链 / 同用例契约变更 2 次 / 重试 1 次 / 总迭代 6 次）→ 可执行真源 `tri-verify/scripts/verify_gate.py`；④ **判据印章五态**（通过 / 修复后通过 / 已升级人审 / 未执行 / 未触发）→ `tri-verify/templates/verdict.md`。登记理由：上述概念会被其它 skill 的委派契约引用（`tri-coding` / `tri-fix` / `tri-sdlc`），不登记则后续生成者会各自重定义。 |",
+      "already_marker": "| **横向型委派契约 · `tri-verify`** |"
     }
   ]
 }

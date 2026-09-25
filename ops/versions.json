@@ -36,6 +36,7 @@
     "tri-sdlc": "1.1.5",
     "tri-test": "1.1.2",
     "tri-true": "1.1.4",
+    "tri-verify": "1.0.0",
     "tri-workflow": "1.2.5"
   }
 }

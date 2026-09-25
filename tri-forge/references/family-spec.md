@@ -189,6 +189,8 @@ NEVER 改名——门禁与路由按固定文件名定位。
 | 自检句格式例外 | 横向型若使用非标准自检句（`本次操作=` 之外），MUST 在此登记 |
 | 二跳路由例外 | 若采用「中介路由 + 具体执行」二跳形态，MUST 在此登记中介与被执行方 |
 | **二跳路由例外 · `tri-req-audit`** | 中介 = `tri-req-audit`（需求文档审核）；被执行方 = 市面 PRD 审核 skill（`prd-review` / `requirement-testability-review` / `bg-requirement-review`），**不注册**为 tri-intent 下游；委派契约单一事实源 = `tri-req-audit/references/market-prd-review-skills.md`。登记理由：中介以「家族专有可消费性判据 + 市面通用产品视角」双层审核 tri-prototype 产出的 `requirements.md`，属「中介路由 + 具体执行」形态 |
+| **横向型委派契约 · `tri-verify`** | 角色 = **横向验证型**，**不注册** tri-intent 下游路由；委派方 = `tri-coding`（交付前门）/ `tri-fix`（修复后复验）/ `tri-sdlc`（P6-P7），亦可用户直调。**自检句采用标准格式**（`本次模式=`），**无例外**——故本表无需为其登记自检句例外，`compliance_check.py` 第 20 条据此由 MANUAL 核实为「已登记（无例外）」；登记理由：它是家族内首个以**「横向型被下游委派为硬门」**形态存在的 skill，此前的横向型（`tri-true` / `tri-evolve`）仅以「自动环节委派 / hook 激活」出现，未形成门禁契约。 |
+| **引擎抽象与判据印章登记 · `tri-verify`** | 新增四个家族级概念的单一事实源位置：① **引擎七方法契约**（可达性预检 / 创建 / 执行 / 快速分流 / 取失败证据 / 运行对比 / 停止）→ `tri-verify/references/engine-contract.md`；② **三类归因**（产品 / 契约 / 环境，其中环境类由**退出码机械判定**）→ `tri-verify/references/attribution-rules.md`；③ **有界循环五规则**（连续同类 2 轮 / B·C 打断连续链 / 同用例契约变更 2 次 / 重试 1 次 / 总迭代 6 次）→ 可执行真源 `tri-verify/scripts/verify_gate.py`；④ **判据印章五态**（通过 / 修复后通过 / 已升级人审 / 未执行 / 未触发）→ `tri-verify/templates/verdict.md`。登记理由：上述概念会被其它 skill 的委派契约引用（`tri-coding` / `tri-fix` / `tri-sdlc`），不登记则后续生成者会各自重定义。 |
 
 > **登记的意义**：家族内同类概念 MUST 有唯一表述。未登记的变体会让后续生成者
 > 误套模板，产生又一处定义漂移（F3 即此类）。

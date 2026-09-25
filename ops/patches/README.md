@@ -169,7 +169,7 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 
 | id | 类型 | 作用 |
 |---|---|---|
-| `spec-per-skill` | sync_spec | 为每个引用 `version-check-spec.md` 的 skill 部署校正版自带 spec（当前 34 个 = 顶层 25 + `children/*` 9；实测 `跳过 34`） |
+| `spec-per-skill` | sync_spec | 为每个引用 `version-check-spec.md` 的 skill 部署校正版自带 spec（当前 35 个 = 顶层 26 + `children/*` 9；实测 `跳过 35`） |
 | `f2-pointer` | replace_text | 版本门真源指针 `tri-forge/references/version-check-spec.md` → `references/version-check-spec.md` |
 | `f3-clause-inline` | replace_text | 移除「；发布前 MUST 通过 python tri-forge/scripts/sync_registry.py --check。」 |
 | `f3-clause-sentence` | replace_text | 移除「。发布前 MUST 通过 …」句首变体 |
@@ -183,7 +183,7 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 | `sync-readme-version` | sync_readme_version | P1↔P5：README 版本声明 = SKILL.md 版本（规则化） |
 | `self-maintained-const-func` | replace_text | 版本门：注入 `SELF_MAINTAINED` 常量与 `self_consistent_check()` |
 | `self-maintained-branch` | replace_text | 版本门：在节流检查前插入自维护分支（跳过远端比对） |
-| `converge-version-stub` | converge_version_section | 顶层 skill 版本节统一为瘦指针 STUB（当前 **25** 个 = 顶层全部；含 `force_skills` 补齐的 9 个） |
+| `converge-version-stub` | converge_version_section | 顶层 skill 版本节统一为瘦指针 STUB（当前 **26** 个 = 顶层全部；含 `force_skills` 补齐的 9 个） |
 | `converge-version-stub-children` | converge_version_section | `tri-sdlc/children/*` 9 个子阶段 skill 同款收敛（同缺陷类，scope 独立便于裁定） |
 | `f7-contract-mode` | replace_text | 契约 §0：「连接 skillhub 校验 + `skillhub upgrade`」→ 自维护本地校验（22 处） |
 | `f7b-contract-mode-intent` | replace_text | 契约 §0 变体（`tri-intent`）：远端校验/升级 + 端点内联 → 自维护口径 |
@@ -192,7 +192,7 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 | `f10-children-check-update` | sync_script | 为 `tri-sdlc/children/*` 的 9 个子 skill 各部署自带 `scripts/check_update.py`（对齐顶层；STUB 命令不再悬空） |
 | `f11-children-tests-version` | replace_regex | 子 skill 的 tests 描述版本引用 `v1.1.1` → `v1.1.2`（随版本线补升同步） |
 | `f12-children-readme-tree` | replace_text | 子 skill README 目录树：补列实际存在的 `references/` 与新增的 `scripts/check_update.py` |
-| `f13-check-update-decouple` | sync_script | 顶层 25 份 `check_update.py` 统一为去耦形态（清除 `tri-intent` 硬编码耦合；首轮 2026-09-25 实际 `写入 22｜跳过 2`，跳过的即已去耦的 `tri-code-analyzer` / `tri-lottie`；后续新增 `tri-req-audit` 已自带去耦版 ⇒ 现 **全量跳过**） |
+| `f13-check-update-decouple` | sync_script | 顶层 26 份 `check_update.py` 统一为去耦形态（清除 `tri-intent` 硬编码耦合；首轮 2026-09-25 实际 `写入 22｜跳过 2`，跳过的即已去耦的 `tri-code-analyzer` / `tri-lottie`；后续新增 `tri-req-audit` / `tri-verify` 均已自带去耦版 ⇒ 现 **全量跳过**） |
 | `f14-req-audit-two-hop` | replace_text | family-spec §五：登记 `tri-req-audit` 二跳路由例外（2026-09-25 补记，op 于 2026-09-25 随 tri-req-audit 锻造加入） |
 | `f15-agents-md-coding-rules` | replace_text | `tri-init` AGENTS.md 模板：新增「通用编码行为规则（8 条）」章节——写码纪律（最简实现 / 分层成长 / 先用已有依赖等），与项目特定编码规范正交；第 1 条采用兼容安全版（2026-09-25） |
 | `f15b-tests-t31` | replace_text | `tri-init` 测试用例：AGENTS.md 内容验证节追加 T31（该文件第六/七节本有历史性重复，`replace_text` 全量命中使两份同步获得 T31）（2026-09-25） |
@@ -206,6 +206,15 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 | `f23-fed-selfcheck-line` | replace_text | 同上：契约 §6 自检句 `下游=<否>` → `路由=<I11/frontend-design 子类｜用户直调>`（原字段编码的正是「不位于下游」这一滞后口径）（2026-09-25） |
 | `f24-fed-version-1-1-4` | replace_text | `tri-frontend-design` 版本线 1.1.3 → **1.1.4**（口径修正属 patch）。**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随——该 op 由 `manifest.json` **插序**（非追加）实现（2026-09-25） |
 | `f25-fed-changelog-1-1-4` | replace_text | `tri-frontend-design` CHANGELOG：追加 `[1.1.4]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25） |
+| `f26-coding-verify-gate-contract` | replace_text | `tri-coding` 契约新增 **§7 交付前功能验证自动门**（tri-verify 委派），原 §7 风险预筛顺延为 §8 —— 建立强制力来源（2026-09-25） |
+| `f27-coding-verify-workflow-ascii` | replace_text | `tri-coding` §编码工作流 ASCII 链路图：在 `implements.md` 与「§交付前风险预筛」之间插入**功能验证门**（含失败回流支线）（2026-09-25） |
+| `f28-coding-verify-gate-section` | replace_text | `tri-coding` 新增 **§交付前功能验证自动门** 章节（时机 / V1–V5 触发规则 / 五态消费表 / 强制规则），插入「§交付前风险预筛自动门」之前（2026-09-25） |
+| `f29-coding-verify-stage-row` | replace_text | `tri-coding` §阶段速查表追加**阶段 9**（功能验证自动门 + `verdict.md` 载体）（2026-09-25） |
+| `f30-coding-verify-quality-row` | replace_text | `tri-coding` §质量标准追加「**功能验证**」维度（五态区分 + 已升级人审不得自动交付 + 可执行判据）（2026-09-25） |
+| `f31-coding-verify-boundary` | replace_text | `tri-coding` §职责边界「不负责」清单补入 `tri-verify`（功能验证由 tri-verify 委派执行，本 skill 只消费判据）（2026-09-25） |
+| `f32-fix-reverify-contract` | replace_text | `tri-fix` 契约新增 **§8 修复后复验**（tri-verify 委派 · 防回归硬门），原 §8 风险预筛顺延为 §9 —— 补上「修好 A 破坏 B」的机械判据（2026-09-25） |
+| `f33-fix-reverify-quality-row` | replace_text | `tri-fix` §质量标准追加「**修复后复验**」维度（前后运行对比无回归）（2026-09-25） |
+| `f34-family-spec-tri-verify-reg` | replace_text | `family-spec` §五 登记 `tri-verify` 两项：① **横向型委派契约**（含「自检句采用标准格式、无例外」的 #20 核实结论）② **引擎抽象与判据印章四概念**的单一事实源位置（2026-09-25） |
 
 ## 每项补丁的依据
 
@@ -658,3 +667,23 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 > ⇒ 判据「连跑两次，第二次 `写入 0`」当场失败。**`manifest.json` 的 op 顺序即执行顺序。**
 > 实测回执：本轮首跑 `f24 = 应用 1` 且 `sync-version-meta = 写入 1`（同轮跟随 ✅），
 > 二/三跑均 `应用 0｜已应用 1` 与 `写入 0｜跳过 25`。
+
+### 计数增量（2026-09-25 · 第四轮）
+
+新增横向验证型 skill **`tri-verify`**（运行中应用的功能验证）后：顶层 **25 → 26**、补丁层 op **36 → 45**
+（新增 `f26`–`f34`）、校验覆盖 **34 → 35**、`version-check-spec.md` **34 → 35 份**、
+`check_update.py` **35 → 36 份**（35 skill + 1 payload，hash 仍全等）、`ops/versions.json` **34 → 35**。
+
+| 受影响位置 | 处置 |
+|---|---|
+| 「当前补丁清单」表新增 `f26`–`f34` 九行 | ✅ 已补 |
+| 「当前补丁清单」表 `spec-per-skill` / `converge-version-stub` / `f13` 三行 | ✅ 已改为当前值（35 / 26 / 26） |
+| `ops/README.md` 目录树 `当前 36 个 op`、§计数对账表 `补丁层 op 数` 行 | ✅ 已改当前值（45） |
+| 根 `README.md` 目录树 `36 个 op`、技能目录标题、`versions.json` 行 | ✅ 已改当前值 |
+| `WORKFLOW-GUIDE.html` §04「第零步」正文（`34 个 skill（顶层 25 + 9）`） | ✅ 已改当前值 |
+| `ops/version-lint.py` 内 `# 顶层 25 个 tri-*` 注释；`manifest.json` 的 `converge-version-stub` / `f13` 两条 label | ✅ 已改当前值 |
+| §计数增量（2026-09-25，第一至三轮）与全部冻结段落 | ⬜ **冻结** —— 当时实测快照 |
+
+> **幂等复核**：本轮 `apply.py` 连跑两次，第二次全表为 `应用 0｜已应用 N` / `写入 0｜跳过 N`，
+> 无任何 `应用 N>0` 或 `写入 N>0`；`f3-clause-*` 三行仍常驻 `not_found`（目标子句已清，属正常态，
+> 见 §`f3-*` 三个 op 为何常驻 `not_found`）。`version-lint.py` 退出码 0（存在漂移 0 个）。

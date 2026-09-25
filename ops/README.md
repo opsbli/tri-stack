@@ -23,10 +23,10 @@ ops/
 ├── README.md                   本文件
 ├── install-skills.py            junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py            版本一致性校验（skill 包内 P1–P5 + 仓库级文档层 D1–D4）
-├── versions.json              自主版本线基线（34 个 skill 的版本快照：顶层 25 + tri-sdlc 子 skill 9）
+├── versions.json              自主版本线基线（35 个 skill 的版本快照：顶层 26 + tri-sdlc 子 skill 9）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 36 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 45 个 op）
     ├── apply.py                幂等重放器
     ├── payload/
     │   └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
@@ -37,7 +37,7 @@ ops/
 ## 安装到 AI 工具（junction 方式）
 
 ```bash
-# 安装全部 25 个 skill 到 WorkBuddy（推荐先 --dry-run）
+# 安装全部 26 个 skill 到 WorkBuddy（推荐先 --dry-run）
 python ops/install-skills.py --target ~/.workbuddy/skills
 
 # 安装到其他 AI 工具（改 target 路径即可）
@@ -82,7 +82,7 @@ python ops/version-lint.py --skill tri-coding
 的 skill。**已删除**，理由：它与「停用远端比对」裁定（见 §版本门：自维护模式）**直接冲突**——
 既然不再请求平台，就不该保留一个以平台为唯一数据源的工具。
 
-分支收窄为 24 个 skill（编程线 22 + 横向 2）后，全部 skill 均在本仓库内，**无「缺失集」需补装**。（2026-09-25 新增内部工具型 `tri-req-audit` ⇒ 顶层 **25**）
+分支收窄为 24 个 skill（编程线 22 + 横向 2）后，全部 skill 均在本仓库内，**无「缺失集」需补装**。（2026-09-25 新增内部工具型 `tri-req-audit` ⇒ 顶层 **25**；同日新增横向验证型 `tri-verify` ⇒ 顶层 **26**）
 本地安装统一由 `install-skills.py` 的 junction 方式承担（见 §安装到 AI 工具）。
 
 > **历史**：曾用它从平台补装 11 个被 tri-intent 引用的子类 skill（顶层 29 → 42）。
@@ -203,7 +203,7 @@ pat='^version: *(\\S+)'   -> 匹配
 | ~~版本节远端口径~~ | ✅ **已完成**：`converge-version-stub{,-children}` 收敛 33 个版本节（顶层 24 + 子 skill 9）为瘦指针 STUB；`f7-*` 修正契约 §0 的 23 处 |
 | ~~版本线升版链~~ | ✅ **已完成**：15 个 skill 升 patch + `--apply-docs` 幂等修正 45 处文档层漂移 + `--emit-baseline` 重写基线（24 skill） |
 | ~~children 版本线治理缺口~~ | ✅ **已完成（2026-09-25）**：① 校验覆盖 **24 → 33**（两校验器补扫 `tri-sdlc/children/*`，此前 9 个子 skill 无任何版本守卫）；② `f10`（新 op 类型 `sync_script`）为 9 个子 skill 部署自带 `scripts/check_update.py`（取去耦形态，STUB 命令不再悬空、独立安装成立）；③ 9 个子 skill 升 patch `1.1.1 → 1.1.2` 并记 CHANGELOG（`b80cfa9` 的实质变更此前未升版未记）+ `f11` 同步 tests 描述；④ `f12` 补 README 目录树（漏列 `references/` + 新增 `scripts/`） |
-| ~~check_update.py 形态分裂（B5）~~ | ✅ **已完成（2026-09-25）**：顶层 22 份主形态（带 `DEFAULT_SLUG="tri-intent"` 硬编码）经**行为等价双证明**（正向 JSON 全等 / 负向 mutation 注入 P5 漂移双抓、归一后 JSON 全等）后由 `f13` 统一覆盖为去耦形态。终态：**34 份（33 skill + 1 payload）hash 全等**，仅存 1 种形态（2026-09-25 新增 `tri-req-audit` ⇒ **35 份 = 34 skill + 1 payload**，仍全等） |
+| ~~check_update.py 形态分裂（B5）~~ | ✅ **已完成（2026-09-25）**：顶层 22 份主形态（带 `DEFAULT_SLUG="tri-intent"` 硬编码）经**行为等价双证明**（正向 JSON 全等 / 负向 mutation 注入 P5 漂移双抓、归一后 JSON 全等）后由 `f13` 统一覆盖为去耦形态。终态：**34 份（33 skill + 1 payload）hash 全等**，仅存 1 种形态（2026-09-25 新增 `tri-req-audit` ⇒ **35 份 = 34 skill + 1 payload**，仍全等；同日新增 `tri-verify` ⇒ **36 份 = 35 skill + 1 payload**，仍全等） |
 | ~~tri-forge 自建~~ | ✅ **已完成**：`tri-forge/`（15 文件；`tests/mutation-gate.py` 迁入后为 **16** 文件），三模式 + 五门流程 + 22 条门④ + 门③ 路由回流 + 五点版本校验 |
 | ~~tri-forge 门④ 负向验证~~ | ✅ **已完成**：mutation testing **6/6** 项注入全部被抓到（见下表） |
 | ~~自建 tri-forge 走一次**生成型**实战（门①→⑤）~~ | ✅ **已完成**：`tri-init`（1.0.0 首发 2026-09-24）即该实战产物。① **落盘位置**合规：`tri-forge/SKILL.md` 规定模式 C 产物默认落仓库根 `<slug>/`，`tri-init/` 正合；② **功能证据**：门④ `python tri-forge/scripts/compliance_check.py --skill tri-init` → **FAIL 0 · 需人工 0**（22 条全 PASS/N-A）；③ **包结构**齐备 `references/`+`templates/`+`scripts/`+`tests/`（`templates/` 为 family-spec 的「产出落盘型 skill 必须」项）；④ 时间线：`tri-forge` 1.0.0（2026-09-23）→ `tri-init` 1.0.0（2026-09-24）。⚠️ **判据说明**：仓内**无**门①→⑤ 的逐门执行日志（设计决策留痕在 `.workbuddy/proposals/PROPOSAL-tri-init-20260923.md`，属 D30 契约、未入版本控制），故本项依据 = 用户确认 + 上述功能证据 |
@@ -235,7 +235,7 @@ pat='^version: *(\\S+)'   -> 匹配
 | 校验覆盖（顶层 + `tri-sdlc/children/*`） | 33 | **34** | `tri-forge/scripts/check_registry.py --check` 报「检查 34 个 skill；漂移 0」 |
 | `version-check-spec.md` 份数 | 33 | **34** | `spec-per-skill` op 实测 `跳过 34` |
 | `check_update.py` 份数 | 34（33 skill + 1 payload） | **35（34 skill + 1 payload）** | 34 份 skill 副本 + `ops/patches/assets/` 1 份，hash 仍全等 |
-| 补丁层 op 数 | 23 | **36** | `ops/patches/manifest.json` |
+| 补丁层 op 数 | 23 | **45** | `ops/patches/manifest.json` |
 | `converge-version-stub` 覆盖顶层节 | 24 | **25** | 该 op 实测 `跳过 25` |
 | `f13` 覆盖 | 24 | **25** | 该 op 实测 `跳过 25` |
 
@@ -268,3 +268,31 @@ pat='^version: *(\\S+)'   -> 匹配
 | `WORKFLOW-GUIDE.html`（D1 chip）与根 `README.md`（D4 表行）的该 skill 版本 | ✅ 已由 `version-lint.py --apply-docs` 幂等修正 |
 | `ops/version-lint.py` 内 `# 顶层 24 个 tri-*` 注释 | ✅ 更正为 25（上轮改数遗漏的注释层） |
 | 前两轮增量小节 | ⬜ **冻结** —— 当时实测快照 |
+
+### 计数增量（2026-09-25 · 第四轮）
+
+新增横向验证型 skill **`tri-verify`**（运行中应用的功能验证）后，下列**当前态**计数已就地更新。
+
+| 计数 | 原值 | 现值 | 佐证 |
+|---|---|---|---|
+| 顶层 skill | 25 | **26** | `compliance_check.py --all` 审计对象数 |
+| 校验覆盖（顶层 + `tri-sdlc/children/*`） | 34 | **35** | `ops/version-lint.py` 报「检查 35 个 skill；存在漂移 0 个」 |
+| `version-check-spec.md` 份数 | 34 | **35** | `spec-per-skill` op 实测 `跳过 35` |
+| `check_update.py` 份数 | 35（34 skill + 1 payload） | **36（35 skill + 1 payload）** | 35 份 skill 副本 + `ops/patches/assets/` 1 份，36/36 同 hash |
+| 补丁层 op 数 | 36 | **45** | `ops/patches/manifest.json`（新增 `f26`–`f34`） |
+| `ops/versions.json` 条目 | 34 | **35** | 已含 `tri-verify` 1.0.0 |
+| `converge-version-stub` 覆盖顶层节 | 25 | **26** | 该 op 实测 `跳过 26` |
+| `f13` 覆盖 | 25 | **26** | 该 op 实测 `跳过 26` |
+
+| 受影响位置 | 处置 |
+|---|---|
+| 上方目录树 `versions.json` / `当前 45 个 op` 两行、§安装命令示例 `25 个 skill` | ✅ 已改当前值 |
+| 上方 §计数对账表 `补丁层 op 数` 行 | ✅ 已改当前值（该表其余行系 tri-req-audit 冻结快照，不刷新） |
+| 根 `README.md` 技能目录标题、目录树 `versions.json` 与 `patches/` 两行 | ✅ 已改当前值 |
+| `WORKFLOW-GUIDE.html` §04「第零步」正文（`34 个 skill（顶层 25 + 9）`） | ✅ 已改当前值 |
+| `ops/version-lint.py` 内 `# 顶层 25 个 tri-*` 注释 | ✅ 更正为 26 |
+| `ops/patches/manifest.json` 的 `converge-version-stub` / `f13` 两条 label | ✅ 已改当前值（25 → 26） |
+| 前三轮增量小节 | ⬜ **冻结** —— 当时实测快照 |
+
+> 本轮为**纯新增**（新增 1 个 skill + 9 个 op），未改动既有 skill 的版本号。
+> 复核判据：`version-lint.py` 退出码 0（存在漂移 0 个）；`apply.py` 连跑两次，第二次 `应用 0｜写入 0`。
