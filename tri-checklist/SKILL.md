@@ -186,6 +186,18 @@ python scripts/check_update.py --slug tri-checklist --json
 交付完成（Markdown checklist 文件 + 可选 diff.json 供二次定制）
 ```
 
+## 兜底处理（NEVER 静默失败）
+
+本 skill 在下列五类异常下 MUST 走显式降级路径并**在清单或回执中标注**，NEVER 静默失败、NEVER 用空清单假充完成：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止生成并报告 |
+| ② 门禁不过 | 本 skill 只产清单、不设审批门 | 不适用（产出供开发者自检与门③ 消费） |
+| ③ 上游缺失 | 无 tri-intent 快照 | 走 §上游依赖检测 的降级模式，向用户追问审计对象（Git 暂存区 / 工作区 / commit id） |
+| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用 |
+| ⑤ 异常场景 | 仓库无 Git、commit id 不存在、diff 为空 | 走 §三种 Git 输入模式 的兜底：显式说明无法定位改动范围，NEVER 生成内容不实的清单；**空改动 MUST 显式标注**而非产出空清单 |
+
 ## 交付产物机制
 
 ### 一、文件命名规范

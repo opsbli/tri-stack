@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](CHANGELOG.md)
-[![Skills](https://img.shields.io/badge/skills-24-6c5ce7.svg)](#技能目录)
+[![Skills](https://img.shields.io/badge/skills-26-6c5ce7.svg)](#技能目录)
 [![Self-Maintained](https://img.shields.io/badge/status-self--maintained-00b894.svg)](#自维护声明)
 
 **模块化、可组合的 AI 智能体技能集合 · 自维护 fork**
@@ -97,7 +97,7 @@
 | [tri-sdlc](tri-sdlc/) | 1.1.5 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
 | [tri-orchestrate](tri-orchestrate/) | 1.0.1 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
 | [tri-grill](tri-grill/) | 1.0.1 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
-| [tri-req-audit](tri-req-audit/) | 1.0.0 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
+| [tri-req-audit](tri-req-audit/) | 1.1.0 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
 | [tri-domain](tri-domain/) | 1.0.1 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
 
 ### 内务 / 造物
@@ -135,7 +135,7 @@ ops/
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
 ├── versions.json            自主版本线基线（35 skill 快照：顶层 26 + tri-sdlc 子 skill 9）
-└── patches/                 本地补丁层（45 个 op，幂等重放）
+└── patches/                 本地补丁层（76 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器
@@ -200,7 +200,7 @@ tri-skills/
 │   ├── install-skills.py     # junction 安装到 AI 工具
 │   ├── version-lint.py       # 版本一致性校验（P1–P5 + 文档层 D1–D4）
 │   ├── versions.json         # 自主版本线基线
-│   └── patches/              # 本地补丁层（13 op）
+│   └── patches/              # 本地补丁层（76 op）
 ├── tri-mece-audit/           # MECE 审计报告（HTML）
 ├── WORKFLOW-GUIDE.html       # 使用手册
 ├── ops/README.md             # 基础设施说明

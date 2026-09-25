@@ -1,6 +1,6 @@
 # 需求文档审核（tri-req-audit）
 
-![version](https://img.shields.io/badge/version-1.0.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-1.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 
 > 面向 tri-xxx 家族的**内部专用工具**：对 `tri-prototype` 产出的 `requirements.md` 做**开工前审核**——
 > 先做家族专有的三重前置本地校验，再**二跳委派**市面 PRD 审核 skill，最后聚合为 P0/P1/P2 问题清单与修订清单。
@@ -11,7 +11,7 @@
 - **三阶段流水线**：前置本地校验（家族专有）→ 市面 skill 二跳委派 → 结论聚合与判定
 - **三重前置校验**：结构完整性 / 证据溯源 / tri-coding 门② 可消费性——市面通用 skill **不知道门② 要消费什么**，故这一层只能本地做
 - **二跳委派**：按注册表优先级委派市面 PRD 审核 skill（`prd-review` → `requirement-testability-review` → `bg-requirement-review`），调用契约与可用性探测均以 `references/market-prd-review-skills.md` 为单一事实源
-- **降级有兜底**：市面 skill 全部不可用时改用自带 **D1–D8 八维规则**，分级标准与委派审核完全一致，**NEVER 因降级而放宽**
+- **降级有兜底**：市面 skill 全部不可用时改用自带 **D1–D9 九维规则**，分级标准与委派审核完全一致，**NEVER 因降级而放宽**
 - **两级门禁 + 分级判定**：P0 阻断开工 / P1 有条件开工 / P2 可开工；反规避——**NEVER 因用户催促而下调级别**
 - **门禁有牙**：三重校验的可机器判定部分由 `scripts/audit_precheck.py` 承担，语义维明确标注「须 Agent 复核」
 
@@ -72,7 +72,7 @@ tri-req-audit/
 ├── references/
 │   ├── version-check-spec.md          版本检查执行规范（内部化持有）
 │   ├── market-prd-review-skills.md    市面 PRD 审核 skill 注册表（委派契约真源）
-│   └── audit-dimensions.md            八维审核规则 + 分级判据（本地判据真源）
+│   └── audit-dimensions.md            九维审核规则 + 分级判据（本地判据真源）
 ├── scripts/
 │   ├── check_update.py                版本门（与家族同源）
 │   └── audit_precheck.py              前置三重校验（结构 / 溯源 / 可消费性）

@@ -8,7 +8,7 @@
   **语义判断**（如「这条断言是否真的可判」「这条规则是否真的矛盾」）**不由本脚本臆断**，
   由 Agent 复核并给出证据位置。
 
-判据真源：`references/audit-dimensions.md`（§一 结构基线 / §二 八维 / §三 三重校验 / §四 分级）。
+判据真源：`references/audit-dimensions.md`（§一 结构基线 / §二 九维 / §三 三重校验 / §四 分级）。
 
 用法：
     python scripts/audit_precheck.py --file <.tribro/coding/<命名>/requirements.md> --json
@@ -218,7 +218,7 @@ def check(text: str) -> dict:
 
     # ---- 兜底：全维通过时要留结论 ----
     if not items:
-        add("D1", "INFO", "八维预检未发现机器可判缺陷",
+        add("D1", "INFO", "九维预检未发现机器可判缺陷",
             "结构 / 溯源 / 可测性形态 / 待补充项定级均通过", "语义维（D2/D4/D5/D6）仍须 Agent 人工复核")
 
     counts = {lv: sum(1 for x in items if x["level"] == lv) for lv in ("P0", "P1", "P2")}

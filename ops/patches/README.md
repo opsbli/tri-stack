@@ -39,7 +39,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 **推荐时机**：每次 `skillhub upgrade` 之后立即重放一次。
 
-## 实测踩过的五个坑（都会导致补丁层静默失效）
+## 实测踩过的六个坑（都会导致补丁层静默失效）
 
 ### 坑 1 · 行尾混用导致字节级匹配不命中
 
@@ -165,6 +165,20 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 （`\r\r\n` 的特征是 `\r` 数 ≈ `2 ×` `\r\n` 数）。**不要用 `read_text()` 数** —— 它会归一化，
 `\r` 恒为 0，给出假象。
 
+### 坑 6 · `--dry-run` 下依赖前序 op 产物的锚点必然 `not_found`
+
+`apply.py --dry-run` **不落盘**。若某 op 的锚点文本**由前序 op 的 `new` 生成**（典型：为前序
+改名 / 新增的段落再补一行），dry-run 时前序 op 的产物还不存在 ⇒ 该 op 报 `not_found`，**属正常态**。
+
+| 实证 | 锚点来源 | dry-run | 真实 `apply.py` |
+|---|---|---|---|
+| `f50a-req-audit-tests-cap-row3` | `| 3 \| 九维判定（D1–D9） \| … TC-A02 – TC-A09 \|`，由 `f46a` / `f46b` 改名（`八维`→`九维`、`D1–D8`→`D1–D9`）产生 | `not_found`（虚警） | **`应用 1`** |
+| `f47b-req-audit-rename-dimrange-py` | `.py` 里的 `D1–D8` | `not_found` | `not_found` ⇒ **真多余** |
+
+⇒ **判据**：删「锚点不存在」的 op 前，必须以**真实 `apply.py`（非 dry-run）**的读数为准；
+dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明「op 冗余」。
+二者混同会把 `f50a` 这类**正常态虚警**误删（该 op 删了就会让能力清单第 3 行版本号漏改）。
+
 ## 当前补丁清单
 
 | id | 类型 | 作用 |
@@ -215,6 +229,29 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 | `f32-fix-reverify-contract` | replace_text | `tri-fix` 契约新增 **§8 修复后复验**（tri-verify 委派 · 防回归硬门），原 §8 风险预筛顺延为 §9 —— 补上「修好 A 破坏 B」的机械判据（2026-09-25） |
 | `f33-fix-reverify-quality-row` | replace_text | `tri-fix` §质量标准追加「**修复后复验**」维度（前后运行对比无回归）（2026-09-25） |
 | `f34-family-spec-tri-verify-reg` | replace_text | `family-spec` §五 登记 `tri-verify` 两项：① **横向型委派契约**（含「自检句采用标准格式、无例外」的 #20 核实结论）② **引擎抽象与判据印章四概念**的单一事实源位置（2026-09-25） |
+
+| `f43-req-audit-version-1-1-0` | replace_text | `tri-req-audit` 版本线 1.0.0 → **1.1.0**（对抗层硬化属 minor）。**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随 —— 该 op 由 `manifest.json` **插序**实现（2026-09-25） |
+| `f46a-req-audit-rename-nine-md` | replace_regex | `tri-req-audit/**/*.md`（skip `CHANGELOG.md`）：「八维」→「九维」（D9 对抗维落地后的口径同步；CHANGELOG 属追加型历史，禁用 `skip_names` 豁免）（2026-09-25） |
+| `f46b-req-audit-rename-dimrange-md` | replace_regex | 同上：`D1–D8` → `D1–D9`（维数区间随 D9 扩容；`en-dash` 逐字，勿写成普通连字符）（2026-09-25） |
+| `f47a-req-audit-rename-nine-py` | replace_regex | `tri-req-audit/scripts/*.py`：「八维」→「九维」（脚本内提示文案同步）（2026-09-25） |
+| `f35-req-audit-d9-dimension` | replace_text | `references/audit-dimensions.md` 新增 **§二 D9 对抗维**：≥3 条可证伪场景、≥1 条须落其余维度判「通过」处、构造不出须列 ≥3 个尝试过的攻击入口、与 D4 的 MECE 区分（在场 vs 可证伪）、「无对抗小节 = 违规」（2026-09-25） |
+| `f36-req-audit-evidence-rule` | replace_text | 同上 **§四 H5 可复算证据**：P0/P1 必附 `文件:行号` + 引文；无引文一律降 P2 并标 `evidence=unverifiable`（2026-09-25） |
+| `f37-req-audit-independence-field` | replace_text | 同上 **§五 `independence=`**：三取值（`same-agent` / `independent-agent` / `external-tool`）+ 同源禁用字样（同源时禁写「独立审核」「独立第三方」）+「委派 ≠ 独立」（2026-09-25） |
+| `f38-req-audit-contract-rules` | replace_text | `tri-req-audit/SKILL.md`：契约自检句增 `对抗=` / `独立性=`；新增**铁律 12**（对抗结论必填，无该小节 = 不合规，门④判不通过）与**铁律 13**（跨轮单调性）（2026-09-25） |
+| `f39b-req-audit-dim-table-d9` | replace_text | `SKILL.md` §审核维度速查表增 **D9** 行（与 `audit-dimensions.md` 对表）（2026-09-25） |
+| `f40-req-audit-aggregate-monotonic` | replace_text | `SKILL.md` §阶段三增**单调性守卫**行（P0/P1 结论下降须有新证据；零新证据下降 ⇒ 强制升级人审）（2026-09-25） |
+| `f41-req-audit-gate4-guard` | replace_text | `SKILL.md` 门④ 行升级为「+ 单调性守卫 + 机械守卫自检（`audit_gate.py` 非 0 ⇒ **不得落盘交付**）」（2026-09-25） |
+| `f42a-req-audit-deliverable-ledger-row` | replace_text | `SKILL.md` 交付产物表增 `round-ledger.jsonl` 行（跨轮账本，单调性守卫的数据源）（2026-09-25） |
+| `f42b-req-audit-deliverable-rules` | replace_text | `SKILL.md` 落盘规则「三件套」→「**四件套**」（补入账本）（2026-09-25） |
+| `f44-req-audit-changelog-1-1-0` | replace_text | `tri-req-audit/CHANGELOG.md`：追加 `[1.1.0]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25） |
+| `f45-familyspec-adversarial-delegation` | replace_text | `tri-forge/references/family-spec.md` §五：登记「**对抗委派二跳 · `tri-req-audit`**」（被执行方 = 家族外 `metago-adversarial-review`；未装即降级为内置 D9）（2026-09-25） |
+| `f48-req-audit-gate-script` | sync_script | `sync_script`：把 `ops/patches/assets/audit_gate.py` 部署为 `tri-req-audit/scripts/audit_gate.py` —— **门④ 的牙**（R1–R4 + L2 五条机械判据 + `--self-test` 反例夹具）（2026-09-25） |
+| `f49a-req-audit-template-adversarial-section` | replace_text | `templates/req-audit-report.md`：新增「**十、对抗式审查结论（D9 · 必填）**」小节（3 条占位）（2026-09-25） |
+| `f49b-req-audit-template-independence-row` | replace_text | 同上 §七：增 `independence=` 行（与 SKILL.md 自检句对表）（2026-09-25） |
+| `f50a-req-audit-tests-cap-row3` | replace_text | `tests/tri-req-audit-full-testcases.md` 能力清单增第 **13** 行（D9 对抗维）（2026-09-25） |
+| `f50b-req-audit-tests-cap-rows` | replace_text | 同上：增第 **14–15** 行（独立性声明 / 跨轮单调性）（2026-09-25） |
+| `f50c-req-audit-tests-case-a13` | replace_text | 同上：新增用例 **TC-A13**（DC 类校验同步）（2026-09-25） |
+| `f50d-req-audit-tests-cases-d06-08` | replace_text | 同上：新增用例 **TC-D06–D08**（对抗 / 独立性 / 单调性）；§六 用例数 TC-A 12→13、TC-D 5→8（2026-09-25） |
 
 ## 每项补丁的依据
 
@@ -687,3 +724,42 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 > **幂等复核**：本轮 `apply.py` 连跑两次，第二次全表为 `应用 0｜已应用 N` / `写入 0｜跳过 N`，
 > 无任何 `应用 N>0` 或 `写入 N>0`；`f3-clause-*` 三行仍常驻 `not_found`（目标子句已清，属正常态，
 > 见 §`f3-*` 三个 op 为何常驻 `not_found`）。`version-lint.py` 退出码 0（存在漂移 0 个）。
+
+---
+
+## 计数增量（2026-09-25 · 第五轮 · `tri-req-audit` 对抗层硬化）
+
+本轮新增 **22** 个 op（详见 §当前补丁清单末 22 行），补丁层 op 数 **45 → 76**。
+
+| 计数 | 原值 | 现值 | 佐证 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 45 | **76** | 本轮 22 + 并发会话 9（`f60`–`f68`） |
+| §当前补丁清单 数据行数 | 46 | **68** | 本轮补 22 行；68 行 = manifest 中 **67** 个 op + 1 行划除行（`f5-humanize-wording`，已移除） |
+| skill 集合 / 版本覆盖 | — | **不变** | 本轮纯改既有 skill 内容 |
+
+| 受影响位置 | 处置 |
+|---|---|
+| §当前补丁清单：`f34` 行后补入本轮 22 行 | ✅ |
+| §实测踩过的**五个**坑 → **六个**坑（新增坑 6） | ✅ |
+| `ops/README.md` 目录树 `当前 45 个 op`、§计数对账表 `补丁层 op 数` 行 | ✅ 已改当前值（76） |
+| 前四轮增量小节与全部冻结段落 | ⬜ **冻结** —— 当时实测快照 |
+
+### 本轮的 op 顺序约束（两条，顺序即执行顺序）
+
+1. **版本线插序**：`f43-req-audit-version-1-1-0` 改 P1（`SKILL.md` frontmatter），
+   **MUST 排在 `sync-version-meta` / `sync-readme-version` 之前**；否则首轮用**旧值**写 `_meta.json`，
+   第二轮才纠正 ⇒ 幂等判据当场失败。
+2. **改名插序（更隐蔽）**：`f46a` / `f46b` / `f47a` 把「八维 / D1–D8」改成「九维 / D1–D9」，
+   **MUST 排在内容 op（`f35`–`f42b`）之前**。因为内容 op 会往 `SKILL.md` 新插入 `D1–D9` 字样，
+   若改名 op 在其后，`already_marker` 会命中而**整文件跳过** ⇒ 同一份文件里「九维」与「D1–D8」并存。
+
+> ⚠️ **并发来源说明**：本轮执行期间，另有会话向 `manifest.json` 追加 **9** 个 op
+> （`f60-action-fallback` … `f68-workflow-fallback`，涉 9 个 skill 的 fallback 分支）。
+> 为免双方重复追加，本表**不代填**其行；其清单行由该会话补记。
+> 故 `manifest.json` 实测 **76** 个 op，而本表当前 **68** 行，差额 **8** = 上述并发 op 9 个
+> − 表内 1 行划除行（`f5-humanize-wording` 不在 manifest 中）。对账判据：
+> `manifest ids − 表内 ids` 应恰为那 9 个 `f6x-*-fallback`。
+
+> **幂等复核**：连跑两次 `apply.py`，第二次全表 `应用 0｜已应用 N` / `写入 0｜跳过 N`；
+> 常驻 `not_found` 仅 `f3-clause-inline` / `f3-clause-sentence` / `f3-standalone-line` 三行
+> （目标子句已清，属正常态，见前文）。`ops/version-lint.py` 退出码 0。

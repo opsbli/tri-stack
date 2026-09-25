@@ -1,10 +1,10 @@
 ---
 name: tri-req-audit
 slug: tri-req-audit
-version: 1.0.0
+version: 1.1.0
 displayName: 需求文档审核（tri-req-audit）
 description: "内部专用工具 skill（不注册为 tri-intent 下属路由项，由用户直接调用）。对 tri-prototype 产出的 requirements.md 做开工前审核：先做家族专有的三重前置本地校验（结构完整性 / 证据溯源 / tri-coding 门② 可消费性），再按注册表优先级二跳委派市面 PRD 审核 skill（prd-review → requirement-testability-review → bg-requirement-review），最后聚合为 P0/P1/P2 问题清单、岗位就绪度矩阵与修订清单。只出问题不改原文。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。"
-summary: 三重前置本地校验 + 二跳委派市面 PRD 审核 skill + 结论聚合 → P0/P1/P2 问题清单与修订清单；市面 skill 不可用时降级为自带八维审核规则。
+summary: 三重前置本地校验 + 二跳委派市面 PRD 审核 skill + 结论聚合 → P0/P1/P2 问题清单与修订清单；市面 skill 不可用时降级为自带九维审核规则。
 tags: [requirements, prd, audit, quality-gate, delegation, internal-tool]
 license: MIT
 ---
@@ -23,15 +23,17 @@ license: MIT
 
 1. **强制前置**：激活后 MUST 先解析**输入契约**（`requirements.md` 路径必填），再按 §上游依赖检测 判定上游态。路径缺失且无法从委派方 / 快照推断时 MUST 在门① 澄清，NEVER 凭默认路径猜。
 2. **审核对象锁定铁律**：本 skill 的审核对象是 **tri-prototype 产出的 `requirements.md`**（九章结构见 §核心能力方法论）。MUST 逐章核对，NEVER 只读开头或抽样若干章就下结论。
-3. **判据单一事实源强制**：本地校验的判据 MUST 取自 `references/audit-dimensions.md`（八维审核规则 + 分级判据）；市面 skill 的调用契约 MUST 取自 `references/market-prd-review-skills.md`（注册表 + 优先级 + 降级路径）。NEVER 凭印象或临时自创判据替代。
+3. **判据单一事实源强制**：本地校验的判据 MUST 取自 `references/audit-dimensions.md`（九维审核规则 + 分级判据）；市面 skill 的调用契约 MUST 取自 `references/market-prd-review-skills.md`（注册表 + 优先级 + 降级路径）。NEVER 凭印象或临时自创判据替代。
 4. **委派诚实铁律**：委派市面 skill 时 MUST 按其注册表的优先级与调用契约执行，并如实记录**实际调用结果**（成功 / 失败 / 未安装三位一并登记）。NEVER 声称「已调用某市面 skill」而实际未调用；NEVER 编造市面 skill 的审核结论或输出字段。
 5. **二跳委派登记铁律**：本 skill 采用「中介路由 + 具体执行」二跳形态——中介是**本 skill**，被执行方是**市面 PRD 审核 skill**。被执行方**不注册**为 tri-intent 下游；该二跳形态 MUST 已在 `tri-forge/references/family-spec.md` §五 登记。NEVER 在本 skill 未登记的情况下冒用二跳形态。
 6. **不回改原文铁律**：本 skill 只产出「问题清单 + 修订建议」，**NEVER 就地改写 `requirements.md`**。文档修订属 tri-prototype 回炉，文档对齐属 tri-grill；本 skill 的输出是这两者的**输入**，不是它们的替代。
 7. **门禁（门①–门⑤）**：门⑤ 落盘前 MUST 通过门④ 的驳回判定——存在任一 **P0 问题**（定义见 §分级判据）时，MUST 在报告中标注**「阻断开工」**并把修订清单交回 tri-prototype；NEVER 因用户催促而把 P0 降级为 P1。
-8. **最小化原则**：只做用户 / 委派方指定范围内的审核工作（默认 = 全量九章 + 八维），NEVER 擅自扩展范围（如顺手改写文档、代写 PRD、评审业务合理性之商业价值）。
+8. **最小化原则**：只做用户 / 委派方指定范围内的审核工作（默认 = 全量九章 + 九维），NEVER 擅自扩展范围（如顺手改写文档、代写 PRD、评审业务合理性之商业价值）。
 9. **职责边界**：本 skill 产出的是「**审核报告 + 修订清单**」，不是修订后的需求文档（→ tri-prototype）、不是对齐记录（→ tri-grill）、不是业务代码（→ tri-coding）、不是业务代码审查（→ tri-review）、不是 skill 合规审计（→ tri-forge）。
 10. **反规避**：判据只以 `references/audit-dimensions.md` 为准。NEVER 因「用户着急 / 时间紧 / 先开工再说」而下调判定标准、跳过维度或把 P0 记为 P2。
-11. **自检句**：每次响应前 MUST 声明「本次模式=&lt;委派审核 / 兜底审核&gt;，触发分支=&lt;直接触发 / 委派触发 / 快照路由&gt;，已读取&lt;audit-dimensions / market-prd-review-skills / 目标 requirements.md&gt;，审核对象=&lt;路径&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;，P0=&lt;N&gt; / P1=&lt;N&gt; / P2=&lt;N&gt;」，若与上述规则冲突则停止并纠正。
+11. **自检句**：每次响应前 MUST 声明「本次模式=&lt;委派审核 / 兜底审核&gt;，触发分支=&lt;直接触发 / 委派触发 / 快照路由&gt;，已读取&lt;audit-dimensions / market-prd-review-skills / 目标 requirements.md&gt;，审核对象=&lt;路径&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;，P0=&lt;N&gt; / P1=&lt;N&gt; / P2=&lt;N&gt;，对抗=&lt;D9 命中 N / 无发现&gt;，独立性=&lt;same-agent / cross-context / cross-model&gt;」，若与上述规则冲突则停止并纠正。
+12. **对抗结论必填铁律**：报告 MUST 含「对抗式审查结论」小节，内含 D9 的 **≥3 条可证伪错误场景**（见 `references/audit-dimensions.md` §二 D9）。**无该小节 = 报告不合规**，门④ MUST 判不通过——本 skill **NEVER 以「其余维度全绿」代替「已尝试证伪」**（本 skill 的失效模式正是「自审自过」）。
+13. **跨轮单调性铁律**：`本 skill → tri-prototype 回炉 → 再审` 是多轮链路，MUST 落 `round-ledger.jsonl` 并在门④ 执行单调性守卫——**P0 / P1 数量下降而本轮 `new_evidence=0` 时判「收敛造假」嫌疑，MUST 强制升级人审、本轮不得判「可开工 / 有条件开工」**；任何 P 级降级 MUST 在本轮附新证据并在账本留痕，否则**驳回降级**。NEVER 让级别在多轮中「无证据地变好」。
 
 ## 触发时机
 
@@ -96,7 +98,7 @@ license: MIT
 | 字段 | 来源 | 必填 | 用途 |
 |---|---|---|---|
 | `requirements.md` 路径 | 用户 / 委派方 / 快照 §三 | ✅ | 审核对象；缺省按 `.tribro/coding/<命名>/requirements.md` 探测，探测不到 MUST 澄清 |
-| 审核范围 | 用户 / 委派方 | ⬜ | 全量（缺省）/ 指定章节 / 指定维度（D1–D8） |
+| 审核范围 | 用户 / 委派方 | ⬜ | 全量（缺省）/ 指定章节 / 指定维度（D1–D9） |
 | 审核视角 | 用户 | ⬜ | 岗位侧重（产品 / UX / 前端 / 后端 / 测试）；缺省 = 全岗位就绪度矩阵 |
 | 市面 skill 可用性 | 自动探测（见 §阶段二） | 自动 | 决定走**委派审核**还是**兜底审核** |
 | 交付预期 | 快照 §三 / 用户 | ⬜ | 默认 = 审核报告 + 修订清单 |
@@ -116,7 +118,7 @@ license: MIT
 | **tri-prototype** | `requirements.md` 的**产出方**。本 skill 是它的**下游审查者**；发现的缺口以修订清单交回，由 tri-prototype 回炉重出 |
 | **tri-coding** | 门② 的**消费方**。本 skill 的「下游可消费性」校验就是为门② 服务；门② 阻断开工的问题在本 skill 记为 P0 |
 | **tri-review**（CR） | 本 skill 审**需求文档**（开工前）；tri-review 审**业务代码**（开工后）。两者产物类型与时机均不同 |
-| **tri-forge** | 两者都是「审核」，但对象不同：tri-forge 审 **skill 包合规性**（22 条硬约束）；本 skill 审 **需求文档质量**（八维） |
+| **tri-forge** | 两者都是「审核」，但对象不同：tri-forge 审 **skill 包合规性**（22 条硬约束）；本 skill 审 **需求文档质量**（九维） |
 | **tri-domain** | 本 skill 若发现「领域术语在文档中前后不一致」，MUST 在报告中列为 P1 并**建议**转 tri-domain 建术语表；NEVER 自行写 CONTEXT.md |
 
 ## 核心能力方法论（三阶段流水线 · 可扩展）
@@ -146,7 +148,7 @@ license: MIT
 | 1（首选） | `prd-review` | 默认路径：需要「六岗位能否据此开工」的就绪度判定与 P0/P1/P2 分级 |
 | 2 | `requirement-testability-review` | 侧重**可测性 / 验收标准质量**，或需要可视化（达标卡 + 雷达图）时 |
 | 3 | `bg-requirement-review` | B 端 / G 端项目，或需要「技术管理者 + 资深产品」双视角初审时 |
-| — | 以上皆不可用 | 走**兜底审核**：用本节 §审核维度（D1–D8）自带规则完成审核，并在报告中标注 `delegation=unavailable` |
+| — | 以上皆不可用 | 走**兜底审核**：用本节 §审核维度（D1–D9）自带规则完成审核，并在报告中标注 `delegation=unavailable` |
 
 **可用性探测**（门③ 第 1 步，MUST 执行）：逐一检查候选是否已安装（平台用户级 / 项目级 skills 目录），
 记录「已安装 / 未安装 / 调用失败」三态；**未安装不阻断**——降级为兜底审核并如实登记。
@@ -160,8 +162,9 @@ license: MIT
 | **分级** | 按 §分级判据 统一为 P0 / P1 / P2 |
 | **岗位就绪度** | 汇总为产品 / UX / 前端 / 后端 / 测试的「可开工 / 待澄清 / 不可开工」矩阵 |
 | **判定** | 存在任一 P0 → 「**阻断开工**」；无 P0 但有 P1 → 「**有条件开工**」；仅 P2 → 「**可开工**」 |
+| **跨轮单调性守卫（H3）** | 读 `round-ledger.jsonl`：**P0 / P1 下降而本轮 `new_evidence=0` ⇒ 判「收敛造假」嫌疑，MUST 强制升级人审、本轮不得判「可开工 / 有条件开工」**；任一 P 级降级 MUST 附新证据并在账本留痕，否则**驳回降级** |
 
-### 审核维度（自带兜底 · D1–D8）
+### 审核维度（自带兜底 · D1–D9）
 
 > 全部维度的判定要点、正反示例与实操问法见 `references/audit-dimensions.md`（判据单一事实源）。
 > 下表仅登记维度名与一句话判据，用于委派时的维度对齐。
@@ -176,6 +179,7 @@ license: MIT
 | **D6 权限与角色** | 角色可见 / 可操作范围界定清晰，无越权路径 |
 | **D7 数据与字段口径** | 字段类型、必填性、唯一性、默认值、脱敏规则齐全 |
 | **D8 证据溯源** | 每条业务规则有 PRD 出处，每条交互规则有原型出处 |
+| **D9 对抗** | ≥3 条可证伪错误场景，且 ≥1 条须相「其余维度全绿」处 |
 
 ### 分级判据
 
@@ -213,7 +217,7 @@ license: MIT
 | **门①** | 确认路径存在、范围与视角 | `requirements.md` 存在且可读 | 路径缺失 → 澄清；NEVER 凭想象创建 |
 | **门②** | 跑 `audit_precheck.py` + 语义复核 | 三重校验均有结论（含「全部通过」结论） | 脚本异常 → 人工逐条核对，标注降级 |
 | **门③** | 探测 + 委派 + 登记回执 | 每候选均有明确三态记录 | 全部不可用 → 转兜底审核，标注 `delegation=unavailable` |
-| **门④** | 聚合、裁决、分级、判定 | 每条问题均有级别与证据 | 证据不足 → 返回门② 补证 |
+| **门④** | 聚合、裁决、分级、判定 + **单调性守卫** + **机械守卫自检** | ① 每条问题均有级别与证据；② 报告含 D9 对抗小节与 `independence=`；③ `scripts/audit_gate.py` 退出码 0 | 证据不足 → 返回门② 补证；**下降且零新证据 → 强制升级人审**；`audit_gate.py` 非 0 → **不得落盘交付** |
 | **门⑤** | 落盘三件套 | 三件套写入成功 | 写入失败 → 提示用户并保留报告正文于响应中，NEVER 静默丢弃 |
 
 ### 兜底处理（NEVER 静默失败）
@@ -223,7 +227,7 @@ license: MIT
 | 版本检查异常 | 自维护模式下版本声明不一致 → 标注漂移明细并放行（附修订动作）；脚本自身异常 → 兜底降级放行 |
 | 上游缺失 | 降级模式 C（自构造输入 + 显式声明精度降低） |
 | `requirements.md` 不存在 | 门① 澄清路径；NEVER 凭想象创建文档 |
-| 市面 skill 全部未安装 / 调用失败 | 转**兜底审核**（D1–D8 自带规则），报告中标注 `delegation=unavailable` 与实际尝试记录 |
+| 市面 skill 全部未安装 / 调用失败 | 转**兜底审核**（D1–D9 自带规则），报告中标注 `delegation=unavailable` 与实际尝试记录 |
 | 市面 skill 输出无法解析 | 保留原始回执于台账；该候选记为「调用失败」；NEVER 编造其结论 |
 | 本地判据与市面 skill 结论冲突 | 以本地「可消费性」判据为准，记录分歧供用户裁决；NEVER 静默择一 |
 | 审核对象非 requirements.md 结构（自由格式需求文档） | 允许审核，但标注 `structure=non-standard`，D1 判为 N-A（附理由），其余维度照常 |
@@ -238,10 +242,12 @@ license: MIT
 | **审核报告** | `.tribro/req-audit/<命名>/req-audit-report.md` | 三重校验结果 + 委派记录 + P0/P1/P2 问题清单 + 岗位就绪度矩阵 + 开工判定 | 全部 |
 | **修订清单** | `.tribro/req-audit/<命名>/req-audit-fixes.md` | 逐条「问题 → 证据位置 → 修订建议」，供 tri-prototype 回炉逐项销账 | 全部 |
 | **委派回执台账** | `.tribro/req-audit/<命名>/delegation-receipts.json` | 每候选的探测结果 + 实际调用结果原文 + 解析状态 | 委派审核 |
+| **跨轮账本** | `.tribro/req-audit/<命名>/round-ledger.jsonl` | 每轮 `{round, p0, p1, p2, new_evidence, changes, verdict}`；供门④ 单调性守卫读取 | 全部（第二轮起必填） |
 
 ### 二、落盘规则
 
-- **三件套全部落 `.tribro/req-audit/<命名>/`**（目录不存在时 MUST 先创建）。该目录名由本 skill 的 slug 去 `tri-` 前缀机械推导，符合家族产物区命名基准。
+- **四件套全部落 `.tribro/req-audit/<命名>/`**（目录不存在时 MUST 先创建）。该目录名由本 skill 的 slug 去 `tri-` 前缀机械推导，符合家族产物区命名基准。
+- **`round-ledger.jsonl` 是跨轮账本（H3）**：每次审核追加一行；门④ MUST 读取它执行单调性守卫。**第二轮起缺账本 = 违规**（级别变化不可复算）。
 - **审核对象本身 `requirements.md` 属另一 skill 的产物区**（`.tribro/coding/<命名>/`）：本 skill **只读不改**，NEVER 在其中写入或覆盖文件。
 - **真实成果物**（修订后的需求文档）由 tri-prototype 回炉后自行落于其产物区；本 skill NEVER 代写。
 - 命名规则：`<命名>` = `<问题类型>_<YYYYMMDD>_<HHMMSS>_<会话ID 前 8 位>`，与家族链路文档命名一致。
@@ -266,14 +272,14 @@ python scripts/check_update.py --slug tri-req-audit --json
 
 ```
 tri-req-audit/
-├── SKILL.md                       主入口：三阶段流水线 + 五门 + 二跳委派 + 八维兜底
+├── SKILL.md                       主入口：三阶段流水线 + 五门 + 二跳委派 + 九维兜底
 ├── README.md                      特性 / 安装 / 用法 / 目录结构 / 设计原则
 ├── CHANGELOG.md                   版本变更记录
 ├── _meta.json                     安装元数据（ownerId / publishedAt / slug / version）
 ├── references/                    静态参考资料（非流程逻辑）
 │   ├── version-check-spec.md      版本检查执行规范（内部化持有，满足硬约束第 22 条）
 │   ├── market-prd-review-skills.md  市面 PRD 审核 skill 注册表（委派契约单一事实源）
-│   └── audit-dimensions.md        八维审核规则 + 分级判据（本地校验判据单一事实源）
+│   └── audit-dimensions.md        九维审核规则 + 分级判据（本地校验判据单一事实源）
 ├── scripts/                       可执行实现（确定性逻辑）
 │   ├── check_update.py            版本门（与家族同源）
 │   └── audit_precheck.py          三重前置校验（结构 / 溯源 / 可消费性）逐条判定 JSON

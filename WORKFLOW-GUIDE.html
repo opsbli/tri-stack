@@ -119,7 +119,7 @@
     <span class="chip">tri-init v1.0.3</span>
     <span class="chip">协作层 tri-domain / tri-grill / tri-orchestrate</span>
     <span class="chip">功能验证 tri-verify v1.0.0</span>
-    <span class="chip">需求审核 tri-req-audit v1.0.0</span>
+    <span class="chip">需求审核 tri-req-audit v1.1.0</span>
   </div>
 </header>
 
@@ -216,7 +216,7 @@
     <span class="sk"><b>tri-orchestrate</b> <span class="v">1.0.1</span> <span class="v">直调</span></span>
     <span class="sk"><b>tri-grill</b> <span class="v">1.0.1</span> <span class="v">直调</span></span>
     <span class="sk"><b>tri-domain</b> <span class="v">1.0.1</span> <span class="v">直调</span></span>
-    <span class="sk"><b>tri-req-audit</b> <span class="v">1.0.0</span> <span class="v">直调</span></span>
+    <span class="sk"><b>tri-req-audit</b> <span class="v">1.1.0</span> <span class="v">直调</span></span>
   </div>
   <p style="margin:8px 0 0;font-size:12.5px"><b>tri-sdlc</b>=驱动真实项目走完 P0–P8（唯一<b>跨 L2</b> 的编排 skill，子类优先级最高：<b>sdlc &gt; workflow &gt; loop</b>）。其余四个<b>不进路由表、由用户直接调用</b>：<b>tri-orchestrate</b>=把 requirements.md 拆 N 份 spec 分派多人 + 总 todo 自动回写 + 冲突检测；<b>tri-grill</b>=六维质询（歧义 / 边界 / 反例 / 术语 / 依赖 / 优先级）把需求问到无歧义；<b>tri-domain</b>=CONTEXT.md 术语表 + ADR 决策记录 + 边界场景清单；<b>tri-req-audit</b>=对 tri-prototype 产出的 <code>requirements.md</code> 做三重前置校验（结构完整性 / 证据溯源 / tri-coding 门② 可消费性），二跳委派市面 PRD 审核 skill 出 P0/P1/P2 问题清单，<b>只读不改</b>；无市面 skill 时自动降级为自带八维兜底审核。<b>先对齐、再审核、再拆解、后编码</b>，比回炉便宜得多。</p>
 </div>

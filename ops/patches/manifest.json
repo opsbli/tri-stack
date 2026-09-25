@@ -131,6 +131,48 @@
       "already_marker": "version: 1.1.4"
     },
     {
+      "id": "f43-req-audit-version-1-1-0",
+      "type": "replace_text",
+      "label": "tri-req-audit 版本线 1.0.0 → 1.1.0（新增审核维度属 minor；**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随）（2026-09-25）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "slug: tri-req-audit\nversion: 1.0.0\n",
+      "new": "slug: tri-req-audit\nversion: 1.1.0\n",
+      "already_marker": "version: 1.1.0"
+    },
+    {
+      "id": "f46a-req-audit-rename-nine-md",
+      "type": "replace_regex",
+      "label": "tri-req-audit 判据集口径：八维 → 九维（.md；**排除 CHANGELOG.md** —— 该文件是冻结历史，改写即伪造结论）（2026-09-25）",
+      "glob": "tri-req-audit/**/*.md",
+      "pattern": "八维",
+      "replacement": "九维",
+      "already_marker": "九维",
+      "skip_names": [
+        "CHANGELOG.md"
+      ]
+    },
+    {
+      "id": "f46b-req-audit-rename-dimrange-md",
+      "type": "replace_regex",
+      "label": "tri-req-audit 判据集口径：维数区间 D1–D8 → D1–D9（.md；排除冻结历史 CHANGELOG.md）（2026-09-25）",
+      "glob": "tri-req-audit/**/*.md",
+      "pattern": "D1–D8",
+      "replacement": "D1–D9",
+      "already_marker": "D1–D9",
+      "skip_names": [
+        "CHANGELOG.md"
+      ]
+    },
+    {
+      "id": "f47a-req-audit-rename-nine-py",
+      "type": "replace_regex",
+      "label": "tri-req-audit 脚本内口径：八维 → 九维（.py 文档串与提示串，保持与判据真源一致）（2026-09-25）",
+      "glob": "tri-req-audit/scripts/*.py",
+      "pattern": "八维",
+      "replacement": "九维",
+      "already_marker": "九维"
+    },
+    {
       "id": "sync-version-meta",
       "type": "sync_version_meta",
       "label": "强制执行 §六 P1↔P3：_meta.json 版本同步为 SKILL.md 的值",
@@ -430,6 +472,248 @@
       "old": "| **二跳路由例外 · `tri-req-audit`** | 中介 = `tri-req-audit`（需求文档审核）；被执行方 = 市面 PRD 审核 skill（`prd-review` / `requirement-testability-review` / `bg-requirement-review`），**不注册**为 tri-intent 下游；委派契约单一事实源 = `tri-req-audit/references/market-prd-review-skills.md`。登记理由：中介以「家族专有可消费性判据 + 市面通用产品视角」双层审核 tri-prototype 产出的 `requirements.md`，属「中介路由 + 具体执行」形态 |",
       "new": "| **二跳路由例外 · `tri-req-audit`** | 中介 = `tri-req-audit`（需求文档审核）；被执行方 = 市面 PRD 审核 skill（`prd-review` / `requirement-testability-review` / `bg-requirement-review`），**不注册**为 tri-intent 下游；委派契约单一事实源 = `tri-req-audit/references/market-prd-review-skills.md`。登记理由：中介以「家族专有可消费性判据 + 市面通用产品视角」双层审核 tri-prototype 产出的 `requirements.md`，属「中介路由 + 具体执行」形态 |\n| **横向型委派契约 · `tri-verify`** | 角色 = **横向验证型**，**不注册** tri-intent 下游路由；委派方 = `tri-coding`（交付前门）/ `tri-fix`（修复后复验）/ `tri-sdlc`（P6-P7），亦可用户直调。**自检句采用标准格式**（`本次模式=`），**无例外**——故本表无需为其登记自检句例外，`compliance_check.py` 第 20 条据此由 MANUAL 核实为「已登记（无例外）」；登记理由：它是家族内首个以**「横向型被下游委派为硬门」**形态存在的 skill，此前的横向型（`tri-true` / `tri-evolve`）仅以「自动环节委派 / hook 激活」出现，未形成门禁契约。 |\n| **引擎抽象与判据印章登记 · `tri-verify`** | 新增四个家族级概念的单一事实源位置：① **引擎七方法契约**（可达性预检 / 创建 / 执行 / 快速分流 / 取失败证据 / 运行对比 / 停止）→ `tri-verify/references/engine-contract.md`；② **三类归因**（产品 / 契约 / 环境，其中环境类由**退出码机械判定**）→ `tri-verify/references/attribution-rules.md`；③ **有界循环五规则**（连续同类 2 轮 / B·C 打断连续链 / 同用例契约变更 2 次 / 重试 1 次 / 总迭代 6 次）→ 可执行真源 `tri-verify/scripts/verify_gate.py`；④ **判据印章五态**（通过 / 修复后通过 / 已升级人审 / 未执行 / 未触发）→ `tri-verify/templates/verdict.md`。登记理由：上述概念会被其它 skill 的委派契约引用（`tri-coding` / `tri-fix` / `tri-sdlc`），不登记则后续生成者会各自重定义。 |",
       "already_marker": "| **横向型委派契约 · `tri-verify`** |"
+    },
+    {
+      "id": "f35-req-audit-d9-dimension",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 判据真源：§二 新增 **D9 对抗维**（抗自证机制）—— ≥3 条可证伪错误场景、≥1 条须落在其余维度判「通过」处、构造不出时须列尝试过的攻击入口；并给出与 D4 的 MECE 区分（在场 vs 可证伪）（2026-09-25）",
+      "glob": "tri-req-audit/references/audit-dimensions.md",
+      "old": "| 保真度如实 | 解析元数据的保真度等级与实际情况相符（低保真却声称完整解析 = 失真） | 虚高 → P0 |\n\n---\n\n## 三、门② 前置三重校验（家族专有，必做）",
+      "new": "| 保真度如实 | 解析元数据的保真度等级与实际情况相符（低保真却声称完整解析 = 失真） | 虚高 → P0 |\n\n### D9 对抗（**本维是本 skill 的抗自证机制**）\n\n> 其余各维问的是「齐备吗 / 清晰吗 / 标出处了吗」——通过方式是**确认存在**；本维问的是\n> 「**这份文件最可能让下游做错什么**」——通过方式是**尝试证伪**。二者不可互相替代：\n> 一份其余维度全绿的文档，仍可能在开工后被实现成完全不同的东西。\n\n| 检查 | 判据 | 通过条件 |\n|---|---|---|\n| 错误场景构造 | 主动回答「按本文件开工，下游最可能做错的三件事是什么」 | MUST 产出 **≥3 条**具体错误场景，每条形如「若按 §X 开工 → 下游会做出 Y（错）→ `文件:行号`」 |\n| 反例优先 | 至少 1 条场景 MUST 落在**其余维度判「通过」**的条目上 | 「看起来没问题处」至少被攻击一次 |\n| 诚实缺席 | 确实构造不出错误场景时 | MUST 写「本维无发现」**并列出尝试过的 ≥3 个攻击入口**；NEVER 留空、NEVER 只写「无问题」 |\n\n**与 D4（边界与异常）的 MECE 区分**：D4 检查「边界 / 异常**是否交代**」（在场性）；D9 攻击「**交代了也照样会错**」\n（可证伪性）。主键不同，故二者并行存在于同一份报告，不互相替代。\n\n**判据（硬）**：报告**无「对抗式审查结论」小节 = 违规**——本 skill 的对手是「自审自过」，\n仅凭在场性检查无法自证不造假。可执行守卫见 `scripts/audit_gate.py` 的 R1。\n\n---\n\n## 三、门② 前置三重校验（家族专有，必做）",
+      "already_marker": "本维是本 skill 的抗自证机制"
+    },
+    {
+      "id": "f36-req-audit-evidence-rule",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 判据真源 §四 判定总则：新增 **H5 可复算证据** —— P0/P1 必附 `文件:行号` + 原文引文，无引文者降 P2 并标 `evidence=unverifiable`（使结论可被第三方独立复算）（2026-09-25）",
+      "glob": "tri-req-audit/references/audit-dimensions.md",
+      "old": "- **反规避**：NEVER 因用户催促、时间紧或「先开工再说」而下调级别。",
+      "new": "- **反规避**：NEVER 因用户催促、时间紧或「先开工再说」而下调级别。\n- **可复算证据（H5）**：每条 P0 / P1 MUST 附 `文件:行号` + **原文引文**（≥1 行原样），使结论可被第三方独立复算。\n  无引文的条目 **降为 P2** 并标注 `evidence=unverifiable`——**NEVER 让不可复算的结论停留在阻断级**。",
+      "already_marker": "可复算证据（H5）"
+    },
+    {
+      "id": "f37-req-audit-independence-field",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 判据真源 §五：新增 **`independence=` 独立性声明**（same-agent / cross-context / cross-model）—— 同源时 MUST 写「非独立第三方」且禁用「独立审核 / 独立第三方」字样；明确「委派 ≠ 独立」（安装市面 skill 不改变该取值）（2026-09-25）",
+      "glob": "tri-req-audit/references/audit-dimensions.md",
+      "old": "> **NEVER 在报告中省略本区**——省略会让读者误判结论的覆盖面。",
+      "new": "**独立性声明（`independence=` · 报告必填，与 `delegation=` 并列，二者正交）**：\n\n| 取值 | 含义 | 附加要求 |\n|---|---|---|\n| `same-agent` | 审核方与被审文档**同源**（同一 agent / 同一会话） | MUST 写明「本次审核**非独立第三方**」；报告**全文禁用**「独立审核 / 独立第三方视角」字样 |\n| `cross-context` | 审核在**独立子会话**执行（生成方 context 未参与） | 记录子会话标识 |\n| `cross-model` | 含**真实**异构模型交叉验证 | 记录供应商 / 模型清单与调用回执 |\n\n> **如实原则（硬）**：`delegation=unavailable`（市面 skill 未安装）时 **MUST** `independence=same-agent`；\n> **安装市面 skill 并不改变** `independence` 取值——「委派」是同一 agent 加载另一 skill 的 prompt，\n> 仍属同源。**NEVER 因「已委派」而声称独立**；未配置异构多模型时 NEVER 写 `cross-model`。\n> 可执行守卫见 `scripts/audit_gate.py` 的 R2 / R3。\n\n> **NEVER 在报告中省略本区**——省略会让读者误判结论的覆盖面。",
+      "already_marker": "独立性声明（`independence=` · 报告必填"
+    },
+    {
+      "id": "f38-req-audit-contract-rules",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 执行契约：自检句增 `对抗=` / `独立性=` 两字段，并追加**铁律 12（对抗结论必填）**与**铁律 13（跨轮单调性）**（2026-09-25）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "11. **自检句**：每次响应前 MUST 声明「本次模式=&lt;委派审核 / 兜底审核&gt;，触发分支=&lt;直接触发 / 委派触发 / 快照路由&gt;，已读取&lt;audit-dimensions / market-prd-review-skills / 目标 requirements.md&gt;，审核对象=&lt;路径&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;，P0=&lt;N&gt; / P1=&lt;N&gt; / P2=&lt;N&gt;」，若与上述规则冲突则停止并纠正。",
+      "new": "11. **自检句**：每次响应前 MUST 声明「本次模式=&lt;委派审核 / 兜底审核&gt;，触发分支=&lt;直接触发 / 委派触发 / 快照路由&gt;，已读取&lt;audit-dimensions / market-prd-review-skills / 目标 requirements.md&gt;，审核对象=&lt;路径&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;，P0=&lt;N&gt; / P1=&lt;N&gt; / P2=&lt;N&gt;，对抗=&lt;D9 命中 N / 无发现&gt;，独立性=&lt;same-agent / cross-context / cross-model&gt;」，若与上述规则冲突则停止并纠正。\n12. **对抗结论必填铁律**：报告 MUST 含「对抗式审查结论」小节，内含 D9 的 **≥3 条可证伪错误场景**（见 `references/audit-dimensions.md` §二 D9）。**无该小节 = 报告不合规**，门④ MUST 判不通过——本 skill **NEVER 以「其余维度全绿」代替「已尝试证伪」**（本 skill 的失效模式正是「自审自过」）。\n13. **跨轮单调性铁律**：`本 skill → tri-prototype 回炉 → 再审` 是多轮链路，MUST 落 `round-ledger.jsonl` 并在门④ 执行单调性守卫——**P0 / P1 数量下降而本轮 `new_evidence=0` 时判「收敛造假」嫌疑，MUST 强制升级人审、本轮不得判「可开工 / 有条件开工」**；任何 P 级降级 MUST 在本轮附新证据并在账本留痕，否则**驳回降级**。NEVER 让级别在多轮中「无证据地变好」。",
+      "already_marker": "对抗结论必填铁律"
+    },
+    {
+      "id": "f39b-req-audit-dim-table-d9",
+      "type": "replace_text",
+      "label": "`tri-req-audit` §审核维度速查表：追加 **D9 对抗** 行（与判据真源 §二 D9 对应）（2026-09-25）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "| **D8 证据溯源** | 每条业务规则有 PRD 出处，每条交互规则有原型出处 |",
+      "new": "| **D8 证据溯源** | 每条业务规则有 PRD 出处，每条交互规则有原型出处 |\n| **D9 对抗** | ≥3 条可证伪错误场景，且 ≥1 条须相「其余维度全绿」处 |",
+      "already_marker": "| **D9 对抗** |"
+    },
+    {
+      "id": "f40-req-audit-aggregate-monotonic",
+      "type": "replace_text",
+      "label": "`tri-req-audit` §阶段三 结论聚合表：追加 **跨轮单调性守卫（H3）** 行（P0/P1 下降且零新证据 ⇒ 强制升级人审）（2026-09-25）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "| **判定** | 存在任一 P0 → 「**阻断开工**」；无 P0 但有 P1 → 「**有条件开工**」；仅 P2 → 「**可开工**」 |",
+      "new": "| **判定** | 存在任一 P0 → 「**阻断开工**」；无 P0 但有 P1 → 「**有条件开工**」；仅 P2 → 「**可开工**」 |\n| **跨轮单调性守卫（H3）** | 读 `round-ledger.jsonl`：**P0 / P1 下降而本轮 `new_evidence=0` ⇒ 判「收敛造假」嫌疑，MUST 强制升级人审、本轮不得判「可开工 / 有条件开工」**；任一 P 级降级 MUST 附新证据并在账本留痕，否则**驳回降级** |",
+      "already_marker": "跨轮单调性守卫（H3）"
+    },
+    {
+      "id": "f41-req-audit-gate4-guard",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 门④ 行升级：纳入单调性守卫与机械守卫自检（`audit_gate.py` 非 0 ⇒ 不得落盘交付），使门④ 由「人判」变为「机器可判」（2026-09-25）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "| **门④** | 聚合、裁决、分级、判定 | 每条问题均有级别与证据 | 证据不足 → 返回门② 补证 |",
+      "new": "| **门④** | 聚合、裁决、分级、判定 + **单调性守卫** + **机械守卫自检** | ① 每条问题均有级别与证据；② 报告含 D9 对抗小节与 `independence=`；③ `scripts/audit_gate.py` 退出码 0 | 证据不足 → 返回门② 补证；**下降且零新证据 → 强制升级人审**；`audit_gate.py` 非 0 → **不得落盘交付** |",
+      "already_marker": "单调性守卫** + **机械守卫自检"
+    },
+    {
+      "id": "f42a-req-audit-deliverable-ledger-row",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 交付产物清单：追加第四件产物 `round-ledger.jsonl`（跨轮账本）（2026-09-25）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "| **委派回执台账** | `.tribro/req-audit/<命名>/delegation-receipts.json` | 每候选的探测结果 + 实际调用结果原文 + 解析状态 | 委派审核 |",
+      "new": "| **委派回执台账** | `.tribro/req-audit/<命名>/delegation-receipts.json` | 每候选的探测结果 + 实际调用结果原文 + 解析状态 | 委派审核 |\n| **跨轮账本** | `.tribro/req-audit/<命名>/round-ledger.jsonl` | 每轮 `{round, p0, p1, p2, new_evidence, changes, verdict}`；供门④ 单调性守卫读取 | 全部（第二轮起必填） |",
+      "already_marker": "| **跨轮账本** |"
+    },
+    {
+      "id": "f42b-req-audit-deliverable-rules",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 落盘规则：三件套 → 四件套，并补 `round-ledger.jsonl` 的账本义务（第二轮起缺账本 = 违规）（2026-09-25）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "- **三件套全部落 `.tribro/req-audit/<命名>/`**（目录不存在时 MUST 先创建）。该目录名由本 skill 的 slug 去 `tri-` 前缀机械推导，符合家族产物区命名基准。",
+      "new": "- **四件套全部落 `.tribro/req-audit/<命名>/`**（目录不存在时 MUST 先创建）。该目录名由本 skill 的 slug 去 `tri-` 前缀机械推导，符合家族产物区命名基准。\n- **`round-ledger.jsonl` 是跨轮账本（H3）**：每次审核追加一行；门④ MUST 读取它执行单调性守卫。**第二轮起缺账本 = 违规**（级别变化不可复算）。",
+      "already_marker": "**四件套全部落"
+    },
+    {
+      "id": "f44-req-audit-changelog-1-1-0",
+      "type": "replace_text",
+      "label": "tri-req-audit CHANGELOG：追加 `[1.1.0]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25）",
+      "glob": "tri-req-audit/CHANGELOG.md",
+      "old": "## [1.0.0] - 2026-09-25\n",
+      "new": "## [1.1.0] - 2026-09-25\n\n### 新增\n\n- **D9 对抗维（抗自证机制）**：在原有在场性判据之外新增对抗维——MUST 产出 ≥3 条可证伪错误场景，且 ≥1 条须落在其余维度判「通过」的条目上；报告**无「对抗式审查结论」小节即判违规**。理由：原有各维均为**在场性**判据（通过 = 确认存在），机制上无法自证「没有造假」。\n- **`independence=` 独立性声明（报告必填）**：与 `delegation=` 并列的正交字段，取值 `same-agent` / `cross-context` / `cross-model`。同源时 MUST 写明「非独立第三方」且全文禁用「独立审核 / 独立第三方」字样。**安装市面 skill 不改变该取值**——委派是同一 agent 加载另一 skill 的 prompt，仍属同源。\n- **跨轮单调性守卫 + `round-ledger.jsonl`**：新增第四件落盘产物（每轮追加 `{round, p0, p1, p2, new_evidence, changes, verdict}`）。门④ 读账本执行守卫：**P0 / P1 下降而 `new_evidence=0` ⇒ 判「收敛造假」嫌疑，强制升级人审**；任一 P 级降级 MUST 附新证据，否则驳回。\n- **可复算证据（H5）**：每条 P0 / P1 MUST 附 `文件:行号` + 原文引文；无引文者降为 P2 并标 `evidence=unverifiable`。\n- **机械守卫 `scripts/audit_gate.py`（新增）**：把 D9 / 独立性 / 可复算 / 单调性四条规则落成可执行判据（R1 / R2 / R3 / R4 / L2），附 `--self-test` 夹具（含「删掉对抗小节必判违规」反例），使上述规则**不可被形式化跳过**。\n- **对抗层委派（可选增强）**：登记家族外 `metago-adversarial-review` 为对抗委派候选；未安装时降级为内置 D9 并如实登记 `delegation.adversarial=unavailable`。\n\n### 变更\n\n- 判据集口径由「八维」更新为「九维（D1–D9）」；`templates/req-audit-report.md` 增「对抗式审查结论」小节与 `independence=` 字段；`tri-forge/references/family-spec.md` §五 登记对抗委派二跳。\n- **修订动因**：原判据集全为在场性检查、无对抗抵抗、跨轮无单调性守卫 —— 多轮迭代下 P0 可在零新证据时被收敛为 P2（「自审自过」）。取证与设计见 `reports/proposal-req-audit-adversarial-20260925.md`。\n\n## [1.0.0] - 2026-09-25\n",
+      "already_marker": "## [1.1.0] - 2026-09-25"
+    },
+    {
+      "id": "f45-familyspec-adversarial-delegation",
+      "type": "replace_text",
+      "label": "family-spec §五：登记 tri-req-audit 的**对抗委派二跳**（中介 = tri-req-audit，被执行方 = 家族外 `metago-adversarial-review`；未装即降级为内置 D9）—— 使「跨家族对抗层」有唯一记载，避免后续生成者各自重定义（2026-09-25）",
+      "glob": "tri-forge/references/family-spec.md",
+      "old": "\n\n> **登记的意义**：家族内同类概念 MUST 有唯一表述。",
+      "new": "\n| **对抗委派二跳 · `tri-req-audit`** | 中介 = `tri-req-audit`；被执行方 = **家族外** skill `metago-adversarial-review`（MetaGO，红队视角，本机已装 v1.0.6），**不注册**为 tri-intent 下游。**未安装即降级为内置 D9 对抗维**并在报告中登记 `delegation.adversarial=unavailable`。登记理由：① 这是家族内首个「**跨家族**被委派方」的二跳链，与 `tri-req-audit` 的市面 PRD 审核委派（家族外撰写/审核类）并列但**判据来源不同**（后者给通用产品视角、前者给攻击者视角）；② 家族原有横向型（`tri-true` / `tri-evolve` / `tri-verify`）**均不含对抗/证伪维度**，本 skill 的 D9 是家族内首个「对抗判据」的单一事实源（`tri-req-audit/references/audit-dimensions.md` §二 D9），可执行守卫为 `tri-req-audit/scripts/audit_gate.py`。 |\n\n> **登记的意义**：家族内同类概念 MUST 有唯一表述。",
+      "already_marker": "对抗委派二跳 · `tri-req-audit`"
+    },
+    {
+      "id": "f48-req-audit-gate-script",
+      "type": "sync_script",
+      "label": "tri-req-audit 部署门④ 机械守卫 `scripts/audit_gate.py`（D9 对抗维 / independence / 可复算引文 / 跨轮单调性 的可执行判据 + `--self-test` 反例夹具）—— 使「删掉对抗小节仍通过」在机械上不可能",
+      "glob": "tri-req-audit/SKILL.md",
+      "payload": "assets/audit_gate.py",
+      "dest": "scripts/audit_gate.py"
+    },
+    {
+      "id": "f49a-req-audit-template-adversarial-section",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 报告模板：新增「十、对抗式审查结论（D9 · 必填）」小节（含三条场景占位，格式与 `audit_gate.py` R1 判据一致）（2026-09-25）",
+      "glob": "tri-req-audit/templates/req-audit-report.md",
+      "old": "## 审核元数据",
+      "new": "## 十、对抗式审查结论（**D9 · 必填，NEVER 省略**）\n\n> 本小节回答的不是「文档齐不齐」，而是「**按它开工会错在哪**」。\n> 每条场景 MUST 为「若按 §X 开工 → 下游会做出 Y（错）→ `文件:行号`」，**≥3 条**，且**≥1 条**须落在本文其余维度判「通过」的条目上。\n> 构造不出时写「本维无发现」**并列出尝试过的 ≥3 个攻击入口**，NEVER 只写「无问题」。\n> 机械判据：`scripts/audit_gate.py` 的 R1（缺本小节即判违规）。\n\n| # | 若按…开工 | 下游会做错什么 | 证据位置 |\n|---|---|---|---|\n| 1 | §{{adv_sec_1}} | {{adv_wrong_1}} | `{{adv_cite_1}}` |\n| 2 | §{{adv_sec_2}} | {{adv_wrong_2}} | `{{adv_cite_2}}` |\n| 3 | §{{adv_sec_3}} | {{adv_wrong_3}} | `{{adv_cite_3}}` |\n\n---\n\n## 审核元数据",
+      "already_marker": "## 十、对抗式审查结论（**D9 · 必填，NEVER 省略**）"
+    },
+    {
+      "id": "f49b-req-audit-template-independence-row",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 报告模板 §七 结论可信度：追加 `independence=` 独立性声明行（与 `delegation=` 并列）（2026-09-25）",
+      "glob": "tri-req-audit/templates/req-audit-report.md",
+      "old": "| 审核模式 | {{audit_mode}}（委派审核 / 兜底审核） |",
+      "new": "| 审核模式 | {{audit_mode}}（委派审核 / 兜底审核） |\n| 独立性 | `independence={{independence}}`（same-agent / cross-context / cross-model）—— 取值 `same-agent` 时 MUST 同时写明「本次审核**非独立第三方**」，且全文禁用「独立审核 / 独立第三方」字样 |",
+      "already_marker": "`independence={{independence}}`"
+    },
+    {
+      "id": "f50a-req-audit-tests-cap-row3",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 测试用例 能力清单：第 3 行（判定维度）对应用例补 `TC-A13`（2026-09-25）",
+      "glob": "tri-req-audit/tests/tri-req-audit-full-testcases.md",
+      "old": "| 3 | 九维判定（D1–D9） | `audit-dimensions.md` §二 | TC-A02 – TC-A09 |",
+      "new": "| 3 | 九维判定（D1–D9） | `audit-dimensions.md` §二 | TC-A02 – TC-A09、TC-A13 |",
+      "already_marker": "TC-A02 – TC-A09、TC-A13"
+    },
+    {
+      "id": "f50b-req-audit-tests-cap-rows",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 测试用例 能力清单：追加第 13–15 行（D9 对抗维与机械守卫 / 独立性声明 / 跨轮单调性与账本）（2026-09-25）",
+      "glob": "tri-req-audit/tests/tri-req-audit-full-testcases.md",
+      "old": "| 12 | 版本门（第零步） | `references/version-check-spec.md` | TC-C05 |",
+      "new": "| 12 | 版本门（第零步） | `references/version-check-spec.md` | TC-C05 |\n| 13 | **D9 对抗维 + 机械守卫** | `audit-dimensions.md` §二 D9 / `scripts/audit_gate.py` | TC-A13、TC-D06 |\n| 14 | **独立性声明（`independence=`）** | `audit-dimensions.md` §五 | TC-A13、TC-D08 |\n| 15 | **跨轮单调性守卫 + `round-ledger.jsonl`** | SKILL.md §阶段三 / §交付产物 | TC-D07 |",
+      "already_marker": "| 13 | **D9 对抗维 + 机械守卫**"
+    },
+    {
+      "id": "f50c-req-audit-tests-case-a13",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 测试用例：新增 **TC-A13**（D9 对抗维与独立性声明的正例，含 `audit_gate.py --self-test` 期望）（2026-09-25）",
+      "glob": "tri-req-audit/tests/tri-req-audit-full-testcases.md",
+      "old": "## 三、委派与降级用例（TC-B）",
+      "new": "### TC-A13 · 对抗维与独立性声明（D9 / H2 / H5）\n\n- **前置**：任一份 `requirements.md` 审核完成，报告已落盘\n- **期望**：报告含「对抗式审查结论」小节且 **≥3 条**可证伪场景（其中 ≥1 条落在其余维度判「通过」的条目上）；含 `independence=` 声明；所有 P0 / P1 行的「证据位置」列均含 `文件:行号`\n- **判据**：`python scripts/audit_gate.py --report <报告路径> [--ledger round-ledger.jsonl]` 退出码 **0**\n- **反例**：报告缺对抗小节 / 场景不足 3 条 / 缺 `independence=` / P0 行无 `文件:行号` → 均判 FAIL\n\n## 三、委派与降级用例（TC-B）",
+      "already_marker": "TC-A13 · 对抗维与独立性声明"
+    },
+    {
+      "id": "f50d-req-audit-tests-cases-d06-08",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 测试用例：新增 **TC-D06–D08** 三条 mutation（删掉对抗小节 / 零新证据降级 / 同源自称独立），并同步 §六 用例计数（TC-A 12→13、TC-D 5→8）（2026-09-25）",
+      "glob": "tri-req-audit/tests/tri-req-audit-full-testcases.md",
+      "old": "## 六、执行判据汇总\n\n| 组 | 用例数 | 通过门槛 |\n|---|---|---|\n| TC-A 能力覆盖 | 12 | 全部通过 |\n| TC-B 委派与降级 | 7 | 全部通过 |\n| TC-C 边界与异常 | 7 | 全部通过 |\n| TC-D 负向与 mutation | 5 | **全部通过**（负向用例是判据\"有牙\"的证明，任一不过即视为判据失效） |",
+      "new": "### TC-D06 · mutation：删掉「对抗式审查结论」小节必须被检出\n\n- **注入**：取一份合规报告，整段删除 §十 对抗式审查结论\n- **期望**：`audit_gate.py --report` 退出码 **1**，且输出含 `R1`\n- **意义**：证明 D9 不是段落装饰\n\n### TC-D07 · mutation：零新证据却降级必须被检出\n\n- **注入**：`round-ledger.jsonl` 写两轮，第 2 轮 P0 由 1 降为 0 且 `new_evidence=0`\n- **期望**：`audit_gate.py --ledger` 退出码 **1**，且输出含 `L2`\n- **意义**：证明跨轮单调性守卫不是文字条款\n\n### TC-D08 · mutation：同源却自称独立必须被检出\n\n- **注入**：报告写 `independence=same-agent` 但正文出现「本报告为独立审核」\n- **期望**：`audit_gate.py --report` 退出码 **1**，且输出含 `R3`\n- **意义**：证明独立性与委派状态严格解耦\n\n## 六、执行判据汇总\n\n| 组 | 用例数 | 通过门槛 |\n|---|---|---|\n| TC-A 能力覆盖 | 13 | 全部通过 |\n| TC-B 委派与降级 | 7 | 全部通过 |\n| TC-C 边界与异常 | 7 | 全部通过 |\n| TC-D 负向与 mutation | 8 | **全部通过**（负向用例是判据\"有牙\"的证明，任一不过即视为判据失效） |",
+      "already_marker": "TC-D06 · mutation：删掉「对抗式审查结论」小节必须被检出"
+    },
+    {
+      "id": "f60-action-fallback",
+      "type": "replace_text",
+      "label": "`tri-action` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-action/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在回执中标注实际降级**，NEVER 静默失败、NEVER 假装操作已成功：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时**停止执行**并报告，不推进操作 |\n| ② 门禁不过 | L2/L3 操作的确认门未获放行 | 停止操作并保留 `confirm-log.md`，等待用户重新确认；NEVER 降级为「自动放行」 |\n| ③ 上游缺失 | 无 tri-intent 快照 / 快照缺 `下游路由建议` | 走 §上游依赖检测 的降级模式，向用户追问**操作意图与操作对象**后再执行 |\n| ④ hook 缺失 | 本 skill 以快照 / 用户直呼为触发源，不依赖 hook | 不适用；若外部编排以 hook 驱动而 hook 不可用，按 §上游依赖检测 引导用户改用快照或直接描述 |\n| ⑤ 异常场景 | 工具调用 / 外部 API 报错、权限不足、对象不存在 | 走 §执行失败处理：记录原始错误与参数，**不擅重试不可逆操作**，上报人审 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f61-checklist-fallback",
+      "type": "replace_text",
+      "label": "`tri-checklist` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-checklist/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在清单或回执中标注**，NEVER 静默失败、NEVER 用空清单假充完成：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止生成并报告 |\n| ② 门禁不过 | 本 skill 只产清单、不设审批门 | 不适用（产出供开发者自检与门③ 消费） |\n| ③ 上游缺失 | 无 tri-intent 快照 | 走 §上游依赖检测 的降级模式，向用户追问审计对象（Git 暂存区 / 工作区 / commit id） |\n| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用 |\n| ⑤ 异常场景 | 仓库无 Git、commit id 不存在、diff 为空 | 走 §三种 Git 输入模式 的兜底：显式说明无法定位改动范围，NEVER 生成内容不实的清单；**空改动 MUST 显式标注**而非产出空清单 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f62-evolve-fallback",
+      "type": "replace_text",
+      "label": "`tri-evolve` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-evolve/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在回执中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止本轮进化并报告 |\n| ② 门禁不过 | A/B 验证门未通过、或 §调度安全门 未放行 | 停止应用本轮经验，回滚至上一稳定画像 / 经验库快照（§安全分级与回滚） |\n| ③ 上游缺失 | 无 tri-intent 快照 | 走 §上游依赖检测 的降级模式，按 §模式 C 降级输入 向用户追问进化目标与范围 |\n| ④ hook 缺失 | 以 hook / 定时为触发源 | §触发时机 表已声明**无 hook / 无调度时的降级路径**：退化为**手动批处理**（EVOLVE_LEARN / EVOLVE_APPLY 由用户显式发起），NEVER 假装已自动运行 |\n| ⑤ 异常场景 | 信号源不可读、经验库损坏、画像写入失败 | 保留现场并标注「未分类异常」；**先回滚再报告**，NEVER 带着损坏状态继续进化 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f63-fix-fallback",
+      "type": "replace_text",
+      "label": "`tri-fix` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-fix/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在 `fix-report.md` 中标注**，NEVER 静默失败、NEVER 以「原来那条已经好了」为由跳过复验：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止修复并报告 |\n| ② 门禁不过 | 门③ 执行前确认未获放行、或契约 §8 修复后复验判定存在回归 | 停止交付：回归则回到 §阶段 5：修复 + 回归测试；门未放行则等待用户确认 |\n| ③ 上游缺失 | 无 tri-intent 快照 | 走 §上游依赖检测 的降级模式，向用户追问可复现的失败现象与运行入口 |\n| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用 |\n| ⑤ 异常场景 | **无法建立能变红的反馈循环**、缺陷不可复现 | 本 skill 的核心异常：MUST 显式报告「循环未能建立 / 缺陷不可复现」及已尝试的复现路径，**停止盲目修复**；NEVER 在无反馈循环时猜测性改码 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f64-loop-fallback",
+      "type": "replace_text",
+      "label": "`tri-loop` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-loop/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在回执中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止 bootstrap / 本轮 loop |\n| ② 门禁不过 | 本 skill 无审批门 | 不适用（Charter 收集阶段的确认由用户显式提供） |\n| ③ 上游缺失 | 无 tri-intent 快照 | 走 §降级模式（Mode C）：向用户追问 loop 名称、目标与 cadence |\n| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用；若外部调度器驱动而不可用，按 §降级模式（Mode C） 改为手动发起 loop |\n| ⑤ 异常场景 | substrate 目录不可写、Charter 输入不全、测试运行失败 | 走 §安全约束：**不落半成品**（要么完整 bootstrap 要么不改动），保留原始错误并标注未完成项 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f65-lottie-fallback",
+      "type": "replace_text",
+      "label": "`tri-lottie` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-lottie/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在回执中标注**，NEVER 静默失败、NEVER 交出未过质量门的动画：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止生成 |\n| ② 门禁不过 | §四、质量门（三级，映射家族 P0/P1/P2） 未通过 | 回到规格单与执行层修正；**P0 未达标时不得交付**，明确告知未过门的维度 |\n| ③ 上游缺失 | 无 tri-intent 快照 | 走 §上游依赖检测（三态 · 编码类可降级）：由用户口头描述动效需求，先产出规格单再生成 |\n| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用 |\n| ⑤ 异常场景 | 目标端不在 `stacks/` 覆盖范围、Lottie 运行时不可用、资源缺失 | 显式报告「该端未支持 / 前置不可用」并给出替代端或降级方案；NEVER 生成跑不起来的代码 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f66-meta-fallback",
+      "type": "replace_text",
+      "label": "`tri-meta` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-meta/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在回复中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时仅声明无法可靠响应并报告 |\n| ② 门禁不过 | 本 skill 无审批门 | 不适用（元操作响应为轻量产物） |\n| ③ 上游缺失 | 无法定位「上一轮回复」的上下文 | 走 §上游依赖检测 的降级模式，请用户指明要纠正 / 追加细化的对象 |\n| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用 |\n| ⑤ 异常场景 | M02/M03 重路由目标不可用、引用定位失败 | 走 §三、重路由交接：显式声明「无法定位原 skill / 引用」，**不做无据的猜测性纠错**；NEVER 编造未发生的上一轮内容 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f67-sdlc-fallback",
+      "type": "replace_text",
+      "label": "`tri-sdlc` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-sdlc/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在汇总中标注**，NEVER 静默失败、NEVER 跳过闸门推进阶段：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时暂停编排并报告 |\n| ② 门禁不过 | 闸门① 自动审计不过、或闸门② 用户未确认 | 走 §三、门禁机制（双闸门）与 §四、阶段状态机：**停留在当前阶段**不推进；NEVER 以「时间紧」为由放行 |\n| ③ 上游缺失 | 无 tri-intent 快照 / 无 `charter.md` | 走 §上游依赖检测 的降级模式，请用户提供项目目标后先完成 P0 立项 |\n| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用 |\n| ⑤ 异常场景 | 阶段子SKILL 不可用 / 派发失败、§六、跨阶段一致性核对 失败 | 显式报告卡点阶段与失败原因，**保持阶段状态机不变**（不半推进）；NEVER 伪造子SKILL 产出来继续 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "f68-workflow-fallback",
+      "type": "replace_text",
+      "label": "`tri-workflow` 补 §兜底处理（五类异常覆盖 + NEVER 静默失败）—— 门④ #14 收口",
+      "glob": "tri-workflow/SKILL.md",
+      "old": "## 交付产物",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在产物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止编译并报告 |\n| ② 门禁不过 | §阶段 5：校验验证 未通过 | 回到 §阶段 4：编译优化 修正后重校验；**不得交付未过校验的工作流** |\n| ③ 上游缺失 | 无 tri-intent 快照、无需求描述 | 走 §模式 B：独立使用 —— 经 §阶段 3：对话补全 收集需求；NEVER 凭空造工作流 |\n| ④ hook 缺失 | 本 skill 以快照 / 对话为触发源 | 不适用；若产物工作流内含 hook 触发而运行环境无 hook，MUST 在产物中给出无 hook 时的替代触发路径 |\n| ⑤ 异常场景 | 模板匹配不到、目标平台不支持、§阶段 7：迭代反馈 信号缺失 | 显式标注降级（如「无匹配模板，改用通用骨架」）；进入 §阶段 7：迭代反馈 收集修正信号；NEVER 静默产出未验证的工作流 |\n\n## 交付产物",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
     }
   ]
 }

@@ -247,6 +247,18 @@ Refs: domains/<name>/README.md (new)[, 创建的任何 artifact]。
 | 8 | 执行结果落盘 `.tribro/loops/<命名>/result.md` | result.md |
 | 9 | 回报（charter + 结果 + 缺失项 + 如何再运行） | 回报 |
 
+## 兜底处理（NEVER 静默失败）
+
+本 skill 在下列五类异常下 MUST 走显式降级路径并**在回执中标注**，NEVER 静默失败：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止 bootstrap / 本轮 loop |
+| ② 门禁不过 | 本 skill 无审批门 | 不适用（Charter 收集阶段的确认由用户显式提供） |
+| ③ 上游缺失 | 无 tri-intent 快照 | 走 §降级模式（Mode C）：向用户追问 loop 名称、目标与 cadence |
+| ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用；若外部调度器驱动而不可用，按 §降级模式（Mode C） 改为手动发起 loop |
+| ⑤ 异常场景 | substrate 目录不可写、Charter 输入不全、测试运行失败 | 走 §安全约束：**不落半成品**（要么完整 bootstrap 要么不改动），保留原始错误并标注未完成项 |
+
 ## 交付产物
 
 ### 一、文件命名规范

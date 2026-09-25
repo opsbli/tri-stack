@@ -1,7 +1,7 @@
 # tri-req-audit 全场景测试用例
 
 > 覆盖 `tri-req-audit` 的三阶段流水线（前置本地校验 / 二跳委派 / 结论聚合）、五门流程、
-> 八维判据、分级判定、三态上游检测与全部兜底路径。
+> 九维判据、分级判定、三态上游检测与全部兜底路径。
 > 用例分四组：**能力覆盖**（TC-A）／**委派与降级**（TC-B）／**边界与异常**（TC-C）／**负向与 mutation**（TC-D）。
 > 判定口径以 `references/audit-dimensions.md` 与 `references/market-prd-review-skills.md` 为准。
 
@@ -11,16 +11,19 @@
 |---|---|---|---|
 | 1 | 锁定审核对象并确认范围 / 视角 | SKILL.md §输入契约 | TC-A01、TC-C01 |
 | 2 | 三重前置校验（结构 / 溯源 / 可消费性） | `audit-dimensions.md` §三 | TC-A02、TC-A03、TC-A04 |
-| 3 | 八维判定（D1–D8） | `audit-dimensions.md` §二 | TC-A02 – TC-A09 |
+| 3 | 九维判定（D1–D9） | `audit-dimensions.md` §二 | TC-A02 – TC-A09、TC-A13 |
 | 4 | 市面 skill 可用性探测（三态） | `market-prd-review-skills.md` §四 | TC-B01、TC-B02、TC-B03 |
 | 5 | 二跳委派与优先级序 | `market-prd-review-skills.md` §二 / §三 | TC-B01、TC-B04 |
 | 6 | 委派回执登记（诚实铁律） | SKILL.md 契约 §4 | TC-B05、TC-D01 |
-| 7 | 兜底审核（D1–D8 自带规则） | `market-prd-review-skills.md` §五 | TC-B06 |
+| 7 | 兜底审核（D1–D9 自带规则） | `market-prd-review-skills.md` §五 | TC-B06 |
 | 8 | 结论聚合（去重 / 冲突裁决 / 分级） | SKILL.md §阶段三 | TC-A10、TC-B07 |
 | 9 | 分级判定（P0/P1/P2）与开工结论 | `audit-dimensions.md` §四 | TC-A11、TC-D02 |
 | 10 | 三态上游检测与降级声明 | SKILL.md §上游依赖检测 | TC-C02、TC-C03、TC-C04 |
 | 11 | 落盘三件套与只读原文 | SKILL.md §交付产物 | TC-A12、TC-D03 |
 | 12 | 版本门（第零步） | `references/version-check-spec.md` | TC-C05 |
+| 13 | **D9 对抗维 + 机械守卫** | `audit-dimensions.md` §二 D9 / `scripts/audit_gate.py` | TC-A13、TC-D06 |
+| 14 | **独立性声明（`independence=`）** | `audit-dimensions.md` §五 | TC-A13、TC-D08 |
+| 15 | **跨轮单调性守卫 + `round-ledger.jsonl`** | SKILL.md §阶段三 / §交付产物 | TC-D07 |
 
 ---
 
@@ -72,7 +75,7 @@
 - **输入**：「九、待补充项」某行「影响」列留空
 - **期望**：`items` 含 `{level:P1, title:"待补充项第 N 行未说明影响"}`；`verdict=conditional`
 
-### TC-A09 · 八维语义维必须人工复核
+### TC-A09 · 九维语义维必须人工复核
 
 - **输入**：任一份 requirements.md
 - **期望**：报告的证据中，D2/D4/D5/D6 四条 MUST 由 Agent 逐条给出证据位置或「本维通过」理由，**NEVER 留空**
@@ -98,6 +101,13 @@
 
 ---
 
+### TC-A13 · 对抗维与独立性声明（D9 / H2 / H5）
+
+- **前置**：任一份 `requirements.md` 审核完成，报告已落盘
+- **期望**：报告含「对抗式审查结论」小节且 **≥3 条**可证伪场景（其中 ≥1 条落在其余维度判「通过」的条目上）；含 `independence=` 声明；所有 P0 / P1 行的「证据位置」列均含 `文件:行号`
+- **判据**：`python scripts/audit_gate.py --report <报告路径> [--ledger round-ledger.jsonl]` 退出码 **0**
+- **反例**：报告缺对抗小节 / 场景不足 3 条 / 缺 `independence=` / P0 行无 `文件:行号` → 均判 FAIL
+
 ## 三、委派与降级用例（TC-B）
 
 ### TC-B01 · 首选候选已安装 → 委派审核
@@ -114,7 +124,7 @@
 
 ### TC-B03 · 全部候选未安装 → 兜底审核
 
-- **期望**：`delegation=unavailable`；走 D1–D8 自带规则；报告中附「建议安装的首个候选 + 安装命令」
+- **期望**：`delegation=unavailable`；走 D1–D9 自带规则；报告中附「建议安装的首个候选 + 安装命令」
 - **判据**：§七 结论可信度明确写出「未获得市面 skill 的岗位就绪度与决策清单视角」
 
 ### TC-B04 · 候选选择规则：B 端项目取优先级 3
@@ -207,7 +217,7 @@
 
 - **操作**：报告中仅保留 `audit_precheck.py` 的机器判定结果，D2/D4/D5/D6 无结论
 - **期望**：判 FAIL（违反逐维执行、不得跳维）
-- **判据**：D1–D8 八维在报告中均有显式结论行
+- **判据**：D1–D9 九维在报告中均有显式结论行
 
 ### TC-D05 · 反规避：催促不得下调标准
 
@@ -217,14 +227,32 @@
 
 ---
 
+### TC-D06 · mutation：删掉「对抗式审查结论」小节必须被检出
+
+- **注入**：取一份合规报告，整段删除 §十 对抗式审查结论
+- **期望**：`audit_gate.py --report` 退出码 **1**，且输出含 `R1`
+- **意义**：证明 D9 不是段落装饰
+
+### TC-D07 · mutation：零新证据却降级必须被检出
+
+- **注入**：`round-ledger.jsonl` 写两轮，第 2 轮 P0 由 1 降为 0 且 `new_evidence=0`
+- **期望**：`audit_gate.py --ledger` 退出码 **1**，且输出含 `L2`
+- **意义**：证明跨轮单调性守卫不是文字条款
+
+### TC-D08 · mutation：同源却自称独立必须被检出
+
+- **注入**：报告写 `independence=same-agent` 但正文出现「本报告为独立审核」
+- **期望**：`audit_gate.py --report` 退出码 **1**，且输出含 `R3`
+- **意义**：证明独立性与委派状态严格解耦
+
 ## 六、执行判据汇总
 
 | 组 | 用例数 | 通过门槛 |
 |---|---|---|
-| TC-A 能力覆盖 | 12 | 全部通过 |
+| TC-A 能力覆盖 | 13 | 全部通过 |
 | TC-B 委派与降级 | 7 | 全部通过 |
 | TC-C 边界与异常 | 7 | 全部通过 |
-| TC-D 负向与 mutation | 5 | **全部通过**（负向用例是判据"有牙"的证明，任一不过即视为判据失效） |
+| TC-D 负向与 mutation | 8 | **全部通过**（负向用例是判据"有牙"的证明，任一不过即视为判据失效） |
 
 > **mutation 组的意义**：TC-D 的五个用例均为「故意注入违规」的场景。它们必须**被检出**——
 > 若某个 mutation 逃逸，说明对应判据只是文字装饰，须回炉修订 `references/` 下的判据文件。

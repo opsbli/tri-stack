@@ -26,7 +26,7 @@ ops/
 ├── versions.json              自主版本线基线（35 个 skill 的版本快照：顶层 26 + tri-sdlc 子 skill 9）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 45 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 76 个 op）
     ├── apply.py                幂等重放器
     ├── payload/
     │   └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
@@ -235,7 +235,7 @@ pat='^version: *(\\S+)'   -> 匹配
 | 校验覆盖（顶层 + `tri-sdlc/children/*`） | 33 | **34** | `tri-forge/scripts/check_registry.py --check` 报「检查 34 个 skill；漂移 0」 |
 | `version-check-spec.md` 份数 | 33 | **34** | `spec-per-skill` op 实测 `跳过 34` |
 | `check_update.py` 份数 | 34（33 skill + 1 payload） | **35（34 skill + 1 payload）** | 34 份 skill 副本 + `ops/patches/assets/` 1 份，hash 仍全等 |
-| 补丁层 op 数 | 23 | **45** | `ops/patches/manifest.json` |
+| 补丁层 op 数 | 23 | **76** | `ops/patches/manifest.json` |
 | `converge-version-stub` 覆盖顶层节 | 24 | **25** | 该 op 实测 `跳过 25` |
 | `f13` 覆盖 | 24 | **25** | 该 op 实测 `跳过 25` |
 
@@ -296,3 +296,34 @@ pat='^version: *(\\S+)'   -> 匹配
 
 > 本轮为**纯新增**（新增 1 个 skill + 9 个 op），未改动既有 skill 的版本号。
 > 复核判据：`version-lint.py` 退出码 0（存在漂移 0 个）；`apply.py` 连跑两次，第二次 `应用 0｜写入 0`。
+
+### 计数增量（2026-09-25 · 第五轮 · `tri-req-audit` 对抗层硬化）
+
+`tri-req-audit` 的**审核对抗层硬化**（补丁 op `f35`–`f50d` 系列 + 插序的 `f43` / `f46a` / `f46b` / `f47a`，
+共 **22** 个）后：补丁层 op 数 **45 → 76**。本轮**纯改既有 skill 内容**，
+skill 集合与版本线覆盖面均未变（`tri-req-audit` 自身由 1.0.0 → 1.1.0）。
+
+| 计数 | 原值 | 现值 | 佐证 |
+|---|---|---|---|
+| 顶层 skill | 26 | **26** | 不变（本轮无新增 skill） |
+| 校验覆盖（顶层 + `tri-sdlc/children/*`） | 35 | **35** | 不变 |
+| `version-check-spec.md` 份数 | 35 | **35** | 不变 |
+| `check_update.py` 份数 | 36 | **36** | 不变 |
+| 补丁层 op 数 | 45 | **76** | `ops/patches/manifest.json`（本轮 22 + 并发会话 9） |
+| `ops/versions.json` 中 `tri-req-audit` | 1.0.0 | **1.1.0** | `--emit-baseline` 已刷新 |
+
+| 受影响位置 | 处置 |
+|---|---|
+| 上方目录树 `当前 45 个 op` | ✅ 已改当前值（76） |
+| 上方 §计数对账表（第一轮）`补丁层 op 数` 行 | ✅ 已改当前值（沿用第四轮先例：该行按「当前态账本」就地刷新，该表其余行冻结） |
+| 根 `README.md` 徽章 `skills-24`、目录树两处 op 数 | ✅ 已改当前值（26 / 76） |
+| `WORKFLOW-GUIDE.html`（D1 徽章 chip / D2 正文）与根 `README.md`（D4 表行）的该 skill 版本 | ✅ 已由 `version-lint.py --apply-docs` 幂等修正（3 处） |
+| 前四轮增量小节与全部冻结段落 | ⬜ **冻结** —— 当时实测快照 |
+
+> ⚠️ **并发来源说明**：本轮执行期间，另有会话向 `manifest.json` 追加 **9** 个 op
+> （`f60-action-fallback` … `f68-workflow-fallback`，涉 9 个 skill 的 fallback 分支），
+> 故 45 + 22 + **9** = **76**。本小节「现值」一律取**实测总数**；那 9 个 op 的清单行由该会话自行补记
+> （见 `ops/patches/README.md` §当前补丁清单尾注），本文件**不代填**，避免双方重复追加。
+
+> 复核判据：`ops/version-lint.py` 退出码 0（漂移 0，文档层无漂移）；`apply.py` 连跑两次，
+> 第二次 `应用 0｜写入 0`；`tri-req-audit/scripts/audit_gate.py --self-test` 全绿。
