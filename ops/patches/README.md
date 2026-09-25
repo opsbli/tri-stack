@@ -51,7 +51,8 @@ python ops/patches/apply.py --json      # 机器可读输出
 > `*.md` / `*.py` / `*.json` / `*.html` … `text eol=lf`）、`core.autocrlf` 在 `.git/config`
 > 中置为 **false**，`README.md` 的 blob **已为 LF（0 CR）**。但 `tri-intent/SKILL.md` 等
 > **blob 仍为 CRLF**（386 行全 CRLF，未被 renormalize 覆盖），工作区还出现 `\r\r\n`（见坑 5）
-> ⇒ **坑 1 的处置（行尾无关匹配）依然必要，且并不充分**——多行 `old` 在 `\r\r\n` 上仍不命中。
+> ⇒ **坑 1 的处置（行尾无关匹配）依然必要**；其「不充分」之处（多行 `old` 在 `\r\r\n` 上
+> 静默不命中）已由 2026-09-25 的 `norm_lf` 修掉（见坑 5）。
 
 ⇒ 若按**字节**匹配 `old`/`new`（LF 书写），遇到 CRLF 文件会**静默不命中**，表现为
 `应用 0｜已应用 0`（`f6-gate-fill-empty-block` 首次就是这样失败的）。
@@ -107,13 +108,20 @@ n_old = txt.count(old_lf)
 
 ### 坑 5 · 工作区 `\r\r\n` 会让多行 `old` **静默不命中**
 
+> ✅ **已修复（2026-09-25）**：`apply.py` 新增 `norm_lf()`，`read_norm` 改为走它
+> （去掉**全部** `\r`）；`op_sync_spec` / `op_sync_script` 的字节比对一并修正
+> （原写法会让 `\r\r\n` 目标**每次判「不一致」而反复重写**，属坑 3 的同类）。
+> **验收**：旧 / 新 `apply.py --json` 输出**逐字相同**（当前树零行为变化，因为下列
+> 16 个文件对现有 op 本就零命中）；合成复测 `t_crcrlf.txt` 由 `count=0` → **`count=1`**。
+> **坑位保留**：同类写法在别处仍极易复现（任何自己读仓库文件的脚本）——判据见文末。
+
 **背景**：坑 1 解决的是「CRLF 检出 + 字节级匹配」。本仓库还有更刁的一种：**`\r\r\n`**。
 实测归因（2026-09-25）：`core.autocrlf` 为 **`false`**（`.git/config`）、`.gitattributes` 目标是 LF，
 而 `tri-intent/SKILL.md` 等 **blob 仍是 CRLF**（386 行全 CRLF）⇒ `\r\r\n` **不是** autocrlf 造成，
 而是检出/写入链在已有 CRLF 之上**再补一个 CR**。（**别照抄原因**——2026-09-23 的诊断曾把同类
 现象归给 `core.autocrlf=true`，该归因现已不成立。）
 
-`op_replace_text` 的 `read_norm` 只做 `.replace("\r\n", "\n")` —— 对 `\r\r\n` 只会吃掉后一个 `\r`，
+**修复前**，`read_norm` 只做 `.replace("\r\n", "\n")` —— 对 `\r\r\n` 只会吃掉后一个 `\r`，
 **留下一个裸 `\r`**：
 
 | 文件字节 | `read_norm` 归一后 | 多行 `old`（LF 书写）命中 |
@@ -138,13 +146,16 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 `SKILL.md`，加 12 个 `CHANGELOG.md`（`tri-action` / `coding` / `evolve` / `fix` / `html` /
 `intent` / `loop` / `meta` / `plan` / `sdlc` / `true` / `workflow`）。
 
-**当前为何没爆**：现有 op 要么是**单行** `old`（无内部换行 ⇒ 不受影响），要么已由 marker 短路
-（报 `已应用 N`，压根不走 `count(old_lf)`）。**它会在「上游整树替换后重放」这一设计场景里爆**。
+**修复前的暴露面**：当时的 31 个 op 中，只有 `f3-standalone-line` / `f3-gate-cmd-check` /
+`f3-gate-cmd-apply` 满足「glob `**/*.md` **且** 多行 `old`」⇒ 理论上可受影响；实测这三者的
+`old` 在那 16 个 `\r\r\n` 文件中以及**全仓活跃树**内均**零命中**，故当时读数没变。
+**它是「上游整树替换后重放」这一设计场景里的定时炸弹** —— 上游若带回含该文本的文件，
+命中会被静默吞掉，而补丁层只会安静地报 `not_found`。
 
-**规避**（写 op / 读文件时）：
+**写法纪律**（`apply.py` 已修，但**自己写脚本读仓库文件时同样适用**）：
 
-- **单行 `old` 天然免疫**；多行 `old` 的目标文件若可能为 `\r\r\n`，**不要依赖多行匹配** ——
-  切成若干单行 op，或改用 `replace_regex` 逐行处理；
+- **单行 `old` 天然免疫**；多行 `old` 经 2026-09-25 的修复后**已可正常使用**，
+  但若你自己写脚本做 `old`/`new` 匹配或内容解析，仍须自行**去尽 `\r`**；
 - 需要**读文件内容做解析**时，先去掉**全部** `\r`：`re.sub(r"\r", "", raw)`。
   ⚠️ 「先替 `\r\n` 再替 `\r`」是**错的**（`\r\r\n` 会被拆成两次匹配 ⇒ 仍得 `\n\n`）；
   `read_text()` 的通用换行同样把 `\r\r\n` 译成 `\n\n` 并**插入空行**

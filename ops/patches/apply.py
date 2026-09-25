@@ -94,13 +94,13 @@ def op_sync_spec(op, repo, skip, dry):
     if not payload.is_file():
         return {"status": "error", "detail": f"payload 缺失：{payload}", "written": 0, "skipped": 0}
     pbytes = payload.read_bytes()
-    ptext = pbytes.decode("utf-8").replace("\r\n", "\n")
+    ptext = norm_lf(pbytes.decode("utf-8"))
     written = skipped = 0
     details = []
     for t in spec_targets(repo, skip):
         if t.is_file():
             try:
-                cur = t.read_bytes().decode("utf-8", errors="replace").replace("\r\n", "\n")
+                cur = norm_lf(t.read_bytes().decode("utf-8", errors="replace"))
             except OSError:
                 cur = None
             if cur == ptext:
@@ -139,13 +139,13 @@ def op_sync_script(op, repo, skip, dry):
         return {"status": "error", "detail": f"payload 缺失：{payload}", "written": 0, "skipped": 0}
     dest = op["dest"]
     pbytes = payload.read_bytes()
-    ptext = pbytes.decode("utf-8").replace("\r\n", "\n")
+    ptext = norm_lf(pbytes.decode("utf-8"))
     written = skipped = 0
     details = []
     for t in script_targets(repo, skip, op["glob"], dest):
         if t.is_file():
             try:
-                cur = t.read_bytes().decode("utf-8", errors="replace").replace("\r\n", "\n")
+                cur = norm_lf(t.read_bytes().decode("utf-8", errors="replace"))
             except OSError:
                 cur = None
             if cur == ptext:
@@ -161,15 +161,38 @@ def op_sync_script(op, repo, skip, dry):
     return {"status": "ok", "written": written, "skipped": skipped, "details": details}
 
 
+def norm_lf(s: str) -> str:
+    """把任意行尾归一化为 LF —— **去掉全部 `\\r`**。
+
+    教训（README 坑 5）：本仓库工作区存在 `\\r\\r\\n`（CRLF blob 又被检出/写入链补一个 CR）
+    的文件。`.replace("\\r\\n", "\\n")` 只会吃掉后一个 `\\r`、**留下裸 `\\r`**，
+    归一化后行尾变成 `\r\n` ⇒ **多行 `old`（LF 书写）永不命中**，op 静默报 `not_found`；
+    用在 `sync_spec` / `sync_script` 的比对里则会**每次判「不一致」而反复重写**（幂等失效）。
+    先替 `\\r\\n` 再替 `\\r` **同样是错的**（`\\r\\r\\n` 被拆成两次匹配 ⇒ 仍得 `\\n\\n`）。
+    故一律 `replace("\\r", "")`。
+    """
+    return s.replace("\r", "")
+
+
 def read_norm(f: Path):
-    """读取并归一化为 LF，同时记录原文件是否用 CRLF。"""
+    """读取并归一化为 LF，同时记录原文件是否用 CRLF。
+
+    归一化走后述 `norm_lf`（去掉全部 `\\r`），不再只替 `\\r\\n`。
+    副作用：`\\r\\r\\n` 文件一旦因命中而被写入，会经 `write_keep` 归一为纯 CRLF。
+    这是有意的——`.gitattributes` 的 `eol=lf` 会在入库时再归一为 LF，
+    故 index diff 只显示真实内容变更。
+    """
     raw = f.read_bytes()
     crlf = b"\r\n" in raw
-    return raw.decode("utf-8", errors="replace").replace("\r\n", "\n"), crlf
+    return norm_lf(raw.decode("utf-8", errors="replace")), crlf
 
 
 def write_keep(f: Path, txt: str, crlf: bool) -> None:
-    """按原文件的行尾风格写回，避免因归一化而引入整文件 diff。"""
+    """按原文件的行尾风格写回，避免因归一化而引入整文件 diff。
+
+    `crlf=True` 的文件一律写成**纯 CRLF**—— `\\r\\r\\n` 输入经 `norm_lf` 后已是纯 `\\n`，
+    这里补回一个 `\\r` 即归一为 CRLF（不会写成 `\\r\\r\\n`）。
+    """
     data = txt.replace("\n", "\r\n") if crlf else txt
     f.write_bytes(data.encode("utf-8"))
 
