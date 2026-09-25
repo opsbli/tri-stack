@@ -6,6 +6,14 @@
 
 > 来源与归属：动效/多变体知识蒸馏自 emilkowalski/skills（MIT License, Copyright (c) 2026 Emil Kowalski），去产品化改写，保留法律归属声明，不建 LICENSE 文件。
 
+## [1.1.4] - 2026-09-25
+
+### 变更
+
+- **更正路由归属自述（口径修正，无行为变更）**：原文自称「独立工具 skill，不注册为 tri-intent 下游路由项」「不认领任何 L2/L3 编码」「不认领 tri-intent 下游路由」，与**路由真源**冲突 —— `tri-intent/SKILL.md` §一 路由映射表与 `tri-intent/doing/I11-coding.md` 均把本 skill 列为 `I11` 的 `L3=frontend-design` 子类**一跳覆写**下游，`tri-intent/hooks/intent-gate.py` 另有 `("I11","frontend-design") → "tri-frontend-design"` 可执行映射，`tri-intent/CHANGELOG` 亦记载该路由是「真空断链修复」的有意新增（此前本 skill 无任何路由入口）。
+- 现改为：**本 skill 参与 I11 子类路由，同时也支持用户直接调用**（三态上游依赖检测保留，两条入口并存）；§触发时机 补「tri-intent 路由」触发行 + 路由归属注记；§职责边界 补齐与同层五落点（tri-coding / tri-lottie / tri-prototype / tri-html / tri-sdlc）的产出物形态 MECE；自检句 `下游=<否>` 改为 `路由=<I11/frontend-design 子类|用户直调>`。
+- 非功能性变更（文档口径），无行为变更。
+
 ## [1.1.3] - 2026-09-24
 
 ### 变更

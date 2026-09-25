@@ -26,7 +26,7 @@ ops/
 ├── versions.json              自主版本线基线（34 个 skill 的版本快照：顶层 25 + tri-sdlc 子 skill 9）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 31 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 36 个 op）
     ├── apply.py                幂等重放器
     ├── payload/
     │   └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
@@ -235,7 +235,7 @@ pat='^version: *(\\S+)'   -> 匹配
 | 校验覆盖（顶层 + `tri-sdlc/children/*`） | 33 | **34** | `tri-forge/scripts/check_registry.py --check` 报「检查 34 个 skill；漂移 0」 |
 | `version-check-spec.md` 份数 | 33 | **34** | `spec-per-skill` op 实测 `跳过 34` |
 | `check_update.py` 份数 | 34（33 skill + 1 payload） | **35（34 skill + 1 payload）** | 34 份 skill 副本 + `ops/patches/assets/` 1 份，hash 仍全等 |
-| 补丁层 op 数 | 23 | **31** | `ops/patches/manifest.json` |
+| 补丁层 op 数 | 23 | **36** | `ops/patches/manifest.json` |
 | `converge-version-stub` 覆盖顶层节 | 24 | **25** | 该 op 实测 `跳过 25` |
 | `f13` 覆盖 | 24 | **25** | 该 op 实测 `跳过 25` |
 
@@ -255,3 +255,16 @@ pat='^version: *(\\S+)'   -> 匹配
 
 > 本轮同时给 `ops/patches/README.md` 的「踩坑」小节补了**坑 4**（纯删除型修正无可用
 > `already_marker`）与**坑 5**（工作区 `\r\r\n` 使多行 `old` 静默不命中）。
+
+### 计数增量（2026-09-25 · 第三轮）
+
+`tri-frontend-design` 路由自述更正（补丁 op `f21`–`f25`，口径修正、无行为变更）后：
+补丁层 op 数 **31 → 36**。skill 数 / 校验覆盖 / `check_update.py` 份数**均不变**；
+`ops/versions.json` 中该 skill 由 **1.1.3 → 1.1.4**（`--emit-baseline` 已刷新）。
+
+| 受影响位置 | 处置 |
+|---|---|
+| 上方目录树与 §计数对账表 `补丁层 op 数` | ✅ 已改当前值 |
+| `WORKFLOW-GUIDE.html`（D1 chip）与根 `README.md`（D4 表行）的该 skill 版本 | ✅ 已由 `version-lint.py --apply-docs` 幂等修正 |
+| `ops/version-lint.py` 内 `# 顶层 24 个 tri-*` 注释 | ✅ 更正为 25（上轮改数遗漏的注释层） |
+| 前两轮增量小节 | ⬜ **冻结** —— 当时实测快照 |

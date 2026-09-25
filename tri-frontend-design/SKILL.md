@@ -1,7 +1,7 @@
 ---
 name: tri-frontend-design
 slug: tri-frontend-design
-version: 1.1.3
+version: 1.1.4
 displayName: 前端设计
 description: 前端设计技能——为构建或重塑前端提供"风格锚点"驱动的可视化方向（静态视觉层），并补齐"时间维度 + 交互物理层"：动效引擎（频率闸门/缓动/弹簧/可中断性/GPU 属性/性能/a11y）、动效评审与全库审计、多变体探索。通过配色/字体/结构/质感锁定具体 CSS 令牌，并要求屏幕内容命名真实信息而非编造。支持独立安装，含上游依赖检测三态逻辑（快照/引导/降级）。当用户要"做/改一个前端界面""设计一套有风格的 UI""给界面加动效/评审动效""想看几个方向再选"时激活。
 summary: 把"前端设计"变成可由 AI 稳定执行的可视化方向引擎——八个风格锚点各自锁定 CSS 令牌（空间轴），加上由锚点自动推导的动效基线（时间轴 + 物理轴），配合"内容不是设计"纪律与发布前自检，交付高保真、动起来不浮、不套话、不编造的前端。
@@ -27,7 +27,7 @@ license: MIT
 3. **令牌保真**：渲染出的 CSS MUST 落在所选锚点允许的令牌范围内（色值/字体/结构/质感）；出现锚点不允许的令牌即"锚点没守住"，MUST 回炉修正。
 4. **内容纪律**：屏幕上每个字符串、数字、标签 MUST 要么指称真实产品信息，要么是"清楚自己是什么"的创作内容；MUST NOT 编造数据、堆填充标签、以主题化措辞替换标准 UI 文案、用 Unicode 字形当图标、写 AI 腔套话。
 5. **最小化原则**：MUST 只交付 `输入契约` 范围内的设计产物，NEVER 自行扩大范围；如需增补（如新增锚点变体），MUST 向用户说明并确认。
-6. **自检句**：每次执行前 MUST 声明「本次模式=<design|motion|variants>，触发源=<用户直接|委派>，锚点=<已选X|待选>，下游=<否>，版本门=<A/B/C/D>」；与已确认需求冲突时 MUST 停止并纠正。
+6. **自检句**：每次执行前 MUST 声明「本次模式=<design|motion|variants>，触发源=<用户直接|委派>，锚点=<已选X|待选>，路由=<I11/frontend-design 子类|用户直调>，版本门=<A/B/C/D>」；与已确认需求冲突时 MUST 停止并纠正。
 7. **频率硬门**：为任何 UI 元素添加动效前，MUST 先按 `references/motion-standards.md §1` 判定使用频率；100+ 次/天或键盘触发类动作（命令面板开合、核心导航、快捷键）MUST NOT 动画；频率判定未完成 NEVER 进入曲线/时长选择。
 8. **动效令牌真源**：所有缓动曲线、时长预算、弹簧参数、阈值与 GPU 属性白名单 MUST 取自 `references/motion-standards.md`，原样复制，NEVER 近似或臆造；`cubic-bezier(0.23, 1, 0.32, 1)` 写成 `0.25` 即视为缺陷。
 9. **a11y 随动效同交**：任何动效 MUST 同步交付 `prefers-reduced-motion` 降级与 hover/focus 门控（见 `motion-standards.md §8`）；a11y 不得作为后续补丁后补，缺席即视为动效未交付。
@@ -40,8 +40,16 @@ license: MIT
 | 用户直接请求（动效） | "给这个按钮加动效""评审一下我的界面动效""把整个站点的动效审计一遍""哪些地方该动、哪些不该" | `motion` |
 | 用户直接请求（变体） | "我想看几个方向再选""出 3 个瑞士风 dashboard 变体" | `variants` |
 | 其它 skill 委派 | tri-coding 在产出前端界面时需先定可视化方向 | `design` |
+| **tri-intent 路由（一跳覆写）** | `L2 意图=I11 编码开发` 且 `L3_子意图=frontend-design`（任务要点为**设计语义**而非代码实现） | `design` |
 
-> 本 skill 是**独立工具 skill**，不注册为 tri-intent 下游路由项；用户直接调用，不经意图识别。`motion` / `variants` 模式也由用户显式触发，模型不自主激活。
+> **路由归属（2026-09-25 更正）**：本 skill 是 **tri-intent 的 I11 子类路由型下游**
+> （`L2=I11`，`L3_子意图=frontend-design`，**一跳覆写**）。真源为 `tri-intent/SKILL.md` §一 路由映射表
+> 与 `tri-intent/doing/I11-coding.md`；**可执行真源**为 `tri-intent/hooks/intent-gate.py` 中
+> `("I11", "frontend-design") → "tri-frontend-design"` 的映射。
+> **本 skill 同时也支持用户直接调用**（不经意图识别）——两条入口并存，故 §上游依赖检测 的三态逻辑保留：
+> 有快照走 A、无上游且需要完整链路走 B、用户拒绝安装或无快照走 C。
+> `motion` / `variants` 模式由用户显式触发或由路由指定，模型不自主激活。
+> ⚠️ 旧文本自称「独立工具 skill，不注册为 tri-intent 下游路由项」——该口径已废弃，勿再引入。
 
 ## 上游依赖检测（独立安装 · 三态逻辑）
 
@@ -80,9 +88,9 @@ license: MIT
   - **RN/Expo 动效、SwiftUI 动效** → 委派 `tri-coding`（tech-skills/react-native.md / swiftui.md）。
   - **代码质量 / 安全 / 架构审查** → 委派 `tri-review`；本 skill 只判"动效感觉对不对"（设计域），不判代码工程质量。
   - **HTML/CSS 工程渲染实现** → 委派 `tri-html`；本 skill 产出方向与令牌规格，不写完整工程代码。
-  - **意图识别** → `tri-intent`；本 skill 不认领任何 L2/L3 编码。
-- **MECE**：本 skill 不认领 tri-intent 下游路由，作为独立工具存在，不破坏家族下游 MECE 划分。
-- **不触发场景（Not-Trigger）**：本 skill 不接手「完整工程代码 / HTML/CSS 渲染实现」（转 tri-html）；不接手「库选型工程决策 / 代码质量审查」（属 tri-coding / tri-review，本 skill 只给「目的→工具」方向判定）；不接手「识别用户意图」（由用户显式触发，不经 tri-intent 路由）。
+  - **L1 意图识别 / L2 分流** → `tri-intent`；本 skill 只认领 `I11` 的 `L3=frontend-design` 子类，不认领其它 L2/L3 编码。
+- **MECE**：本 skill **参与** tri-intent 下游路由（I11 子类一跳覆写，见 §触发时机 上注），与同层落点以**产出物形态**划分，互不重叠：产出**设计方向与令牌规格**（CSS 令牌 / 动效基线 / 多变体方案）→ 本 skill；产出**可运行代码实现** → `tri-coding`（I11 默认）；产出**动效实现代码与资产集成** → `tri-lottie`；产出**编码需求文档**（`requirements.md`）→ `tri-prototype`；产出**可视化 HTML 图表** → `tri-html`；产出**全生命周期交付** → `tri-sdlc`。同时命中时的冲突消解见 `tri-intent/doing/I11-coding.md` §边界细则。
+- **不触发场景（Not-Trigger）**：本 skill 不接手「完整工程代码 / HTML/CSS 渲染实现」（转 tri-html）；不接手「库选型工程决策 / 代码质量审查」（属 tri-coding / tri-review，本 skill 只给「目的→工具」方向判定）；不接手「L1 意图识别与 L2 分流」（由 tri-intent 负责，本 skill 只按路由或用户直调进入）。
 
 ---
 

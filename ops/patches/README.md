@@ -201,6 +201,11 @@ t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
 | `f18-familyspec-shared-domain` | replace_text | `family-spec.md` §1.4：补「**判定顺序**」（**可推导优先** —— 共享但可推导者仍属「通过」，豁免只收「共享 ∩ 不可推导」）+ 给豁免清单两行补「不可推导」依据；消除 `coding/` 两行同时命中的歧义（2026-09-25） |
 | `f19-compliance-dedup` | replace_text | `compliance_check.py`：删去重复的「角色识别」if/elif 链（原 L143-155 与 L157-169 逐字重复、二次赋值同值、行为无差异）；保留处加注「单次赋值」作幂等标记（2026-09-25） |
 | `f20-role-detection` | replace_text | `compliance_check.py`：修复**角色识别盲区** —— ① 按 `tri-intent/SKILL.md` §一 路由映射表（`family-spec` §1.1 真源）收 slug 集合，**收录即判下游**；② 下游判据由「下游 ∩ 认领」改为「`下游执行` 写法 ∪ 真源收录」；③ `children` 判定**前移**并用目录结构作主判据；④ 读真源先 `re.sub(r"\r","")` 去尽 CR。效果：`unknown` **8 → 0**、`downstream` **8 → 16**、#8 由 N-A 转 MANUAL，**verdict 无变化**（2026-09-25） |
+| `f21-fed-route-declaration` | replace_text | `tri-frontend-design/SKILL.md`：§触发时机 补「**tri-intent 路由（一跳覆写）**」触发行 + **路由归属**注记（原文自称「独立工具 skill，不注册为 tri-intent 下游路由项」属**滞后口径**，与 `tri-intent/SKILL.md` §一 路由映射表 / `doing/I11-coding.md` / `hooks/intent-gate.py` 可执行映射冲突）；旧文本内嵌「⚠️ 已废弃」防回流（2026-09-25） |
+| `f22-fed-boundary-mece` | replace_text | 同上：§职责边界 —— 「不认领任何 L2/L3 编码」→ 只认领 `I11` 的 `L3=frontend-design` 子类；「MECE：不认领下游路由，作为独立工具存在」→ **参与**路由并与同层五落点（tri-coding / tri-lottie / tri-prototype / tri-html / tri-sdlc）按**产出物形态**划分；Not-Trigger 末项改为「L1 识别 / L2 分流由 tri-intent 负责」（2026-09-25） |
+| `f23-fed-selfcheck-line` | replace_text | 同上：契约 §6 自检句 `下游=<否>` → `路由=<I11/frontend-design 子类｜用户直调>`（原字段编码的正是「不位于下游」这一滞后口径）（2026-09-25） |
+| `f24-fed-version-1-1-4` | replace_text | `tri-frontend-design` 版本线 1.1.3 → **1.1.4**（口径修正属 patch）。**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随——该 op 由 `manifest.json` **插序**（非追加）实现（2026-09-25） |
+| `f25-fed-changelog-1-1-4` | replace_text | `tri-frontend-design` CHANGELOG：追加 `[1.1.4]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25） |
 
 ## 每项补丁的依据
 
@@ -633,3 +638,23 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 | 根 `README.md` 目录树 `30 个 op` | ✅ 已改当前值 |
 | §计数增量（2026-09-25，第一轮）`op 28 → 30` | ⬜ **冻结** —— 当时实测快照 |
 | `reports/tri-req-audit-remediation.md`（`op 28 → 30` ×2、`补丁层 op 数 23 → 30`） | ⬜ **冻结** —— 带日期的整改报告，改写即伪造结论 |
+
+### 计数增量（2026-09-25 · 第三轮）
+
+`tri-frontend-design` **路由自述更正**（口径修正，无行为变更）后：补丁层 op **31 → 36**
+（新增 `f21`–`f25`）。skill 数 / 校验覆盖 / `check_update.py` 份数**均不变**。
+
+| 受影响位置 | 处置 |
+|---|---|
+| 「当前补丁清单」表新增 `f21`–`f25` 五行 | ✅ 已补 |
+| `ops/README.md` 目录树 `当前 31 个 op`、§计数对账表 `补丁层 op 数` 行 | ✅ 已改当前值 |
+| 根 `README.md` 目录树 `31 个 op` | ✅ 已改当前值 |
+| `WORKFLOW-GUIDE.html`（D1 chip L194）与根 `README.md`（D4 表行）的该 skill 版本 | ✅ 已由 `version-lint.py --apply-docs` 幂等修正为 **1.1.4** |
+| `ops/versions.json` 中该 skill | ✅ 已由 `--emit-baseline` 刷新为 **1.1.4** |
+| 前两轮增量小节 | ⬜ **冻结** —— 当时实测快照 |
+
+> ⚠️ **新增版本线 op 时必须考虑顺序**：`f24`（P1）**插在 `sync-version-meta` / `sync-readme-version` 之前**。
+> 若追加到末尾，该 op 会先用**旧版本**写 `_meta.json`，要等第二轮才被纠正
+> ⇒ 判据「连跑两次，第二次 `写入 0`」当场失败。**`manifest.json` 的 op 顺序即执行顺序。**
+> 实测回执：本轮首跑 `f24 = 应用 1` 且 `sync-version-meta = 写入 1`（同轮跟随 ✅），
+> 二/三跑均 `应用 0｜已应用 1` 与 `写入 0｜跳过 25`。

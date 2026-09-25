@@ -122,6 +122,15 @@
       "already_marker": "脚本门禁已就位"
     },
     {
+      "id": "f24-fed-version-1-1-4",
+      "type": "replace_text",
+      "label": "tri-frontend-design 版本线 1.1.3 → 1.1.4（口径修正属 patch；**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随）（2026-09-25）",
+      "glob": "tri-frontend-design/SKILL.md",
+      "old": "version: 1.1.3\n",
+      "new": "version: 1.1.4\n",
+      "already_marker": "version: 1.1.4"
+    },
+    {
       "id": "sync-version-meta",
       "type": "sync_version_meta",
       "label": "强制执行 §六 P1↔P3：_meta.json 版本同步为 SKILL.md 的值",
@@ -304,6 +313,42 @@
       "old": "    # 角色识别（决定 #8 / #20 是否适用）——单次赋值（去重后仅保留一处，勿再复制）\n    if \"总路由\" in desc and \"识别\" in desc and \"路由\" in desc:\n        role = \"root\"\n    elif \"内部专用工具\" in desc or \"内部专用工具\" in body[:1200]:\n        role = \"internal\"\n    elif \"横向\" in desc:\n        role = \"lateral\"\n    elif (\"下游\" in desc or \"桥接\" in desc) and (\"认领\" in desc or \"处理 I\" in desc or \"处理 L2\" in desc):\n        role = \"downstream\"\n    elif \"子 skill\" in desc or \"children\" in desc:\n        role = \"child\"\n    else:\n        role = \"unknown\"\n",
       "new": "    # 角色识别（决定 #8 / #20 是否适用）——单次赋值（去重后仅保留一处，勿再复制）\n    #\n    # 角色判定口径（family-spec §1.1）：路由归属以 `tri-intent/SKILL.md` §一 路由映射表为准。\n    # 先把真源里的 slug 收成集合——**凡被真源收录即已参与路由表**，即便该 skill 自述「独立工具」\n    # （实测 tri-frontend-design：自述 L44/L83/L84 称「不注册为 tri-intent 下游路由项」，但真源\n    #  L239/L272 将其列为 I11 `frontend-design` 子类一跳覆写，`hooks/intent-gate.py` 亦有对应\n    #  可执行映射 ⇒ 以真源为准判 downstream）。\n    # 读取须**先去尽 CR**：本仓库工作区存在 `\\r\\r\\n`（CRLF 被 smudge 两次）文件，\n    # 先替 `\\r\\n` 会只剩一个 `\\r`、再替 `\\r` 又变回 `\\n\\n`，等于未归一化；通用换行\n    # `read_text()` 同样把 `\\r\\r\\n` 译成 `\\n\\n` 并**插入空行**，使「遇非表行即止」的循环\n    # 在首行后立刻 break、解析结果恒为空集（两次实测踩过）。故一律 `re.sub(r\"\\r\", \"\", ...)`。\n    routed = set()\n    _ti = REPO / \"tri-intent\" / \"SKILL.md\"\n    if _ti.is_file():\n        _raw = _ti.read_bytes().decode(\"utf-8\", errors=\"ignore\")\n        _intab = False\n        for _ln in re.sub(r\"\\r\", \"\", _raw).split(\"\\n\"):\n            if _ln.startswith(\"| L2 意图\"):\n                _intab = True\n                continue\n            if _intab:\n                if not _ln.startswith(\"|\"):\n                    break\n                routed.update(re.findall(r\"tri-[a-z0-9-]+\", _ln))\n    if \"总路由\" in desc and \"识别\" in desc and \"路由\" in desc:\n        role = \"root\"\n    elif d.parent.name == \"children\" or \"子 skill\" in desc or \"children\" in desc:\n        # `children` 判定**前置于** internal / lateral / downstream：子 skill 的描述含\n        # 「快照§三」「L3_子意图」等下游类线索，置于下游判定之后会被误判（实测 9 个子 skill\n        # 全用「子SKILL」无空格写法，文本判据不足以识别，故以**目录结构**为主判据）。\n        role = \"child\"\n    elif \"内部专用工具\" in desc or \"内部专用工具\" in body[:1200]:\n        role = \"internal\"\n    elif \"横向\" in desc:\n        role = \"lateral\"\n    elif \"下游执行\" in desc or \"下游执行\" in body[:1200] or slug in routed:\n        # 「下游执行 skill / 下游执行者」是家族实际写法（15 例 —— 16 个下游中仅 tri-frontend-design 靠真源收录命中）；旧判据要求「下游」与\n        # 「认领 / 处理 I / 处理 L2」**同时**出现才判下游，而多数 skill 只写前者 ⇒ 8 例漏判\n        # 为 unknown（tri-checklist / code-analyzer / fix / god / html / lottie / review /\n        # frontend-design），并使 #8 被误判为 N-A。现改为「写法命中断言 ∪ 真源收录」双通道。\n        role = \"downstream\"\n    else:\n        role = \"unknown\"\n",
       "already_marker": "角色判定口径（family-spec §1.1）"
+    },
+    {
+      "id": "f21-fed-route-declaration",
+      "type": "replace_text",
+      "label": "`tri-frontend-design` 与路由真源（`tri-intent` §一路由映射表 / `doing/I11-coding.md` / `hooks/intent-gate.py`）对齐：§触发时机 补「tri-intent 路由（一跳覆写）」触发行 + 路由归属注记（原文自称「独立工具 skill，不注册为 tri-intent 下游路由项」为滞后口径）；旧文本内嵌「⚠️ 已废弃」提示防回流（2026-09-25）",
+      "glob": "tri-frontend-design/SKILL.md",
+      "old": "| 其它 skill 委派 | tri-coding 在产出前端界面时需先定可视化方向 | `design` |\n\n> 本 skill 是**独立工具 skill**，不注册为 tri-intent 下游路由项；用户直接调用，不经意图识别。`motion` / `variants` 模式也由用户显式触发，模型不自主激活。\n",
+      "new": "| 其它 skill 委派 | tri-coding 在产出前端界面时需先定可视化方向 | `design` |\n| **tri-intent 路由（一跳覆写）** | `L2 意图=I11 编码开发` 且 `L3_子意图=frontend-design`（任务要点为**设计语义**而非代码实现） | `design` |\n\n> **路由归属（2026-09-25 更正）**：本 skill 是 **tri-intent 的 I11 子类路由型下游**\n> （`L2=I11`，`L3_子意图=frontend-design`，**一跳覆写**）。真源为 `tri-intent/SKILL.md` §一 路由映射表\n> 与 `tri-intent/doing/I11-coding.md`；**可执行真源**为 `tri-intent/hooks/intent-gate.py` 中\n> `(\"I11\", \"frontend-design\") → \"tri-frontend-design\"` 的映射。\n> **本 skill 同时也支持用户直接调用**（不经意图识别）——两条入口并存，故 §上游依赖检测 的三态逻辑保留：\n> 有快照走 A、无上游且需要完整链路走 B、用户拒绝安装或无快照走 C。\n> `motion` / `variants` 模式由用户显式触发或由路由指定，模型不自主激活。\n> ⚠️ 旧文本自称「独立工具 skill，不注册为 tri-intent 下游路由项」——该口径已废弃，勿再引入。\n",
+      "already_marker": "路由归属（2026-09-25 更正）"
+    },
+    {
+      "id": "f22-fed-boundary-mece",
+      "type": "replace_text",
+      "label": "`tri-frontend-design` 与路由真源（`tri-intent` §一路由映射表 / `doing/I11-coding.md` / `hooks/intent-gate.py`）对齐：§职责边界 —— 「不认领任何 L2/L3 编码」→ 只认领 I11 的 L3=frontend-design 子类；「MECE：不认领下游路由，作为独立工具存在」→ **参与**路由并与同层五落点按产出物形态划分；Not-Trigger 末项改为「L1 识别/L2 分流由 tri-intent 负责」（2026-09-25）",
+      "glob": "tri-frontend-design/SKILL.md",
+      "old": "  - **意图识别** → `tri-intent`；本 skill 不认领任何 L2/L3 编码。\n- **MECE**：本 skill 不认领 tri-intent 下游路由，作为独立工具存在，不破坏家族下游 MECE 划分。\n- **不触发场景（Not-Trigger）**：本 skill 不接手「完整工程代码 / HTML/CSS 渲染实现」（转 tri-html）；不接手「库选型工程决策 / 代码质量审查」（属 tri-coding / tri-review，本 skill 只给「目的→工具」方向判定）；不接手「识别用户意图」（由用户显式触发，不经 tri-intent 路由）。\n",
+      "new": "  - **L1 意图识别 / L2 分流** → `tri-intent`；本 skill 只认领 `I11` 的 `L3=frontend-design` 子类，不认领其它 L2/L3 编码。\n- **MECE**：本 skill **参与** tri-intent 下游路由（I11 子类一跳覆写，见 §触发时机 上注），与同层落点以**产出物形态**划分，互不重叠：产出**设计方向与令牌规格**（CSS 令牌 / 动效基线 / 多变体方案）→ 本 skill；产出**可运行代码实现** → `tri-coding`（I11 默认）；产出**动效实现代码与资产集成** → `tri-lottie`；产出**编码需求文档**（`requirements.md`）→ `tri-prototype`；产出**可视化 HTML 图表** → `tri-html`；产出**全生命周期交付** → `tri-sdlc`。同时命中时的冲突消解见 `tri-intent/doing/I11-coding.md` §边界细则。\n- **不触发场景（Not-Trigger）**：本 skill 不接手「完整工程代码 / HTML/CSS 渲染实现」（转 tri-html）；不接手「库选型工程决策 / 代码质量审查」（属 tri-coding / tri-review，本 skill 只给「目的→工具」方向判定）；不接手「L1 意图识别与 L2 分流」（由 tri-intent 负责，本 skill 只按路由或用户直调进入）。\n",
+      "already_marker": "本 skill **参与** tri-intent 下游路由（I11 子类一跳覆写"
+    },
+    {
+      "id": "f23-fed-selfcheck-line",
+      "type": "replace_text",
+      "label": "`tri-frontend-design` 与路由真源（`tri-intent` §一路由映射表 / `doing/I11-coding.md` / `hooks/intent-gate.py`）对齐：契约 §6 自检句 `下游=<否>` → `路由=<I11/frontend-design 子类|用户直调>`（原字段编码的正是「不位于下游」这一滞后口径）（2026-09-25）",
+      "glob": "tri-frontend-design/SKILL.md",
+      "old": "，锚点=<已选X|待选>，下游=<否>，版本门=<A/B/C/D>」",
+      "new": "，锚点=<已选X|待选>，路由=<I11/frontend-design 子类|用户直调>，版本门=<A/B/C/D>」",
+      "already_marker": "路由=<I11/frontend-design 子类|用户直调>"
+    },
+    {
+      "id": "f25-fed-changelog-1-1-4",
+      "type": "replace_text",
+      "label": "tri-frontend-design CHANGELOG：追加 `[1.1.4]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25）",
+      "glob": "tri-frontend-design/CHANGELOG.md",
+      "old": "## [1.1.3] - 2026-09-24\n",
+      "new": "## [1.1.4] - 2026-09-25\n\n### 变更\n\n- **更正路由归属自述（口径修正，无行为变更）**：原文自称「独立工具 skill，不注册为 tri-intent 下游路由项」「不认领任何 L2/L3 编码」「不认领 tri-intent 下游路由」，与**路由真源**冲突 —— `tri-intent/SKILL.md` §一 路由映射表与 `tri-intent/doing/I11-coding.md` 均把本 skill 列为 `I11` 的 `L3=frontend-design` 子类**一跳覆写**下游，`tri-intent/hooks/intent-gate.py` 另有 `(\"I11\",\"frontend-design\") → \"tri-frontend-design\"` 可执行映射，`tri-intent/CHANGELOG` 亦记载该路由是「真空断链修复」的有意新增（此前本 skill 无任何路由入口）。\n- 现改为：**本 skill 参与 I11 子类路由，同时也支持用户直接调用**（三态上游依赖检测保留，两条入口并存）；§触发时机 补「tri-intent 路由」触发行 + 路由归属注记；§职责边界 补齐与同层五落点（tri-coding / tri-lottie / tri-prototype / tri-html / tri-sdlc）的产出物形态 MECE；自检句 `下游=<否>` 改为 `路由=<I11/frontend-design 子类|用户直调>`。\n- 非功能性变更（文档口径），无行为变更。\n\n## [1.1.3] - 2026-09-24\n",
+      "already_marker": "## [1.1.4] - 2026-09-25"
     }
   ]
 }
