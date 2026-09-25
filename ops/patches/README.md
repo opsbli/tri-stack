@@ -43,9 +43,15 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 ### 坑 1 · 行尾混用导致字节级匹配不命中
 
-**本仓库行尾本就混用**：多数 `.md` 的 **git blob 本身就是 CRLF**
-（实测 `README.md` blob 含 203 行 CR、`CONTRIBUTING.md` 含 133 行 CR，无 `.gitattributes`，
+**本仓库行尾本就混用**（**2026-09-23 诊断时的状态**）：多数 `.md` 的 **git blob 本身就是 CRLF**
+（当时实测 `README.md` blob 含 203 行 CR、`CONTRIBUTING.md` 含 133 行 CR，无 `.gitattributes`，
 `core.autocrlf=true`——作者在 Windows 上开发）；而本补丁层新写入的 spec 是 LF。
+
+> **现状已变（2026-09-25 实测）**：`.gitattributes` 已引入（`* text=auto eol=lf` +
+> `*.md` / `*.py` / `*.json` / `*.html` … `text eol=lf`）、`core.autocrlf` 在 `.git/config`
+> 中置为 **false**，`README.md` 的 blob **已为 LF（0 CR）**。但 `tri-intent/SKILL.md` 等
+> **blob 仍为 CRLF**（386 行全 CRLF，未被 renormalize 覆盖），工作区还出现 `\r\r\n`（见坑 5）
+> ⇒ **坑 1 的处置（行尾无关匹配）依然必要，且并不充分**——多行 `old` 在 `\r\r\n` 上仍不命中。
 
 ⇒ 若按**字节**匹配 `old`/`new`（LF 书写），遇到 CRLF 文件会**静默不命中**，表现为
 `应用 0｜已应用 0`（`f6-gate-fill-empty-block` 首次就是这样失败的）。
@@ -101,8 +107,11 @@ n_old = txt.count(old_lf)
 
 ### 坑 5 · 工作区 `\r\r\n` 会让多行 `old` **静默不命中**
 
-**背景**：坑 1 解决的是「CRLF 检出 + 字节级匹配」。本仓库还有更刁的一种：
-**`\r\r\n`（CRLF blob 被 smudge 两次）**。
+**背景**：坑 1 解决的是「CRLF 检出 + 字节级匹配」。本仓库还有更刁的一种：**`\r\r\n`**。
+实测归因（2026-09-25）：`core.autocrlf` 为 **`false`**（`.git/config`）、`.gitattributes` 目标是 LF，
+而 `tri-intent/SKILL.md` 等 **blob 仍是 CRLF**（386 行全 CRLF）⇒ `\r\r\n` **不是** autocrlf 造成，
+而是检出/写入链在已有 CRLF 之上**再补一个 CR**。（**别照抄原因**——2026-09-23 的诊断曾把同类
+现象归给 `core.autocrlf=true`，该归因现已不成立。）
 
 `op_replace_text` 的 `read_norm` 只做 `.replace("\r\n", "\n")` —— 对 `\r\r\n` 只会吃掉后一个 `\r`，
 **留下一个裸 `\r`**：
@@ -348,8 +357,10 @@ Counter(p.read_text().count("def self_consistent_check(") for p in files)
   （`.gitattributes` 的 `*.md text eol=lf`，即去掉全部 CR）实测仅 **2 种形态** ——
   **32** 个完全一致（14 行，仅 `{slug}` 不同）+ `tri-forge` **26** 行（保留专属段）。
 
-> ⚠️ **测形态时必须先归一化行尾**：本仓库 `core.autocrlf=true` 且 `.gitattributes` 强制
-> `*.md text eol=lf`，工作区字节可能是 `\r\r\n`（旧 CRLF blob 又被 smudge 一次）。
+> ⚠️ **测形态时必须先归一化行尾**：`.gitattributes` 虽已强制 `*.md text eol=lf`，但
+> **`core.autocrlf` 实测为 `false`（写在 `.git/config`）**，且部分 `*.md` 的 **blob 仍是 CRLF**
+> （如 `tri-intent/SKILL.md`）⇒ 工作区字节可能落成 `\r\r\n`。**该现象不是 autocrlf 造成的**
+> ——是检出/写入链在已有 CRLF 之上又补了一个 CR（2026-09-25 实测；归因不确定时以 byte 统计为准）。
 > 直接按字节数行会把同一形态误判为多一种（曾因此把 4 个 `\r\r\n` 文件误读为「15 行」）。
 > **判据应以 `git hash-object` 与 HEAD blob 比对为准**。
 
