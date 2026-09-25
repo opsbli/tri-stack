@@ -26,7 +26,7 @@ ops/
 ├── versions.json              自主版本线基线（34 个 skill 的版本快照：顶层 25 + tri-sdlc 子 skill 9）
 └── patches/                    本地补丁层（对上游 skill 的本地修正）
     ├── README.md               机制说明、补丁清单、每项依据、踩坑
-    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 30 个 op）
+    ├── manifest.json           补丁清单（声明式，唯一事实源，当前 31 个 op）
     ├── apply.py                幂等重放器
     ├── payload/
     │   └── version-check-spec.md   校正版版本检查规范（分发到各 skill 的 references/）
@@ -235,8 +235,23 @@ pat='^version: *(\\S+)'   -> 匹配
 | 校验覆盖（顶层 + `tri-sdlc/children/*`） | 33 | **34** | `tri-forge/scripts/check_registry.py --check` 报「检查 34 个 skill；漂移 0」 |
 | `version-check-spec.md` 份数 | 33 | **34** | `spec-per-skill` op 实测 `跳过 34` |
 | `check_update.py` 份数 | 34（33 skill + 1 payload） | **35（34 skill + 1 payload）** | 34 份 skill 副本 + `ops/patches/assets/` 1 份，hash 仍全等 |
-| 补丁层 op 数 | 23 | **30** | `ops/patches/manifest.json` |
+| 补丁层 op 数 | 23 | **31** | `ops/patches/manifest.json` |
 | `converge-version-stub` 覆盖顶层节 | 24 | **25** | 该 op 实测 `跳过 25` |
 | `f13` 覆盖 | 24 | **25** | 该 op 实测 `跳过 25` |
 
 > 快照口径（P4 已刷新）：`ops/versions.json` 条目由 **33 → 34**。
+
+### 计数增量（2026-09-25 · 第二轮）
+
+修复 `compliance_check.py` **角色识别盲区**（补丁 op `f20-role-detection`）后：
+补丁层 op 数 **30 → 31**。skill 数 / 校验覆盖 / `check_update.py` 份数**均不变**
+（该 op 只改 `tri-forge/scripts/compliance_check.py`，不动 skill 集合）。
+
+| 受影响位置 | 处置 |
+|---|---|
+| 上方目录树 `当前 30 个 op`、§计数对账表 `补丁层 op 数` 行 | ✅ 已改当前值 |
+| 根 `README.md` 目录树 `30 个 op` | ✅ 已改当前值 |
+| 本文件 §计数增量（第一轮）与上表其余行 | ⬜ **冻结** —— 当时实测快照 |
+
+> 本轮同时给 `ops/patches/README.md` 的「踩坑」小节补了**坑 4**（纯删除型修正无可用
+> `already_marker`）与**坑 5**（工作区 `\r\r\n` 使多行 `old` 静默不命中）。

@@ -39,7 +39,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 **推荐时机**：每次 `skillhub upgrade` 之后立即重放一次。
 
-## 实测踩过的三个坑（都会导致补丁层静默失效）
+## 实测踩过的五个坑（都会导致补丁层静默失效）
 
 ### 坑 1 · 行尾混用导致字节级匹配不命中
 
@@ -65,6 +65,85 @@ python ops/patches/apply.py --json      # 机器可读输出
 
 `sync_spec` 首版用字节哈希比对，因行尾差异永不相等，**每次运行都报「写入 42」**，
 幂等形同虚设。判据：**连续运行两次，第二次应报 `写入 0｜跳过 N`**。
+
+### 坑 4 · 纯**删除型**修正没有可用的 `already_marker`
+
+**场景**：修正的实质是**把一段文本删掉一部分**（而非插入或改写语义），期望 `old`（改前文本）
+命中一次、替换为 `new`（改后文本）。
+
+**根因**：`op_replace_text` 的判定顺序是「**先判 marker、再判 old**」：
+
+```python
+if marker and marker in txt:
+    already += 1
+    continue          # ← 命中即判「已应用」，old 根本不看
+n_old = txt.count(old_lf)
+```
+
+而**纯删除型修正的改后文本，其每一个连续子串都必然已在改前文本中出现过**——包括跨被删边界的
+「接缝」。于是两条路都堵死：
+
+- 若拿 `new` 的某个子串当 marker（`new` 缺省即作 marker）⇒ marker 在**改前**就命中
+  ⇒ op 被判「已应用」而**永不生效**；
+- 若改用改前文本里的短串当 marker ⇒ 同样在改前命中（即坑 2）。
+
+**实测案例（`f19-compliance-dedup`）**：原计划 `already_marker = 'role = "unknown"'`，
+但该串在改前文件里**已出现 2 次** ⇒ op 永不生效。曾试图为「接缝」找一个改前不含的子串，
+结果证明**不存在** —— 把改后文本按所有可能边界切分，每个片段都能在改前文本里找到
+（例如 `role = "unknown"\n\n    r = []`，改前 L169-171 本就是这个形态）。
+
+**修复范式**：`new` **必须引入改前不存在的新文本**，并以此充当 marker。`f19` 的做法是在保留处
+加注「——单次赋值（去重后仅保留一处，勿再复制）」，取其中一段作 `already_marker`。
+
+**判据**：写 op 前**先断言** `marker not in pre_fix_text`，写后断言 `marker in post_fix_text`
+（`f20` 已把这两条固化成构建脚本里的 `assert`）；随后连跑两次 `apply.py`，
+第二次应为 `应用 0｜已应用 1`。
+
+### 坑 5 · 工作区 `\r\r\n` 会让多行 `old` **静默不命中**
+
+**背景**：坑 1 解决的是「CRLF 检出 + 字节级匹配」。本仓库还有更刁的一种：
+**`\r\r\n`（CRLF blob 被 smudge 两次）**。
+
+`op_replace_text` 的 `read_norm` 只做 `.replace("\r\n", "\n")` —— 对 `\r\r\n` 只会吃掉后一个 `\r`，
+**留下一个裸 `\r`**：
+
+| 文件字节 | `read_norm` 归一后 | 多行 `old`（LF 书写）命中 |
+|---|---|---|
+| `AAA\nBBB\n` | `AAA\nBBB\n` | ✅ |
+| `AAA\r\nBBB\r\n` | `AAA\nBBB\n` | ✅ |
+| `AAA\r\r\nBBB\r\r\n` | `AAA\r\nBBB\r\n` | ❌ **`count == 0`** |
+
+⇒ 多行 `old` 在 `\r\r\n` 文件上**永不命中**，op 报 `应用 0｜已应用 0`（= `not_found`），
+**且没有任何报错**。写回本身是**保形**的（`write_keep` 会把 `\n` 还原为 `\r\n`，往返无损），
+所以问题**只在匹配**，不在写回。
+
+**实测**（2026-09-25，`f20` 轮，直接调用 `apply.read_norm` / `write_keep`）：
+
+```
+t_lf.txt       count(old_lf)=1   ✅
+t_crlf.txt     count(old_lf)=1   ✅
+t_crcrlf.txt   count(old_lf)=0   ❌  ← 归一后为 'AAA\r\nBBB\r\nCCC\r\n'
+```
+
+全仓扫描**16 个文件**为 `\r\r\n`：`tri-intent` / `tri-checklist` / `tri-evolve` / `tri-html` 的
+`SKILL.md`，加 12 个 `CHANGELOG.md`（`tri-action` / `coding` / `evolve` / `fix` / `html` /
+`intent` / `loop` / `meta` / `plan` / `sdlc` / `true` / `workflow`）。
+
+**当前为何没爆**：现有 op 要么是**单行** `old`（无内部换行 ⇒ 不受影响），要么已由 marker 短路
+（报 `已应用 N`，压根不走 `count(old_lf)`）。**它会在「上游整树替换后重放」这一设计场景里爆**。
+
+**规避**（写 op / 读文件时）：
+
+- **单行 `old` 天然免疫**；多行 `old` 的目标文件若可能为 `\r\r\n`，**不要依赖多行匹配** ——
+  切成若干单行 op，或改用 `replace_regex` 逐行处理；
+- 需要**读文件内容做解析**时，先去掉**全部** `\r`：`re.sub(r"\r", "", raw)`。
+  ⚠️ 「先替 `\r\n` 再替 `\r`」是**错的**（`\r\r\n` 会被拆成两次匹配 ⇒ 仍得 `\n\n`）；
+  `read_text()` 的通用换行同样把 `\r\r\n` 译成 `\n\n` 并**插入空行**
+  （`f20` 解析 `tri-intent` 路由表时因此**两次**返回空集，循环在首行后即 `break`）。
+
+**判据**：按 **byte** 统计 `raw.count(b"\r\n")` 与 `raw.count(b"\r")`；两者不等即存在裸 `\r`
+（`\r\r\n` 的特征是 `\r` 数 ≈ `2 ×` `\r\n` 数）。**不要用 `read_text()` 数** —— 它会归一化，
+`\r` 恒为 0，给出假象。
 
 ## 当前补丁清单
 
@@ -101,6 +180,7 @@ python ops/patches/apply.py --json      # 机器可读输出
 | `f17-tri-init-changelog` | replace_text | `tri-init` CHANGELOG：追加 `[1.0.3]` 条目（P2 属人工内容，由 op 表达而非手改文件）（2026-09-25） |
 | `f18-familyspec-shared-domain` | replace_text | `family-spec.md` §1.4：补「**判定顺序**」（**可推导优先** —— 共享但可推导者仍属「通过」，豁免只收「共享 ∩ 不可推导」）+ 给豁免清单两行补「不可推导」依据；消除 `coding/` 两行同时命中的歧义（2026-09-25） |
 | `f19-compliance-dedup` | replace_text | `compliance_check.py`：删去重复的「角色识别」if/elif 链（原 L143-155 与 L157-169 逐字重复、二次赋值同值、行为无差异）；保留处加注「单次赋值」作幂等标记（2026-09-25） |
+| `f20-role-detection` | replace_text | `compliance_check.py`：修复**角色识别盲区** —— ① 按 `tri-intent/SKILL.md` §一 路由映射表（`family-spec` §1.1 真源）收 slug 集合，**收录即判下游**；② 下游判据由「下游 ∩ 认领」改为「`下游执行` 写法 ∪ 真源收录」；③ `children` 判定**前移**并用目录结构作主判据；④ 读真源先 `re.sub(r"\r","")` 去尽 CR。效果：`unknown` **8 → 0**、`downstream` **8 → 16**、#8 由 N-A 转 MANUAL，**verdict 无变化**（2026-09-25） |
 
 ## 每项补丁的依据
 
@@ -517,3 +597,17 @@ skillhub[ \t]+install[ \t]+(?:<[^>]*>|[-A-Za-z0-9_]+)(?:[ \t]+--dir[ \t]+(?:<[^>
 | §源形态取「去耦版」（`24 份脚本有两种形态`）、§后续 f13（`顶层 24 份`/`终态 33+1=34`） | ⬜ **冻结** —— 均为当时实测快照，改写即伪造 |
 
 > 冻结段落的现状读数：`check_update.py` **34 份 skill 副本 + 1 payload**、**仅 1 种形态**（`f13` 后全等）。
+
+### 计数增量（2026-09-25 · 第二轮）
+
+修复 `compliance_check.py` 角色识别盲区后：补丁层 op **30 → 31**（新增 `f20-role-detection`）。
+skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只改脚本，不动 skill 集合）。
+
+| 受影响位置 | 处置 |
+|---|---|
+| 「当前补丁清单」表新增 `f20` 一行 | ✅ 已补 |
+| 本文件 §「实测踩过的坑」标题 `三个坑` → `五个坑`，新增坑 4 / 坑 5 | ✅ 已补 |
+| `ops/README.md` 目录树 `当前 30 个 op`、§计数对账表 `补丁层 op 数` 行 | ✅ 已改当前值 |
+| 根 `README.md` 目录树 `30 个 op` | ✅ 已改当前值 |
+| §计数增量（2026-09-25，第一轮）`op 28 → 30` | ⬜ **冻结** —— 当时实测快照 |
+| `reports/tri-req-audit-remediation.md`（`op 28 → 30` ×2、`补丁层 op 数 23 → 30`） | ⬜ **冻结** —— 带日期的整改报告，改写即伪造结论 |

@@ -141,16 +141,46 @@ def check(d: Path) -> dict:
     secs = sections(body)
 
     # 角色识别（决定 #8 / #20 是否适用）——单次赋值（去重后仅保留一处，勿再复制）
+    #
+    # 角色判定口径（family-spec §1.1）：路由归属以 `tri-intent/SKILL.md` §一 路由映射表为准。
+    # 先把真源里的 slug 收成集合——**凡被真源收录即已参与路由表**，即便该 skill 自述「独立工具」
+    # （实测 tri-frontend-design：自述 L44/L83/L84 称「不注册为 tri-intent 下游路由项」，但真源
+    #  L239/L272 将其列为 I11 `frontend-design` 子类一跳覆写，`hooks/intent-gate.py` 亦有对应
+    #  可执行映射 ⇒ 以真源为准判 downstream）。
+    # 读取须**先去尽 CR**：本仓库工作区存在 `\r\r\n`（CRLF 被 smudge 两次）文件，
+    # 先替 `\r\n` 会只剩一个 `\r`、再替 `\r` 又变回 `\n\n`，等于未归一化；通用换行
+    # `read_text()` 同样把 `\r\r\n` 译成 `\n\n` 并**插入空行**，使「遇非表行即止」的循环
+    # 在首行后立刻 break、解析结果恒为空集（两次实测踩过）。故一律 `re.sub(r"\r", "", ...)`。
+    routed = set()
+    _ti = REPO / "tri-intent" / "SKILL.md"
+    if _ti.is_file():
+        _raw = _ti.read_bytes().decode("utf-8", errors="ignore")
+        _intab = False
+        for _ln in re.sub(r"\r", "", _raw).split("\n"):
+            if _ln.startswith("| L2 意图"):
+                _intab = True
+                continue
+            if _intab:
+                if not _ln.startswith("|"):
+                    break
+                routed.update(re.findall(r"tri-[a-z0-9-]+", _ln))
     if "总路由" in desc and "识别" in desc and "路由" in desc:
         role = "root"
+    elif d.parent.name == "children" or "子 skill" in desc or "children" in desc:
+        # `children` 判定**前置于** internal / lateral / downstream：子 skill 的描述含
+        # 「快照§三」「L3_子意图」等下游类线索，置于下游判定之后会被误判（实测 9 个子 skill
+        # 全用「子SKILL」无空格写法，文本判据不足以识别，故以**目录结构**为主判据）。
+        role = "child"
     elif "内部专用工具" in desc or "内部专用工具" in body[:1200]:
         role = "internal"
     elif "横向" in desc:
         role = "lateral"
-    elif ("下游" in desc or "桥接" in desc) and ("认领" in desc or "处理 I" in desc or "处理 L2" in desc):
+    elif "下游执行" in desc or "下游执行" in body[:1200] or slug in routed:
+        # 「下游执行 skill / 下游执行者」是家族实际写法（15 例 —— 16 个下游中仅 tri-frontend-design 靠真源收录命中）；旧判据要求「下游」与
+        # 「认领 / 处理 I / 处理 L2」**同时**出现才判下游，而多数 skill 只写前者 ⇒ 8 例漏判
+        # 为 unknown（tri-checklist / code-analyzer / fix / god / html / lottie / review /
+        # frontend-design），并使 #8 被误判为 N-A。现改为「写法命中断言 ∪ 真源收录」双通道。
         role = "downstream"
-    elif "子 skill" in desc or "children" in desc:
-        role = "child"
     else:
         role = "unknown"
 
