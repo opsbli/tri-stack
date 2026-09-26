@@ -4,6 +4,13 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.4] - 2026-09-26
+
+### 修复
+
+- **契约第 1 条修复**：`&**：` 损坏行恢复为 `1. **强制前置**：`（P0/P1 批同款清零时本文件因 children 层级漏扫）。
+- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`。
+
 ## [1.1.3] - 2026-09-26
 
 ### 变更

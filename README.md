@@ -64,14 +64,14 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-intent](tri-intent/) | 1.14.3 | 意图识别总路由。第一层三分法（Asking/Doing/Expressing/Meta）→ 下钻二级意图 → 产出快照交接下游 |
-| [tri-meta](tri-meta/) | 1.2.7 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
+| [tri-meta](tri-meta/) | 1.2.8 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
 
 ### 编程主干（写 → 修 → 审）
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-coding](tri-coding/) | 1.8.3 | 编码开发，三门流程：需求审批 → 设计审批 → 执行确认（I11） |
-| [tri-fix](tri-fix/) | 1.5.3 | 调试修复：先造出一条能变红的反馈循环，再定位根因（I12） |
+| [tri-fix](tri-fix/) | 1.5.4 | 调试修复：先造出一条能变红的反馈循环，再定位根因（I12） |
 | [tri-review](tri-review/) | 1.7.2 | 代码审查：三模式 + Fowler 12 坏味 + 审查执行纪律八则（CR） |
 
 ### 编码子类（I11 一跳覆写）
@@ -87,7 +87,7 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-code-analyzer](tri-code-analyzer/) | 1.5.3 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
-| [tri-html](tri-html/) | 1.3.5 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
+| [tri-html](tri-html/) | 1.3.6 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
 | [tri-checklist](tri-checklist/) | 1.1.6 | 审计清单生成：改动点 / 审查点 / 测试点 / 测试步骤四维 |
 
 ### 全流程 / 协作对齐
@@ -96,7 +96,7 @@
 |---|---|---|
 | [tri-sdlc](tri-sdlc/) | 1.1.7 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
 | [tri-orchestrate](tri-orchestrate/) | 1.0.3 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
-| [tri-grill](tri-grill/) | 1.0.2 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
+| [tri-grill](tri-grill/) | 1.0.3 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
 | [tri-req-audit](tri-req-audit/) | 1.1.1 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
 | [tri-domain](tri-domain/) | 1.0.2 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
 
@@ -112,7 +112,7 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-plan](tri-plan/) | 1.3.4 | 规划拆解：WBS + 依赖图 + 风险登记（I13） |
+| [tri-plan](tri-plan/) | 1.3.5 | 规划拆解：WBS + 依赖图 + 风险登记（I13） |
 | [tri-action](tri-action/) | 1.2.6 | 操作执行（I14） |
 | [tri-workflow](tri-workflow/) | 1.2.7 | 工作流设计引擎：7 阶段混合智能流水线（I13/I14 子类） |
 | [tri-loop](tri-loop/) | 1.2.6 | 知识库 loop 启动（I14 子类） |

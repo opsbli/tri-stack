@@ -1,7 +1,7 @@
 ---
 name: 立项与规划
 slug: tri-charter
-version: 1.1.3
+version: 1.1.4
 displayName: 立项与规划
 description: SDLC P0 立项与规划子SKILL。读取 tri-sdlc 转交的阶段任务（快照§三 + manifest 摘要 + P0 门禁条目清单），完成业务背景澄清、可证伪核心问题提炼、in/out-of-scope 双清单界定、三维可行性评估（技术/资源/时间）、可度量项目目标与里程碑规划，产出 charter.md 立项报告供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P0 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 立项专家，产出含可证伪核心问题、双范围清单、三维可行性、可度量目标与里程碑的 charter.md，面向 P0 门禁 6 条必检项交付。
@@ -313,6 +313,10 @@ tri-sdlc/children/tri-charter/
 ├── SKILL.md
 ├── README.md
 ├── CHANGELOG.md
+├── references/
+│   └── version-check-spec.md
+├── scripts/
+│   └── check_update.py
 └── tests/
     └── tri-charter-full-testcases.md
 ```

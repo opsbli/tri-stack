@@ -1,7 +1,7 @@
 ---
 name: 运维与监控
 slug: tri-ops
-version: 1.1.3
+version: 1.1.4
 displayName: 运维与监控
 description: SDLC P8 运维与监控子SKILL。读取 tri-sdlc 转交的阶段任务（P7 发布报告与巡检结论 + P2 容量性能目标 + P6 缺陷台账 + P8 门禁条目清单），定义日志四要素方案、三类监控指标与采集方式、指标阈值与告警四要素、健康检查与失败处置、备份容灾与恢复演练计划，并沉淀 ≥3 条含现象/定位/处置的故障处置条目，产出 ops-runbook.md / monitoring.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P8 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 运维监控专家，产出日志与监控方案、告警阈值矩阵、健康检查、备份容灾与故障处置手册，面向 P8 门禁 7 条必检项交付。
@@ -21,7 +21,7 @@ license: MIT
 
 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
-&**：MUST 校验转交包 `阶段 = P8` 且 P7 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
+1. **强制前置**：MUST 校验转交包 `阶段 = P8` 且 P7 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
 2. **面向门禁产出**：MUST 逐条覆盖 P8 门禁条目（`P8-M0`–`P8-M6` 必检 + `P8-R1`–`R2` 建议），两份交付物 MUST 一次性齐备。
 3. **日志四要素**：日志方案 MUST 含 **采集范围 + 格式 + 保留期 + 聚合方式**，缺任一要素视为交付未完成（`P8-M1`）。
 4. **指标三类覆盖**：监控指标 MUST **≥3 类且可用性 / 性能 / 业务各 ≥1**，每项 MUST 给采集方式（`P8-M2`）。
@@ -284,6 +284,10 @@ tri-sdlc/children/tri-ops/
 ├── SKILL.md
 ├── README.md
 ├── CHANGELOG.md
+├── references/
+│   └── version-check-spec.md
+├── scripts/
+│   └── check_update.py
 └── tests/
     └── tri-ops-full-testcases.md
 ```

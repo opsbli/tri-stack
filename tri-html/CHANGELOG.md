@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/spec/v2.0.0.html).
 
+## [1.3.6] - 2026-09-26
+
+### 修复
+
+- **幽灵引用清理**：§3.13 → §代码版权与许可证合规（3 处，tri-coding 无 §3.13 编号）。
+- **残句补全**：「引擎内部纪律」行悬空逗号截断，补全「NEVER 直接修改 viewer 内部实现」语义。
+
 ## [1.3.5] - 2026-09-26
 
 ### 变更

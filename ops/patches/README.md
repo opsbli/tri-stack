@@ -410,6 +410,30 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw2-tri-ops-version` | replace_regex | `tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
 | `dw2-tri-release-version` | replace_regex | `tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
 | `dw2-tri-require-version` | replace_regex | `tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw3-ops-contract-fix` | replace_text | `tri-ops` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（P0/P1 批同款清零时因 children 层级漏扫。darwin P2 批） |
+| `dw3-plan-dedup` | replace_text | `tri-plan` 去重：删除逐字重复的第二份「处理流程」节（含 7 行表。darwin P2 批） |
+| `dw3-meta-fallback3` | replace_text | `tri-meta` 兜底③口径对齐：移除对不存在的「降级模式」的引用，对齐「不支持降级」硬性阻断语义（darwin P2 批） |
+| `dw3-grill-workflow` | replace_text | `tri-grill` 处理流程扩写：6 行表 → 含每步输入/产出/闸门的 7 步表（语义仅聚合既有章节。darwin P2 批） |
+| `dw3-fix-renumber` | replace_text | `tri-fix` 契约编号修正：第 2 个「8.」→「9.」（双「第8条」冲突。darwin P2 批） |
+| `dw3-html-ghost-ref-summary` | replace_text | `tri-html` 幽灵引用清理（summary 行）：§3.13 代码版权合规 → §代码版权与许可证合规（darwin P2 批） |
+| `dw3-html-ghost-ref-tree` | replace_text | `tri-html` 幽灵引用清理（目录注释行）：+ §3.13 代码版权 → + §代码版权与许可证合规（darwin P2 批） |
+| `dw3-html-ghost-ref-hardline` | replace_text | `tri-html` 幽灵引用清理（硬红线行）：遵循 §3.13 硬红线 → 遵循 §代码版权与许可证合规 硬红线（darwin P2 批） |
+| `dw3-html-truncation` | replace_text | `tri-html` 残句补全：「引擎内部纪律」行悬空逗号截断，补全「内层不动」语义（语义源自本节标题与 engine-evolution-notes.md。darwin P2 批） |
+| `dw3-children-dirtree` | replace_text | tri-sdlc 子 skill SKILL.md 目录结构节补登 `references/` 与 `scripts/check_update.py`（wildcard ×9；与 f12 README 树对齐。darwin P2 批） |
+| `dw3-tri-ops-changelog` | replace_text | `tri-ops` CHANGELOG：追加 [1.1.4] 条目（契约修复 + 目录树。darwin P2 批） |
+| `dw3-tri-charter-changelog` | replace_text | `tri-charter` CHANGELOG：追加 [1.1.4] 条目（目录树。darwin P2 批） |
+| `dw3-tri-cr-changelog` | replace_text | `tri-cr` CHANGELOG：追加 [1.1.4] 条目（目录树。darwin P2 批） |
+| `dw3-tri-devenv-changelog` | replace_text | `tri-devenv` CHANGELOG：追加 [1.1.4] 条目（目录树。darwin P2 批） |
+| `dw3-tri-release-changelog` | replace_text | `tri-release` CHANGELOG：追加 [1.1.4] 条目（目录树。darwin P2 批） |
+| `dw3-tri-require-changelog` | replace_text | `tri-require` CHANGELOG：追加 [1.1.4] 条目（目录树。darwin P2 批） |
+| `dw3-tri-design-changelog` | replace_text | `tri-design` CHANGELOG：追加 [1.1.5] 条目（目录树。darwin P2 批） |
+| `dw3-tri-impl-changelog` | replace_text | `tri-impl` CHANGELOG：追加 [1.1.5] 条目（目录树。darwin P2 批） |
+| `dw3-tri-test-changelog` | replace_text | `tri-test` CHANGELOG：追加 [1.1.5] 条目（目录树。darwin P2 批） |
+| `dw3-tri-grill-changelog` | replace_text | `tri-grill` CHANGELOG：追加 [1.0.3] 条目（工作流扩写。darwin P2 批） |
+| `dw3-tri-plan-changelog` | replace_text | `tri-plan` CHANGELOG：追加 [1.3.5] 条目（去重。darwin P2 批） |
+| `dw3-tri-meta-changelog` | replace_text | `tri-meta` CHANGELOG：追加 [1.2.8] 条目（兜底③对齐。darwin P2 批） |
+| `dw3-tri-fix-changelog` | replace_text | `tri-fix` CHANGELOG：追加 [1.5.4] 条目（编号修正。darwin P2 批） |
+| `dw3-tri-html-changelog` | replace_text | `tri-html` CHANGELOG：追加 [1.3.6] 条目（幽灵引用 + 残句补全。darwin P2 批） |
 
 ## 每项补丁的依据
 
@@ -985,3 +1009,20 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 回执：`apply.py` 第二次跑零真写入/零真应用（`dw2-*` 全部 `应用 0｜已应用 1`）；
 `version-lint` 包内漂移 0、`--apply-docs` 修文档层 74 处后 EXIT=0。
 全部 35 skill 升 PATCH（章节级新增，family-spec §六 步骤 6）。
+
+### 计数（2026-09-26 · darwin-skill P2 批增量）
+
+> 上两节计数为时点快照，**冻结**。本批 = 结构性重写类 7 项
+> （proposal `reports/proposal-darwin-p2-20260926.md`，Approved: yes 2026-09-26；
+> paired 评审 3 judge 全 better 15/15，含可回溯性核验）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 223 | **247** | +24（`dw3-*`：内容修复 9 + children 目录树 wildcard 1 + CHANGELOG 14）；**14 个既有 settle op 目标就地更新**（不占新行：ops/charter/cr/devenv/release/require→1.1.4，design/impl/test→1.1.5，grill→1.0.3，plan→1.3.5，meta→1.2.8，fix→1.5.4，html→1.3.6） |
+| §当前补丁清单 数据行数 | 225 | **249** | +24；对账恒等式：249 − 划除 2 = manifest **247** ✅ |
+
+回执：`apply.py` 连跑幂等（`dw3-*` 全部 `应用 0｜已应用 N`）；`version-lint --apply-docs` EXIT=0。
+14 skill PATCH 升版（fix/meta/html/plan/grill 为结构性修复；children 9 份为目录结构节补登，d6 失真消除）。
+四处计数中 skill 总数（26/35/35/36）不变——本批无新增 skill。
+曾发现的机械替换残留（`§3.13 代码版权(合规)` 整替换产生重复短语）已按「未 commit 范式」就地拆分修正：
+ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回滚 `tri-html/SKILL.md` 后重放。

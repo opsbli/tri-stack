@@ -1,7 +1,7 @@
 ---
 name: 规划拆解
 slug: tri-plan
-version: 1.3.4
+version: 1.3.5
 displayName: 规划拆解
 description: 规划拆解下游执行 skill。读取 tri-intent 快照 §三，处理 I13（规划拆解）意图，产出计划/方案/任务清单/排期等结构化规划成果物。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装）。
 summary: 依据 tri-intent 快照自主管理规划全链路（规划纲要→完整规划→任务清单），融合 WBS 分解与 SMART 目标校准方法论，含三门审批机制。
@@ -248,20 +248,7 @@ python scripts/check_update.py --slug tri-plan --json
 | 6 | — | 门③·确认 | 主动询问：①是否调其它 skill ②是否有补充 | 有补充 → 更新 `task-checklist.md` 再门③；规划缺陷回退门② |
 | 7 | 规划成果物 | — | 交付 `plan.md` + `task-checklist.md` | — |
 
-## 处理流程
-
-> 执行顺序固定：§版本检查与更新机制（第零步）→ 上游依赖检测 → 读取快照 §三 → 核心执行。
-> 链路：`快照 §三 → plan-brief.md → 门① → plan.md → 门② → task-checklist.md → 门③ → 交付`
-
-| 阶段 | 产出物 | 审批门 | 关键动作 | 回炉规则 |
-|---|---|---|---|---|
-| 1 | `plan-brief.md` | 门① | 从快照提取目标/范围/约束；SMART 校准 + 验收标准骨架 + 里程碑草案 | — |
-| 2 | — | 门①·确认 | 向用户复述规划方向+目标+范围+约束；目标含糊则在此澄清 | 不通过 → 更新 `plan-brief.md` 再门① |
-| 3 | `plan.md` | 门② | WBS 分解 + 依赖图 + 里程碑 + 风险登记 + 验收标准 | — |
-| 4 | — | 门②·审计 | 向用户复述拆解合理性+依赖关系+风险缓解 | 不通过 → 更新 `plan.md` 再门②；涉及方向变更回退门① |
-| 5 | `task-checklist.md` | 门③ | 据 plan.md 产出可执行任务清单 + 逐项验收标准 + 依赖标注 | — |
-| 6 | — | 门③·确认 | 主动询问：①是否调其它 skill ②是否有补充 | 有补充 → 更新 `task-checklist.md` 再门③；规划缺陷回退门② |
-| 7 | 规划成果物 | — | 交付 `plan.md` + `task-checklist.md` | — |
+<!-- dw3-plan-dedup-20260926 -->
 
 ## 兜底处理（NEVER 静默失败）
 

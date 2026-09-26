@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.5] - 2026-09-26
+
+### 修复
+
+- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。
+
 ## [1.1.4] - 2026-09-26
 
 ### 变更

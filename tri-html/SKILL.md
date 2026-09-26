@@ -1,10 +1,10 @@
 ---
 name: 架构可视化分析
 slug: tri-html
-version: 1.3.5
+version: 1.3.6
 displayName: 架构可视化分析
 description: 项目架构可视化分析下游执行 skill。以系统架构设计师视角对指定项目（默认当前项目）进行全面深度架构分析，涵盖架构设计/目录结构/技术栈选型/代码设计/功能设计/特殊设计（安全/性能等）六维，双引擎生成可视化产物：高精度 viewer 引擎（Typed JSON IR → 确定性校验 showcase 门禁 → 单文件交互 HTML：架构图/工作流/时序图/数据流/生命周期五类，深浅主题、聚焦、路径探查、角色透镜、故事播放、PNG/SVG/WebM 导出）+ Mermaid 兼容模式（目录树/类图/ER/旅程图）。当 tri-intent 快照下游路由建议指向本 skill（L2=I10、L3=arch-viz）时激活。支持独立安装，含上游依赖检测三态逻辑与渲染引擎 Node 探测降级链。
-summary: 六维架构分析方法论 + 双渲染引擎（viewer 确定性高精引擎 / Mermaid 兼容）+ showcase 客观门禁 + 结构化诊断修复回执（2 轮上限）+ 单文件 HTML 交付，含双审批门与 §3.13 代码版权合规。
+summary: 六维架构分析方法论 + 双渲染引擎（viewer 确定性高精引擎 / Mermaid 兼容）+ showcase 客观门禁 + 结构化诊断修复回执（2 轮上限）+ 单文件 HTML 交付，含双审批门与 §代码版权与许可证合规。
 tags: [architecture-analysis, visualization, html, mermaid, single-file, arch-viz, typed-ir, viewer-engine]
 license: MIT
 ---
@@ -325,7 +325,7 @@ viewer 高精图表（若有）：写候选 IR → validate showcase → 修复�
 
 ```
 tri-html/
-├── SKILL.md                          # 主入口：六维分析 + 双引擎图表 + 单文件 HTML 组装 + 双审批门 + §3.13 代码版权
+├── SKILL.md                          # 主入口：六维分析 + 双引擎图表 + 单文件 HTML 组装 + 双审批门 + §代码版权与许可证合规
 ├── README.md                         # 特性/目录结构/安装/使用/测试/设计原则
 ├── CHANGELOG.md                      # 版本变更记录（Keep a Changelog + SemVer）
 ├── _meta.json                        # 安装元数据（ownerId/publishedAt/slug/version，家族内部工具 安装时生成）
@@ -351,11 +351,11 @@ tri-html/
     └── tri-html-full-testcases.md    # 全场景测试用例
 ```
 
-> **引擎内部纪律（外层适配、内层不动）**：`scripts/viewer/` 为 vendored 第三方组件，tri-html 集成层只通过 CLI 调用（`node scripts/viewer/bin/viewer.mjs <command>`），
+> **引擎内部纪律（外层适配、内层不动）**：`scripts/viewer/` 为 vendored 第三方组件，tri-html 集成层只通过 CLI 调用（`node scripts/viewer/bin/viewer.mjs <command>`），**NEVER 直接修改 `scripts/viewer/` 内部实现**；引擎演进对照登记于 `references/engine-evolution-notes.md`（vendored 基线能力边界 + 同步评估要点）。
 
 ## 代码版权与许可证合规（硬红线）
 
-> 本 skill 生成单文件 HTML，含内联 CSS/JS、Mermaid.js 库代码与 vendored 图表引擎，属生成代码类，MUST 遵循 §3.13 硬红线。
+> 本 skill 生成单文件 HTML，含内联 CSS/JS、Mermaid.js 库代码与 vendored 图表引擎，属生成代码类，MUST 遵循 §代码版权与许可证合规 硬红线。
 
 ### 四类风险
 

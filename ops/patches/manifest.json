@@ -319,11 +319,11 @@
     {
       "id": "f83-ver-fix",
       "type": "replace_regex",
-      "label": "tri-fix 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.5.2→1.5.3）",
+      "label": "tri-fix 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.5.2→1.5.3）（2026-09-26 darwin P2 批目标就地更新 1.5.3→1.5.4）",
       "glob": "tri-fix/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.5.3",
-      "already_marker": "version: 1.5.3"
+      "replacement": "version: 1.5.4",
+      "already_marker": "version: 1.5.4"
     },
     {
       "id": "f101-cl-fix",
@@ -373,11 +373,11 @@
     {
       "id": "f86-ver-meta",
       "type": "replace_regex",
-      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.2.5→1.2.6）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）",
+      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.2.5→1.2.6）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）（2026-09-26 darwin P2 批目标就地更新 1.2.7→1.2.8）",
       "glob": "tri-meta/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.7",
-      "already_marker": "version: 1.2.7"
+      "replacement": "version: 1.2.8",
+      "already_marker": "version: 1.2.8"
     },
     {
       "id": "f104-cl-meta",
@@ -499,11 +499,11 @@
     {
       "id": "f93-ver-html",
       "type": "replace_regex",
-      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）",
+      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）（2026-09-26 darwin P2 批目标就地更新 1.3.5→1.3.6）",
       "glob": "tri-html/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.3.5",
-      "already_marker": "version: 1.3.5"
+      "replacement": "version: 1.3.6",
+      "already_marker": "version: 1.3.6"
     },
     {
       "id": "f111-cl-html",
@@ -535,11 +535,11 @@
     {
       "id": "f95-ver-plan",
       "type": "replace_regex",
-      "label": "tri-plan 版本线 1.3.2 → 1.3.3（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.3→1.3.4）",
+      "label": "tri-plan 版本线 1.3.2 → 1.3.3（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.3→1.3.4）（2026-09-26 darwin P2 批目标就地更新 1.3.4→1.3.5）",
       "glob": "tri-plan/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.3.4",
-      "already_marker": "version: 1.3.4"
+      "replacement": "version: 1.3.5",
+      "already_marker": "version: 1.3.5"
     },
     {
       "id": "f113-cl-plan",
@@ -664,11 +664,11 @@
     {
       "id": "dw-tri-design-version",
       "type": "replace_regex",
-      "label": "`tri-design` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-design` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-design/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw-design-changelog",
@@ -689,11 +689,11 @@
     {
       "id": "dw-tri-impl-version",
       "type": "replace_regex",
-      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-impl/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw-impl-changelog",
@@ -714,11 +714,11 @@
     {
       "id": "dw-tri-test-version",
       "type": "replace_regex",
-      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-test/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw-test-changelog",
@@ -1403,11 +1403,11 @@
     {
       "id": "dw2-tri-grill-version",
       "type": "replace_regex",
-      "label": "`tri-grill` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-grill` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.0.2→1.0.3）",
       "glob": "tri-grill/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.2",
-      "already_marker": "version: 1.0.2"
+      "replacement": "version: 1.0.3",
+      "already_marker": "version: 1.0.3"
     },
     {
       "id": "dw2-tri-prototype-version",
@@ -1430,56 +1430,272 @@
     {
       "id": "dw2-tri-charter-version",
       "type": "replace_regex",
-      "label": "`tri-charter` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-charter` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
       "glob": "tri-sdlc/children/tri-charter/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.3",
-      "already_marker": "version: 1.1.3"
+      "replacement": "version: 1.1.4",
+      "already_marker": "version: 1.1.4"
     },
     {
       "id": "dw2-tri-cr-version",
       "type": "replace_regex",
-      "label": "`tri-cr` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-cr` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
       "glob": "tri-sdlc/children/tri-cr/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.3",
-      "already_marker": "version: 1.1.3"
+      "replacement": "version: 1.1.4",
+      "already_marker": "version: 1.1.4"
     },
     {
       "id": "dw2-tri-devenv-version",
       "type": "replace_regex",
-      "label": "`tri-devenv` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-devenv` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
       "glob": "tri-sdlc/children/tri-devenv/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.3",
-      "already_marker": "version: 1.1.3"
+      "replacement": "version: 1.1.4",
+      "already_marker": "version: 1.1.4"
     },
     {
       "id": "dw2-tri-ops-version",
       "type": "replace_regex",
-      "label": "`tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
       "glob": "tri-sdlc/children/tri-ops/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.3",
-      "already_marker": "version: 1.1.3"
+      "replacement": "version: 1.1.4",
+      "already_marker": "version: 1.1.4"
     },
     {
       "id": "dw2-tri-release-version",
       "type": "replace_regex",
-      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
       "glob": "tri-sdlc/children/tri-release/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.3",
-      "already_marker": "version: 1.1.3"
+      "replacement": "version: 1.1.4",
+      "already_marker": "version: 1.1.4"
     },
     {
       "id": "dw2-tri-require-version",
       "type": "replace_regex",
-      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
       "glob": "tri-sdlc/children/tri-require/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.3",
-      "already_marker": "version: 1.1.3"
+      "replacement": "version: 1.1.4",
+      "already_marker": "version: 1.1.4"
+    },
+    {
+      "id": "dw3-ops-contract-fix",
+      "type": "replace_text",
+      "label": "`tri-ops` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（P0/P1 批同款清零时本文件因 children 层级漏扫；darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-ops/SKILL.md",
+      "old": "&**：MUST 校验转交包 `阶段 = P8` 且 P7 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。",
+      "new": "1. **强制前置**：MUST 校验转交包 `阶段 = P8` 且 P7 状态为 `已通过`/`已跳过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。",
+      "already_marker": "1. **强制前置**：MUST 校验转交包 `阶段 = P8`"
+    },
+    {
+      "id": "dw3-plan-dedup",
+      "type": "replace_text",
+      "label": "`tri-plan` 去重：删除逐字重复的第二份「处理流程」节（含 7 行表；darwin P2 批）",
+      "glob": "tri-plan/SKILL.md",
+      "old": "## 处理流程\n\n> 执行顺序固定：§版本检查与更新机制（第零步）→ 上游依赖检测 → 读取快照 §三 → 核心执行。\n> 链路：`快照 §三 → plan-brief.md → 门① → plan.md → 门② → task-checklist.md → 门③ → 交付`\n\n| 阶段 | 产出物 | 审批门 | 关键动作 | 回炉规则 |\n|---|---|---|---|---|\n| 1 | `plan-brief.md` | 门① | 从快照提取目标/范围/约束；SMART 校准 + 验收标准骨架 + 里程碑草案 | — |\n| 2 | — | 门①·确认 | 向用户复述规划方向+目标+范围+约束；目标含糊则在此澄清 | 不通过 → 更新 `plan-brief.md` 再门① |\n| 3 | `plan.md` | 门② | WBS 分解 + 依赖图 + 里程碑 + 风险登记 + 验收标准 | — |\n| 4 | — | 门②·审计 | 向用户复述拆解合理性+依赖关系+风险缓解 | 不通过 → 更新 `plan.md` 再门②；涉及方向变更回退门① |\n| 5 | `task-checklist.md` | 门③ | 据 plan.md 产出可执行任务清单 + 逐项验收标准 + 依赖标注 | — |\n| 6 | — | 门③·确认 | 主动询问：①是否调其它 skill ②是否有补充 | 有补充 → 更新 `task-checklist.md` 再门③；规划缺陷回退门② |\n| 7 | 规划成果物 | — | 交付 `plan.md` + `task-checklist.md` | — |\n\n## 兜底处理（NEVER 静默失败）",
+      "new": "<!-- dw3-plan-dedup-20260926 -->\n\n## 兜底处理（NEVER 静默失败）",
+      "already_marker": "<!-- dw3-plan-dedup-20260926 -->"
+    },
+    {
+      "id": "dw3-meta-fallback3",
+      "type": "replace_text",
+      "label": "`tri-meta` 兜底③口径对齐：移除对不存在的「降级模式」的引用，对齐 §上游依赖检测 「不支持降级」硬性阻断语义（darwin P2 批）",
+      "glob": "tri-meta/SKILL.md",
+      "old": "| ③ 上游缺失 | 无法定位「上一轮回复」的上下文 | 走 §上游依赖检测 的降级模式，请用户指明要纠正 / 追加细化的对象 |",
+      "new": "| ③ 上游缺失 | 无法定位「上一轮回复」的上下文 | 按 §上游依赖检测 模式 A0/B 硬性阻断处置：MUST 提示用户重新经 tri-intent 产出快照，可同时请用户指明要纠正 / 追加细化的对象；NEVER 按空上下文静默执行 |",
+      "already_marker": "模式 A0/B 硬性阻断处置"
+    },
+    {
+      "id": "dw3-grill-workflow",
+      "type": "replace_text",
+      "label": "`tri-grill` 处理流程扩写：6 行表升级为含每步输入/产出/闸门的 7 步表（语义仅聚合自本 skill 既有章节，零新发明；darwin P2 批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "| 步骤 | 动作 |\n|---|---|\n| 1 | 读取文档，标记全部可质询条目 |\n| 2 | 逐条质询（六维），每条至少一个挑战 |\n| 3 | 调用 tri-domain 记录新决策 / 新术语 |\n| 4 | 就地更新文档，标注 `[已对齐]` |\n| 5 | 汇总：已解决 / 待解决 / 新增 ADR / 新增术语 |\n| 6 | 用户确认「对齐完成」→ 交付精化后的文档 |",
+      "new": "| 步骤 | 输入 | 动作 | 产出 / 闸门 |\n|---|---|---|---|\n| 0 | — | 版本检查（§版本检查与更新机制 · 第零步）→ 上游依赖检测（两态） | 通过后方可进入质询 |\n| 1 | 文档路径（必填）+ 质询范围 / 角色 / 领域模型路径（可选，见 §输入契约） | 读取文档，标记全部可质询条目 | 可质询条目清单；文档不存在 → §兜底处理（澄清路径，NEVER 凭想象创建） |\n| 2 | 条目清单 + 六维质询角度（§质询角度） | 逐条质询（歧义/边界场景/反例/术语/依赖/优先级），每条至少一个挑战 | 质询记录（`reports/<slug>-grill.md`）；用户拒答 → 标注「用户选择不回答」，该条目保持原样 |\n| 3 | 已达成的新决策 / 新术语 | 调用 tri-domain **即时**记录（NEVER 质询结束后批量补写） | ADR（`docs/adr/`）、术语表（`CONTEXT.md`）、边界场景 |\n| 4 | 质询结论 | 就地更新文档，标注 `[已对齐 YYYY-MM-DD]` | 精化后的文档条目 |\n| 5 | 全部条目处理完毕 | 汇总：已解决 / 待解决 / 新增 ADR / 新增术语；连续 3 轮未解决条目标注「需升级讨论」 | 汇总清单 |\n| 6 | 汇总 | 🔴 **STOP**：请用户确认「对齐完成」（仍有「待确认 / 待定 / 大概」状态时 NEVER 宣布完成） | 用户确认 → 交付精化后的文档 + 质询记录 |",
+      "already_marker": "| 0 | — | 版本检查"
+    },
+    {
+      "id": "dw3-fix-renumber",
+      "type": "replace_text",
+      "label": "`tri-fix` 契约编号修正：第 2 个「8.」重排为「9.」（双「第8条」冲突；darwin P2 批）",
+      "glob": "tri-fix/SKILL.md",
+      "old": "8. **交付前风险预筛自动门（tri-true 自动委派）**",
+      "new": "9. **交付前风险预筛自动门（tri-true 自动委派）**",
+      "already_marker": "9. **交付前风险预筛自动门"
+    },
+    {
+      "id": "dw3-html-ghost-ref-summary",
+      "type": "replace_text",
+      "label": "`tri-html` 幽灵引用清理（summary 行）：§3.13 代码版权合规 → §代码版权与许可证合规（darwin P2 批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "含双审批门与 §3.13 代码版权合规。",
+      "new": "含双审批门与 §代码版权与许可证合规。",
+      "already_marker": "含双审批门与 §代码版权与许可证合规。"
+    },
+    {
+      "id": "dw3-html-ghost-ref-tree",
+      "type": "replace_text",
+      "label": "`tri-html` 幽灵引用清理（目录结构注释行）：+ §3.13 代码版权 → + §代码版权与许可证合规（darwin P2 批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "+ 双审批门 + §3.13 代码版权",
+      "new": "+ 双审批门 + §代码版权与许可证合规",
+      "already_marker": "+ 双审批门 + §代码版权与许可证合规"
+    },
+    {
+      "id": "dw3-html-ghost-ref-hardline",
+      "type": "replace_text",
+      "label": "`tri-html` 幽灵引用清理（硬红线行）：遵循 §3.13 硬红线 → 遵循 §代码版权与许可证合规 硬红线（darwin P2 批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "MUST 遵循 §3.13 硬红线",
+      "new": "MUST 遵循 §代码版权与许可证合规 硬红线",
+      "already_marker": "MUST 遵循 §代码版权与许可证合规 硬红线"
+    },
+    {
+      "id": "dw3-html-truncation",
+      "type": "replace_text",
+      "label": "`tri-html` 残句补全：「引擎内部纪律」行悬空逗号截断，补全「内层不动」语义（语义源自本节标题与 engine-evolution-notes.md 既有描述；darwin P2 批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "（`node scripts/viewer/bin/viewer.mjs <command>`），\n\n## 代码版权与许可证合规（硬红线）",
+      "new": "（`node scripts/viewer/bin/viewer.mjs <command>`），**NEVER 直接修改 `scripts/viewer/` 内部实现**；引擎演进对照登记于 `references/engine-evolution-notes.md`（vendored 基线能力边界 + 同步评估要点）。\n\n## 代码版权与许可证合规（硬红线）",
+      "already_marker": "NEVER 直接修改 `scripts/viewer/` 内部实现"
+    },
+    {
+      "id": "dw3-children-dirtree",
+      "type": "replace_text",
+      "label": "tri-sdlc 子 skill SKILL.md 目录结构节：补登实际存在的 references/ 与 scripts/check_update.py（9 份统一；与 f12 README 树对齐；darwin P2 批）",
+      "glob": "tri-sdlc/children/*/SKILL.md",
+      "old": "├── CHANGELOG.md\n└── tests/\n",
+      "new": "├── CHANGELOG.md\n├── references/\n│   └── version-check-spec.md\n├── scripts/\n│   └── check_update.py\n└── tests/\n",
+      "already_marker": "├── scripts/\n│   └── check_update.py"
+    },
+    {
+      "id": "dw3-tri-ops-changelog",
+      "type": "replace_text",
+      "label": "`tri-ops` CHANGELOG：追加 [1.1.4] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-ops/CHANGELOG.md",
+      "old": "## [1.1.3] - 2026-09-26",
+      "new": "## [1.1.4] - 2026-09-26\n\n### 修复\n\n- **契约第 1 条修复**：`&**：` 损坏行恢复为 `1. **强制前置**：`（P0/P1 批同款清零时本文件因 children 层级漏扫）。\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`。\n\n## [1.1.3] - 2026-09-26",
+      "already_marker": "## [1.1.4]"
+    },
+    {
+      "id": "dw3-tri-charter-changelog",
+      "type": "replace_text",
+      "label": "`tri-charter` CHANGELOG：追加 [1.1.4] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-charter/CHANGELOG.md",
+      "old": "## [1.1.3] - 2026-09-26",
+      "new": "## [1.1.4] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.3] - 2026-09-26",
+      "already_marker": "## [1.1.4]"
+    },
+    {
+      "id": "dw3-tri-cr-changelog",
+      "type": "replace_text",
+      "label": "`tri-cr` CHANGELOG：追加 [1.1.4] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-cr/CHANGELOG.md",
+      "old": "## [1.1.3] - 2026-09-26",
+      "new": "## [1.1.4] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.3] - 2026-09-26",
+      "already_marker": "## [1.1.4]"
+    },
+    {
+      "id": "dw3-tri-devenv-changelog",
+      "type": "replace_text",
+      "label": "`tri-devenv` CHANGELOG：追加 [1.1.4] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-devenv/CHANGELOG.md",
+      "old": "## [1.1.3] - 2026-09-26",
+      "new": "## [1.1.4] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.3] - 2026-09-26",
+      "already_marker": "## [1.1.4]"
+    },
+    {
+      "id": "dw3-tri-release-changelog",
+      "type": "replace_text",
+      "label": "`tri-release` CHANGELOG：追加 [1.1.4] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-release/CHANGELOG.md",
+      "old": "## [1.1.3] - 2026-09-26",
+      "new": "## [1.1.4] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.3] - 2026-09-26",
+      "already_marker": "## [1.1.4]"
+    },
+    {
+      "id": "dw3-tri-require-changelog",
+      "type": "replace_text",
+      "label": "`tri-require` CHANGELOG：追加 [1.1.4] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-require/CHANGELOG.md",
+      "old": "## [1.1.3] - 2026-09-26",
+      "new": "## [1.1.4] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.3] - 2026-09-26",
+      "already_marker": "## [1.1.4]"
+    },
+    {
+      "id": "dw3-tri-design-changelog",
+      "type": "replace_text",
+      "label": "`tri-design` CHANGELOG：追加 [1.1.5] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-design/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw3-tri-impl-changelog",
+      "type": "replace_text",
+      "label": "`tri-impl` CHANGELOG：追加 [1.1.5] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-impl/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw3-tri-test-changelog",
+      "type": "replace_text",
+      "label": "`tri-test` CHANGELOG：追加 [1.1.5] 条目（darwin P2 批）",
+      "glob": "tri-sdlc/children/tri-test/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 修复\n\n- **目录结构节补登**：`references/version-check-spec.md` 与 `scripts/check_update.py`（与 f12 README 树对齐）。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw3-tri-grill-changelog",
+      "type": "replace_text",
+      "label": "`tri-grill` CHANGELOG：追加 [1.0.3] 条目（darwin P2 批）",
+      "glob": "tri-grill/CHANGELOG.md",
+      "old": "## [1.0.2] - 2026-09-26",
+      "new": "## [1.0.3] - 2026-09-26\n\n### 变更\n\n- **处理流程扩写**：6 行表升级为含每步输入/产出/闸门的 7 步表（语义仅聚合自既有章节，零新发明）。\n\n## [1.0.2] - 2026-09-26",
+      "already_marker": "## [1.0.3]"
+    },
+    {
+      "id": "dw3-tri-plan-changelog",
+      "type": "replace_text",
+      "label": "`tri-plan` CHANGELOG：追加 [1.3.5] 条目（darwin P2 批）",
+      "glob": "tri-plan/CHANGELOG.md",
+      "old": "## [1.3.4] - 2026-09-26",
+      "new": "## [1.3.5] - 2026-09-26\n\n### 修复\n\n- **去重**：删除逐字重复的第二份「处理流程」节（含 7 行表）。\n\n## [1.3.4] - 2026-09-26",
+      "already_marker": "## [1.3.5]"
+    },
+    {
+      "id": "dw3-tri-meta-changelog",
+      "type": "replace_text",
+      "label": "`tri-meta` CHANGELOG：追加 [1.2.8] 条目（darwin P2 批）",
+      "glob": "tri-meta/CHANGELOG.md",
+      "old": "## [1.2.7] - 2026-09-26",
+      "new": "## [1.2.8] - 2026-09-26\n\n### 修复\n\n- **兜底③口径对齐**：移除对不存在的「降级模式」的引用，对齐 §上游依赖检测 「不支持降级」硬性阻断语义。\n\n## [1.2.7] - 2026-09-26",
+      "already_marker": "## [1.2.8]"
+    },
+    {
+      "id": "dw3-tri-fix-changelog",
+      "type": "replace_text",
+      "label": "`tri-fix` CHANGELOG：追加 [1.5.4] 条目（darwin P2 批）",
+      "glob": "tri-fix/CHANGELOG.md",
+      "old": "## [1.5.3] - 2026-09-26",
+      "new": "## [1.5.4] - 2026-09-26\n\n### 修复\n\n- **编号修正**：契约第 2 个「8.」重排为「9.」（双「第8条」冲突）。\n\n## [1.5.3] - 2026-09-26",
+      "already_marker": "## [1.5.4]"
+    },
+    {
+      "id": "dw3-tri-html-changelog",
+      "type": "replace_text",
+      "label": "`tri-html` CHANGELOG：追加 [1.3.6] 条目（darwin P2 批）",
+      "glob": "tri-html/CHANGELOG.md",
+      "old": "## [1.3.5] - 2026-09-26",
+      "new": "## [1.3.6] - 2026-09-26\n\n### 修复\n\n- **幽灵引用清理**：§3.13 → §代码版权与许可证合规（3 处，tri-coding 无 §3.13 编号）。\n- **残句补全**：「引擎内部纪律」行悬空逗号截断，补全「NEVER 直接修改 viewer 内部实现」语义。\n\n## [1.3.5] - 2026-09-26",
+      "already_marker": "## [1.3.6]"
     },
     {
       "id": "sync-version-meta",
