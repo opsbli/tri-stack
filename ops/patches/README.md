@@ -326,6 +326,91 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw-tri-test-version` | replace_regex | tri-test 版本线 settle → 1.1.3（darwin P0 批） |
 | `dw-test-changelog` | replace_text | tri-test CHANGELOG：追加 [1.1.3] 条目（契约第 1 条修复） |
 
+| `dw2-tri-action-p1-section` | replace_text | `tri-action` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-checklist-p1-section` | replace_text | `tri-checklist` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-code-analyzer-p1-section` | replace_text | `tri-code-analyzer` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-coding-p1-section` | replace_text | `tri-coding` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-domain-p1-section` | replace_text | `tri-domain` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-evolve-p1-section` | replace_text | `tri-evolve` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-fix-p1-section` | replace_text | `tri-fix` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-forge-p1-section` | replace_text | `tri-forge` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-frontend-design-p1-section` | replace_text | `tri-frontend-design` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-god-p1-section` | replace_text | `tri-god` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-grill-p1-section` | replace_text | `tri-grill` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-html-p1-section` | replace_text | `tri-html` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-init-p1-section` | replace_text | `tri-init` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-intent-p1-section` | replace_text | `tri-intent` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-loop-p1-section` | replace_text | `tri-loop` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-lottie-p1-section` | replace_text | `tri-lottie` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-meta-p1-section` | replace_text | `tri-meta` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-orchestrate-p1-section` | replace_text | `tri-orchestrate` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-plan-p1-section` | replace_text | `tri-plan` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-prototype-p1-section` | replace_text | `tri-prototype` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-req-audit-p1-section` | replace_text | `tri-req-audit` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-review-p1-section` | replace_text | `tri-review` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-sdlc-p1-section` | replace_text | `tri-sdlc` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-true-p1-section` | replace_text | `tri-true` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-verify-p1-section` | replace_text | `tri-verify` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-workflow-p1-section` | replace_text | `tri-workflow` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-charter-p1-section` | replace_text | `tri-charter` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-cr-p1-section` | replace_text | `tri-cr` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-devenv-p1-section` | replace_text | `tri-devenv` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-impl-p1-section` | replace_text | `tri-impl` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-ops-p1-section` | replace_text | `tri-ops` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-release-p1-section` | replace_text | `tri-release` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-require-p1-section` | replace_text | `tri-require` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-test-p1-section` | replace_text | `tri-test` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-design-p1-section` | replace_text | `tri-design` 新增「🔴 检查点与红灯清单」章节（dim4 显性 STOP + dim9 红灯聚合；仅聚合既有语义。darwin P1 批） |
+| `dw2-tri-cr-contract-fix` | replace_text | `tri-cr` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin P0 补遗） |
+| `dw2-tri-devenv-contract-fix` | replace_text | `tri-devenv` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin P0 补遗） |
+| `dw2-tri-release-contract-fix` | replace_text | `tri-release` 契约第 1 条修复：`&**：` 损坏行恢复为 `1. **强制前置**：`（模板复制事故；darwin P0 补遗） |
+| `dw2-tri-action-changelog` | replace_text | `tri-action` CHANGELOG：追加 [1.2.6] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-checklist-changelog` | replace_text | `tri-checklist` CHANGELOG：追加 [1.1.6] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-code-analyzer-changelog` | replace_text | `tri-code-analyzer` CHANGELOG：追加 [1.5.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-coding-changelog` | replace_text | `tri-coding` CHANGELOG：追加 [1.8.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-domain-changelog` | replace_text | `tri-domain` CHANGELOG：追加 [1.0.2] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-evolve-changelog` | replace_text | `tri-evolve` CHANGELOG：追加 [1.1.8] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-fix-changelog` | replace_text | `tri-fix` CHANGELOG：追加 [1.5.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-forge-changelog` | replace_text | `tri-forge` CHANGELOG：追加 [1.0.5] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-frontend-design-changelog` | replace_text | `tri-frontend-design` CHANGELOG：追加 [1.1.6] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-god-changelog` | replace_text | `tri-god` CHANGELOG：追加 [1.2.5] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-grill-changelog` | replace_text | `tri-grill` CHANGELOG：追加 [1.0.2] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-html-changelog` | replace_text | `tri-html` CHANGELOG：追加 [1.3.5] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-init-changelog` | replace_text | `tri-init` CHANGELOG：追加 [1.0.4] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-intent-changelog` | replace_text | `tri-intent` CHANGELOG：追加 [1.14.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-loop-changelog` | replace_text | `tri-loop` CHANGELOG：追加 [1.2.6] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-lottie-changelog` | replace_text | `tri-lottie` CHANGELOG：追加 [1.0.5] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-meta-changelog` | replace_text | `tri-meta` CHANGELOG：追加 [1.2.7] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-orchestrate-changelog` | replace_text | `tri-orchestrate` CHANGELOG：追加 [1.0.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-plan-changelog` | replace_text | `tri-plan` CHANGELOG：追加 [1.3.4] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-prototype-changelog` | replace_text | `tri-prototype` CHANGELOG：追加 [1.1.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-req-audit-changelog` | replace_text | `tri-req-audit` CHANGELOG：追加 [1.1.1] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-review-changelog` | replace_text | `tri-review` CHANGELOG：追加 [1.7.2] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-sdlc-changelog` | replace_text | `tri-sdlc` CHANGELOG：追加 [1.1.7] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-true-changelog` | replace_text | `tri-true` CHANGELOG：追加 [1.1.7] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-verify-changelog` | replace_text | `tri-verify` CHANGELOG：追加 [1.0.1] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-workflow-changelog` | replace_text | `tri-workflow` CHANGELOG：追加 [1.2.7] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-charter-changelog` | replace_text | `tri-charter` CHANGELOG：追加 [1.1.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-cr-changelog` | replace_text | `tri-cr` CHANGELOG：追加 [1.1.3] 条目（P1 章节 + 契约修复；P2 属人工内容） |
+| `dw2-tri-devenv-changelog` | replace_text | `tri-devenv` CHANGELOG：追加 [1.1.3] 条目（P1 章节 + 契约修复；P2 属人工内容） |
+| `dw2-tri-impl-changelog` | replace_text | `tri-impl` CHANGELOG：追加 [1.1.4] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-ops-changelog` | replace_text | `tri-ops` CHANGELOG：追加 [1.1.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-release-changelog` | replace_text | `tri-release` CHANGELOG：追加 [1.1.3] 条目（P1 章节 + 契约修复；P2 属人工内容） |
+| `dw2-tri-require-changelog` | replace_text | `tri-require` CHANGELOG：追加 [1.1.3] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-test-changelog` | replace_text | `tri-test` CHANGELOG：追加 [1.1.4] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-design-changelog` | replace_text | `tri-design` CHANGELOG：追加 [1.1.4] 条目（P1 章节；P2 属人工内容） |
+| `dw2-tri-domain-version` | replace_regex | `tri-domain` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-forge-version` | replace_regex | `tri-forge` 版本线 settle → 1.0.5（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-grill-version` | replace_regex | `tri-grill` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-prototype-version` | replace_regex | `tri-prototype` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-verify-version` | replace_regex | `tri-verify` 版本线 settle → 1.0.1（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-charter-version` | replace_regex | `tri-charter` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-cr-version` | replace_regex | `tri-cr` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-devenv-version` | replace_regex | `tri-devenv` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-ops-version` | replace_regex | `tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-release-version` | replace_regex | `tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+| `dw2-tri-require-version` | replace_regex | `tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛） |
+
 ## 每项补丁的依据
 
 ### spec-per-skill + f2-pointer（真源形态）
@@ -887,3 +972,16 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 回执：`apply.py` 连跑两次**零真写入 / 零真应用**（`dw-*` 与 `f86`/`f97` 均 `应用 0｜已应用 1`）；
 `version-lint` 包内漂移 0、`--apply-docs` 修文档层 6 处（WORKFLOW-GUIDE D1 ×3 + README D4 ×3）后 EXIT=0。
 涉及 skill：`tri-true` 1.1.6 / `tri-orchestrate` 1.0.2 / `tri-meta` 1.2.6 / `tri-design`·`tri-impl`·`tri-test` 1.1.3。
+
+### 计数（2026-09-26 · darwin-skill P1 批增量）
+
+> 上两节计数表为时点快照，**冻结**。本批 = P1 章节（dim4 显性 STOP 检查点 + dim9 红灯清单聚合，35 skill）+ P0 补遗（tri-cr / tri-devenv / tri-release 契约第 1 条 `&**：` 损坏修复）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 139 | **223** | +84（`dw2-*`：章节 35 + 契约修复 3 + CHANGELOG 35 + settle 新增 11）；既有 24 个 settle op 目标**就地更新**（不占新行） |
+| §当前补丁清单 数据行数 | 141 | **225** | +84；对账恒等式：225 − 划除 2 = manifest **223** ✅ |
+
+回执：`apply.py` 第二次跑零真写入/零真应用（`dw2-*` 全部 `应用 0｜已应用 1`）；
+`version-lint` 包内漂移 0、`--apply-docs` 修文档层 74 处后 EXIT=0。
+全部 35 skill 升 PATCH（章节级新增，family-spec §六 步骤 6）。

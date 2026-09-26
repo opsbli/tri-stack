@@ -1,7 +1,7 @@
 ---
 name: tri-orchestrate
 slug: tri-orchestrate
-version: 1.0.2
+version: 1.0.3
 displayName: 协作编排（tri-orchestrate）
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。将 requirements.md 或 task-checklist.md 按功能点边界和依赖关系拆分为 N 份独立 spec，分配给多个人/agent 并行执行，收集结构化回执并自动回写 master-todo。含拆分器（split-specs.py）+ 回执收集器（collect-receipts.py）+ 进度看板生成器。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 自动回写 → 进度看板。
@@ -216,6 +216,21 @@ files_changed(spec-01) ∩ files_changed(spec-02) ≠ ∅
 | 拆分 | `python scripts/split-specs.py --input <requirements.md> --team <人数>` | 产出 spec-*.md + dispatch-plan.md |
 | 收集 | `python scripts/collect-receipts.py --specs-dir <specs目录>` | 读取 receipt-*.json → 回写 master-todo |
 | 看板 | `python scripts/collect-receipts.py --dashboard` | 输出进度汇总表 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：分配矩阵确认（Phase 1）——拆分完成后 MUST 展示完整分配矩阵，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：二次确认（Phase 3）——用户调整完毕后 MUST 展示更新后的分配矩阵，未获用户回复「确认」NEVER 将 specs 置为 READY 进入并行执行。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 手动勾选 master-todo 复选框，只能由回执驱动自动更新（§强制执行契约 · 回执驱动铁律）
+- NEVER 擅自追加功能或扩大拆分粒度（§强制执行契约 · 最小化原则）
+- NEVER 静默使用默认分配（§分配确认交互流程）
+- NEVER 凭想象拆分（§兜底处理 · 需求文档解析失败）
+- NEVER 接受缺失字段的回执，七字段缺一即无效（§强制执行契约 · 回执格式强制）
 
 ## 交付产物
 

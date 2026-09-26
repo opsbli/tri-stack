@@ -1,7 +1,7 @@
 ---
 name: 循环启动
 slug: tri-loop
-version: 1.2.5
+version: 1.2.6
 displayName: 循环启动
 description: 知识库 loop（domain）启动下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行·loop/domain 创建子类）意图，在基于文件的知识库中 bootstrap substrate、收集 loop charter、scaffold loop README、执行一次真实测试运行并记录到 Timeline 和 LOG.md。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照处理 I14 loop/domain 创建子类意图，含 substrate bootstrap、loop charter 收集、README scaffold、真实测试运行、Timeline+LOG.md 记录全链路，确保 loop 可验证运行。
@@ -258,6 +258,22 @@ Refs: domains/<name>/README.md (new)[, 创建的任何 artifact]。
 | ③ 上游缺失 | 无 tri-intent 快照 | 走 §降级模式（Mode C）：向用户追问 loop 名称、目标与 cadence |
 | ④ hook 缺失 | 触发源为快照 / 用户直呼 | 不适用；若外部调度器驱动而不可用，按 §降级模式（Mode C） 改为手动发起 loop |
 | ⑤ 异常场景 | substrate 目录不可写、Charter 输入不全、测试运行失败 | 走 §安全约束：**不落半成品**（要么完整 bootstrap 要么不改动），保留原始错误并标注未完成项 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：Charter 收集确认——5 项输入推断不全时 MUST 做一轮简短澄清，charter 不完整的 loop 不得 scaffold，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：覆盖已存在 domain 确认（L2 不可逆）——`domains/<name>/` 已存在时 MUST 停下询问「更新而非覆盖」，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：修改已有 CLAUDE.md 确认（L2 不可逆）——仅追加 Knowledge base 章节须先获用户确认，未获用户确认 NEVER 继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 跳过读取快照 §三 直接创建文件（§强制执行契约 · 强制前置）
+- NEVER 按空上下文静默执行（§上游依赖检测 · A0 待识别）
+- NEVER 默默扩大操作范围（§强制执行契约 · 最小化原则）
+- NEVER 覆盖已有 substrate 文件，bootstrap 仅创建缺失部分（§Substrate Bootstrap 流程）
+- NEVER 落半成品：要么完整 bootstrap 要么不改动（§兜底处理 · 异常场景）
 
 ## 交付产物
 

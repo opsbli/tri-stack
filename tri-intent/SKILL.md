@@ -1,7 +1,7 @@
 ---
 name: 意图识别总路由
 slug: tri-intent
-version: 1.14.2
+version: 1.14.3
 displayName: 意图识别总路由
 description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。**本分支为编程工作流专线**：仅 I10 三子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill，其余落点分类保留但无下游（全量版见归档分支 archive-full-skills-20260924）。
 summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约；本分支为编程工作流专线，仅 16 个下游 skill 可用。
@@ -167,6 +167,22 @@ python scripts/check_update.py --slug tri-intent --json
 | ③ 上游缺失 | 本 skill 为家族**上游总路由**，无上游依赖 | 不适用；本 skill 即上游，任何新提问均可独立处理 |
 | ④ hook 缺失 | 触发源为「任何新提问的第一步」，**不以 hook 为触发源**；`hooks/intent-gate.py` 是路由真源的可执行载体 | 无 hook 环境（未注册 / 宿主不支持）时，识别与路由流程**照常按本 SKILL.md 执行**；`intent-gate.py` 缺失仅使路由校验命令不可用，MUST 在快照中登记「未做 hook 校验」，NEVER 因缺 hook 而拒答 |
 | ⑤ 异常场景 | 输入无法归入任一 I/M 项 / 快照写入失败 | 无法归类 → 落 `expressing/I19-chitchat` 边缘兜底，保证 100% 有落点；快照写入失败 → 报告失败原因并给出内存态识别结果，NEVER 假装已落盘 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：门① 安装确认——下游 skill 未安装时 MUST 先征询「是否现在安装 <slug>」，未获用户同意 NEVER 继续。
+- 🔴 **STOP**：门② 执行确认——安装复检通过后 MUST 再征询「是否立即执行该 skill 处理本次请求」，未获用户同意 NEVER 继续。
+- 🔴 **STOP**：置信度门（三档处置）——置信度 <0.60 或竞争意图未消解时，MUST 回退 clarify-gate 追问，未获用户澄清 NEVER 继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 跳过意图识别直接给成果物（§强制执行契约 · 强制前置）
+- NEVER 产出 requirements.md、design.md、tasks.md、implements.md、reports.md 等下游交付物（§强制执行契约 · 唯一交付产物）
+- NEVER 未经门① 同意擅自安装、未经门② 同意擅自执行下游（§强制执行契约 · 下游分发强制）
+- NEVER 因下游缺失就由本 skill 越界代答（§下游依赖检测 · B 路径）
+- NEVER 强行凑一个不确信的路由或静默选一个候选意图（§兜底处理）
 
 ## 产出物机制（意图识别的最终交付）
 

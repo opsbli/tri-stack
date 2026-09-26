@@ -1,7 +1,7 @@
 ---
 name: 代码评审
 slug: tri-cr
-version: 1.1.2
+version: 1.1.3
 displayName: 代码评审
 description: SDLC P5 代码评审子SKILL。读取 tri-sdlc 转交的阶段任务（P4 源码清单与实现报告 + P2 设计三件套 + P5 门禁条目清单），执行静态检查三项（lint/类型/构建）、四维人工审查（可读性与命名/逻辑正确性与边界/性能/安全）、Fowler 坏味基线核对与设计一致性核对，逐条给出级别与位置并跟踪至闭环，产出 review-report.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P5 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 代码评审专家，执行静态三项与四维审查并跟踪意见闭环，面向 P5 门禁 7 条必检项交付评审报告。
@@ -21,7 +21,7 @@ license: MIT
 
 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
-&**：MUST 校验转交包 `阶段 = P5` 且 P4 `implements.md` 与源码清单存在、P4 状态为 `已通过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
+1. **强制前置**：MUST 校验转交包 `阶段 = P5` 且 P4 `implements.md` 与源码清单存在、P4 状态为 `已通过`；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
 2. **面向门禁产出**：MUST 逐条覆盖 P5 门禁条目（`P5-M0`–`P5-M6` 必检 + `P5-R1`–`R2` 建议）。
 3. **静态先行**：MUST 先真实执行 **lint / 类型检查 / 构建** 三项并记录**命令 + 结论 + 失败数**；未执行 NEVER 以「应该没问题」代替（`P5-M1`）。
 4. **意见三要素**：每条评审意见 MUST 含 **级别（Blocker/Major/Minor/Nit）+ 位置（文件:行或函数名）+ 状态（已修复/已确认不改/待修复）**；缺任一要素视为该条无效（`P5-M3`）。
@@ -230,6 +230,20 @@ python scripts/check_update.py --slug tri-cr --json
 2. 全文扫描占位符；填写门禁自查表（7 条必检项）。
 3. 返回报告路径 + 评审摘要（文件数 / 静态三项结论 / 意见分级统计 / 待修复数 / 复审轮次）+ 自查结论。
 4. NEVER 自行判定门禁通过、NEVER 进入 P6。
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P4 状态非「已通过」即 NEVER 开始本阶段；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。
+- 🔴 **STOP**：零待修复交付（`P5-M2`/`P5-M3`）——交付时 Blocker 数 = 0 且无「待修复」意见；未清零 MUST 回 P4 修复后重审，NEVER 交付。
+- 🔴 **STOP**：Blocker/Major 回炉判定（§处理流程 · 步骤 4）——Blocker/Major 意见 MUST 回报 tri-sdlc 由其判定是否回炉 P4；未获判定 NEVER 自行处置或放行。
+
+### 🚫 红灯清单（NEVER）
+- NEVER 默认直接改业务代码——确需修复 MUST 由 tri-sdlc 判定回炉 P4 由 `tri-impl` 执行（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 以「应该没问题」代替静态检查三项的真实执行（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 判定门禁通过、推进到 P6、修改需求与设计、代替 P6 出测试结论（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 修改 P1/P2/P3/P4 交付物内容（§落盘规则）
+- NEVER 改名 `review-report.md` 或删除历史轮次复审记录（§落盘规则）
 
 ## 交付产物
 

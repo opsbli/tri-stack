@@ -1,7 +1,7 @@
 ---
 name: tri-code-analyzer
 slug: tri-code-analyzer
-version: 1.5.2
+version: 1.5.3
 displayName: 代码剖析（tri-code-analyzer）
 description: 代码库全维度深度剖析 skill（I10 分析处理 · code-analyzer 子类）——以架构师+程序员双视角对任意技术栈代码库执行七阶段剖析管道，产出五部分 Markdown 剖析报告（架构拓扑/工程实现/风格审计/Mermaid 可视化/上手指南），每条结论强制附 file:line 证据锚，对照内置技术栈知识库（arkts/electron/flutter/qt/react-native/taro/uni-app/通用后端/agent-skills-plugin）分析，未覆盖栈经官方文档联网补齐。读取快照 §三（L2=I10 且 L3=code-analyzer）直接执行；用户说「剖析这个代码库/帮我读懂这个项目/接手项目全维度分析/代码级深度剖析」时经 tri-intent 路由激活。支持独立安装，含上游依赖检测三态逻辑。
 summary: 双视角七阶段剖析管道 + file:line 证据锚定 + 技术栈知识库对照（本地 wikihub 外部层 + 官网补齐协议）+ Mermaid 四图引擎 + 上手/重构行动指南，技术栈无关的代码库深度剖析器。
@@ -232,6 +232,22 @@ license: MIT
 | 落盘报告 | `.tribro/code-analyzer/<命名>-analysis.md` | 完整五部分报告归档（`<命名>`=快照命名或降级模式自构造名） |
 
 报告结构细则（每部分的必备小节与表格列）以 `references/analysis-framework.md` 为准。
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：交付前风险预筛自动门（需人审盖章）——命中 R1/R2/R5 且综合置信度 < 0.8 时停止自动交付并向用户展示验证报告，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：停车态（完成判据）——目标代码库路径无法定位或代码库不可读，未获用户补充输入 NEVER 继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 输出无证据锚、未标注推断来源的事实性断言（§强制执行契约）
+- NEVER 凭空捏造「如有」维度的章节内容凑数（§强制执行契约）
+- NEVER 跳过技术栈识别与栈卡对照直接泛泛分析（§强制执行契约）
+- NEVER 越界代劳 arch-viz/audit-checklist/tri-review 职责（§触发时机）
+- NEVER 声称已执行真实多模型交叉验证（§交付前风险预筛自动门）
+- NEVER 用推测补齐未执行的管道阶段（§兜底处理）
 
 ## 质量标准
 

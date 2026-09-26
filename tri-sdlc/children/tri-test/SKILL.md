@@ -1,7 +1,7 @@
 ---
 name: 测试验证
 slug: tri-test
-version: 1.1.3
+version: 1.1.4
 displayName: 测试验证
 description: SDLC P6 测试验证子SKILL。读取 tri-sdlc 转交的阶段任务（P1 验收标准 + P4 实现与单测报告 + P5 评审报告 + P6 门禁条目清单），编制覆盖全部验收标准的测试计划，执行单元/集成/用户验收三层测试，统计通过率并按四要素登记缺陷、跟踪复测闭环，产出 test-plan.md / test-report.md / defects.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P6 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 测试验证专家，产出验收标准 100% 覆盖的测试计划、三层执行报告与四要素缺陷台账，面向 P6 门禁 7 条必检项交付。
@@ -244,6 +244,22 @@ python scripts/check_update.py --slug tri-test --json
 2. 全文扫描占位符；填写门禁自查表（7 条必检项）。
 3. 返回交付物路径 + 测试摘要（覆盖率 / 三层结论 / 通过率 / 缺陷分级统计 / 遗留数）+ 自查结论。
 4. NEVER 自行判定门禁通过、NEVER 进入 P7。
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P5 状态非「已通过/已跳过」即 NEVER 开始本阶段；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。
+- 🔴 **STOP**：「Critical 清零」（§强制执行契约 第 7 条）——Critical/Blocker 缺陷遗留未清零时，未回报 tri-sdlc 判定回炉 P4 NEVER 交付。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 凭空编造通过数与通过率，结果 MUST 来自真实执行（§强制执行契约）
+- NEVER 直接修改业务代码修缺陷，修复由 tri-sdlc 判定回炉 P4（§强制执行契约）
+- NEVER 静默省略单元/集成/用户验收任一层，不适用 MUST 显式说明理由（§强制执行契约）
+- NEVER 自行决定降低通过率阈值（§强制执行契约）
+- NEVER 修改需求与设计或 P1/P2/P4/P5 交付物内容（§落盘规则）
+- NEVER 判定门禁通过或推进到 P7（§强制执行契约）
 
 ## 交付产物
 

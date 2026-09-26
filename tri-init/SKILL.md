@@ -1,7 +1,7 @@
 ---
 name: tri-init
 slug: tri-init
-version: 1.0.3
+version: 1.0.4
 displayName: 项目初始化（tri-init）
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于将任意项目接入 tri-stack 开发流程：扫描项目目录检测技术栈（Java/Maven/RuoYi、TS/Vite、Go、Python 等），生成 AGENTS.md（AI 协作编码规范）、project-profile.json（机器可读项目元数据）与 .tribro/ 产物目录结构。如果检测到代码生成器（如 RuoYi generator），严格遵循其规范（租户字段 / 审计字段 / 编码规范）生成 project-profile。已有 AGENTS.md 时提示用户确认是否覆盖重新生成。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/ → 无缝衔接 tri-coding / tri-review。
@@ -157,6 +157,22 @@ license: MIT
 | 5 | project-profile.json + 嵌入摘要 | project-profile.json |
 | 6 | .tribro/ 目录创建 | .tribro/ 目录树 |
 | 7 | 交付确认 | 初始化摘要 + 后续操作指引 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：AGENTS.md 覆盖三选一确认——目标项目已有 AGENTS.md 时，MUST 展示现有内容摘要并请用户在「覆盖重新生成 / 保留合并 / 跳过」中明确选择，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：项目路径确认——项目路径不存在或未判定单/多项目模式时，MUST 先向用户澄清，未获用户确认 NEVER 开始扫描与生成。
+- 🔴 **STOP**：AGENTS.md 生成确认——技术栈扫描完成后生成 AGENTS.md 须基于扫描结果请用户确认，未获用户确认 NEVER 继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 静默覆盖已有 AGENTS.md（§强制执行契约 · AGENTS.md 保护铁律）
+- NEVER 在未确认项目路径的情况下开始扫描（§强制执行契约）
+- NEVER 猜测或编造技术栈检测结果，检测不到标「未检测到」（§强制执行契约 · 扫描诚实铁律）
+- NEVER 全文复制项目已有规范文档，只做结构化摘要 + 指针（§项目规范文档发现（唯一事实源指针 · 防双源漂移））
+- NEVER 在 prompt 内联推断版本或拼接升级命令（§版本检查与更新机制）
 
 ## 交付产物
 

@@ -1,7 +1,7 @@
 ---
 name: tri-req-audit
 slug: tri-req-audit
-version: 1.1.0
+version: 1.1.1
 displayName: 需求文档审核（tri-req-audit）
 description: "内部专用工具 skill（不注册为 tri-intent 下属路由项，由用户直接调用）。对 tri-prototype 产出的 requirements.md 做开工前审核：先做家族专有的三重前置本地校验（结构完整性 / 证据溯源 / tri-coding 门② 可消费性），再按注册表优先级二跳委派市面 PRD 审核 skill（prd-review → requirement-testability-review → bg-requirement-review），最后聚合为 P0/P1/P2 问题清单、岗位就绪度矩阵与修订清单。只出问题不改原文。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。"
 summary: 三重前置本地校验 + 二跳委派市面 PRD 审核 skill + 结论聚合 → P0/P1/P2 问题清单与修订清单；市面 skill 不可用时降级为自带九维审核规则。
@@ -232,6 +232,21 @@ license: MIT
 | 本地判据与市面 skill 结论冲突 | 以本地「可消费性」判据为准，记录分歧供用户裁决；NEVER 静默择一 |
 | 审核对象非 requirements.md 结构（自由格式需求文档） | 允许审核，但标注 `structure=non-standard`，D1 判为 N-A（附理由），其余维度照常 |
 | 门④ 连续 3 轮证据不足 | 停止自动回炉，报告卡点请求人工介入 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+- 🔴 **STOP**：门①（输入与范围确认）——`requirements.md` 路径缺失或审核范围/视角不明，未获用户澄清确认 NEVER 凭想象创建或凭默认路径猜（§处理流程）。
+- 🔴 **STOP**：门④（结论聚合与判定）——存在任一 P0 或单调性守卫判「收敛造假」嫌疑，MUST 标注「阻断开工」/强制升级人审，未获用户或人审确认 NEVER 判「可开工/有条件开工」（§强制执行契约 条 7、条 13）。
+- 🔴 **STOP**：门⑤（落盘交付）——落盘前 MUST 通过门④的驳回判定，`scripts/audit_gate.py` 退出码非 0 时 NEVER 落盘交付（§处理流程）。
+
+### 🚫 红灯清单（NEVER）
+- NEVER 就地改写 `requirements.md`，文档修订属 tri-prototype 回炉（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 因用户催促把 P0 降级为 P1，NEVER 因「用户着急/时间紧」下调判定标准或跳过维度（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 声称「已调用某市面 skill」而实际未调用，NEVER 编造市面 skill 的审核结论或输出字段（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 以「其余维度全绿」代替「已尝试证伪」，报告缺 D9 对抗小节即不合规（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 让 P 级在多轮中「无证据地变好」，任何降级 MUST 附新证据并在账本留痕（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 凭印象或临时自创判据替代 `references/audit-dimensions.md`（§强制执行契约（Execution Contract · 最高优先级））
 
 ## 交付产物
 

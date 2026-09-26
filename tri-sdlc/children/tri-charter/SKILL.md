@@ -1,7 +1,7 @@
 ---
 name: 立项与规划
 slug: tri-charter
-version: 1.1.2
+version: 1.1.3
 displayName: 立项与规划
 description: SDLC P0 立项与规划子SKILL。读取 tri-sdlc 转交的阶段任务（快照§三 + manifest 摘要 + P0 门禁条目清单），完成业务背景澄清、可证伪核心问题提炼、in/out-of-scope 双清单界定、三维可行性评估（技术/资源/时间）、可度量项目目标与里程碑规划，产出 charter.md 立项报告供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P0 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 立项专家，产出含可证伪核心问题、双范围清单、三维可行性、可度量目标与里程碑的 charter.md，面向 P0 门禁 6 条必检项交付。
@@ -264,6 +264,20 @@ python scripts/check_update.py --slug tri-charter --json
 
 1. 返回交付物路径 + 六维摘要 + 门禁自查结论。
 2. NEVER 自行判定门禁通过、NEVER 自行进入 P1。
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包未含 `阶段 = P0` 或快照 `L3_子意图 ≠ sdlc` 即 NEVER 开始本阶段；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。
+- 🔴 **STOP**：门禁自查表（§处理流程 · 步骤 3）——任一条自查不满足 MUST 回步骤 2 补全后再交付；未补全 NEVER 交回 tri-sdlc。
+- 🔴 **STOP**：模式 B 选择（§上游依赖检测）——未被 tri-sdlc 调用时提示用户在「安装 tri-sdlc」与「仅出 charter」之间选择；未获用户选择 NEVER 静默单出 charter.md。
+
+### 🚫 红灯清单（NEVER）
+- NEVER 使用「提升体验」「更加智能」「优化流程」等不可证伪的空泛表述作核心问题（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 自行判定门禁是否通过、自行推进到 P1、撰写其他阶段交付物（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 交付残留 `<...>` / `TODO` / `待定` 的半成品（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 只改一部分修订意见就回交（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 向工作区写入文件（§落盘规则）
 
 ## 交付产物
 

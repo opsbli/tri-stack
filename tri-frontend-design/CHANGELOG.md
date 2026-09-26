@@ -6,6 +6,12 @@
 
 > 来源与归属：动效/多变体知识蒸馏自 emilkowalski/skills（MIT License, Copyright (c) 2026 Emil Kowalski），去产品化改写，保留法律归属声明，不建 LICENSE 文件。
 
+## [1.1.6] - 2026-09-26
+
+### 变更
+
+- **新增「🔴 检查点与红灯清单（STOP · NEVER）」章节**：把既有确认门收敛为显性 🔴 STOP 标记（darwin 9 维 rubric dim4），并聚合既有 NEVER 铁律为红灯清单（dim9）；仅聚合既有语义，不新增行为门。
+
 ## [1.1.5] - 2026-09-25
 
 ### 变更

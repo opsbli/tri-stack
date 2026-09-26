@@ -1,7 +1,7 @@
 ---
 name: tri-domain
 slug: tri-domain
-version: 1.0.1
+version: 1.0.2
 displayName: 领域建模（tri-domain）
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项）。维护项目的领域模型：共享术语表（CONTEXT.md）、架构决策记录（docs/adr/）、边界场景清单。主动挑战模糊术语、发明边界场景、在决策定型的瞬间记录 ADR——NEVER 只在事后补写。供 tri-grill（质询对齐）、tri-coding（门② 设计）、tri-review（审查依据）消费。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 领域建模：术语表（CONTEXT.md）+ 架构决策记录（ADR）+ 边界场景清单，供 tri-grill / tri-coding / tri-review 消费。
@@ -120,6 +120,23 @@ license: MIT
 | ADR 编号冲突 | 递增取下一个可用编号 |
 | 术语定义与 ADR 决策冲突 | 标注冲突；请求用户裁决 |
 | 文件写入失败 | 报错并保留原始内容；NEVER 静默丢失
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：术语定义与 ADR 决策冲突——标注冲突并请求用户裁决，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：术语已存在——询问用户「更新定义还是新增别名」，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：ADR 不可变——用户要求修改已写入 ADR 正文（改历史记录）时，先停下向用户说明 MUST 改为新增「取代 ADR-xxx」条目，未获用户确认 NEVER 继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 假设双方对术语理解一致而不追问（§强制执行契约）
+- NEVER 事后补写 ADR（§强制执行契约）
+- NEVER 修改已写入的 ADR 正文，决策变更一律新增取代条目（§强制执行契约）
+- NEVER 将术语定义散落在 `CONTEXT.md` 之外的多个文件（§强制执行契约）
+- NEVER 重用已使用的 ADR 编号（§落盘规则）
+- NEVER 静默丢失文件写入失败时的原始内容（§兜底处理）
 
 ## 交付产物
 

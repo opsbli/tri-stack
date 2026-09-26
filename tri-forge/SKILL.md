@@ -1,7 +1,7 @@
 ---
 name: tri-forge
 slug: tri-forge
-version: 1.0.4
+version: 1.0.5
 displayName: 技能锻造（tri-forge）
 description: 内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于「按家族硬规范生成 / 补全 / 审计一个 skill」：以 references/family-spec.md 为生成单一事实源，通过三模式（A 规范顾问·不落盘 / B 补全审计 / C 锻造生成·五门流程）产出或修复**合规的 skill 包**，并以 references/compliance-checklist.md 的 22 条硬约束在门④逐条自检，全过方可落盘；生成物若具备 tri-intent 下游身份，MUST 在门③同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / README 表，NEVER 只生成 skill 而不接通路由。同时承接家族的四点版本一致性校验（原 sync_registry.py 职能）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。
 summary: 三模式技能锻造工具（A 规范顾问 / B 补全审计 / C 锻造生成五门流程）+ 家族硬规范单源 + 22 条合规硬约束门④自检 + 门③路由回流强制 + 四点版本一致性校验 + 四平台安装。
@@ -196,6 +196,20 @@ python scripts/check_registry.py --apply     # 规则化回写可自动修正的
 
 **门③ 与门④ 的顺序不可颠倒**：先接通路由，再自检合规——因为第 8 条「意图认领 MECE 不重叠」
 需要比对**已回填后**的路由表，顺序颠倒会漏检路由冲突。
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+- 🔴 **STOP**：门① 需求确认——澄清 skill 名/slug/职责/是否下游/上游态数并向用户复述供确认，未获用户确认 NEVER 进入门②。
+- 🔴 **STOP**：门④ 合规自检——22 条硬约束逐条自检，任一条 FAIL 回炉门②，未全过 NEVER 落盘交付。
+- 🔴 **STOP**：关键输入缺失——C 模式必填项缺失且无法从快照/对话推断时在门① 提出澄清，未获用户答复 NEVER 凭默认值猜。
+
+### 🚫 红灯清单（NEVER）
+- NEVER 只生成 skill 而不接通路由，具备下游身份 MUST 门③回填（§强制执行契约）
+- NEVER 凭印象或自创标准替代 `family-spec.md` / `compliance-checklist.md` 判定（§强制执行契约）
+- NEVER 借 A 模式之名写入任何文件（§强制执行契约）
+- NEVER 擅自扩展范围（如顺手重构无关 skill、批量改无关文件）（§强制执行契约）
+- NEVER 代写 CHANGELOG 首条（§强制执行契约）
 
 ## 交付产物
 

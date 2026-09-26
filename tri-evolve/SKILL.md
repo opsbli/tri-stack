@@ -1,7 +1,7 @@
 ---
 name: 自进化学习
 slug: tri-evolve
-version: 1.1.7
+version: 1.1.8
 displayName: 自进化学习
 description: 横向学习/进化型 skill，为 tri-xxx 家族提供多渠道信号驱动的持续改进与用户画像构建能力；EVOLVE_OBSERVE 模式采集作答后信号，EVOLVE_LEARN 模式批量归因学习，EVOLVE_APPLY 模式向下游 skill 提供画像与经验复用；hook/定时/请求激活；支持独立安装，含上游依赖检测三态逻辑（完整模式/引导安装/降级模式）。
 summary: OODA 进化闭环（观察-归因-提议-验证-沉淀）+ 经验条目库（embedding 检索复用）+ 用户画像（静态/动态分层+时间衰减）+ A/B 验证门 + 安全回滚，纯自我批判禁沉淀。
@@ -272,6 +272,23 @@ python scripts/check_update.py --slug tri-evolve --json
 | ③ 上游缺失 | 无 tri-intent 快照 | 走 §上游依赖检测 的降级模式，按 §模式 C 降级输入 向用户追问进化目标与范围 |
 | ④ hook 缺失 | 以 hook / 定时为触发源 | §触发时机 表已声明**无 hook / 无调度时的降级路径**：退化为**手动批处理**（EVOLVE_LEARN / EVOLVE_APPLY 由用户显式发起），NEVER 假装已自动运行 |
 | ⑤ 异常场景 | 信号源不可读、经验库损坏、画像写入失败 | 保留现场并标注「未分类异常」；**先回滚再报告**，NEVER 带着损坏状态继续进化 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：高风险人工审批——修改 skill 核心契约（强制执行契约/自检句/激活语义）MUST 人工审批，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：调度安全门（定时 opt-in）——定时/批量改写 `.tribro/evolve/` 前须在 `templates/meta.json` 显式开启 `schedule.enabled=true`，未获用户确认 NEVER 继续。
+- 🔴 **STOP**：A/B 验证门——中风险经验沉淀/配置覆盖须 lift ≥ 阈值（默认 5%）且 p<0.05，未获验证通过 NEVER 继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 基于纯自我批判生成改进提议（§强制执行契约）
+- NEVER 将未验证（pending/validating）经验注入下游 skill 提示（§强制执行契约）
+- NEVER 推断或写入敏感属性（health/political/religious/sexual）到用户画像（§强制执行契约）
+- NEVER 在无 human-in-loop 的情况下静默后台改写 `.tribro/evolve/`（§调度安全门）
+- NEVER 宣称「自动/自主学习」而实际无人触发（§调度安全门）
+- NEVER 带着损坏状态继续进化，先回滚再报告（§兜底处理）
 
 ## 交付产物
 

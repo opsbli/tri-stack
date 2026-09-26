@@ -1,7 +1,7 @@
 ---
 name: 构建与发布
 slug: tri-release
-version: 1.1.2
+version: 1.1.3
 displayName: 构建与发布
 description: SDLC P7 构建与发布子SKILL。读取 tri-sdlc 转交的阶段任务（P6 测试结论 + P4 实现清单 + P2 设计 + P7 门禁条目清单），完成 SemVer 版本定级、构建产物清单与校验、CI/CD 三段流水线定义、预发布部署与冒烟测试、四要素回滚方案、灰度或全量发布策略、发布后核心链路巡检，并向用户工作区更新 Keep a Changelog 格式 CHANGELOG.md，产出 release-plan.md / release-report.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P7 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 构建发布专家，产出版本定级、流水线、冒烟、回滚与灰度策略及发布报告，面向 P7 门禁 9 条必检项交付。
@@ -21,7 +21,7 @@ license: MIT
 
 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
-&**：MUST 校验转交包 `阶段 = P7` 且 P6 状态为 `已通过`（Critical 缺陷已清零）；未通过 NEVER 发布，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
+1. **强制前置**：MUST 校验转交包 `阶段 = P7` 且 P6 状态为 `已通过`（Critical 缺陷已清零）；未通过 NEVER 发布，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
 2. **面向门禁产出**：MUST 逐条覆盖 P7 门禁条目（`P7-M0`–`P7-M8` 必检 + `P7-R1`–`R2` 建议），两份交付物 MUST 一次性齐备。
 3. **版本定级有据**：版本号 MUST 遵循 **SemVer**，且递增位（MAJOR/MINOR/PATCH）MUST 与本次变更性质匹配并**写明定级理由**（`P7-M1`）。
 4. **产物可校验**：构建产物清单 MUST 含**产物名 + 校验方式**（哈希 / 大小 / 签名任一）；无校验方式 NEVER 交付（`P7-M2`）。
@@ -257,6 +257,22 @@ python scripts/check_update.py --slug tri-release --json
 2. 全文扫描占位符；填写门禁自查表（9 条必检项）。
 3. 返回交付物路径 + 发布摘要（版本 / 产物数 / 冒烟结果 / 策略 / 巡检结论 / 回滚是否触发）+ 自查结论。
 4. NEVER 自行判定门禁通过、NEVER 进入 P8。
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P6 状态非「已通过」即 NEVER 开始本阶段；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。
+- 🔴 **STOP**：「发布不静默」（§强制执行契约 第 9 条）——推送远端、发布制品、部署生产、打 tag 等对外操作前未向用户明示影响面并取得确认，NEVER 继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 在 P6 未通过或 Critical 缺陷未清零时强行发布（§强制执行契约）
+- NEVER 在冒烟用例任一失败后进入正式发布（§构建与发布方法论）
+- NEVER 事后补写回滚方案，MUST 发布前就绪（§构建与发布方法论）
+- NEVER 覆盖 CHANGELOG 历史版本节，MUST 顶部追加（§构建与发布方法论）
+- NEVER 修改业务代码或 P1/P2/P4/P6 交付物内容（§落盘规则）
+- NEVER 判定门禁通过或推进到 P8（§强制执行契约）
 
 ## 交付产物
 

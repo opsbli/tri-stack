@@ -1,7 +1,7 @@
 ---
 name: 需求分析
 slug: tri-require
-version: 1.1.2
+version: 1.1.3
 displayName: 需求分析
 description: SDLC P1 需求分析子SKILL。读取 tri-sdlc 转交的阶段任务（charter.md + 快照§三 + P1 门禁条目清单），完成需求采集与功能/非功能分列、REQ-nnn 唯一 ID 分配、MoSCoW 优先级标注、三段式用户故事编写、Given-When-Then 可判定验收标准编写、双向可追溯矩阵构建与需求基线冻结，产出 requirements.md / user-stories.md / acceptance-criteria.md / traceability-matrix.md 四件套供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P1 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 需求分析专家，产出带唯一 ID、优先级、可判定验收标准与双向追溯矩阵的需求四件套，面向 P1 门禁 8 条必检项交付。
@@ -218,6 +218,22 @@ python scripts/check_update.py --slug tri-require --json
 
 1. 返回四件套路径 + 需求统计（总数 / Must 数 / 非功能三类覆盖 / AC 总数）+ 自查结论。
 2. NEVER 自行判定门禁通过、NEVER 进入 P2。
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+
+- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P0 状态非「已通过/已跳过」即 NEVER 开始本阶段；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。
+- 🔴 **STOP**：「范围外候选」变更确认（§强制执行契约 第 5 条）——需求超出 charter in-scope 时未经 tri-sdlc 变更确认，NEVER 纳入需求基线继续。
+
+### 🚫 红灯清单（NEVER）
+
+- NEVER 静默扩范围，超出 in-scope MUST 标注「范围外候选」提请确认（§强制执行契约）
+- NEVER 允许「运行正常」「体验良好」类不可判定验收标准（§强制执行契约）
+- NEVER 重复使用或中途改号 REQ-nnn，作废用「已废弃」标记（§强制执行契约）
+- NEVER 分批交付需求四件套（§强制执行契约）
+- NEVER 撰写设计/任务/测试用例或推进到 P2（§强制执行契约）
+- NEVER 向用户工作区写入文件（§落盘规则）
 
 ## 交付产物
 

@@ -1,7 +1,7 @@
 ---
 name: 规划拆解
 slug: tri-plan
-version: 1.3.3
+version: 1.3.4
 displayName: 规划拆解
 description: 规划拆解下游执行 skill。读取 tri-intent 快照 §三，处理 I13（规划拆解）意图，产出计划/方案/任务清单/排期等结构化规划成果物。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装）。
 summary: 依据 tri-intent 快照自主管理规划全链路（规划纲要→完整规划→任务清单），融合 WBS 分解与 SMART 目标校准方法论，含三门审批机制。
@@ -274,6 +274,21 @@ python scripts/check_update.py --slug tri-plan --json
 | ③ 上游缺失 | 无 tri-intent 快照 / 缺需求或目标描述 | 走 §上游依赖检测 的降级模式，先向用户对齐目标与范围再拆解 |
 | ④ hook 缺失 | 本 skill 以快照路由（I13）为触发源，**不以 hook 为触发源** | 无 hook 环境功能完整；NEVER 假设自动触发 |
 | ⑤ 异常场景 | I13 子类语义应让渡 / 上游信息矛盾 | 命中让渡语义（工作流设计 → tri-workflow / sdlc → tri-sdlc）MUST 转出，NEVER 越界接管；上游信息矛盾 → 列出冲突点回退 tri-intent 澄清 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+- 🔴 **STOP**：门①（规划方向确认）——产出 `plan-brief.md` 向用户复述规划方向+目标+范围+约束，未获用户确认 NEVER 进入深度拆解。
+- 🔴 **STOP**：门②（规划审计）——`plan.md` 的拆解合理性+依赖关系+风险缓解交用户审计，未获用户确认 NEVER 产出 `task-checklist.md`。
+- 🔴 **STOP**：门③（交付前确认）——交付前主动询问①是否调其它 skill ②是否有补充，未获用户确认 NEVER 交付。
+
+### 🚫 红灯清单（NEVER）
+- NEVER 跳门或抢跑，任一门未通过 MUST 携反馈回炉（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 带着含糊目标进入拆解，目标含糊 MUST 在门①澄清（§核心能力方法论（WBS 拆解 · 可扩展））
+- NEVER 凭印象填「通过」——依赖图 MUST 实跑 `scripts/dep_lint.py`，FAIL 时 NEVER 带着环进 task-checklist.md（§目标拆解方法论）
+- NEVER 用不可度量的条目凑数或带着不可度量的任务项交付（§兜底处理（NEVER 静默失败））
+- NEVER 越界接管 L3 子类（工作流设计/全生命周期），命中让渡语义 MUST 转出（§兜底处理（NEVER 静默失败））
+- NEVER 在 prompt 内联推断版本或拼接升级命令（§版本检查与更新机制（强制技术约束 · 硬红线））
 
 ## 交付产物
 

@@ -1,7 +1,7 @@
 ---
 name: tri-prototype
 slug: tri-prototype
-version: 1.1.2
+version: 1.1.3
 displayName: 原型解析（tri-prototype）
 description: "PM→Dev 桥接 skill：解析产品原型链接（Axure / 摹客 / 墨刀 / Figma / Figma Dev Mode）与 PRD 文档，提取页面结构、交互规则、业务规则与验收标准，产出 tri-coding 门② 可直接消费的 `requirements.md`（编码需求说明书）——无缝衔接 tri 家族开发流程。支持 Axure share 链接、Figma 文件链接、PRD 文档链接与本地文件输入。认领 I11 的 PM 原型解析子类（L3_子意图=pm-prototype，与 tri-frontend-design / tri-lottie / tri-code-analyzer 并列，非独占 I11）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。"
 summary: 解析 PM 原型与 PRD → 产出 tri-coding `requirements.md`（编码需求说明书），无缝衔接 tri-coding 门② 的设计审批流程。
@@ -196,6 +196,21 @@ index.html（壳，13.7KB）
 | **原型链接不可访问** | 标注保真度=低，请求用户提供截图或口头描述，NEVER 编造页面结构 |
 | **PRD 与原型冲突** | 以 PRD 为准，标注冲突项供用户裁决 |
 | **原型平台不在支持列表** | 标注平台=未知，请求用户提供截图/导出文件 |
+
+## 🔴 检查点与红灯清单（STOP · NEVER）
+
+### 🔴 用户确认检查点（STOP）
+- 🔴 **STOP**：最小输入要求——原型链接与 PRD 来源两者都没有时，未获用户澄清补充 NEVER 凭想象编造需求（§强制执行契约 条 7）。
+- 🔴 **STOP**：必填项缺失且无法从快照/对话推断——MUST 在解析前向用户提出澄清，未获答复 NEVER 凭默认值猜（§输入契约）。
+- 🔴 **STOP**：解析保真度不足（中/低保真或链接不可访问）——MUST 告知用户并请求补充（截图/导出/口头说明），未获补充 NEVER 继续推进（§解析保真度分级）。
+
+### 🚫 红灯清单（NEVER）
+- NEVER 声称「已完整解析原型」，保真度受平台限制（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 在信息不足时编造页面结构或交互规则（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 自行裁决业务规则，PRD 与原型冲突时以 PRD 为准并标注冲突项（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 擅自扩展范围（如顺手写代码、设计 UI、评审业务合理性）（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 产出 tri-coding 无法直接消费的自由格式文档（§强制执行契约（Execution Contract · 最高优先级））
+- NEVER 无限递归抓取子资源，递归深度最多 2 层（§步骤 ② 子资源发现（关键步骤 · v1.1 新增））
 
 ## 交付产物
 
