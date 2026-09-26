@@ -434,6 +434,11 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw3-tri-meta-changelog` | replace_text | `tri-meta` CHANGELOG：追加 [1.2.8] 条目（兜底③对齐。darwin P2 批） |
 | `dw3-tri-fix-changelog` | replace_text | `tri-fix` CHANGELOG：追加 [1.5.4] 条目（编号修正。darwin P2 批） |
 | `dw3-tri-html-changelog` | replace_text | `tri-html` CHANGELOG：追加 [1.3.6] 条目（幽灵引用 + 残句补全。darwin P2 批） |
+| `dw4-meta-m05-trigger` | replace_text | `tri-meta` M05 声明收敛（触发时机）：整句重复 → 短指针（darwin 后续批） |
+| `dw4-meta-m05-table` | replace_text | `tri-meta` M05 声明收敛（响应策略表）：整句重复 → 短指针（darwin 后续批） |
+| `dw4-meta-m05-disk` | replace_text | `tri-meta` M05 声明收敛（落盘规则）：整句重复 → 短指针（darwin 后续批） |
+| `dw4-meta-reroute` | replace_text | `tri-meta` 重路由映射精确化：4 行悬空措辞 → 显式处置语义（darwin 后续批） |
+| `dw4-meta-changelog` | replace_text | `tri-meta` CHANGELOG：追加 [1.2.9] 条目（darwin 后续批） |
 
 ## 每项补丁的依据
 
@@ -1026,3 +1031,15 @@ skill 数、校验覆盖、`check_update.py` 份数**均无变化**（本 op 只
 四处计数中 skill 总数（26/35/35/36）不变——本批无新增 skill。
 曾发现的机械替换残留（`§3.13 代码版权(合规)` 整替换产生重复短语）已按「未 commit 范式」就地拆分修正：
 ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回滚 `tri-html/SKILL.md` 后重放。
+
+### 计数（2026-09-26 · tri-meta 重写批增量）
+
+> 上节计数为时点快照，**冻结**。本批 = proposal `reports/proposal-tri-meta-rewrite-20260926.md`（Approved: yes 2026-09-26）；
+> paired 评审 3 judge 全 better（2 clear + 1 slight）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 247 | **252** | +5（`dw4-*`：M05 收敛 3 + 重路由精确化 1 + CHANGELOG 1）；settle 就地更新 1.2.8→1.2.9（不占新行） |
+| §当前补丁清单 数据行数 | 249 | **254** | +5；对账恒等式：254 − 划除 2 = manifest **252** ✅ |
+
+回执：`apply.py` 二轮全部 `应用 0｜已应用 1`；`version-lint --apply-docs` EXIT=0。tri-meta PATCH 1.2.9。

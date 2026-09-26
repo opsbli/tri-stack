@@ -373,11 +373,11 @@
     {
       "id": "f86-ver-meta",
       "type": "replace_regex",
-      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.2.5→1.2.6）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）（2026-09-26 darwin P2 批目标就地更新 1.2.7→1.2.8）",
+      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.2.5→1.2.6）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）（2026-09-26 darwin P2 批目标就地更新 1.2.7→1.2.8）（2026-09-26 tri-meta 重写批目标就地更新 1.2.8→1.2.9）",
       "glob": "tri-meta/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.8",
-      "already_marker": "version: 1.2.8"
+      "replacement": "version: 1.2.9",
+      "already_marker": "version: 1.2.9"
     },
     {
       "id": "f104-cl-meta",
@@ -1696,6 +1696,51 @@
       "old": "## [1.3.5] - 2026-09-26",
       "new": "## [1.3.6] - 2026-09-26\n\n### 修复\n\n- **幽灵引用清理**：§3.13 → §代码版权与许可证合规（3 处，tri-coding 无 §3.13 编号）。\n- **残句补全**：「引擎内部纪律」行悬空逗号截断，补全「NEVER 直接修改 viewer 内部实现」语义。\n\n## [1.3.5] - 2026-09-26",
       "already_marker": "## [1.3.6]"
+    },
+    {
+      "id": "dw4-meta-m05-trigger",
+      "type": "replace_text",
+      "label": "`tri-meta` M05 声明收敛（触发时机）：整句重复 → 短指针（9→6 处；darwin 后续批）",
+      "glob": "tri-meta/SKILL.md",
+      "old": "- tri-intent 产出的快照中 `下游路由建议` 指向本 skill（M01–M04）\n- M05 中止确认不在本 skill 范围内（→ 空，由 tri-intent 直接处理）",
+      "new": "- tri-intent 产出的快照中 `下游路由建议` 指向本 skill（M01–M04；M05 不认领，见契约 5）",
+      "already_marker": "M05 不认领，见契约 5"
+    },
+    {
+      "id": "dw4-meta-m05-table",
+      "type": "replace_text",
+      "label": "`tri-meta` M05 声明收敛（响应策略表）：整句重复 → 短指针（darwin 后续批）",
+      "glob": "tri-meta/SKILL.md",
+      "old": "> M05 中止确认不在本表内：M05 → 空（不落盘），由 tri-intent 直接处理，本 skill 不认领。",
+      "new": "> M05 不认领（契约 5）。",
+      "already_marker": "> M05 不认领（契约 5）。"
+    },
+    {
+      "id": "dw4-meta-m05-disk",
+      "type": "replace_text",
+      "label": "`tri-meta` M05 声明收敛（落盘规则）：整句重复 → 短指针（darwin 后续批）",
+      "glob": "tri-meta/SKILL.md",
+      "old": "- M05 不在本 skill 范围内（→ 空，不落盘，由 tri-intent 直接处理）",
+      "new": "- M05 不认领（契约 5）",
+      "already_marker": "- M05 不认领（契约 5）"
+    },
+    {
+      "id": "dw4-meta-reroute",
+      "type": "replace_text",
+      "label": "`tri-meta` 重路由映射精确化：4 行悬空措辞（本分支未包含/本分支有下游者）→ 显式处置语义（停止+交还 tri-intent；语义源自越界处置与回环护栏既有条款；darwin 后续批）",
+      "glob": "tri-meta/SKILL.md",
+      "old": "3. 重路由到原 I 意图 skill 执行：\n   - 原 I ∈ {I01–I05} → （本分支未包含，原 tri-ask）\n   - 原 I = I11/I12 → tri-coding/tri-fix\n   - 原 I = I15 → （本分支未包含，原 tri-mm）\n   - 原 I = I16 → （本分支未包含，原 tri-bs）\n   - 其它 I 意图 → 对应下游 skill（本分支有下游者）",
+      "new": "3. 重路由到原 I 意图 skill 执行：\n   - 原 I = I11/I12 → tri-coding/tri-fix\n   - 原 I ∈ {I01–I05, I15, I16} → 本分支不包含对应下游（tri-ask/tri-mm/tri-bs 已归档）：MUST 停止重路由，向用户说明并请其直接发起新一轮明确请求（经 tri-intent 重新路由）\n   - 其它 I 意图 → 交还 tri-intent 按快照路由派发（本 skill 不自持下游映射）",
+      "already_marker": "MUST 停止重路由，向用户说明并请其直接发起新一轮明确请求"
+    },
+    {
+      "id": "dw4-meta-changelog",
+      "type": "replace_text",
+      "label": "`tri-meta` CHANGELOG：追加 [1.2.9] 条目（M05 收敛 + 重路由精确化）",
+      "glob": "tri-meta/CHANGELOG.md",
+      "old": "## [1.2.8] - 2026-09-26",
+      "new": "## [1.2.9] - 2026-09-26\n\n### 变更\n\n- **M05 声明收敛**：全文 9 处 → 3 处权威位（契约/frontmatter/红灯）+ 3 处短指针，消除结构性冗余。\n- **重路由映射精确化**：4 行悬空措辞改为显式处置（下游已归档 → 停止重路由并请用户重新发起；其它意图 → 交还 tri-intent 派发）。\n\n## [1.2.8] - 2026-09-26",
+      "already_marker": "## [1.2.9]"
     },
     {
       "id": "sync-version-meta",

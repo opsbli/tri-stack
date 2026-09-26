@@ -1,7 +1,7 @@
 ---
 name: 元操作处理
 slug: tri-meta
-version: 1.2.8
+version: 1.2.9
 displayName: 元操作处理
 description: 元操作下游执行 skill。处理 M01–M04（澄清追问/纠错反馈/追加细化/能力询问）元操作意图，针对「上一轮回复」或「AI 本身」发问做出响应。M05 中止确认 → 空（不落盘），由 tri-intent 直接处理，本 skill 不认领。当 tri-intent 判定为 Meta 类（M01–M04）时激活。支持独立安装，含上游依赖检测两态逻辑（标准模式/引导安装）。
 summary: 依据 tri-intent 判定处理 M01–M04 元操作意图，含 4 子意图差异化响应策略与 M02/M03 重路由机制（含回环护栏）；M05 不认领。
@@ -28,8 +28,7 @@ license: MIT
 
 ## 触发时机
 
-- tri-intent 产出的快照中 `下游路由建议` 指向本 skill（M01–M04）
-- M05 中止确认不在本 skill 范围内（→ 空，由 tri-intent 直接处理）
+- tri-intent 产出的快照中 `下游路由建议` 指向本 skill（M01–M04；M05 不认领，见契约 5）
 
 ## 上游依赖检测（独立使用时）
 
@@ -92,7 +91,7 @@ license: MIT
 | M03 追加细化 | 基于上一轮追加细化 | 接住细化方向 → 定位原 I 意图 → 重路由到原 I 意图 skill 追加细化 |
 | M04 能力询问 | 说明能力边界 | 说明本 AI 的能力范围与边界，不夸大不隐瞒 |
 
-> M05 中止确认不在本表内：M05 → 空（不落盘），由 tri-intent 直接处理，本 skill 不认领。
+> M05 不认领（契约 5）。
 
 #### M02/M03 重路由逻辑
 
@@ -103,11 +102,9 @@ license: MIT
    - M02：提取用户的纠错内容，作为原 I 意图的新约束
    - M03：提取用户的细化方向，作为原 I 意图的追加要求
 3. 重路由到原 I 意图 skill 执行：
-   - 原 I ∈ {I01–I05} → （本分支未包含，原 tri-ask）
    - 原 I = I11/I12 → tri-coding/tri-fix
-   - 原 I = I15 → （本分支未包含，原 tri-mm）
-   - 原 I = I16 → （本分支未包含，原 tri-bs）
-   - 其它 I 意图 → 对应下游 skill（本分支有下游者）
+   - 原 I ∈ {I01–I05, I15, I16} → 本分支不包含对应下游（tri-ask/tri-mm/tri-bs 已归档）：MUST 停止重路由，向用户说明并请其直接发起新一轮明确请求（经 tri-intent 重新路由）
+   - 其它 I 意图 → 交还 tri-intent 按快照路由派发（本 skill 不自持下游映射）
 4. 重路由时携带纠错/细化信息，原 I 意图 skill 据此重做/追加
 
 > **回环护栏**：重路由后应交由 tri-intent 重新识别，避免 tri-meta → 原 skill → tri-intent 回环；若检测到回环则停止。
@@ -232,7 +229,7 @@ python scripts/check_update.py --slug tri-meta --json
 ## 落盘规则
 
 - M01–M04：快照由 tri-intent 已落盘于 `.tribro/snapshots/`
-- M05 不在本 skill 范围内（→ 空，不落盘，由 tri-intent 直接处理）
+- M05 不认领（契约 5）
 - M02/M03 重路由后，由原 I 意图 skill 按其落盘规则处理成果物
 - 本 skill 自身不额外落盘响应内容
 
