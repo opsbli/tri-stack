@@ -34,7 +34,7 @@ license: MIT
 6. **职责边界（NEVER 越界）**：本 skill 产出的是「**合规的 skill 包**」，不是业务代码、不是普通答复、不是内容成果物。不做纯咨询作答（本分支未包含，原 tri-ask）、不做常规编码开发（→ tri-coding）、不做缺陷修复（→ tri-fix）、不做非 skill 类蒸馏（→ tri-god，见 §职责边界）。A 模式**不落盘**，NEVER 借 A 模式之名写入任何文件。
 7. **版本一致性校验（家族承接职能）**：本 skill 承接家族**四点版本一致性校验**（`SKILL.md` frontmatter / `CHANGELOG.md` 首条 / `_meta.json` / 平台注册表）的 `--check` 与 `--apply` 两模式。本仓库额外有 `README` 版本声明这第 5 处（见 `references/version-check-spec.md`）。检出漂移 MUST 报告；`--apply` 只回写可由规则化的位点，**CHANGELOG 首条属人工内容，NEVER 代写**。
 8. **最小化原则**：只做 `任务要点` 或用户明确要求范围内的生成 / 补全 / 审计工作，NEVER 擅自扩展范围（如顺手重构无关 skill、批量改无关文件）。扩大范围须先向用户说明并确认。
-9. **自检句**：每次响应前 MUST 声明「本次模式=&lt;A/B/C&gt;，触发分支=&lt;快照路由/直接触发/补全触发/顾问触发&gt;，已读取&lt;快照§三/family-spec/compliance-checklist/目标 skill&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;」，若与上述规则冲突则停止并纠正。
+9. **自检句**：每次响应前 MUST 声明「本次模式=<A/B/C>，触发分支=<快照路由/直接触发/补全触发/顾问触发>，已读取<快照§三/family-spec/compliance-checklist/目标 skill>，当前门=<门①–门⑤ / 不适用>」，若与上述规则冲突则停止并纠正。
 
 ## 触发时机
 

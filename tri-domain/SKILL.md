@@ -22,7 +22,7 @@ license: MIT
 3. **边界场景发明铁律**：对每个核心概念 MUST 至少发明一个边界场景（如「如果数量为 0 怎么办？」「如果两个人同时修改怎么办？」）。
 4. **CONTEXT.md 单一事实源**：所有术语定义 MUST 写入 `CONTEXT.md`，NEVER 散落在多个文件中。
 5. **ADR 不可变铁律**：已写入的 ADR MUST NOT 修改正文——如果决策变更，MUST 新增一条 ADR 标注「取代 ADR-xxx」。
-6. **自检**：作答前 MUST 声明「本次操作=&lt;新增术语/新增ADR/挑战术语/查询&gt;，CONTEXT.md 条目数=&lt;N&gt;，ADR 总数=&lt;N&gt;」。
+6. **自检**：作答前 MUST 声明「本次操作=<新增术语/新增ADR/挑战术语/查询>，CONTEXT.md 条目数=<N>，ADR 总数=<N>」。
 
 ## 触发时机
 

@@ -31,7 +31,7 @@ license: MIT
 8. **最小化原则**：只做用户 / 委派方指定范围内的审核工作（默认 = 全量九章 + 九维），NEVER 擅自扩展范围（如顺手改写文档、代写 PRD、评审业务合理性之商业价值）。
 9. **职责边界**：本 skill 产出的是「**审核报告 + 修订清单**」，不是修订后的需求文档（→ tri-prototype）、不是对齐记录（→ tri-grill）、不是业务代码（→ tri-coding）、不是业务代码审查（→ tri-review）、不是 skill 合规审计（→ tri-forge）。
 10. **反规避**：判据只以 `references/audit-dimensions.md` 为准。NEVER 因「用户着急 / 时间紧 / 先开工再说」而下调判定标准、跳过维度或把 P0 记为 P2。
-11. **自检句**：每次响应前 MUST 声明「本次模式=&lt;委派审核 / 兜底审核&gt;，触发分支=&lt;直接触发 / 委派触发 / 快照路由&gt;，已读取&lt;audit-dimensions / market-prd-review-skills / 目标 requirements.md&gt;，审核对象=&lt;路径&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;，P0=&lt;N&gt; / P1=&lt;N&gt; / P2=&lt;N&gt;，对抗=&lt;D9 命中 N / 无发现&gt;，独立性=&lt;same-agent / cross-context / cross-model&gt;」，若与上述规则冲突则停止并纠正。
+11. **自检句**：每次响应前 MUST 声明「本次模式=<委派审核 / 兜底审核>，触发分支=<直接触发 / 委派触发 / 快照路由>，已读取<audit-dimensions / market-prd-review-skills / 目标 requirements.md>，审核对象=<路径>，当前门=<门①–门⑤ / 不适用>，P0=<N> / P1=<N> / P2=<N>，对抗=<D9 命中 N / 无发现>，独立性=<same-agent / cross-context / cross-model>」，若与上述规则冲突则停止并纠正。
 12. **对抗结论必填铁律**：报告 MUST 含「对抗式审查结论」小节，内含 D9 的 **≥3 条可证伪错误场景**（见 `references/audit-dimensions.md` §二 D9）。**无该小节 = 报告不合规**，门④ MUST 判不通过——本 skill **NEVER 以「其余维度全绿」代替「已尝试证伪」**（本 skill 的失效模式正是「自审自过」）。
 13. **跨轮单调性铁律**：`本 skill → tri-prototype 回炉 → 再审` 是多轮链路，MUST 落 `round-ledger.jsonl` 并在门④ 执行单调性守卫——**P0 / P1 数量下降而本轮 `new_evidence=0` 时判「收敛造假」嫌疑，MUST 强制升级人审、本轮不得判「可开工 / 有条件开工」**；任何 P 级降级 MUST 在本轮附新证据并在账本留痕，否则**驳回降级**。NEVER 让级别在多轮中「无证据地变好」。
 

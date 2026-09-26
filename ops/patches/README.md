@@ -476,6 +476,40 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw7-forge-external-decl` | replace_text | `tri-forge` README 新增「第三方 skill 门禁（双轨制）」声明（dw7 批） |
 | `dw7-forge-tree-ref` | replace_text | `tri-forge` README 目录树补登 external-gate-registry.md（dw7 批） |
 | `dw7-forge-tree-script` | replace_text | `tri-forge` README 目录树补登 external_skill_gate.py（dw7 批） |
+| `dw8-release-entity` | replace_text | `tri-release` 自检句实体恢复原生尖括号（dw8 批） |
+| `dw8-require-entity` | replace_text | `tri-require` 自检句实体恢复原生尖括号（dw8 批） |
+| `dw8-test-entity` | replace_text | `tri-test` 自检句实体恢复原生尖括号（dw8 批） |
+| `dw8-impl-entity` | replace_text | `tri-impl` 自检句实体恢复原生尖括号（dw8 批） |
+| `dw8-impl-boundary-entity` | replace_text | `tri-impl` 边界说明行实体恢复原生尖括号（dw8 批） |
+| `dw8-release-fallback-deployfail` | replace_text | `tri-release` 兜底表补「⑥ 预发布部署失败/发布中止」（dw8 批） |
+| `dw8-impl-fallback-p3skip` | replace_text | `tri-impl` 兜底表补「⑥ P3 已跳过且 devenv.md 缺失」（dw8 批） |
+| `dw8-impl-loop-cap` | replace_text | `tri-impl` 修复循环退出上限 + 实体修复（dw8 批） |
+| `dw8-require-baseline-grounding` | replace_text | `tri-require` 行业基线路径落地（dw8 批） |
+| `dw8-test-fallback-must` | replace_text | `tri-test` 兜底⑤ Must 级冲突裁决（dw8 批） |
+| `dw8-test-contract-lite` | replace_text | `tri-test` 契约第 1 条 lite 修饰消歧（dw8 批） |
+| `dw8-release-changelog` | replace_text | `tri-release` CHANGELOG：追加 [1.1.6]（dw8 批） |
+| `dw8-impl-changelog` | replace_text | `tri-impl` CHANGELOG：追加 [1.1.7]（dw8 批） |
+| `dw8-require-changelog` | replace_text | `tri-require` CHANGELOG：追加 [1.1.6]（dw8 批） |
+| `dw8-test-changelog` | replace_text | `tri-test` CHANGELOG：追加 [1.1.7]（dw8 批） |
+| `dw8-entity-sweep-tri-domain-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-forge-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-init-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-orchestrate-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-prototype-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-req-audit-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-charter-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-cr-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-cr-2` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-cr-3` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-design-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-devenv-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-ops-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-ops-2` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-ops-3` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-ops-4` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-release-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw8-entity-sweep-tri-sdlc-children-tri-test-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
 
 ## 每项补丁的依据
 
@@ -1125,3 +1159,17 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 | 补丁层 op 数（`manifest.json`） | 286 | **289** | +3（`dw7-*`：README 声明 1 + 目录树 2） |
 | §当前补丁清单 数据行数 | 288 | **291** | +3；对账恒等式：291 − 划除 2 = manifest **289** ✅ |
 | `ops/README.md` / 根 `README.md` op 计数 | 286 | **289** | 当前态账本同批回写 |
+
+### 计数（2026-09-26 · dw8 批增量 · tri 家族最低档修复）
+
+> 上节计数为时点快照，**冻结**。本批 = 3 judge 盲评 4 个最低档 children（release/impl/require/test）共识短板：
+> 实体残留 ×5、兜底缺口 ×3（部署失败/P3 跳过/Must 冲突）、修复循环上限、行业基线落地、契约括号消歧、CHANGELOG ×4。
+> 「红灯清单与契约逐字重复」按 tri-cr 先例**否决**（带 §出处回指属有意聚合）。4 个 settle 就地更新
+> （release/require 1.1.5→1.1.6、impl/test 1.1.6→1.1.7，不占新行）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 289 | **304** | +15（`dw8-*`：实体 5 + 兜底 3 + 循环 1 + 基线 1 + 契约 1 + CHANGELOG 4） |
+| 同上（sweep 追加） | 304 | **323** | +19（`dw8-entity-sweep-*`：paired 评审抓出 `&gt;` 独立出现漏网 → 全仓一手实测 24 文件命中，工作树 14 文件 19 行清零；`_upstream` 归档不动；字形级 f79 豁免升版） |
+| §当前补丁清单 数据行数 | 291 | **325** | +34；对账恒等式：325 − 划除 2 = manifest **323** ✅ |
+| `ops/README.md` / 根 `README.md` op 计数 | 289 | **323** | 当前态账本同批回写 |

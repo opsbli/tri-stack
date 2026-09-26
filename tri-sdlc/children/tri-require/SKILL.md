@@ -1,7 +1,7 @@
 ---
 name: 需求分析
 slug: tri-require
-version: 1.1.5
+version: 1.1.6
 displayName: 需求分析
 description: SDLC P1 需求分析子SKILL。读取 tri-sdlc 转交的阶段任务（charter.md + 快照§三 + P1 门禁条目清单），完成需求采集与功能/非功能分列、REQ-nnn 唯一 ID 分配、MoSCoW 优先级标注、三段式用户故事编写、Given-When-Then 可判定验收标准编写、双向可追溯矩阵构建与需求基线冻结，产出 requirements.md / user-stories.md / acceptance-criteria.md / traceability-matrix.md 四件套供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P1 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 需求分析专家，产出带唯一 ID、优先级、可判定验收标准与双向追溯矩阵的需求四件套，面向 P1 门禁 8 条必检项交付。
@@ -31,7 +31,7 @@ license: MIT
 7. **无占位交付**：交付前 MUST 全文扫描，NEVER 残留 `<...>` / `TODO` / `待定`。
 8. **回炉逐条闭环**：收到修订意见 MUST 逐条修改并在 `requirements.md` 末尾「修订记录」区登记（轮次 + 未过条目 + 修改点 + 受影响 REQ-ID）。
 9. **不越权**：NEVER 判定门禁通过、NEVER 推进到 P2、NEVER 撰写设计/任务/测试用例（那是 P2/P3/P6）。
-10. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P1 需求分析，已读取 charter.md，门禁条目=8 必检/3 建议，本轮=第 &lt;n&gt; 轮，交付物=4 件套」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。
+10. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P1 需求分析，已读取 charter.md，门禁条目=8 必检/3 建议，本轮=第 <n> 轮，交付物=4 件套」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。
 
 ## 触发时机
 
@@ -60,7 +60,7 @@ license: MIT
 | P0 交付物 | `charter.md` §项目目标 | 需求优先级排序依据 |
 | 快照 §三 | `任务要点` | 需求候选项直接来源 |
 | 快照 §三 | `交付预期` | 验收标准编写参考 |
-| 快照 §三 | `dimensions.D1_任务领域` | 非功能需求（性能/安全/兼容）的行业基线 |
+| 快照 §三 | `dimensions.D1_任务领域` | 非功能需求（性能/安全/兼容）的行业基线；无可用基线时取保守默认值并在 AC 标注假设，NEVER 泛编数值 |
 | manifest | 剖面、阈值覆写 | 非功能指标取值 |
 | 转交包 | P1 门禁条目清单 | 面向验收标准产出的直接依据 |
 

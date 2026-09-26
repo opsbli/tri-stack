@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.6] - 2026-09-26
+
+### 变更
+
+- **行业基线路径落地：无可用基线取保守默认值并在 AC 标注假设，NEVER 泛编数值 + 自检句实体修复。**
+
 ## [1.1.5] - 2026-09-26
 
 ### 变更

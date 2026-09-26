@@ -689,11 +689,11 @@
     {
       "id": "dw-tri-impl-version",
       "type": "replace_regex",
-      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）",
+      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）",
       "glob": "tri-sdlc/children/tri-impl/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.6",
-      "already_marker": "version: 1.1.6"
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
     },
     {
       "id": "dw-impl-changelog",
@@ -714,11 +714,11 @@
     {
       "id": "dw-tri-test-version",
       "type": "replace_regex",
-      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）",
+      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）",
       "glob": "tri-sdlc/children/tri-test/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.6",
-      "already_marker": "version: 1.1.6"
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
     },
     {
       "id": "dw-test-changelog",
@@ -1466,20 +1466,20 @@
     {
       "id": "dw2-tri-release-version",
       "type": "replace_regex",
-      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw8 批目标就地更新 1.1.5→1.1.6）",
       "glob": "tri-sdlc/children/tri-release/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw2-tri-require-version",
       "type": "replace_regex",
-      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw8 批目标就地更新 1.1.5→1.1.6）",
       "glob": "tri-sdlc/children/tri-require/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw3-ops-contract-fix",
@@ -2074,6 +2074,312 @@
       "old": "│   └── compliance_check.py        门④ 22 条硬约束自检",
       "new": "│   ├── compliance_check.py        门④ 22 条硬约束自检（仅家族 skill）\n│   └── external_skill_gate.py     第三方 skill 门禁（12 条：结构/安全/质量）",
       "already_marker": "external_skill_gate.py     第三方 skill 门禁"
+    },
+    {
+      "id": "dw8-release-entity",
+      "type": "replace_text",
+      "label": "`tri-release` 自检句 `&lt;/&gt;` HTML 实体恢复原生尖括号（与全文 `<项目根>/` 书写一致；dw8 批）",
+      "glob": "tri-sdlc/children/tri-release/SKILL.md",
+      "old": "12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P7 构建与发布，版本=&lt;vX.Y.Z&gt;（&lt;定级理由&gt;），产物=&lt;n&gt; 项，流水线=&lt;构建/测试/部署 状态&gt;，冒烟=&lt;通过数/总数&gt;，策略=&lt;灰度比例/全量&gt;，回滚=&lt;已就绪/未就绪&gt;，门禁条目=9 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=release-plan.md + release-report.md + CHANGELOG.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P7 构建与发布，版本=<vX.Y.Z>（<定级理由>），产物=<n> 项，流水线=<构建/测试/部署 状态>，冒烟=<通过数/总数>，策略=<灰度比例/全量>，回滚=<已就绪/未就绪>，门禁条目=9 必检/2 建议，本轮=第 <n> 轮，交付物=release-plan.md + release-report.md + CHANGELOG.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本"
+    },
+    {
+      "id": "dw8-require-entity",
+      "type": "replace_text",
+      "label": "`tri-require` 自检句 `&lt;/&gt;` HTML 实体恢复原生尖括号（与全文 `<项目根>/` 书写一致；dw8 批）",
+      "glob": "tri-sdlc/children/tri-require/SKILL.md",
+      "old": "10. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P1 需求分析，已读取 charter.md，门禁条目=8 必检/3 建议，本轮=第 &lt;n&gt; 轮，交付物=4 件套」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "10. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P1 需求分析，已读取 charter.md，门禁条目=8 必检/3 建议，本轮=第 <n> 轮，交付物=4 件套」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "10. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本"
+    },
+    {
+      "id": "dw8-test-entity",
+      "type": "replace_text",
+      "label": "`tri-test` 自检句 `&lt;/&gt;` HTML 实体恢复原生尖括号（与全文 `<项目根>/` 书写一致；dw8 批）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P6 测试验证，验收标准=&lt;a&gt; 条/覆盖=&lt;a&gt; 条，用例=&lt;总数&gt;（通过 &lt;p&gt;/失败 &lt;f&gt;），通过率=&lt;x%&gt;，缺陷=&lt;总数&gt;（Critical &lt;c&gt; 遗留 &lt;r&gt;），门禁条目=7 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=test-plan.md + test-report.md + defects.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P6 测试验证，验收标准=<a> 条/覆盖=<a> 条，用例=<总数>（通过 <p>/失败 <f>），通过率=<x%>，缺陷=<总数>（Critical <c> 遗留 <r>），门禁条目=7 必检/2 建议，本轮=第 <n> 轮，交付物=test-plan.md + test-report.md + defects.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本"
+    },
+    {
+      "id": "dw8-impl-entity",
+      "type": "replace_text",
+      "label": "`tri-impl` 自检句 `&lt;/&gt;` HTML 实体恢复原生尖括号（dw8 批）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "old": "12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P4 编码实现，任务数=&lt;n&gt;/已完成=&lt;m&gt;，源码文件=&lt;k&gt; 个，单测=&lt;通过/总数&gt;，覆盖率=&lt;x%&gt;，门禁条目=8 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=implements.md + unit-test-report.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P4 编码实现，任务数=<n>/已完成=<m>，源码文件=<k> 个，单测=<通过/总数>，覆盖率=<x%>，门禁条目=8 必检/2 建议，本轮=第 <n> 轮，交付物=implements.md + unit-test-report.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本"
+    },
+    {
+      "id": "dw8-impl-boundary-entity",
+      "type": "replace_text",
+      "label": "`tri-impl` 边界说明行 `&lt;类型&gt;` 实体恢复原生尖括号（dw8 批）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "old": "- 确无边界场景时 MUST 显式写明「本次为 &lt;类型&gt; 变更，无边界分支」及理由。",
+      "new": "- 确无边界场景时 MUST 显式写明「本次为 <类型> 变更，无边界分支」及理由。",
+      "already_marker": "本次为 <类型> 变更，无边界分支"
+    },
+    {
+      "id": "dw8-release-fallback-deployfail",
+      "type": "replace_text",
+      "label": "`tri-release` 兜底表补「⑥ 预发布部署失败/发布中止」：失败时停止对外动作 + 按模式回报 tri-sdlc/用户，NEVER 自行重试（3 judge 共识：更常见异常无承接路径；dw8 批）",
+      "glob": "tri-sdlc/children/tri-release/SKILL.md",
+      "old": "| ⑤ 无预发布环境/无制品库 | 目标项目未提供 staging 环境或制品仓库 | 按维度 4「无预发布环境」降级路径执行本地等价冒烟并登记；NEVER 静默跳过预发布验证 |",
+      "new": "| ⑤ 无预发布环境/无制品库 | 目标项目未提供 staging 环境或制品仓库 | 按维度 4「无预发布环境」降级路径执行本地等价冒烟并登记；NEVER 静默跳过预发布验证 |\n| ⑥ 预发布部署失败/发布中止 | 有 staging 但部署失败、冒烟不达标或发布中止 | 停止一切对外发布动作并如实报告实际状态与实测值；回报 tri-sdlc（编排模式）或用户（独立模式）裁决；NEVER 自行重试对外发布动作 |",
+      "already_marker": "| ⑥ 预发布部署失败/发布中止 |"
+    },
+    {
+      "id": "dw8-impl-fallback-p3skip",
+      "type": "replace_text",
+      "label": "`tri-impl` 兜底表补「⑥ P3 已跳过且 devenv.md 缺失」：契约允许 P3 跳过但输入契约无条件要求 devenv.md，此前断链（judge dry_run 实锤；dw8 批）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "old": "| ⑤ 任务依赖阻塞 | 看板某任务的前置未完成或外部依赖未就绪 | 停在该任务并回报 tri-sdlc 重排；NEVER 跳过被阻塞任务先做后续任务 |",
+      "new": "| ⑤ 任务依赖阻塞 | 看板某任务的前置未完成或外部依赖未就绪 | 停在该任务并回报 tri-sdlc 重排；NEVER 跳过被阻塞任务先做后续任务 |\n| ⑥ P3 已跳过且 devenv.md 缺失 | 契约允许 P3「已跳过」，此时无 §环境/§代码规范/§提交规范 输入 | 以通用默认规范替代并在 implements.md 标注 WARN 声明降级；NEVER 静默按空规范执行 |",
+      "already_marker": "| ⑥ P3 已跳过且 devenv.md 缺失 |"
+    },
+    {
+      "id": "dw8-impl-loop-cap",
+      "type": "replace_text",
+      "label": "`tri-impl` 步骤 3 修复循环补退出上限：连续 2 轮无提升 → WARN 登记并提请 tri-sdlc 裁决，防覆盖率死磕无限循环（dw8 批；含实体修复）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "old": "2. 通过率 &lt; 100% 或覆盖率未达阈值 → 回到步骤 2 修复，**NEVER 带病交付**。",
+      "new": "2. 通过率 < 100% 或覆盖率未达阈值 → 回到步骤 2 修复，**NEVER 带病交付**；连续 2 轮无提升 → 按 WARN 口径登记实测值并提请 tri-sdlc 裁决（替代口径可给出数值时按其判定，完全无法给出才 WARN），NEVER 无限死磕。",
+      "already_marker": "连续 2 轮无提升"
+    },
+    {
+      "id": "dw8-require-baseline-grounding",
+      "type": "replace_text",
+      "label": "`tri-require` 行业基线落地路径：无可用基线时取保守默认值并在 AC 标注假设，NEVER 泛编数值（3 judge 2/3 共识：基线来源悬空；dw8 批）",
+      "glob": "tri-sdlc/children/tri-require/SKILL.md",
+      "old": "| 快照 §三 | `dimensions.D1_任务领域` | 非功能需求（性能/安全/兼容）的行业基线 |",
+      "new": "| 快照 §三 | `dimensions.D1_任务领域` | 非功能需求（性能/安全/兼容）的行业基线；无可用基线时取保守默认值并在 AC 标注假设，NEVER 泛编数值 |",
+      "already_marker": "NEVER 泛编数值"
+    },
+    {
+      "id": "dw8-test-fallback-must",
+      "type": "replace_text",
+      "label": "`tri-test` 兜底⑤与维度 3「Must 100%」语义冲突裁决：被阻塞含 Must 级用例时 NEVER 交付、MUST 回报 tri-sdlc（judge dry_run 最可能触发的决策歧义；dw8 批）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "| ⑤ 测试环境不可用 | 测试环境/依赖服务不可达 | 登记阻塞并以最小核心链路验证子集替代（P6 不承接冒烟，避免术语越界），报告中如实声明覆盖范围；NEVER 声称全量已测 |",
+      "new": "| ⑤ 测试环境不可用 | 测试环境/依赖服务不可达 | 登记阻塞并以最小核心链路验证子集替代（P6 不承接冒烟，避免术语越界），报告中如实声明覆盖范围；NEVER 声称全量已测。**被阻塞的含 Must 级用例时 NEVER 交付，MUST 回报 tri-sdlc 裁决**（维度 3 Must 100% 不因兜底降级） |",
+      "already_marker": "维度 3 Must 100% 不因兜底降级"
+    },
+    {
+      "id": "dw8-test-contract-lite",
+      "type": "replace_text",
+      "label": "`tri-test` 契约第 1 条括号消歧：lite 修饰「已跳过」而非整个校验（standard 下 P5 已跳过是否放行此前读不出；dw8 批）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "1. **强制前置**：MUST 校验转交包 `阶段 = P6` 且 P4 交付物齐备、P5 状态为 `已通过`/`已跳过`（lite 剖面）；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。",
+      "new": "1. **强制前置**：MUST 校验转交包 `阶段 = P6` 且 P4 交付物齐备、P5 状态为 `已通过`（full/standard 剖面）或 `已跳过`（仅 lite 剖面）；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。",
+      "already_marker": "（full/standard 剖面）或 `已跳过`（仅 lite 剖面）"
+    },
+    {
+      "id": "dw8-release-changelog",
+      "type": "replace_text",
+      "label": "`tri-release` CHANGELOG：追加 [1.1.6] 条目（dw8 批属人工内容）",
+      "glob": "tri-sdlc/children/tri-release/CHANGELOG.md",
+      "old": "## [1.1.5] - 2026-09-26",
+      "new": "## [1.1.6] - 2026-09-26\n\n### 变更\n\n- **兜底表补「⑥ 预发布部署失败/发布中止」（停止对外动作 + 按模式回报，NEVER 自行重试）+ 自检句实体修复。**\n\n## [1.1.5] - 2026-09-26",
+      "already_marker": "## [1.1.6]"
+    },
+    {
+      "id": "dw8-impl-changelog",
+      "type": "replace_text",
+      "label": "`tri-impl` CHANGELOG：追加 [1.1.7] 条目（dw8 批属人工内容）",
+      "glob": "tri-sdlc/children/tri-impl/CHANGELOG.md",
+      "old": "## [1.1.6] - 2026-09-26",
+      "new": "## [1.1.7] - 2026-09-26\n\n### 变更\n\n- **兜底表补「⑥ P3 已跳过且 devenv.md 缺失」（默认规范替代 + WARN）+ 步骤 3 修复循环退出上限（连续 2 轮无提升 → WARN 提请裁决）+ 实体修复。**\n\n## [1.1.6] - 2026-09-26",
+      "already_marker": "## [1.1.7]"
+    },
+    {
+      "id": "dw8-require-changelog",
+      "type": "replace_text",
+      "label": "`tri-require` CHANGELOG：追加 [1.1.6] 条目（dw8 批属人工内容）",
+      "glob": "tri-sdlc/children/tri-require/CHANGELOG.md",
+      "old": "## [1.1.5] - 2026-09-26",
+      "new": "## [1.1.6] - 2026-09-26\n\n### 变更\n\n- **行业基线路径落地：无可用基线取保守默认值并在 AC 标注假设，NEVER 泛编数值 + 自检句实体修复。**\n\n## [1.1.5] - 2026-09-26",
+      "already_marker": "## [1.1.6]"
+    },
+    {
+      "id": "dw8-test-changelog",
+      "type": "replace_text",
+      "label": "`tri-test` CHANGELOG：追加 [1.1.7] 条目（dw8 批属人工内容）",
+      "glob": "tri-sdlc/children/tri-test/CHANGELOG.md",
+      "old": "## [1.1.6] - 2026-09-26",
+      "new": "## [1.1.7] - 2026-09-26\n\n### 变更\n\n- **兜底⑤补 Must 级用例冲突裁决（NEVER 交付、回报 tri-sdlc）+ 契约第 1 条 lite 修饰消歧 + 自检句实体修复。**\n\n## [1.1.6] - 2026-09-26",
+      "already_marker": "## [1.1.7]"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-domain-1",
+      "type": "replace_text",
+      "label": "`tri-domain` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-domain/SKILL.md",
+      "old": "6. **自检**：作答前 MUST 声明「本次操作=&lt;新增术语/新增ADR/挑战术语/查询&gt;，CONTEXT.md 条目数=&lt;N&gt;，ADR 总数=&lt;N&gt;」。",
+      "new": "6. **自检**：作答前 MUST 声明「本次操作=<新增术语/新增ADR/挑战术语/查询>，CONTEXT.md 条目数=<N>，ADR 总数=<N>」。",
+      "already_marker": "T 声明「本次操作=<新增术语/新增ADR/挑战"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-forge-1",
+      "type": "replace_text",
+      "label": "`tri-forge` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-forge/SKILL.md",
+      "old": "9. **自检句**：每次响应前 MUST 声明「本次模式=&lt;A/B/C&gt;，触发分支=&lt;快照路由/直接触发/补全触发/顾问触发&gt;，已读取&lt;快照§三/family-spec/compliance-checklist/目标 skill&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;」，若与上述规则冲突则停止并纠正。",
+      "new": "9. **自检句**：每次响应前 MUST 声明「本次模式=<A/B/C>，触发分支=<快照路由/直接触发/补全触发/顾问触发>，已读取<快照§三/family-spec/compliance-checklist/目标 skill>，当前门=<门①–门⑤ / 不适用>」，若与上述规则冲突则停止并纠正。",
+      "already_marker": "T 声明「本次模式=<A/B/C>，触发分支=<"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-init-1",
+      "type": "replace_text",
+      "label": "`tri-init` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-init/SKILL.md",
+      "old": "7. **自检**：作答前 MUST 声明「本次模式=&lt;单项目/多项目&gt;，目标路径=&lt;路径&gt;，已扫描，技术栈=&lt;检测结果&gt;，AGENTS.md=&lt;新建/覆盖/保留&gt;，.tribro=&lt;已创建/已存在&gt;」。",
+      "new": "7. **自检**：作答前 MUST 声明「本次模式=<单项目/多项目>，目标路径=<路径>，已扫描，技术栈=<检测结果>，AGENTS.md=<新建/覆盖/保留>，.tribro=<已创建/已存在>」。",
+      "already_marker": "T 声明「本次模式=<单项目/多项目>，目标路径"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-orchestrate-1",
+      "type": "replace_text",
+      "label": "`tri-orchestrate` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-orchestrate/SKILL.md",
+      "old": "8. **自检**：作答前 MUST 声明「本次操作=&lt;拆分/分配/收集/汇总/全流程&gt;，spec 数=&lt;N&gt;，已分配=&lt;N&gt;，已完成=&lt;N&gt;，进度=&lt;N%&gt;」。",
+      "new": "8. **自检**：作答前 MUST 声明「本次操作=<拆分/分配/收集/汇总/全流程>，spec 数=<N>，已分配=<N>，已完成=<N>，进度=<N%>」。",
+      "already_marker": "T 声明「本次操作=<拆分/分配/收集/汇总/全"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-prototype-1",
+      "type": "replace_text",
+      "label": "`tri-prototype` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-prototype/SKILL.md",
+      "old": "8. **自检**：作答前 MUST 声明「本次意图=&lt;L2&gt;，已读取快照，原型链接=&lt;平台&gt;，PRD=&lt;有/无&gt;，保真度=&lt;高/中/低&gt;，落盘=&lt;requirements.md 路径&gt;，衔接目标=&lt;tri-coding 门②&gt;」，若与上述规则冲突则停止并纠正。",
+      "new": "8. **自检**：作答前 MUST 声明「本次意图=<L2>，已读取快照，原型链接=<平台>，PRD=<有/无>，保真度=<高/中/低>，落盘=<requirements.md 路径>，衔接目标=<tri-coding 门②>」，若与上述规则冲突则停止并纠正。",
+      "already_marker": "T 声明「本次意图=<L2>，已读取快照，原型链"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-req-audit-1",
+      "type": "replace_text",
+      "label": "`tri-req-audit` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-req-audit/SKILL.md",
+      "old": "11. **自检句**：每次响应前 MUST 声明「本次模式=&lt;委派审核 / 兜底审核&gt;，触发分支=&lt;直接触发 / 委派触发 / 快照路由&gt;，已读取&lt;audit-dimensions / market-prd-review-skills / 目标 requirements.md&gt;，审核对象=&lt;路径&gt;，当前门=&lt;门①–门⑤ / 不适用&gt;，P0=&lt;N&gt; / P1=&lt;N&gt; / P2=&lt;N&gt;，对抗=&lt;D9 命中 N / 无发现&gt;，独立性=&lt;same-agent / cross-context / cross-model&gt;」，若与上述规则冲突则停止并纠正。",
+      "new": "11. **自检句**：每次响应前 MUST 声明「本次模式=<委派审核 / 兜底审核>，触发分支=<直接触发 / 委派触发 / 快照路由>，已读取<audit-dimensions / market-prd-review-skills / 目标 requirements.md>，审核对象=<路径>，当前门=<门①–门⑤ / 不适用>，P0=<N> / P1=<N> / P2=<N>，对抗=<D9 命中 N / 无发现>，独立性=<same-agent / cross-context / cross-model>」，若与上述规则冲突则停止并纠正。",
+      "already_marker": "T 声明「本次模式=<委派审核 / 兜底审核>，"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/SKILL.md",
+      "old": "9. **自检句**：每次响应前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，已读取快照，剖面=&lt;full/standard/lite&gt;，当前阶段=&lt;Pn 名称&gt;，状态=&lt;状态值&gt;，门禁=&lt;未审计/PASS/FAIL(n项)&gt;」；与快照冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "9. **自检句**：每次响应前 MUST 声明「本次意图=<L2>·sdlc，已读取快照，剖面=<full/standard/lite>，当前阶段=<Pn 名称>，状态=<状态值>，门禁=<未审计/PASS/FAIL(n项)>」；与快照冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "T 声明「本次意图=<L2>·sdlc，已读取快"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-charter-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-charter` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-charter/SKILL.md",
+      "old": "9. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P0 立项与规划，已读取转交包，门禁条目=6 必检/3 建议，本轮=第 &lt;n&gt; 轮，交付物=charter.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "9. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P0 立项与规划，已读取转交包，门禁条目=6 必检/3 建议，本轮=第 <n> 轮，交付物=charter.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "T 声明「本次意图=<L2>·sdlc，本阶段="
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-cr-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-cr` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-cr/SKILL.md",
+      "old": "12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P5 代码评审，受审文件=&lt;k&gt; 个，静态三项=&lt;lint/类型/构建 各失败数&gt;，意见=&lt;总数&gt;（Blocker &lt;b&gt;/Major &lt;m&gt;/Minor &lt;n&gt;/Nit &lt;t&gt;），待修复=&lt;x&gt;，门禁条目=7 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=review-report.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P5 代码评审，受审文件=<k> 个，静态三项=<lint/类型/构建 各失败数>，意见=<总数>（Blocker <b>/Major <m>/Minor <n>/Nit <t>），待修复=<x>，门禁条目=7 必检/2 建议，本轮=第 <n> 轮，交付物=review-report.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "T 声明「本次意图=<L2>·sdlc，本阶段="
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-cr-2",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-cr` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-cr/SKILL.md",
+      "old": "- 语言无类型检查工具时 MUST 显式声明「本项目为 &lt;语言&gt;，无类型检查环节」并给出替代手段（如静态分析器）。",
+      "new": "- 语言无类型检查工具时 MUST 显式声明「本项目为 <语言>，无类型检查环节」并给出替代手段（如静态分析器）。",
+      "already_marker": "显式声明「本项目为 <语言>，无类型检查环节」并"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-cr-3",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-cr` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-cr/SKILL.md",
+      "old": "| Blocker &gt; 0 且未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |",
+      "new": "| Blocker > 0 且未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |",
+      "already_marker": "| Blocker > 0 且未修 | 报告标 "
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-design-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-design` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-design/SKILL.md",
+      "old": "11. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P2 方案设计，已读取 P1 四件套，Must 需求=&lt;n&gt; 条，门禁条目=9 必检/3 建议，本轮=第 &lt;n&gt; 轮，交付物=3 件套」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "11. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P2 方案设计，已读取 P1 四件套，Must 需求=<n> 条，门禁条目=9 必检/3 建议，本轮=第 <n> 轮，交付物=3 件套」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "T 声明「本次意图=<L2>·sdlc，本阶段="
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-devenv-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-devenv` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-devenv/SKILL.md",
+      "old": "12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P3 开发准备，已读取 P2 三件套，任务数=&lt;n&gt;，门禁条目=7 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=devenv.md + task-board.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P3 开发准备，已读取 P2 三件套，任务数=<n>，门禁条目=7 必检/2 建议，本轮=第 <n> 轮，交付物=devenv.md + task-board.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "T 声明「本次意图=<L2>·sdlc，本阶段="
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-ops-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-ops` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-ops/SKILL.md",
+      "old": "6. **阈值有据**：性能类阈值 MUST 引用 P2 §容量与性能目标 或实测基线；**NEVER 凭空拍数字**，无依据时 MUST 标注为「初始值，待 &lt;周期&gt; 后按实测校准」。",
+      "new": "6. **阈值有据**：性能类阈值 MUST 引用 P2 §容量与性能目标 或实测基线；**NEVER 凭空拍数字**，无依据时 MUST 标注为「初始值，待 <周期> 后按实测校准」。",
+      "already_marker": "标注为「初始值，待 <周期> 后按实测校准」。"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-ops-2",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-ops` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-ops/SKILL.md",
+      "old": "12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P8 运维与监控，监控指标=&lt;n&gt; 项（可用性 &lt;a&gt;/性能 &lt;b&gt;/业务 &lt;c&gt;），告警规则=&lt;k&gt; 条，健康检查=&lt;h&gt; 项，故障条目=&lt;f&gt; 条，门禁条目=7 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=ops-runbook.md + monitoring.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "new": "12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P8 运维与监控，监控指标=<n> 项（可用性 <a>/性能 <b>/业务 <c>），告警规则=<k> 条，健康检查=<h> 项，故障条目=<f> 条，门禁条目=7 必检/2 建议，本轮=第 <n> 轮，交付物=ops-runbook.md + monitoring.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。",
+      "already_marker": "T 声明「本次意图=<L2>·sdlc，本阶段="
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-ops-3",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-ops` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-ops/SKILL.md",
+      "old": "- **与 P2 的边界**：P2 定**目标值**（如 P99 &lt; 200ms）；P8 定**监测方式与告警阈值**（如 P99 &gt; 300ms 触发 P2 级告警），不得反向修改 P2 目标。",
+      "new": "- **与 P2 的边界**：P2 定**目标值**（如 P99 < 200ms）；P8 定**监测方式与告警阈值**（如 P99 > 300ms 触发 P2 级告警），不得反向修改 P2 目标。",
+      "already_marker": "值**（如 P99 < 200ms）；P8 定*"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-ops-4",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-ops` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-ops/SKILL.md",
+      "old": "| 接口错误率 | &gt;1% 持续 5 分钟 | P1 | 企微群 + 电话 | 值班开发 | P2 §性能目标 |",
+      "new": "| 接口错误率 | >1% 持续 5 分钟 | P1 | 企微群 + 电话 | 值班开发 | P2 §性能目标 |",
+      "already_marker": "| 接口错误率 | >1% 持续 5 分钟 | "
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-release-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-release` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-release/SKILL.md",
+      "old": "| 触发条件 | 量化或可判定（如错误率 &gt;1%、核心链路不可用） | ✗「出问题就回滚」 |",
+      "new": "| 触发条件 | 量化或可判定（如错误率 >1%、核心链路不可用） | ✗「出问题就回滚」 |",
+      "already_marker": "或可判定（如错误率 >1%、核心链路不可用） |"
+    },
+    {
+      "id": "dw8-entity-sweep-tri-sdlc-children-tri-test-1",
+      "type": "replace_text",
+      "label": "`tri-sdlc-children-tri-test` 实体残留 `&lt;/&gt;` 恢复原生尖括号（字形级修复，f79 豁免升版；dw8 批全仓清零）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "| Critical &gt; 0 未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |",
+      "new": "| Critical > 0 未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |",
+      "already_marker": " Critical > 0 未修 | 报告标 `"
     },
     {
       "id": "sync-version-meta",

@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.7] - 2026-09-26
+
+### 变更
+
+- **兜底⑤补 Must 级用例冲突裁决（NEVER 交付、回报 tri-sdlc）+ 契约第 1 条 lite 修饰消歧 + 自检句实体修复。**
+
 ## [1.1.6] - 2026-09-26
 
 ### 变更

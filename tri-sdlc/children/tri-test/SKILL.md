@@ -1,7 +1,7 @@
 ---
 name: 测试验证
 slug: tri-test
-version: 1.1.6
+version: 1.1.7
 displayName: 测试验证
 description: SDLC P6 测试验证子SKILL。读取 tri-sdlc 转交的阶段任务（P1 验收标准 + P4 实现与单测报告 + P5 评审报告 + P6 门禁条目清单），编制覆盖全部验收标准的测试计划，执行单元/集成/用户验收三层测试，统计通过率并按四要素登记缺陷、跟踪复测闭环，产出 test-plan.md / test-report.md / defects.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P6 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 测试验证专家，产出验收标准 100% 覆盖的测试计划、三层执行报告与四要素缺陷台账，面向 P6 门禁 7 条必检项交付。
@@ -21,7 +21,7 @@ license: MIT
 
 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（运行 `scripts/check_update.py` 做本地版本一致性校验，本仓库为自维护 fork、不做远端比对；按脚本输出与退出码处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
-1. **强制前置**：MUST 校验转交包 `阶段 = P6` 且 P4 交付物齐备、P5 状态为 `已通过`/`已跳过`（lite 剖面）；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
+1. **强制前置**：MUST 校验转交包 `阶段 = P6` 且 P4 交付物齐备、P5 状态为 `已通过`（full/standard 剖面）或 `已跳过`（仅 lite 剖面）；缺失 NEVER 继续，MUST 退回 tri-sdlc。独立使用 MUST 先走 §上游依赖检测。
 2. **面向门禁产出**：MUST 逐条覆盖 P6 门禁条目（`P6-M0`–`P6-M6` 必检 + `P6-R1`–`R2` 建议），三份交付物 MUST 一次性齐备。
 3. **验收标准全覆盖**：P1 `acceptance-criteria.md` **每条**验收标准 MUST ≥1 条测试用例，覆盖率 100%；遗漏 NEVER 交付（`P6-M1`）。
 4. **三层必答**：**单元 / 集成 / 用户验收** 三层 MUST 各给执行结论；不适用层 MUST 显式说明理由，静默省略视为 FAIL（`P6-M2`）。
@@ -32,7 +32,7 @@ license: MIT
 9. **不改代码**：NEVER 直接修改业务代码修缺陷；修复由 tri-sdlc 判定回炉 P4 由 `tri-impl` 执行。
 10. **无占位交付**：交付前 MUST 全文扫描，NEVER 残留 `<...>` / `TODO` / `待定`。
 11. **不越权**：NEVER 判定门禁通过、NEVER 推进到 P7、NEVER 修改需求与设计、NEVER 自行决定降低通过率阈值。
-12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P6 测试验证，验收标准=&lt;a&gt; 条/覆盖=&lt;a&gt; 条，用例=&lt;总数&gt;（通过 &lt;p&gt;/失败 &lt;f&gt;），通过率=&lt;x%&gt;，缺陷=&lt;总数&gt;（Critical &lt;c&gt; 遗留 &lt;r&gt;），门禁条目=7 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=test-plan.md + test-report.md + defects.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。
+12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P6 测试验证，验收标准=<a> 条/覆盖=<a> 条，用例=<总数>（通过 <p>/失败 <f>），通过率=<x%>，缺陷=<总数>（Critical <c> 遗留 <r>），门禁条目=7 必检/2 建议，本轮=第 <n> 轮，交付物=test-plan.md + test-report.md + defects.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。
 
 ## 触发时机
 
@@ -158,7 +158,7 @@ license: MIT
 
 | 情形 | 处置 |
 |---|---|
-| Critical &gt; 0 未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |
+| Critical > 0 未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |
 | Critical 已修未复测 | 不得交付，MUST 先复测 |
 | Major 确认不修 | 允许，MUST 附理由与影响评估 |
 
@@ -255,7 +255,7 @@ python scripts/check_update.py --slug tri-test --json
 | ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |
 | ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |
 | ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |
-| ⑤ 测试环境不可用 | 测试环境/依赖服务不可达 | 登记阻塞并以最小核心链路验证子集替代（P6 不承接冒烟，避免术语越界），报告中如实声明覆盖范围；NEVER 声称全量已测 |
+| ⑤ 测试环境不可用 | 测试环境/依赖服务不可达 | 登记阻塞并以最小核心链路验证子集替代（P6 不承接冒烟，避免术语越界），报告中如实声明覆盖范围；NEVER 声称全量已测。**被阻塞的含 Must 级用例时 NEVER 交付，MUST 回报 tri-sdlc 裁决**（维度 3 Must 100% 不因兜底降级） |
 
 ## 🔴 检查点与红灯清单（STOP · NEVER）
 

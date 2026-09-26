@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.7] - 2026-09-26
+
+### 变更
+
+- **兜底表补「⑥ P3 已跳过且 devenv.md 缺失」（默认规范替代 + WARN）+ 步骤 3 修复循环退出上限（连续 2 轮无提升 → WARN 提请裁决）+ 实体修复。**
+
 ## [1.1.6] - 2026-09-26
 
 ### 变更

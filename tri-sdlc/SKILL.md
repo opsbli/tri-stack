@@ -29,7 +29,7 @@ license: MIT
 6. **双闸门不可省**：门禁 `PASS` 后 MUST 将阶段摘要 + gate-report 呈交用户确认；未获用户确认（`通过`/`确认`/等价表述）NEVER 进入下一阶段。用户显式开启「快速模式」后可自动放行，但 `FAIL` 仍 MUST 硬阻断。
 7. **回退级联**：执行 `回退到 Pn` 时 MUST 将 Pn 之后所有阶段状态重置为「未开始」、其已产出交付物标记 `stale（已失效）`，并在 manifest 记录回退原因；NEVER 保留失效阶段的「已通过」状态。
 8. **产物分流**：链路文档 MUST 落 `.tribro/sdlc/<命名>/`（`.tribro/` 不存在时 MUST 先创建）；源码、构建产物、`CHANGELOG.md` 等**真实成果物就地落用户工作区**（实际交付物），并在 `.tribro/sdlc/<命名>/` 落 `delivery-manifest.md` 记录交付物路径清单与说明，保证产物可追溯。
-9. **自检句**：每次响应前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，已读取快照，剖面=&lt;full/standard/lite&gt;，当前阶段=&lt;Pn 名称&gt;，状态=&lt;状态值&gt;，门禁=&lt;未审计/PASS/FAIL(n项)&gt;」；与快照冲突时 MUST 停止并纠正，NEVER 擅自继续。
+9. **自检句**：每次响应前 MUST 声明「本次意图=<L2>·sdlc，已读取快照，剖面=<full/standard/lite>，当前阶段=<Pn 名称>，状态=<状态值>，门禁=<未审计/PASS/FAIL(n项)>」；与快照冲突时 MUST 停止并纠正，NEVER 擅自继续。
 
 ## 触发时机
 

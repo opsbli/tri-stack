@@ -32,7 +32,7 @@ license: MIT
 9. **只评不改（默认）**：默认 NEVER 直接改业务代码；确需修复 MUST 由 tri-sdlc 判定回炉 P4 由 `tri-impl` 执行。用户明确授权"边评边改"时，修改点 MUST 全部登记入报告「本轮直接修复」区。
 10. **无占位交付**：交付前 MUST 全文扫描，NEVER 残留 `<...>` / `TODO` / `待定`。
 11. **不越权**：NEVER 判定门禁通过、NEVER 推进到 P6、NEVER 修改需求与设计、NEVER 代替 P6 出测试结论。
-12. **自检句**：作答前 MUST 声明「本次意图=&lt;L2&gt;·sdlc，本阶段=P5 代码评审，受审文件=&lt;k&gt; 个，静态三项=&lt;lint/类型/构建 各失败数&gt;，意见=&lt;总数&gt;（Blocker &lt;b&gt;/Major &lt;m&gt;/Minor &lt;n&gt;/Nit &lt;t&gt;），待修复=&lt;x&gt;，门禁条目=7 必检/2 建议，本轮=第 &lt;n&gt; 轮，交付物=review-report.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。
+12. **自检句**：作答前 MUST 声明「本次意图=<L2>·sdlc，本阶段=P5 代码评审，受审文件=<k> 个，静态三项=<lint/类型/构建 各失败数>，意见=<总数>（Blocker <b>/Major <m>/Minor <n>/Nit <t>），待修复=<x>，门禁条目=7 必检/2 建议，本轮=第 <n> 轮，交付物=review-report.md」；与转交包 / 上游交付物冲突时 MUST 停止并纠正，NEVER 擅自继续。
 
 ## 触发时机
 
@@ -98,7 +98,7 @@ license: MIT
 | 构建 | 执行项目构建命令 | 命令 + 成功/失败 + 关键日志 |
 
 - 三项**失败数 MUST 为 0**（`P5-M1`）。
-- 语言无类型检查工具时 MUST 显式声明「本项目为 &lt;语言&gt;，无类型检查环节」并给出替代手段（如静态分析器）。
+- 语言无类型检查工具时 MUST 显式声明「本项目为 <语言>，无类型检查环节」并给出替代手段（如静态分析器）。
 
 ### 维度 2：四维人工审查
 
@@ -136,7 +136,7 @@ license: MIT
 
 | 情形 | 处置 |
 |---|---|
-| Blocker &gt; 0 且未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |
+| Blocker > 0 且未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |
 | Blocker 已修但未复审 | 不得交付，MUST 先复审 |
 | Major 确认不改 | 允许，MUST 附理由并记入报告 |
 

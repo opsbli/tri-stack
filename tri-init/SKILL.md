@@ -25,7 +25,7 @@ license: MIT
 4. **代码生成器规范铁律**：如果检测到代码生成器模块（如 RuoYi generator），MUST 严格遵循其规范生成 project-profile——特别是数据库设计的**租户字段**（`tenant_id`）和**审计字段**（`create_dept / create_by / create_time / update_by / update_time`）与**逻辑删除字段**（`del_flag`）。NEVER 遗漏这些字段。
 5. **project-profile 双格式**：MUST 同时产出 `project-profile.json`（机器可读，tri-coding 门② 消费）和 AGENTS.md 中嵌入的 project-profile 摘要（人可读）。两者数据 MUST 一致。
 6. **幂等性**：重复运行 MUST 产生相同结果（幂等），NEVER 重复创建已存在的目录或文件。
-7. **自检**：作答前 MUST 声明「本次模式=&lt;单项目/多项目&gt;，目标路径=&lt;路径&gt;，已扫描，技术栈=&lt;检测结果&gt;，AGENTS.md=&lt;新建/覆盖/保留&gt;，.tribro=&lt;已创建/已存在&gt;」。
+7. **自检**：作答前 MUST 声明「本次模式=<单项目/多项目>，目标路径=<路径>，已扫描，技术栈=<检测结果>，AGENTS.md=<新建/覆盖/保留>，.tribro=<已创建/已存在>」。
 
 ## 触发时机
 
