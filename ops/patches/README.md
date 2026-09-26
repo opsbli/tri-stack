@@ -473,6 +473,9 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw6-html-diskrule-fix` | replace_text | `tri-html` 落盘规则矛盾修复（统一为默认 `.tribro/html/<命名>/` + 用户指定时双写；复评微批） |
 | `dw6-html-tri-true-ref` | replace_text | `tri-html` 质量标准「原 tri-true 兜底机制」悬空引用 → §兜底处理 ②（复评微批） |
 | `dw6-html-changelog` | replace_text | `tri-html` CHANGELOG：追加 [1.3.7] 条目（复评微批） |
+| `dw7-forge-external-decl` | replace_text | `tri-forge` README 新增「第三方 skill 门禁（双轨制）」声明（dw7 批） |
+| `dw7-forge-tree-ref` | replace_text | `tri-forge` README 目录树补登 external-gate-registry.md（dw7 批） |
+| `dw7-forge-tree-script` | replace_text | `tri-forge` README 目录树补登 external_skill_gate.py（dw7 批） |
 
 ## 每项补丁的依据
 
@@ -1109,3 +1112,16 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 回执：`apply.py` 首轮 14/14「应用 1」（无 marker 毒化）、二轮 0 真应用；`version-lint` EXIT=0。
 判定依据：post2 复评 tri-grill 81.8 / tri-html 84.6 为当日最低档，judge 明细未落盘 → 按纪律一手实测
 （3 judge 独立盲评当前文件）重建短板证据。
+
+### 计数（2026-09-26 · 第三方门禁批增量）
+
+> 上节计数为时点快照，**冻结**。本批 = proposal `reports/proposal-third-party-gate-20260926.md`
+> （Approved: yes 2026-09-26，AskUserQuestion「按提案建工具」）。新增 `tri-forge/scripts/external_skill_gate.py`
+> （结构/安全/质量 12 条）+ `tri-forge/references/external-gate-registry.md`（豁免登记 18 条），
+> 均为**新增文件直接落盘**（check_registry.py/version-lint 先例），仅 README 声明走 op。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 286 | **289** | +3（`dw7-*`：README 声明 1 + 目录树 2） |
+| §当前补丁清单 数据行数 | 288 | **291** | +3；对账恒等式：291 − 划除 2 = manifest **289** ✅ |
+| `ops/README.md` / 根 `README.md` op 计数 | 286 | **289** | 当前态账本同批回写 |

@@ -2049,6 +2049,33 @@
       "already_marker": "## [1.3.7]"
     },
     {
+      "id": "dw7-forge-external-decl",
+      "type": "replace_text",
+      "label": "`tri-forge` README：新增「第三方 skill 门禁（双轨制）」声明（external_skill_gate.py + 豁免登记表；dw7 批）",
+      "glob": "tri-forge/README.md",
+      "old": "**P2（CHANGELOG 首条）属人工内容，NEVER 代写**。\n\n## 目录结构",
+      "new": "**P2（CHANGELOG 首条）属人工内容，NEVER 代写**。\n\n## 第三方 skill 门禁（双轨制）\n\n家族门④（`compliance_check.py` 22 条）仅适用于本家族 skill；第三方 skill（`~/.workbuddy/skills/` 下非 `tri-*`）走 **`scripts/external_skill_gate.py`**（结构/安全/质量 12 条判据；2026-09-26 实测家族门对第三方零区分度：22/22 全 FAIL 且方差全在家族专属判据上）。MANUAL 命中经语境核验后 MUST 登记 `references/external-gate-registry.md` 方可降级，NEVER 静默豁免；`X1`（密钥字面量）不可豁免。第三方升级（备份→重装）后 MUST 重跑 `external_skill_gate.py --all`。\n\n## 目录结构",
+      "already_marker": "## 第三方 skill 门禁（双轨制）"
+    },
+    {
+      "id": "dw7-forge-tree-ref",
+      "type": "replace_text",
+      "label": "`tri-forge` README 目录树补登 external-gate-registry.md（dw7 批）",
+      "glob": "tri-forge/README.md",
+      "old": "│   ├── version-check-spec.md      版本检查执行规范（内部化持有）\n│   └── tri-intent-integration.md  门③ 路由回填规则（单一事实源）",
+      "new": "│   ├── version-check-spec.md      版本检查执行规范（内部化持有）\n│   ├── external-gate-registry.md  第三方门禁豁免登记表（MANUAL 降级单一事实源）\n│   └── tri-intent-integration.md  门③ 路由回填规则（单一事实源）",
+      "already_marker": "external-gate-registry.md  第三方门禁豁免登记表"
+    },
+    {
+      "id": "dw7-forge-tree-script",
+      "type": "replace_text",
+      "label": "`tri-forge` README 目录树补登 external_skill_gate.py（dw7 批）",
+      "glob": "tri-forge/README.md",
+      "old": "│   └── compliance_check.py        门④ 22 条硬约束自检",
+      "new": "│   ├── compliance_check.py        门④ 22 条硬约束自检（仅家族 skill）\n│   └── external_skill_gate.py     第三方 skill 门禁（12 条：结构/安全/质量）",
+      "already_marker": "external_skill_gate.py     第三方 skill 门禁"
+    },
+    {
       "id": "sync-version-meta",
       "type": "sync_version_meta",
       "label": "强制执行 §六 P1↔P3：_meta.json 版本同步为 SKILL.md 的值",

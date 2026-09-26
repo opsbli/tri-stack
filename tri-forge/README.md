@@ -70,6 +70,10 @@ python scripts/check_registry.py --apply --dry-run    # 只报告将回写什么
 校验**五点**：`SKILL.md` frontmatter / `CHANGELOG.md` 首条 / `_meta.json` / 平台注册表 / `README.md` 版本声明。
 **P2（CHANGELOG 首条）属人工内容，NEVER 代写**。
 
+## 第三方 skill 门禁（双轨制）
+
+家族门④（`compliance_check.py` 22 条）仅适用于本家族 skill；第三方 skill（`~/.workbuddy/skills/` 下非 `tri-*`）走 **`scripts/external_skill_gate.py`**（结构/安全/质量 12 条判据；2026-09-26 实测家族门对第三方零区分度：22/22 全 FAIL 且方差全在家族专属判据上）。MANUAL 命中经语境核验后 MUST 登记 `references/external-gate-registry.md` 方可降级，NEVER 静默豁免；`X1`（密钥字面量）不可豁免。第三方升级（备份→重装）后 MUST 重跑 `external_skill_gate.py --all`。
+
 ## 目录结构
 
 ```
@@ -81,11 +85,13 @@ tri-forge/
 │   ├── family-spec.md             家族硬规范（生成单一事实源）
 │   ├── compliance-checklist.md    22 条合规核对清单（门④ 判据单一事实源）
 │   ├── version-check-spec.md      版本检查执行规范（内部化持有）
+│   ├── external-gate-registry.md  第三方门禁豁免登记表（MANUAL 降级单一事实源）
 │   └── tri-intent-integration.md  门③ 路由回填规则（单一事实源）
 ├── scripts/
 │   ├── check_update.py            版本门（自维护模式）
 │   ├── check_registry.py          五点版本一致性校验
-│   └── compliance_check.py        门④ 22 条硬约束自检
+│   ├── compliance_check.py        门④ 22 条硬约束自检（仅家族 skill）
+│   └── external_skill_gate.py     第三方 skill 门禁（12 条：结构/安全/质量）
 ├── templates/
 │   ├── skill-md.md                SKILL.md 九章骨架
 │   ├── readme.md                  README 骨架
