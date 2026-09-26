@@ -24,7 +24,8 @@
 | `darwin-skill` | `X4` | | README.md 安装指引（pip install 示例文本）；Q1/Q2 FAIL 为真缺陷不豁免（darwin fork 后续改进） | 2026-09-26 |
 | `skill-standardize` | `X4` | | references/common-issues.md 常见问题示例命令 | 2026-09-26 |
 | `skillhub-fork-sync` | `X4` | | SKILL.md:15,57 git clone/pip 操作为本 skill 声明性本职（fork 同步器） | 2026-09-26 |
-| `skill-doctor__skillhub` | `X4` | | README.md:49 安装指引；X5（scripts/deep_analysis.py 代码内 URL）**不豁免**，留待人工核验 | 2026-09-26 |
+| `skill-doctor__skillhub` | `X4` | | README.md:49 安装指引 | 2026-09-26 |
+| `skill-doctor__skillhub` | `X5` | scripts/deep_analysis.py:16,66-78 | 2026-09-26 人工核验完成：确认实际外呼（urllib.urlopen → api.anthropic.com/v1/messages），但属 SKILL.md:71 明示的声明性本职（opt-in 双守卫：`--deep` 显式传入 AND config 配置 key，无 key 不外呼；外发内容为结构化诊断、明示排除 raw secrets），代码与文档一致，比照 install-github-skill 声明性本职豁免 | 2026-09-26 |
 
 ## 未豁免的已知真缺陷（后续改进项，非本轮范围）
 
@@ -41,4 +42,4 @@
 | `skill-auditor` | S2 | 同上 |
 | `skill-standardize` | S2 | 同上 |
 | `using-agent-skills` | S2 | 同上 |
-| `skill-doctor__skillhub` | X5 | scripts/deep_analysis.py 代码内 URL，待人工核验是否实际外呼 |
+| `skill-doctor__skillhub` | X5 | **已结案（2026-09-26）**：核验确认为声明性本职（opt-in 双守卫，无 key 不外呼），已移入豁免表 X5 行 |

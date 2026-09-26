@@ -1,7 +1,7 @@
 ---
 name: 测试验证
 slug: tri-test
-version: 1.1.7
+version: 1.1.8
 displayName: 测试验证
 description: SDLC P6 测试验证子SKILL。读取 tri-sdlc 转交的阶段任务（P1 验收标准 + P4 实现与单测报告 + P5 评审报告 + P6 门禁条目清单），编制覆盖全部验收标准的测试计划，执行单元/集成/用户验收三层测试，统计通过率并按四要素登记缺陷、跟踪复测闭环，产出 test-plan.md / test-report.md / defects.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P6 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 测试验证专家，产出验收标准 100% 覆盖的测试计划、三层执行报告与四要素缺陷台账，面向 P6 门禁 7 条必检项交付。
@@ -261,7 +261,7 @@ python scripts/check_update.py --slug tri-test --json
 
 ### 🔴 用户确认检查点（STOP）
 
-- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P5 状态非「已通过/已跳过」即 NEVER 开始本阶段；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。
+- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P5 状态非「已通过（full/standard 剖面）/已跳过（仅 lite 剖面）」即 NEVER 开始本阶段（剖面口径与契约第 1 条一致：full/standard 剖面下 P5 标「已跳过」同样不合法）；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。
 - 🔴 **STOP**：「Critical 清零」（§强制执行契约 第 7 条）——Critical/Blocker 缺陷遗留未清零时，未回报 tri-sdlc 判定回炉 P4 NEVER 交付。
 
 ### 🚫 红灯清单（NEVER）

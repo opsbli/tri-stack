@@ -510,6 +510,12 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw8-entity-sweep-tri-sdlc-children-tri-ops-4` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
 | `dw8-entity-sweep-tri-sdlc-children-tri-release-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
 | `dw8-entity-sweep-tri-sdlc-children-tri-test-1` | replace_text | 实体残留恢复原生尖括号（字形级 f79 豁免升版；dw8 批清零） |
+| `dw10-test-stop-profile` | replace_text | `tri-test` 红灯②（上游闸门）P5 合法组合收紧为「已通过（full/standard 剖面）/已跳过（仅 lite 剖面）」与契约第 1 条对齐（dw10 批） |
+| `dw10-impl-warn-converge` | replace_text | `tri-impl` 维度 3 WARN 触发口径与步骤 2 退出上限收敛（dw10 批） |
+| `dw10-test-changelog` | replace_text | `tri-test` CHANGELOG：追加 [1.1.8]（dw10 批） |
+| `dw10-impl-changelog` | replace_text | `tri-impl` CHANGELOG：追加 [1.1.8]（dw10 批） |
+| `dw10-registry-skilldoctor-x5` | replace_text | external-gate-registry：skill-doctor X5 人工核验结案（声明性本职 opt-in 双守卫），登记语境豁免；X4 行剥离旧「X5 不豁免」表述（dw10 批） |
+| `dw10-registry-x5-closure` | replace_text | external-gate-registry 缺陷表：skill-doctor X5 行改写为已结案痕迹（dw10 批） |
 
 ## 每项补丁的依据
 
@@ -1173,3 +1179,23 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 | 同上（sweep 追加） | 304 | **323** | +19（`dw8-entity-sweep-*`：paired 评审抓出 `&gt;` 独立出现漏网 → 全仓一手实测 24 文件命中，工作树 14 文件 19 行清零；`_upstream` 归档不动；字形级 f79 豁免升版） |
 | §当前补丁清单 数据行数 | 291 | **325** | +34；对账恒等式：325 − 划除 2 = manifest **323** ✅ |
 | `ops/README.md` / 根 `README.md` op 计数 | 289 | **323** | 当前态账本同批回写 |
+
+### 计数（2026-09-26 · dw10 批增量 · 低优先级遗留清理）
+
+> 上节计数为时点快照，**冻结**。本批 = 低优先级遗留三项：① tri-test 红灯②剖面口径与契约第 1 条
+> 同步（judge 2/3 提出，实证确认：宽口径会放过 full/standard 剖面下 P5 标「已跳过」的非法组合）；
+> ② tri-impl 维度 3 WARN 触发口径与步骤 2 退出上限收敛（「工具未接入即 WARN」vs「能给出数值按其
+> 判定」矛盾消除）；③ skill-doctor X5 人工核验结案（`scripts/deep_analysis.py` 确认实际外呼
+> `api.anthropic.com`，但属 SKILL.md:71 明示的声明性本职、opt-in 双守卫、外发明示排除 raw secrets
+> → 登记语境豁免，基线 🟡3→**🟡2** / 🟢10→**🟢11**）。12 条第三方真缺陷其余 11 条保持登记不修上游。
+> 2 个 settle 就地更新（impl/test 1.1.7→1.1.8，不占新行）；tri-forge 不升版（registry 数据行维护，
+> 同 dw7 先例）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 323 | **329** | +6（`dw10-*`：test 1 + impl 1 + CHANGELOG 2 + registry 2） |
+| §当前补丁清单 数据行数 | 325 | **331** | +6；对账恒等式：331 − 划除 2 = manifest **329** ✅ |
+| `ops/README.md` / 根 `README.md` op 计数 | 323 | **329** | 当前态账本同批回写 |
+
+回执：`apply.py` 首轮 8/8「应用 1」（2 settle + 6 新 op，无 marker 毒化）、二轮 0 真应用；
+`version-lint` EXIT=0；`external_skill_gate.py --self-test` PASS（含 registry 豁免生效断言）。

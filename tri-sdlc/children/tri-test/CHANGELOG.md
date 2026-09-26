@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.8] - 2026-09-26
+
+### 更改
+
+- **红灯②（上游闸门）剖面口径同步**：P5 状态合法组合收紧为「已通过（full/standard 剖面）/已跳过（仅 lite 剖面）」，与契约第 1 条精确对齐——堵住「full/standard 剖面下 P5 标已跳过」被宽口径放行的缺口。
+
 ## [1.1.7] - 2026-09-26
 
 ### 变更

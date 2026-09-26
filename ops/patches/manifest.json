@@ -689,11 +689,11 @@
     {
       "id": "dw-tri-impl-version",
       "type": "replace_regex",
-      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）",
+      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）",
       "glob": "tri-sdlc/children/tri-impl/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.7",
-      "already_marker": "version: 1.1.7"
+      "replacement": "version: 1.1.8",
+      "already_marker": "version: 1.1.8"
     },
     {
       "id": "dw-impl-changelog",
@@ -714,11 +714,11 @@
     {
       "id": "dw-tri-test-version",
       "type": "replace_regex",
-      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）",
+      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）",
       "glob": "tri-sdlc/children/tri-test/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.7",
-      "already_marker": "version: 1.1.7"
+      "replacement": "version: 1.1.8",
+      "already_marker": "version: 1.1.8"
     },
     {
       "id": "dw-test-changelog",
@@ -2380,6 +2380,60 @@
       "old": "| Critical &gt; 0 未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |",
       "new": "| Critical > 0 未修 | 报告标 `FAIL 建议`，回报 tri-sdlc 判定回炉 P4 |",
       "already_marker": " Critical > 0 未修 | 报告标 `"
+    },
+    {
+      "id": "dw10-test-stop-profile",
+      "type": "replace_text",
+      "label": "tri-test 红灯②（上游闸门）剖面口径同步：P5 合法组合收紧为「已通过（full/standard 剖面）/已跳过（仅 lite 剖面）」，与契约第 1 条精确对齐（judge 2/3 提出，2026-09-26 实证确认）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P5 状态非「已通过/已跳过」即 NEVER 开始本阶段；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。",
+      "new": "- 🔴 **STOP**：上游闸门②（tri-sdlc）——转交包 P5 状态非「已通过（full/standard 剖面）/已跳过（仅 lite 剖面）」即 NEVER 开始本阶段（剖面口径与契约第 1 条一致：full/standard 剖面下 P5 标「已跳过」同样不合法）；独立使用时 MUST 先向用户复述将执行的阶段与输入，确认后才继续。",
+      "already_marker": "剖面口径与契约第 1 条一致：full/standard 剖面下 P5 标「已跳过」同样不合法"
+    },
+    {
+      "id": "dw10-impl-warn-converge",
+      "type": "replace_text",
+      "label": "tri-impl 维度 3 WARN 触发口径与步骤 2 退出上限收敛：工具未接入先替代口径给数值，替代口径亦无法给出才 WARN（2026-09-26 实证确认矛盾）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "old": "- 覆盖率工具未接入时 MUST 在报告中说明替代口径（如「关键路径手工核对表」）并**标记为 WARN 提请门禁关注**，NEVER 伪造数值。",
+      "new": "- 覆盖率工具未接入时 MUST 优先采用替代口径（如「关键路径手工核对表」）给出实测依据；替代口径亦无法给出数值时才**标记为 WARN 提请门禁关注**（与步骤 2 退出上限的 WARN 口径一致），NEVER 伪造数值。",
+      "already_marker": "替代口径亦无法给出数值时才"
+    },
+    {
+      "id": "dw10-test-changelog",
+      "type": "replace_text",
+      "label": "tri-test CHANGELOG 追加 1.1.8 条目",
+      "glob": "tri-sdlc/children/tri-test/CHANGELOG.md",
+      "old": "## [1.1.7] - 2026-09-26",
+      "new": "## [1.1.8] - 2026-09-26\n\n### 更改\n\n- **红灯②（上游闸门）剖面口径同步**：P5 状态合法组合收紧为「已通过（full/standard 剖面）/已跳过（仅 lite 剖面）」，与契约第 1 条精确对齐——堵住「full/standard 剖面下 P5 标已跳过」被宽口径放行的缺口。\n\n## [1.1.7] - 2026-09-26",
+      "already_marker": "## [1.1.8] - 2026-09-26"
+    },
+    {
+      "id": "dw10-impl-changelog",
+      "type": "replace_text",
+      "label": "tri-impl CHANGELOG 追加 1.1.8 条目",
+      "glob": "tri-sdlc/children/tri-impl/CHANGELOG.md",
+      "old": "## [1.1.7] - 2026-09-26",
+      "new": "## [1.1.8] - 2026-09-26\n\n### 更改\n\n- **维度 3 WARN 触发口径与步骤 2 退出上限收敛**：覆盖率工具未接入时 MUST 优先以替代口径给出实测依据，替代口径亦无法给出数值时才标 WARN——消除「工具未接入即 WARN」与「能给出数值按其判定」两处矛盾。\n\n## [1.1.7] - 2026-09-26",
+      "already_marker": "## [1.1.8] - 2026-09-26"
+    },
+    {
+      "id": "dw10-registry-skilldoctor-x5",
+      "type": "replace_text",
+      "label": "external-gate-registry：skill-doctor X5 人工核验结案——确认为声明性本职（opt-in 双守卫），登记语境豁免；X4 行剥离旧「X5 不豁免」表述",
+      "glob": "tri-forge/references/external-gate-registry.md",
+      "old": "| `skill-doctor__skillhub` | `X4` | | README.md:49 安装指引；X5（scripts/deep_analysis.py 代码内 URL）**不豁免**，留待人工核验 | 2026-09-26 |",
+      "new": "| `skill-doctor__skillhub` | `X4` | | README.md:49 安装指引 | 2026-09-26 |\n| `skill-doctor__skillhub` | `X5` | scripts/deep_analysis.py:16,66-78 | 2026-09-26 人工核验完成：确认实际外呼（urllib.urlopen → api.anthropic.com/v1/messages），但属 SKILL.md:71 明示的声明性本职（opt-in 双守卫：`--deep` 显式传入 AND config 配置 key，无 key 不外呼；外发内容为结构化诊断、明示排除 raw secrets），代码与文档一致，比照 install-github-skill 声明性本职豁免 | 2026-09-26 |",
+      "already_marker": "人工核验完成：确认实际外呼"
+    },
+    {
+      "id": "dw10-registry-x5-closure",
+      "type": "replace_text",
+      "label": "external-gate-registry 缺陷表：skill-doctor X5 行改写为已结案痕迹（保留行，不删除）",
+      "glob": "tri-forge/references/external-gate-registry.md",
+      "old": "| `skill-doctor__skillhub` | X5 | scripts/deep_analysis.py 代码内 URL，待人工核验是否实际外呼 |",
+      "new": "| `skill-doctor__skillhub` | X5 | **已结案（2026-09-26）**：核验确认为声明性本职（opt-in 双守卫，无 key 不外呼），已移入豁免表 X5 行 |",
+      "already_marker": "已结案（2026-09-26）"
     },
     {
       "id": "sync-version-meta",
