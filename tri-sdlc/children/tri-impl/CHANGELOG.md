@@ -4,6 +4,12 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.6] - 2026-09-26
+
+### 变更
+
+- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。
+
 ## [1.1.5] - 2026-09-26
 
 ### 修复

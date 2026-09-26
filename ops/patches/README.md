@@ -439,6 +439,26 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw4-meta-m05-disk` | replace_text | `tri-meta` M05 声明收敛（落盘规则）：整句重复 → 短指针（darwin 后续批） |
 | `dw4-meta-reroute` | replace_text | `tri-meta` 重路由映射精确化：4 行悬空措辞 → 显式处置语义（darwin 后续批） |
 | `dw4-meta-changelog` | replace_text | `tri-meta` CHANGELOG：追加 [1.2.9] 条目（darwin 后续批） |
+| `dw5-tri-charter-fallback` | replace_text | `tri-charter` 新增兜底章节（#14 children 补齐；⑤ 立项材料不可判定。dw5 批） |
+| `dw5-tri-cr-fallback` | replace_text | `tri-cr` 新增兜底章节（⑤ 静态检查工具不可用→手工替代。dw5 批） |
+| `dw5-tri-design-fallback` | replace_text | `tri-design` 新增兜底章节（⑤ Must 不可落点→退回门②。dw5 批） |
+| `dw5-tri-devenv-fallback` | replace_text | `tri-devenv` 新增兜底章节（⑤ 环境不可搭建→登记阻塞。dw5 批） |
+| `dw5-tri-impl-fallback` | replace_text | `tri-impl` 新增兜底章节（⑤ 任务阻塞→不跳任务。dw5 批） |
+| `dw5-tri-ops-fallback` | replace_text | `tri-ops` 新增兜底章节（⑤ 指标无法采集→手工巡检替代。dw5 批） |
+| `dw5-tri-release-fallback` | replace_text | `tri-release` 新增兜底章节（⑤ 无预发布环境→本地等价冒烟。dw5 批） |
+| `dw5-tri-require-fallback` | replace_text | `tri-require` 新增兜底章节（⑤ AC 不可判定→升级人审。dw5 批） |
+| `dw5-tri-test-fallback` | replace_text | `tri-test` 新增兜底章节（⑤ 环境不可用→最小核心链路验证子集。dw5 批） |
+| `dw5-release-contract-degrade` | replace_text | `tri-release` 契约第 5 条补降级指针（**须排在 release-fallback 之前**——其 marker 会被兜底⑤行注入；dw5 批） |
+| `dw5-release-dim4-degrade` | replace_text | `tri-release` 维度 4 补「无预发布环境」降级行（对齐维度 3 无 CI 先例；dw5 批） |
+| `dw5-tri-charter-changelog` | replace_text | `tri-charter` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
+| `dw5-tri-cr-changelog` | replace_text | `tri-cr` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
+| `dw5-tri-design-changelog` | replace_text | `tri-design` CHANGELOG：追加 [1.1.6] 条目（dw5 批） |
+| `dw5-tri-devenv-changelog` | replace_text | `tri-devenv` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
+| `dw5-tri-impl-changelog` | replace_text | `tri-impl` CHANGELOG：追加 [1.1.6] 条目（dw5 批） |
+| `dw5-tri-ops-changelog` | replace_text | `tri-ops` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
+| `dw5-tri-release-changelog` | replace_text | `tri-release` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
+| `dw5-tri-require-changelog` | replace_text | `tri-require` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
+| `dw5-tri-test-changelog` | replace_text | `tri-test` CHANGELOG：追加 [1.1.6] 条目（dw5 批） |
 
 ## 每项补丁的依据
 
@@ -1043,3 +1063,18 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 | §当前补丁清单 数据行数 | 249 | **254** | +5；对账恒等式：254 − 划除 2 = manifest **252** ✅ |
 
 回执：`apply.py` 二轮全部 `应用 0｜已应用 1`；`version-lint --apply-docs` EXIT=0。tri-meta PATCH 1.2.9。
+
+### 计数（2026-09-26 · dw5 批增量）
+
+> 上节计数为时点快照，**冻结**。本批 = proposal `reports/proposal-dw5-20260926.md`（Approved: yes 2026-09-26）：
+> children 兜底章节 ×9（#14 由 9/9 🔴 FAIL → 0 FAIL）+ tri-release 无预发布环境降级路径（契约第 5 条 + 维度 4）+ CHANGELOG ×9。
+> tri-cr 冗余试点经一手核对**取消**（「重复」实为带 §出处的有意聚合设计）。versions.json 机械重建（26 顶层漂移归零 + 补 9 children，直写非 op）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 252 | **272** | +20（`dw5-*`：兜底章节 9 + release 降级 2 + CHANGELOG 9）；9 个 settle op 目标就地更新（6 份 1.1.4→1.1.5、3 份 1.1.5→1.1.6，不占新行） |
+| §当前补丁清单 数据行数 | 254 | **274** | +20；对账恒等式：274 − 划除 2 = manifest **272** ✅ |
+
+回执：`apply.py` 二轮 0 真应用；`version-lint` EXIT=0；`--dir` 实测 #14 children 9/9 PASS。
+**新教训（marker 毒化）**：同批前序 op 可向后序 op 的 already_marker 文本注入（本批 release 兜底⑤行含契约 op 的 marker）⇒ 契约 op 首轮被误判已应用而跳过。
+**op 顺序约束再 +1**：引用型/指针型 op 必须排在会注入其 marker 的章节 op **之前**。judges 抓出后按未 commit 范式修正（回滚 + 调序 + 重放）。

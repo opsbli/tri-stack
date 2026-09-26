@@ -1,7 +1,7 @@
 ---
 name: 方案设计
 slug: tri-design
-version: 1.1.5
+version: 1.1.6
 displayName: 方案设计
 description: SDLC P2 方案设计子SKILL。读取 tri-sdlc 转交的阶段任务（P1 需求四件套 + 快照§三 + P2 门禁条目清单），完成分层架构与模块划分、Must 级需求 100% 落点映射、数据模型（实体/字段/类型/约束/主外键/索引）、接口契约（方法/路径/入参/出参/错误码）、核心链路时序图或状态机、技术选型多候选对比、安全三项设计（鉴权/加密/越权防护）与可度量容量性能目标，产出 design.md / api-contract.md / data-model.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P2 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 方案设计专家，产出含需求全覆盖映射、数据模型、接口契约、时序图、多候选选型与安全性能设计的三件套，面向 P2 门禁 9 条必检项交付。
@@ -222,6 +222,18 @@ python scripts/check_update.py --slug tri-design --json
 
 1. 返回三件套路径 + 设计摘要（模块数 / Must 覆盖率 / 接口数 / 实体数 / 选型点数）+ 自查结论。
 2. NEVER 自行判定门禁通过、NEVER 进入 P3。
+
+## 兜底处理（NEVER 静默失败）
+
+本 skill（design）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |
+| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |
+| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |
+| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |
+| ⑤ Must 级需求无法落点 | 某条 Must 需求在架构/模块/接口中找不到落点 | 标注「未映射」并退回门②或升级 tri-sdlc 裁定；NEVER 静默降级为 Nice-to-have 或虚构落点 |
 
 ## 🔴 检查点与红灯清单（STOP · NEVER）
 

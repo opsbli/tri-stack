@@ -1,7 +1,7 @@
 ---
 name: 需求分析
 slug: tri-require
-version: 1.1.4
+version: 1.1.5
 displayName: 需求分析
 description: SDLC P1 需求分析子SKILL。读取 tri-sdlc 转交的阶段任务（charter.md + 快照§三 + P1 门禁条目清单），完成需求采集与功能/非功能分列、REQ-nnn 唯一 ID 分配、MoSCoW 优先级标注、三段式用户故事编写、Given-When-Then 可判定验收标准编写、双向可追溯矩阵构建与需求基线冻结，产出 requirements.md / user-stories.md / acceptance-criteria.md / traceability-matrix.md 四件套供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P1 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 需求分析专家，产出带唯一 ID、优先级、可判定验收标准与双向追溯矩阵的需求四件套，面向 P1 门禁 8 条必检项交付。
@@ -218,6 +218,18 @@ python scripts/check_update.py --slug tri-require --json
 
 1. 返回四件套路径 + 需求统计（总数 / Must 数 / 非功能三类覆盖 / AC 总数）+ 自查结论。
 2. NEVER 自行判定门禁通过、NEVER 进入 P2。
+
+## 兜底处理（NEVER 静默失败）
+
+本 skill（require）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |
+| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |
+| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |
+| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |
+| ⑤ 验收标准不可判定 | 某条 AC 无法写出可判定的 Given-When-Then | 标注 `needs-clarification` 并升级人审；NEVER 编造模糊验收标准充数 |
 
 ## 🔴 检查点与红灯清单（STOP · NEVER）
 

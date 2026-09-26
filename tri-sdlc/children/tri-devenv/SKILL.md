@@ -1,7 +1,7 @@
 ---
 name: 开发准备
 slug: tri-devenv
-version: 1.1.4
+version: 1.1.5
 displayName: 开发准备
 description: SDLC P3 开发准备子SKILL。读取 tri-sdlc 转交的阶段任务（P2 设计三件套 + P1 需求 + P3 门禁条目清单），完成仓库与三类分支策略定义、带版本号的可执行环境搭建步骤、代码规范工具与关键规则配置、commit message 格式与钩子配置、任务看板五要素拆分与需求 ID 回链校验，产出 devenv.md / task-board.md 并按需向工作区落工程配置骨架，供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P3 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 开发准备专家，产出分支策略、可执行环境步骤、规范与钩子配置及带需求回链的任务看板，面向 P3 门禁 7 条必检项交付。
@@ -216,6 +216,18 @@ python scripts/check_update.py --slug tri-devenv --json
 
 1. 返回交付物路径 + 准备摘要（分支数 / 环境步骤数 / 任务数 / Must 覆盖情况 / 工作区产物清单）+ 自查结论。
 2. NEVER 自行判定门禁通过、NEVER 进入 P4。
+
+## 兜底处理（NEVER 静默失败）
+
+本 skill（devenv）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |
+| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |
+| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |
+| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |
+| ⑤ 环境不可搭建 | 依赖缺失/版本冲突导致环境步骤无法完成 | 登记阻塞项 + 给出最小可执行子集；NEVER 伪造环境验证结果 |
 
 ## 🔴 检查点与红灯清单（STOP · NEVER）
 

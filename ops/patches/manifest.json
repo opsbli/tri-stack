@@ -664,11 +664,11 @@
     {
       "id": "dw-tri-design-version",
       "type": "replace_regex",
-      "label": "`tri-design` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-design` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）",
       "glob": "tri-sdlc/children/tri-design/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw-design-changelog",
@@ -689,11 +689,11 @@
     {
       "id": "dw-tri-impl-version",
       "type": "replace_regex",
-      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）",
       "glob": "tri-sdlc/children/tri-impl/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw-impl-changelog",
@@ -714,11 +714,11 @@
     {
       "id": "dw-tri-test-version",
       "type": "replace_regex",
-      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）",
       "glob": "tri-sdlc/children/tri-test/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw-test-changelog",
@@ -1430,56 +1430,56 @@
     {
       "id": "dw2-tri-charter-version",
       "type": "replace_regex",
-      "label": "`tri-charter` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-charter` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-charter/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw2-tri-cr-version",
       "type": "replace_regex",
-      "label": "`tri-cr` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-cr` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-cr/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw2-tri-devenv-version",
       "type": "replace_regex",
-      "label": "`tri-devenv` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-devenv` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-devenv/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw2-tri-ops-version",
       "type": "replace_regex",
-      "label": "`tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-ops/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw2-tri-release-version",
       "type": "replace_regex",
-      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-release/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw2-tri-require-version",
       "type": "replace_regex",
-      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）",
+      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
       "glob": "tri-sdlc/children/tri-require/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.4",
-      "already_marker": "version: 1.1.4"
+      "replacement": "version: 1.1.5",
+      "already_marker": "version: 1.1.5"
     },
     {
       "id": "dw3-ops-contract-fix",
@@ -1741,6 +1741,186 @@
       "old": "## [1.2.8] - 2026-09-26",
       "new": "## [1.2.9] - 2026-09-26\n\n### 变更\n\n- **M05 声明收敛**：全文 9 处 → 3 处权威位（契约/frontmatter/红灯）+ 3 处短指针，消除结构性冗余。\n- **重路由映射精确化**：4 行悬空措辞改为显式处置（下游已归档 → 停止重路由并请用户重新发起；其它意图 → 交还 tri-intent 派发）。\n\n## [1.2.8] - 2026-09-26",
       "already_marker": "## [1.2.9]"
+    },
+    {
+      "id": "dw5-tri-charter-fallback",
+      "type": "replace_text",
+      "label": "`tri-charter` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-charter/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（charter）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 立项材料不可判定 | 业务背景/核心问题含糊无法证伪 | 停止起草并向用户澄清；NEVER 凭想象立项或虚构业务背景 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-tri-cr-fallback",
+      "type": "replace_text",
+      "label": "`tri-cr` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-cr/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（cr）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 静态检查工具不可用 | lint/类型/构建命令执行失败或缺失 | 改用等价手工检查并在评审报告中声明「机器检查不可用，已手工替代」；NEVER 静默跳过静态检查三项 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-tri-design-fallback",
+      "type": "replace_text",
+      "label": "`tri-design` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-design/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（design）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ Must 级需求无法落点 | 某条 Must 需求在架构/模块/接口中找不到落点 | 标注「未映射」并退回门②或升级 tri-sdlc 裁定；NEVER 静默降级为 Nice-to-have 或虚构落点 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-tri-devenv-fallback",
+      "type": "replace_text",
+      "label": "`tri-devenv` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-devenv/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（devenv）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 环境不可搭建 | 依赖缺失/版本冲突导致环境步骤无法完成 | 登记阻塞项 + 给出最小可执行子集；NEVER 伪造环境验证结果 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-tri-impl-fallback",
+      "type": "replace_text",
+      "label": "`tri-impl` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-impl/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（impl）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 任务依赖阻塞 | 看板某任务的前置未完成或外部依赖未就绪 | 停在该任务并回报 tri-sdlc 重排；NEVER 跳过被阻塞任务先做后续任务 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-tri-ops-fallback",
+      "type": "replace_text",
+      "label": "`tri-ops` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-ops/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（ops）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 监控指标无法采集 | 指标数据源缺失或采集方式不可用 | 在 runbook 登记待补并给手工巡检替代步骤；NEVER 编造监控数据 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-release-contract-degrade",
+      "type": "replace_text",
+      "label": "`tri-release` 契约第 5 条补降级指针（消解「无预发布环境即死锁」的未编码失败模式；dw5 批）",
+      "glob": "tri-sdlc/children/tri-release/SKILL.md",
+      "old": "5. **冒烟先行**：MUST 先在**预发布环境**部署并执行 **≥3 条**覆盖核心链路的冒烟用例且全部通过，才可进入正式发布（`P7-M4`）。",
+      "new": "5. **冒烟先行**：MUST 先在**预发布环境**部署并执行 **≥3 条**覆盖核心链路的冒烟用例且全部通过，才可进入正式发布（`P7-M4`）；无预发布环境时 MUST 按 §构建与发布方法论 维度 4「无预发布环境」降级路径执行，NEVER 静默跳过预发布验证。",
+      "already_marker": "维度 4「无预发布环境」降级路径"
+    },
+    {
+      "id": "dw5-tri-release-fallback",
+      "type": "replace_text",
+      "label": "`tri-release` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-release/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（release）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 无预发布环境/无制品库 | 目标项目未提供 staging 环境或制品仓库 | 按维度 4「无预发布环境」降级路径执行本地等价冒烟并登记；NEVER 静默跳过预发布验证 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-tri-require-fallback",
+      "type": "replace_text",
+      "label": "`tri-require` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-require/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（require）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 验收标准不可判定 | 某条 AC 无法写出可判定的 Given-When-Then | 标注 `needs-clarification` 并升级人审；NEVER 编造模糊验收标准充数 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-tri-test-fallback",
+      "type": "replace_text",
+      "label": "`tri-test` 新增「兜底处理（NEVER 静默失败）」章节（门④ #14 children 层级补齐；四行聚合既有语义 + ⑤ 阶段定制；dw5 批）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill（test）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |\n| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |\n| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |\n| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |\n| ⑤ 测试环境不可用 | 测试环境/依赖服务不可达 | 登记阻塞并以最小核心链路验证子集替代（P6 不承接冒烟，避免术语越界），报告中如实声明覆盖范围；NEVER 声称全量已测 |\n\n## 🔴 检查点与红灯清单（STOP · NEVER）",
+      "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "dw5-release-dim4-degrade",
+      "type": "replace_text",
+      "label": "`tri-release` 维度 4 补「无预发布环境」降级行（对齐维度 3 无 CI 先例；dw5 批）",
+      "glob": "tri-sdlc/children/tri-release/SKILL.md",
+      "old": "| 冒烟结论 | 逐条通过与否；**任一失败 NEVER 进入正式发布** |",
+      "new": "| 冒烟结论 | 逐条通过与否；**任一失败 NEVER 进入正式发布** |\n| 无预发布环境 | MUST 声明降级并以**本地等价冒烟**替代（本地构建 + 启动 + ≥3 条核心链路手工冒烟），结果标注「本地等价冒烟」并登记于 `release-report.md`；NEVER 静默跳过预发布验证（对齐维度 3 无 CI 等价流程先例） |",
+      "already_marker": "MUST 声明降级并以**本地等价冒烟**替代"
+    },
+    {
+      "id": "dw5-tri-charter-changelog",
+      "type": "replace_text",
+      "label": "`tri-charter` CHANGELOG：追加 [1.1.5] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-charter/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw5-tri-cr-changelog",
+      "type": "replace_text",
+      "label": "`tri-cr` CHANGELOG：追加 [1.1.5] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-cr/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw5-tri-design-changelog",
+      "type": "replace_text",
+      "label": "`tri-design` CHANGELOG：追加 [1.1.6] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-design/CHANGELOG.md",
+      "old": "## [1.1.5] - 2026-09-26",
+      "new": "## [1.1.6] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.5] - 2026-09-26",
+      "already_marker": "## [1.1.6]"
+    },
+    {
+      "id": "dw5-tri-devenv-changelog",
+      "type": "replace_text",
+      "label": "`tri-devenv` CHANGELOG：追加 [1.1.5] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-devenv/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw5-tri-impl-changelog",
+      "type": "replace_text",
+      "label": "`tri-impl` CHANGELOG：追加 [1.1.6] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-impl/CHANGELOG.md",
+      "old": "## [1.1.5] - 2026-09-26",
+      "new": "## [1.1.6] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.5] - 2026-09-26",
+      "already_marker": "## [1.1.6]"
+    },
+    {
+      "id": "dw5-tri-ops-changelog",
+      "type": "replace_text",
+      "label": "`tri-ops` CHANGELOG：追加 [1.1.5] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-ops/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw5-tri-release-changelog",
+      "type": "replace_text",
+      "label": "`tri-release` CHANGELOG：追加 [1.1.5] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-release/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐）+ 契约第 5 条与维度 4 补「无预发布环境」降级路径**。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw5-tri-require-changelog",
+      "type": "replace_text",
+      "label": "`tri-require` CHANGELOG：追加 [1.1.5] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-require/CHANGELOG.md",
+      "old": "## [1.1.4] - 2026-09-26",
+      "new": "## [1.1.5] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.4] - 2026-09-26",
+      "already_marker": "## [1.1.5]"
+    },
+    {
+      "id": "dw5-tri-test-changelog",
+      "type": "replace_text",
+      "label": "`tri-test` CHANGELOG：追加 [1.1.6] 条目（dw5 批）",
+      "glob": "tri-sdlc/children/tri-test/CHANGELOG.md",
+      "old": "## [1.1.5] - 2026-09-26",
+      "new": "## [1.1.6] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.5] - 2026-09-26",
+      "already_marker": "## [1.1.6]"
     },
     {
       "id": "sync-version-meta",

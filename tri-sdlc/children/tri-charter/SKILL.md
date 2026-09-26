@@ -1,7 +1,7 @@
 ---
 name: 立项与规划
 slug: tri-charter
-version: 1.1.4
+version: 1.1.5
 displayName: 立项与规划
 description: SDLC P0 立项与规划子SKILL。读取 tri-sdlc 转交的阶段任务（快照§三 + manifest 摘要 + P0 门禁条目清单），完成业务背景澄清、可证伪核心问题提炼、in/out-of-scope 双清单界定、三维可行性评估（技术/资源/时间）、可度量项目目标与里程碑规划，产出 charter.md 立项报告供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P0 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 立项专家，产出含可证伪核心问题、双范围清单、三维可行性、可度量目标与里程碑的 charter.md，面向 P0 门禁 6 条必检项交付。
@@ -264,6 +264,18 @@ python scripts/check_update.py --slug tri-charter --json
 
 1. 返回交付物路径 + 六维摘要 + 门禁自查结论。
 2. NEVER 自行判定门禁通过、NEVER 自行进入 P1。
+
+## 兜底处理（NEVER 静默失败）
+
+本 skill（charter）在下列异常下 MUST 显式降级并**在回复与交付物中标注**，NEVER 静默失败：
+
+| 异常类 | 触发 | 兜底路径 |
+|---|---|---|
+| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或退出码 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止产出并报告 |
+| ② 门禁不过 | 转交包阶段/上游状态不符（契约第 1 条） | MUST 退回 tri-sdlc 并附缺失清单；NEVER 带缺陷继续 |
+| ③ 上游缺失 | 独立使用且无法定位上游交付物 | 走 §上游依赖检测 的两态判定；NEVER 按空上下文执行 |
+| ④ hook 缺失 | 触发源为快照路由 / 用户直呼，不以 hook 为触发源 | 无 hook 环境功能完整；NEVER 假设自动触发 |
+| ⑤ 立项材料不可判定 | 业务背景/核心问题含糊无法证伪 | 停止起草并向用户澄清；NEVER 凭想象立项或虚构业务背景 |
 
 ## 🔴 检查点与红灯清单（STOP · NEVER）
 
