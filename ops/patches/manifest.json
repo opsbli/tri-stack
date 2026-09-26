@@ -499,11 +499,11 @@
     {
       "id": "f93-ver-html",
       "type": "replace_regex",
-      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）（2026-09-26 darwin P2 批目标就地更新 1.3.5→1.3.6）",
+      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）（2026-09-26 darwin P2 批目标就地更新 1.3.5→1.3.6）（2026-09-26 复评微批目标就地更新 1.3.6→1.3.7）",
       "glob": "tri-html/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.3.6",
-      "already_marker": "version: 1.3.6"
+      "replacement": "version: 1.3.7",
+      "already_marker": "version: 1.3.7"
     },
     {
       "id": "f111-cl-html",
@@ -1403,11 +1403,11 @@
     {
       "id": "dw2-tri-grill-version",
       "type": "replace_regex",
-      "label": "`tri-grill` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.0.2→1.0.3）",
+      "label": "`tri-grill` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.0.2→1.0.3）（2026-09-26 复评微批目标就地更新 1.0.3→1.0.4）",
       "glob": "tri-grill/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.3",
-      "already_marker": "version: 1.0.3"
+      "replacement": "version: 1.0.4",
+      "already_marker": "version: 1.0.4"
     },
     {
       "id": "dw2-tri-prototype-version",
@@ -1921,6 +1921,132 @@
       "old": "## [1.1.5] - 2026-09-26",
       "new": "## [1.1.6] - 2026-09-26\n\n### 变更\n\n- **新增「兜底处理」章节（#14 children 补齐，四行聚合既有语义 + ⑤ 阶段定制）**。\n\n## [1.1.5] - 2026-09-26",
       "already_marker": "## [1.1.6]"
+    },
+    {
+      "id": "dw6-grill-selfcheck-entity",
+      "type": "replace_text",
+      "label": "`tri-grill` 自检声明 HTML 实体残留：`&lt;路径&gt;` 恢复为原生尖括号（与全文 `<项目根>/` 书写一致；复评微批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "「本次文档=&lt;路径&gt;，条目数=&lt;N&gt;，已质询=&lt;N&gt;，已解决=&lt;N&gt;，待解决=&lt;N&gt;，新增ADR=&lt;N&gt;，新增术语=&lt;N&gt;」",
+      "new": "「本次文档=<路径>，条目数=<N>，已质询=<N>，已解决=<N>，待解决=<N>，新增ADR=<N>，新增术语=<N>」",
+      "already_marker": "本次文档=<路径>"
+    },
+    {
+      "id": "dw6-grill-output-row",
+      "type": "replace_text",
+      "label": "`tri-grill` 质询产出表：`reports/<slug>-grill.md` → `<项目根>/reports/<文档stem>-grill.md` + 格式真源挂接 `templates/grill-report.md`（此前列于目录结构但零引用；复评微批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "| 质询记录 | `reports/<slug>-grill.md` | 逐条质询过程 + 结论 |",
+      "new": "| 质询记录 | `<项目根>/reports/<文档stem>-grill.md`（格式模板：`templates/grill-report.md`） | 逐条质询过程 + 结论 |",
+      "already_marker": "（格式模板：`templates/grill-report.md`）"
+    },
+    {
+      "id": "dw6-grill-flow-row",
+      "type": "replace_text",
+      "label": "`tri-grill` 处理流程步骤 2：质询记录路径与产出表口径统一（复评微批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "质询记录（`reports/<slug>-grill.md`）",
+      "new": "质询记录（`<项目根>/reports/<文档stem>-grill.md`）",
+      "already_marker": "质询记录（`<项目根>/reports/"
+    },
+    {
+      "id": "dw6-grill-deliver-row",
+      "type": "replace_text",
+      "label": "`tri-grill` 交付产物表：质询记录路径与产出表口径统一（复评微批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "| 质询记录 | `reports/<slug>-grill.md` | 逐条质询过程 + 结论 + 新增 ADR / 术语列表 |",
+      "new": "| 质询记录 | `<项目根>/reports/<文档stem>-grill.md` | 逐条质询过程 + 结论 + 新增 ADR / 术语列表 |",
+      "already_marker": "| 质询记录 | `<项目根>/reports/<文档stem>-grill.md` | 逐条质询过程 + 结论 + 新增 ADR"
+    },
+    {
+      "id": "dw6-grill-diskrule",
+      "type": "replace_text",
+      "label": "`tri-grill` 落盘规则：质询记录路径定源 + 格式模板指针（复评微批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "- 质询记录：`reports/<slug>-grill.md`",
+      "new": "- 质询记录：`<项目根>/reports/<文档stem>-grill.md`（格式见 `templates/grill-report.md`）",
+      "already_marker": "（格式见 `templates/grill-report.md`）"
+    },
+    {
+      "id": "dw6-grill-fallback-stop",
+      "type": "replace_text",
+      "label": "`tri-grill` 兜底表补「用户在 🔴 STOP 拒绝确认 / 中止」分支（衔接既有 STOP 设计；复评微批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "| 文档无任何可质询条目 | 告知用户文档已足够清晰，无需质询 |",
+      "new": "| 文档无任何可质询条目 | 告知用户文档已足够清晰，无需质询 |\n| 用户在 🔴 STOP 拒绝确认 / 中止 | 保留质询记录与已对齐条目；文档标注「对齐未完成（待解决 N 条）」；NEVER 宣布对齐完成 |",
+      "already_marker": "| 用户在 🔴 STOP 拒绝确认 / 中止 |"
+    },
+    {
+      "id": "dw6-grill-role-note",
+      "type": "replace_text",
+      "label": "`tri-grill` 输入契约表下补角色侧重注：角色字段「影响质询角度」此前无映射，补一句口径（复评微批）",
+      "glob": "tri-grill/SKILL.md",
+      "old": "| 领域模型路径 | ⬜ | CONTEXT.md 和 docs/adr/ 的路径（缺省 = 项目根目录） |\n\n## 职责边界",
+      "new": "| 领域模型路径 | ⬜ | CONTEXT.md 和 docs/adr/ 的路径（缺省 = 项目根目录） |\n\n> 角色侧重：PM 偏歧义/优先级、Dev 偏依赖/边界、Tech Lead 全维+反例；**六维铁律对任何角色不减免**（角色字段只影响沟通侧重，不构成跳维理由）。\n\n## 职责边界",
+      "already_marker": "六维铁律对任何角色不减免"
+    },
+    {
+      "id": "dw6-grill-changelog",
+      "type": "replace_text",
+      "label": "`tri-grill` CHANGELOG：追加 [1.0.4] 条目（复评微批属人工内容）",
+      "glob": "tri-grill/CHANGELOG.md",
+      "old": "## [1.0.3] - 2026-09-26",
+      "new": "## [1.0.4] - 2026-09-26\n\n### 修复\n\n- **自检声明实体残留**：第 8 条 `&lt;路径&gt;` HTML 实体恢复为原生尖括号（与全文 `<项目根>/` 书写一致）。\n\n### 变更\n\n- **质询记录路径与格式定源**：`reports/<slug>-grill.md` → `<项目根>/reports/<文档stem>-grill.md`（根路径与文档 stem 取值显式化，4 处口径统一）；格式真源挂接 `templates/grill-report.md`（此前列于目录结构但零引用）。\n- **兜底表补「用户中止」分支**：🔴 STOP 被拒 / 中止 → 保留质询记录与已对齐条目、文档标注未完成状态，NEVER 宣布对齐完成。\n- **角色字段可执行化**：输入契约表下补角色侧重注（六维铁律对任何角色不减免）。\n\n## [1.0.3] - 2026-09-26",
+      "already_marker": "## [1.0.4]"
+    },
+    {
+      "id": "dw6-html-gate2-scope",
+      "type": "replace_text",
+      "label": "`tri-html` 契约门②：「截图预览描述」（无对应产出步骤）改为「图表清单与文件大小」（与处理流程门② 括号口径一致；复评微批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "MUST 向用户呈现文件路径 + 截图预览描述 + 六维结论摘要 + **viewer 图表 deliver 客观回执**（checksPassed/errors/warnings/SHA-256）",
+      "new": "MUST 向用户呈现文件路径 + 图表清单与文件大小 + 六维结论摘要 + **viewer 图表 deliver 客观回执**（checksPassed/errors/warnings/SHA-256）",
+      "already_marker": "图表清单与文件大小"
+    },
+    {
+      "id": "dw6-html-modec-dedup",
+      "type": "replace_text",
+      "label": "`tri-html` 模式 C 降级声明去重：声明块与上游依赖检测表 C 行逐字重复，收敛为单一真源指针（复评微批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "**模式 C 降级声明**：\n> 用户明确拒绝安装后，从用户请求自构造等价输入（意图判定默认 I10/L3=arch-viz + 任务要点 + 交付预期 + 项目路径），声明「当前为降级模式，意图识别精度低于完整工作流，生成的 HTML 仍需人工复核分析结论」。",
+      "new": "**模式 C 降级声明**：以表格 **C · 降级模式** 行为单一真源（自构造等价输入 + 声明降级口径），NEVER 另行维护第二份重复文本。",
+      "already_marker": "以表格 **C · 降级模式** 行为单一真源"
+    },
+    {
+      "id": "dw6-html-copy-relnote",
+      "type": "replace_text",
+      "label": "`tri-html` 交付副本要求：副本 MUST 含主报告 + 全部 viewer 独立成品（viewer 卡片用相对链接，单独拷主报告会断链；复评微批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "但 MUST 同时在 `.tribro/html/<命名>/` 保留副本。",
+      "new": "但 MUST 同时在 `.tribro/html/<命名>/` 保留副本；副本 MUST 包含主报告 + 全部 viewer 独立成品（保持相对链接结构，防图表卡片链接断裂）。",
+      "already_marker": "保持相对链接结构，防图表卡片链接断裂"
+    },
+    {
+      "id": "dw6-html-diskrule-fix",
+      "type": "replace_text",
+      "label": "`tri-html` 落盘规则矛盾修复：「落盘至用户工作区（非 `.tribro/`）」与 §交付产物机制（默认 `.tribro/html/<命名>/` + 用户指定时双写）矛盾，统一为后者（复评微批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "- **最终成果物（主报告 + viewer 独立成品）落盘至用户工作区**（项目根目录或用户指定目录，非 `.tribro/`）",
+      "new": "- **最终成果物（主报告 + viewer 独立成品）默认落盘 `.tribro/html/<命名>/`**；用户显式指定交付目录时落用户指定位置（MUST 同步保留 `.tribro/html/<命名>/` 副本，口径见 §交付产物机制 · 二）",
+      "already_marker": "默认落盘 `.tribro/html/<命名>/`**"
+    },
+    {
+      "id": "dw6-html-tri-true-ref",
+      "type": "replace_text",
+      "label": "`tri-html` 悬空引用修复：质量标准「原 tri-true 兜底机制，本分支未包含」改为指向本文件 §兜底处理 ②（复评微批）",
+      "glob": "tri-html/SKILL.md",
+      "old": "重试仍失败 → 原 tri-true 兜底机制，本分支未包含）：",
+      "new": "重试仍失败 → §兜底处理 ②：如实报告未通过的门与实测值）：",
+      "already_marker": "§兜底处理 ②：如实报告未通过的门与实测值"
+    },
+    {
+      "id": "dw6-html-changelog",
+      "type": "replace_text",
+      "label": "`tri-html` CHANGELOG：追加 [1.3.7] 条目（复评微批属人工内容）",
+      "glob": "tri-html/CHANGELOG.md",
+      "old": "## [1.3.6] - 2026-09-26",
+      "new": "## [1.3.7] - 2026-09-26\n\n### 修复\n\n- **落盘口径统一**：「落盘规则」节「最终成果物落盘至用户工作区（非 `.tribro/`）」与 §交付产物机制（默认 `.tribro/html/<命名>/`，用户指定时双写）矛盾，统一为后者；副本 MUST 含主报告 + 全部 viewer 独立成品（保相对链接可达）。\n- **模式 C 降级声明去重**：声明块与上游依赖检测表 C 行逐字重复（无 §出处回指，非有意聚合），收敛为单一真源指针。\n- **门② 口径对齐**：「截图预览描述」无对应产出步骤，改为「图表清单与文件大小」（与处理流程门② 括号一致）。\n- **悬空引用修复**：质量标准自检清单「原 tri-true 兜底机制」改为指向本文件 §兜底处理 ②。\n\n## [1.3.6] - 2026-09-26",
+      "already_marker": "## [1.3.7]"
     },
     {
       "id": "sync-version-meta",

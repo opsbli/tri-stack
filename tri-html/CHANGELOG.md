@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/spec/v2.0.0.html).
 
+## [1.3.7] - 2026-09-26
+
+### 修复
+
+- **落盘口径统一**：「落盘规则」节「最终成果物落盘至用户工作区（非 `.tribro/`）」与 §交付产物机制（默认 `.tribro/html/<命名>/`，用户指定时双写）矛盾，统一为后者；副本 MUST 含主报告 + 全部 viewer 独立成品（保相对链接可达）。
+- **模式 C 降级声明去重**：声明块与上游依赖检测表 C 行逐字重复（无 §出处回指，非有意聚合），收敛为单一真源指针。
+- **门② 口径对齐**：「截图预览描述」无对应产出步骤，改为「图表清单与文件大小」（与处理流程门② 括号一致）。
+- **悬空引用修复**：质量标准自检清单「原 tri-true 兜底机制」改为指向本文件 §兜底处理 ②。
+
 ## [1.3.6] - 2026-09-26
 
 ### 修复

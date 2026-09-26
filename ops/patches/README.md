@@ -459,6 +459,20 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw5-tri-release-changelog` | replace_text | `tri-release` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
 | `dw5-tri-require-changelog` | replace_text | `tri-require` CHANGELOG：追加 [1.1.5] 条目（dw5 批） |
 | `dw5-tri-test-changelog` | replace_text | `tri-test` CHANGELOG：追加 [1.1.6] 条目（dw5 批） |
+| `dw6-grill-selfcheck-entity` | replace_text | `tri-grill` 自检声明 `&lt;路径&gt;` HTML 实体恢复原生尖括号（复评微批） |
+| `dw6-grill-output-row` | replace_text | `tri-grill` 质询产出表：路径定源 `<项目根>/reports/<文档stem>-grill.md` + 挂接 `templates/grill-report.md`（复评微批） |
+| `dw6-grill-flow-row` | replace_text | `tri-grill` 处理流程步骤 2 质询记录路径口径统一（复评微批） |
+| `dw6-grill-deliver-row` | replace_text | `tri-grill` 交付产物表路径口径统一（复评微批） |
+| `dw6-grill-diskrule` | replace_text | `tri-grill` 落盘规则路径定源 + 格式模板指针（复评微批） |
+| `dw6-grill-fallback-stop` | replace_text | `tri-grill` 兜底表补「用户在 🔴 STOP 拒绝确认 / 中止」分支（复评微批） |
+| `dw6-grill-role-note` | replace_text | `tri-grill` 输入契约表下补角色侧重注（复评微批） |
+| `dw6-grill-changelog` | replace_text | `tri-grill` CHANGELOG：追加 [1.0.4] 条目（复评微批） |
+| `dw6-html-gate2-scope` | replace_text | `tri-html` 契约门②「截图预览描述」→「图表清单与文件大小」（与流程图口径一致；复评微批） |
+| `dw6-html-modec-dedup` | replace_text | `tri-html` 模式 C 降级声明去重（与表 C 行逐字重复且无 §出处，非有意聚合；复评微批） |
+| `dw6-html-copy-relnote` | replace_text | `tri-html` 交付副本 MUST 含主报告 + 全部 viewer 成品（保相对链接可达；复评微批） |
+| `dw6-html-diskrule-fix` | replace_text | `tri-html` 落盘规则矛盾修复（统一为默认 `.tribro/html/<命名>/` + 用户指定时双写；复评微批） |
+| `dw6-html-tri-true-ref` | replace_text | `tri-html` 质量标准「原 tri-true 兜底机制」悬空引用 → §兜底处理 ②（复评微批） |
+| `dw6-html-changelog` | replace_text | `tri-html` CHANGELOG：追加 [1.3.7] 条目（复评微批） |
 
 ## 每项补丁的依据
 
@@ -1078,3 +1092,20 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 回执：`apply.py` 二轮 0 真应用；`version-lint` EXIT=0；`--dir` 实测 #14 children 9/9 PASS。
 **新教训（marker 毒化）**：同批前序 op 可向后序 op 的 already_marker 文本注入（本批 release 兜底⑤行含契约 op 的 marker）⇒ 契约 op 首轮被误判已应用而跳过。
 **op 顺序约束再 +1**：引用型/指针型 op 必须排在会注入其 marker 的章节 op **之前**。judges 抓出后按未 commit 范式修正（回滚 + 调序 + 重放）。
+
+### 计数（2026-09-26 · 复评微批增量）
+
+> 上节计数为时点快照，**冻结**。本批 = 3 judge 盲评共识短板微批（≥2/3 采信，1 条否决：
+> tri-html `name:` 中文名实为家族惯例 6/7，judge 参照系错误）。
+> tri-grill PATCH 1.0.3→1.0.4 / tri-html PATCH 1.3.6→1.3.7（settle 就地更新 2 个，不占新行）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 272 | **286** | +14（`dw6-*`：grill 8 + html 6） |
+| §当前补丁清单 数据行数 | 274 | **288** | +14；对账恒等式：288 − 划除 2 = manifest **286** ✅ |
+| `ops/README.md` 目录树 op 计数 | 122（过期） | **286** | darwin P0–dw5 各批均未回写该行，本批一并修正 |
+| 根 `README.md` 目录树 op 计数 | 122（过期） | **286** | 同上 |
+
+回执：`apply.py` 首轮 14/14「应用 1」（无 marker 毒化）、二轮 0 真应用；`version-lint` EXIT=0。
+判定依据：post2 复评 tri-grill 81.8 / tri-html 84.6 为当日最低档，judge 明细未落盘 → 按纪律一手实测
+（3 judge 独立盲评当前文件）重建短板证据。

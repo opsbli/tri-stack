@@ -87,7 +87,7 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-code-analyzer](tri-code-analyzer/) | 1.5.3 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
-| [tri-html](tri-html/) | 1.3.6 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
+| [tri-html](tri-html/) | 1.3.7 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
 | [tri-checklist](tri-checklist/) | 1.1.6 | 审计清单生成：改动点 / 审查点 / 测试点 / 测试步骤四维 |
 
 ### 全流程 / 协作对齐
@@ -96,7 +96,7 @@
 |---|---|---|
 | [tri-sdlc](tri-sdlc/) | 1.1.7 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
 | [tri-orchestrate](tri-orchestrate/) | 1.0.3 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
-| [tri-grill](tri-grill/) | 1.0.3 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
+| [tri-grill](tri-grill/) | 1.0.4 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
 | [tri-req-audit](tri-req-audit/) | 1.1.1 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
 | [tri-domain](tri-domain/) | 1.0.2 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
 
@@ -135,7 +135,7 @@ ops/
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
 ├── versions.json            自主版本线基线（35 skill 快照：顶层 26 + tri-sdlc 子 skill 9）
-└── patches/                 本地补丁层（122 个 op，幂等重放）
+└── patches/                 本地补丁层（286 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器
