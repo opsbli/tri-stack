@@ -7,7 +7,7 @@
   },
   "tri-action": { "train": [], "val": ["tri-action-hash-01", "tri-action-hash-02"], "test": [] },
   "tri-checklist": { "train": [], "val": ["tri-checklist-build-01", "tri-checklist-build-02"], "test": [] },
-  "tri-code-analyzer": { "train": [], "val": ["tri-code-analyzer-stack-01"], "test": [] },
+  "tri-code-analyzer": { "train": [], "val": ["tri-code-analyzer-stack-01", "tri-code-analyzer-stack-02"], "test": [] },
   "tri-evolve": { "train": [], "val": ["tri-evolve-list-01"], "test": [] },
   "tri-html": { "train": [], "val": ["tri-html-envelope-01"], "test": [] },
   "tri-forge": { "train": [], "val": ["tri-forge-envelope-01"], "test": [] },

@@ -1,0 +1,13 @@
+{
+  "candidate_id": "cand-20260927-tri-forge-envelope-01",
+  "verdict": "no-op",
+  "trigger_cases": ["tri-forge-envelope-01"],
+  "diagnosis": "门④ #11（CHANGELOG 规范）FAIL 属于脏工作区环境态，非 skill 内容缺陷。证据：(1) 独立复跑 compliance_check.py --dir tri-forge，复现 FAIL:#11，evidence=首条1.2.0 / frontmatter 1.0.5 / 文件最大 1.2.0；(2) git status 显示 tri-forge 11 个文件有未提交改动（d24 第24条升必检批次，含未跟踪的 tests/battery/、acceptance_diff.py 等在途产物），CHANGELOG 新增 1.2.0 条目但 frontmatter 未随之 settle；(3) git show HEAD 复核：已提交态 CHANGELOG 首条=1.0.5=frontmatter，版本线一致，门④ 在 HEAD 本应 PASS。即评估 trace（15:59:33 记录）测的是中途未完成的在途批次，不是任何已定版状态。",
+  "reason": "契约诚实条款明确：属于未落地的在途工作或环境态的失败不产 op。修复责任在该在途批次自身的收尾——按其 CHANGELOG 一致性硬约束（首条 MUST = frontmatter）与用户裁定「修完即升」，批次完成前须补 settle（frontmatter 1.0.5 → 1.2.0，走版本 settle op + version-lint 0，即黑名单 #7 的版本线纪律）再提交。由 optimizer 现在产 settle op 会与在途批次双重记账、归因不可分（违反黑名单 #4）。附 harness 层建议（非本 case 的 op）：run_eval 门禁型 case 宜在干净 worktree/或先校验 git status 干净后再跑，避免脏树污染确定性判定。",
+  "evidence": {
+    "reproduction": "C:/Users/sam/.workbuddy/binaries/python/versions/3.13.12/python.exe tri-forge/scripts/compliance_check.py --dir tri-forge --json → item 11 FAIL",
+    "head_state": "git show HEAD:tri-forge/CHANGELOG.md 首条=1.0.5；SKILL.md frontmatter=1.0.5（一致）",
+    "worktree_state": "git status：tri-forge/CHANGELOG.md、SKILL.md 等 11 文件 modified（未提交的 d24 批）",
+    "manifest_check": "ops/patches/manifest.json 无 tri-forge → 1.2.0 的待应用 settle op（仅已应用的 dw2-tri-forge-version → 1.0.5），确认 1.2.0 条目为工作区直改的在途批次产物"
+  }
+}
