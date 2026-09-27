@@ -6,80 +6,188 @@
   "cases": [
     {
       "case_id": "tri-intent-route-01",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "帮我给登录页实现一个记住密码的开关组件",
       "expected": "L2=I11（编码开发，默认）→ 下游 tri-coding",
-      "gt": { "l2": ["I11"], "downstream": "tri-coding" }
+      "gt": {
+        "l2": [
+          "I11"
+        ],
+        "downstream": "tri-coding",
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-02",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "点保存之后列表不刷新，帮我查一下这个 bug",
       "expected": "L2=I12（调试修复）→ 下游 tri-fix",
-      "gt": { "l2": ["I12"], "downstream": "tri-fix" }
+      "gt": {
+        "l2": [
+          "I12"
+        ],
+        "downstream": "tri-fix",
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-03",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "把这个需求拆成可执行的任务清单",
       "expected": "L2=I13（规划拆解，默认）→ 下游 tri-plan",
-      "gt": { "l2": ["I13"], "downstream": "tri-plan" }
+      "gt": {
+        "l2": [
+          "I13"
+        ],
+        "downstream": "tri-plan",
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-04",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "帮我把 output/report_final.pdf 这个文件删掉",
       "expected": "L2=I14（操作执行，默认）→ 下游 tri-action，且不可逆动作须触发确认门",
-      "gt": { "l2": ["I14"], "downstream": "tri-action", "irreversible_gate": true }
+      "gt": {
+        "l2": [
+          "I14"
+        ],
+        "downstream": "tri-action",
+        "irreversible_gate": true,
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-05",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "给这个项目生成一张架构可视化图",
       "expected": "L2=I10（分析处理）一跳覆写 arch-viz 子类 → 下游 tri-html",
-      "gt": { "l2": ["I10"], "downstream": "tri-html" }
+      "gt": {
+        "l2": [
+          "I10"
+        ],
+        "downstream": "tri-html",
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-06",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "这段正则是什么意思，讲讲看",
       "expected": "L2=I01–I05（Asking 咨询求解）→ 咨询作答，不路由下游 skill",
-      "gt": { "l2": ["I01", "I02", "I03", "I04", "I05"], "downstream": null }
+      "gt": {
+        "l2": [
+          "I01",
+          "I02",
+          "I03",
+          "I04",
+          "I05"
+        ],
+        "downstream": null,
+        "snapshot": true
+      }
     },
     {
       "case_id": "tri-intent-route-07",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "停！先别执行刚才那个操作",
       "expected": "L2=M05（中止确认）→「不落盘」类，即时叫停/放行，不路由下游、不产快照",
-      "gt": { "l2": ["M05"], "downstream": null }
+      "gt": {
+        "l2": [
+          "M05"
+        ],
+        "downstream": null,
+        "snapshot": false
+      }
     },
     {
       "case_id": "tri-intent-route-08",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "把我们每周的发布流程编排成自动化工作流",
       "expected": "L2=I13 工作流设计 / I14 工作流编排（子类一跳覆写，两读法均合法）→ 下游 tri-workflow",
-      "gt": { "l2": ["I13", "I14"], "downstream": "tri-workflow" }
+      "gt": {
+        "l2": [
+          "I13",
+          "I14"
+        ],
+        "downstream": "tri-workflow",
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-09",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "帮我管这个项目从需求、开发到发布上线的完整生命周期",
       "expected": "全生命周期子类一跳覆写（I11/I13/I14 均收敛 tri-sdlc，三读法均合法）→ 下游 tri-sdlc",
-      "gt": { "l2": ["I11", "I13", "I14"], "downstream": "tri-sdlc" }
+      "gt": {
+        "l2": [
+          "I11",
+          "I13",
+          "I14"
+        ],
+        "downstream": "tri-sdlc",
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-10",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "给这个产品定一套前端视觉风格与设计方向（指导方针，不实现代码）",
       "expected": "L2=I11（编码开发）前端设计方向子类一跳覆写 → 下游 tri-frontend-design",
-      "gt": { "l2": ["I11"], "downstream": "tri-frontend-design" }
+      "gt": {
+        "l2": [
+          "I11"
+        ],
+        "downstream": "tri-frontend-design",
+        "snapshot": true,
+        "install_check": true
+      }
     },
     {
       "case_id": "tri-intent-route-11",
-      "scorer": { "kind": "rollout_file" },
+      "scorer": {
+        "kind": "rollout_file"
+      },
       "prompt": "你上一轮理解偏了，我说的是另一个意思，我重新讲一遍",
       "expected": "L2=M01–M04（Meta 元操作：针对上一轮的澄清/纠错/细化）→ 下游 tri-meta",
-      "gt": { "l2": ["M01", "M02", "M03", "M04"], "downstream": "tri-meta" }
+      "gt": {
+        "l2": [
+          "M01",
+          "M02",
+          "M03",
+          "M04"
+        ],
+        "downstream": "tri-meta",
+        "snapshot": true,
+        "install_check": true
+      }
     }
   ]
 }

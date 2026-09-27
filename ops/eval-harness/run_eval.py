@@ -122,6 +122,27 @@ def run_rollout_case(case: dict, root: Path) -> list[dict]:
         ok = bool(actual.get("irreversible_gate"))
         asserts.append({"name": "gt_irreversible_gate", "passed": ok,
                         "detail": f"实得 {actual.get('irreversible_gate')!r}（期望 true）"})
+    # 快照落盘语义（快照型 case 必落盘；不落盘类 MUST NOT 产快照）
+    if "snapshot" in gt:
+        ok = bool(actual.get("snapshot")) == gt["snapshot"]
+        asserts.append({"name": f"gt_snapshot:{gt['snapshot']}", "passed": ok,
+                        "detail": f"实得 {actual.get('snapshot')!r}"})
+    # 安装检测一致性：scorer 复跑 check_downstream 取现场真值，与 rollout 记录值比对
+    #（验证 rollout 确实执行了 §二 检测脚本且读对了结果；NEVER 硬编码 installed 期望值——环境相关）
+    if gt.get("install_check") and gt.get("downstream"):
+        slug = gt["downstream"]
+        r = subprocess.run([PY, str(REPO / "tri-intent/scripts/check_downstream.py"),
+                            "--slug", slug, "--json"],
+                           capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", cwd=str(REPO), timeout=120)
+        try:
+            truth = json.loads(r.stdout)["results"][0]["installed"]
+        except Exception:  # noqa: BLE001
+            truth = None
+        ok = actual.get("installed") == truth
+        asserts.append({"name": f"gt_install_consistent:{slug}", "passed": ok,
+                        "detail": f"rollout 记录 {actual.get('installed')!r}，"
+                                  f"现场实测 {truth!r}（rc={r.returncode}）"})
     case["_actual"] = json.dumps(actual, ensure_ascii=False)[:2000]
     return asserts
 
