@@ -84,6 +84,48 @@ def run_command_case(case: dict) -> list[dict]:
     return asserts
 
 
+def _rollout_path(root: Path, case_id: str) -> Path:
+    # root = <repo>/.tribro/evals ⇒ rollouts 与各 run 目录平级：<root>/rollouts/<case_id>.json
+    return root / "rollouts" / f"{case_id}.json"
+
+
+def run_rollout_case(case: dict, root: Path) -> list[dict]:
+    """rollout_file：读 rollout 执行者落盘的结构化决策，按 gt 做确定性断言。
+
+    rollout 输出契约：<root>/../rollouts/<case_id>.json
+        {"l2": "I11", "downstream": "tri-coding" | null, "irreversible_gate": bool?, "notes": "..."}
+    断言全部来自 golden 的 gt 字段（真源：tri-intent §一 映射表），无任何 judge。
+    """
+    rp = _rollout_path(root, case["case_id"])
+    if not rp.is_file():
+        return [{"name": "rollout_present", "passed": False,
+                 "detail": f"rollout 输出不存在：{rp}（rollout 执行者须先落盘）"}]
+    actual = json.loads(rp.read_text(encoding="utf-8"))
+    gt = case["gt"]
+    asserts = []
+    # l2：exact 或 any-of
+    ok = actual.get("l2") in gt["l2"]
+    asserts.append({"name": f"gt_l2:{'|'.join(gt['l2'])}", "passed": ok,
+                    "detail": f"实得 {actual.get('l2')!r}"})
+    # downstream：null ⇒ 必须无下游；否则精确匹配
+    gd, ad = gt.get("downstream"), actual.get("downstream")
+    if gd is None:
+        ok = ad in (None, "", "无", "no-downstream")
+        asserts.append({"name": "gt_downstream:none", "passed": ok,
+                        "detail": f"实得 {ad!r}（期望不路由下游）"})
+    else:
+        ok = ad == gd
+        asserts.append({"name": f"gt_downstream:{gd}", "passed": ok,
+                        "detail": f"实得 {ad!r}"})
+    # 附加标志（如不可逆确认门）
+    if gt.get("irreversible_gate"):
+        ok = bool(actual.get("irreversible_gate"))
+        asserts.append({"name": "gt_irreversible_gate", "passed": ok,
+                        "detail": f"实得 {actual.get('irreversible_gate')!r}（期望 true）"})
+    case["_actual"] = json.dumps(actual, ensure_ascii=False)[:2000]
+    return asserts
+
+
 def run_envelope_case(case: dict) -> list[dict]:
     env = gate_adapter.run_gate(case["scorer"]["skill"])
     asserts = []
@@ -162,8 +204,12 @@ def main() -> int:
             rows.append((case["case_id"], "skipped", "-", kind))
             continue
         try:
-            asserts = (run_command_case(case) if kind == "command"
-                       else run_envelope_case(case))
+            if kind == "command":
+                asserts = run_command_case(case)
+            elif kind == "rollout_file":
+                asserts = run_rollout_case(case, root)
+            else:
+                asserts = run_envelope_case(case)
         except Exception as e:  # noqa: BLE001
             asserts = [{"name": "scorer_error", "passed": False,
                         "detail": f"{type(e).__name__}: {e}"[:180]}]

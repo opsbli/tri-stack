@@ -106,7 +106,8 @@ ops/eval-harness/
 |---|---|---|
 | `command` | 探针命令 → JSON → 逐字段断言 | run_eval 直跑 |
 | `gate_envelope` | 跑门禁全量 → 归一 envelope 断言 | gate_adapter |
-| `pending` | rollout 型（须带 skill 跑完整流程），GT 已锁定 | **跳过并显式计数，不退化成 LLM judge** |
+| `rollout_file` | rollout 执行者（带 skill 的模型）落盘结构化决策到 `<root>/rollouts/<case_id>.json`，run_eval 按 golden `gt` 做确定性断言（any-of l2 / downstream / 附加标志） | rollout 执行者 + run_eval 断言 |
+| `pending` | rollout 型但 scorer 未建，GT 已锁定 | **跳过并显式计数，不退化成 LLM judge** |
 
 ## 纪律
 

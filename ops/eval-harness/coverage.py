@@ -56,8 +56,9 @@ TOP = {
                           "栈检测可测（缺七阶段报告质量度量）"),
     "tri-evolve": ("B", "tri-evolve/scripts/evolve_learn.py",
                    "归因可测（缺画像复用效果度量）"),
-    "tri-intent": ("B", "tri-intent/SKILL.md",
-                   "§一 路由映射表是真源 ⇒ 可低成本构造 golden 意图集（缺 scorer）"),
+    "tri-intent": ("B", "ops/eval-harness/run_eval.py（rollout_file scorer）",
+                   "rollout_file scorer 已建（2026-09-27）：golden 6 case 确定性断言（§一 真源 GT）；"
+                   "余缺口=集成 check_downstream 安装检测与快照落盘断言"),
 }
 B_SUBS = {"tri-intent": ["asking", "doing", "expressing", "meta", "clarify-gate"]}
 

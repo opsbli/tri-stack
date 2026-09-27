@@ -2,43 +2,49 @@
   "skill": "tri-intent",
   "scorer_protocol": "v1",
   "source_of_truth": "tri-intent/SKILL.md §一 路由映射表（行 258–274）+ 行 31–43 快照/不落盘表",
-  "kind_note": "全部为 pending：意图路由是 rollout 型 case（须带 skill 跑完整识别流程后裁决），gate 探针不适用。本文件只锁定 GT（期望路由），scorer 待建后由 run_eval 自动纳入。GT 期望值取自 §一 表，勿手抄历史口径。",
+  "kind_note": "rollout_file 型：rollout 执行者（带 skill 的模型）按 §二 检测步骤产出结构化路由决策，落 .tribro/evals/rollouts/<case_id>.json；run_eval 只做确定性断言（GT 来自 §一 真源），NEVER 用 LLM judge 打分。l2 数组 = 该问句可归入的合法意图集合（any-of）。",
   "cases": [
     {
       "case_id": "tri-intent-route-01",
-      "scorer": { "kind": "pending", "reason": "rollout 型：需带 tri-intent 跑完整意图识别再裁决" },
+      "scorer": { "kind": "rollout_file" },
       "prompt": "帮我给登录页实现一个记住密码的开关组件",
-      "expected": "L2=I11（编码开发，默认）→ 下游 tri-coding"
+      "expected": "L2=I11（编码开发，默认）→ 下游 tri-coding",
+      "gt": { "l2": ["I11"], "downstream": "tri-coding" }
     },
     {
       "case_id": "tri-intent-route-02",
-      "scorer": { "kind": "pending", "reason": "rollout 型" },
+      "scorer": { "kind": "rollout_file" },
       "prompt": "点保存之后列表不刷新，帮我查一下这个 bug",
-      "expected": "L2=I12（调试修复）→ 下游 tri-fix"
+      "expected": "L2=I12（调试修复）→ 下游 tri-fix",
+      "gt": { "l2": ["I12"], "downstream": "tri-fix" }
     },
     {
       "case_id": "tri-intent-route-03",
-      "scorer": { "kind": "pending", "reason": "rollout 型" },
+      "scorer": { "kind": "rollout_file" },
       "prompt": "把这个需求拆成可执行的任务清单",
-      "expected": "L2=I13（规划拆解，默认）→ 下游 tri-plan"
+      "expected": "L2=I13（规划拆解，默认）→ 下游 tri-plan",
+      "gt": { "l2": ["I13"], "downstream": "tri-plan" }
     },
     {
       "case_id": "tri-intent-route-04",
-      "scorer": { "kind": "pending", "reason": "rollout 型" },
+      "scorer": { "kind": "rollout_file" },
       "prompt": "帮我把 output/report_final.pdf 这个文件删掉",
-      "expected": "L2=I14（操作执行，默认）→ 下游 tri-action（且应触发不可逆动作确认门）"
+      "expected": "L2=I14（操作执行，默认）→ 下游 tri-action，且不可逆动作须触发确认门",
+      "gt": { "l2": ["I14"], "downstream": "tri-action", "irreversible_gate": true }
     },
     {
       "case_id": "tri-intent-route-05",
-      "scorer": { "kind": "pending", "reason": "rollout 型" },
+      "scorer": { "kind": "rollout_file" },
       "prompt": "给这个项目生成一张架构可视化图",
-      "expected": "L2=I10（分析处理）一跳覆写 arch-viz 子类 → 下游 tri-html"
+      "expected": "L2=I10（分析处理）一跳覆写 arch-viz 子类 → 下游 tri-html",
+      "gt": { "l2": ["I10"], "downstream": "tri-html" }
     },
     {
       "case_id": "tri-intent-route-06",
-      "scorer": { "kind": "pending", "reason": "rollout 型" },
+      "scorer": { "kind": "rollout_file" },
       "prompt": "这段正则是什么意思，讲讲看",
-      "expected": "L2=I01–I05（Asking 咨询求解）→ 咨询作答，不路由下游 skill"
+      "expected": "L2=I01–I05（Asking 咨询求解）→ 咨询作答，不路由下游 skill",
+      "gt": { "l2": ["I01", "I02", "I03", "I04", "I05"], "downstream": null }
     }
   ]
 }
