@@ -1,7 +1,7 @@
 ---
 name: tri-lottie-full-testcases
 description: tri-lottie 全场景测试用例——结构合规 / 决策规格单 / 六端代码断言 / 审查模式 / Web 真实渲染 / RN·Flutter 语法解析。
-基于 tri-lottie v1.0.2
+基于 tri-lottie v1.0.6
 ---
 
 # tri-lottie 全场景测试用例

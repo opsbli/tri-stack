@@ -355,11 +355,11 @@
     {
       "id": "f85-ver-lottie",
       "type": "replace_regex",
-      "label": "tri-lottie 版本线 1.0.3 → 1.0.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.4→1.0.5）",
+      "label": "tri-lottie 版本线 1.0.3 → 1.0.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.4→1.0.5）（2026-09-27 eh1 批目标就地更新 1.0.5→1.0.6）",
       "glob": "tri-lottie/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.5",
-      "already_marker": "version: 1.0.5"
+      "replacement": "version: 1.0.6",
+      "already_marker": "version: 1.0.6"
     },
     {
       "id": "f103-cl-lottie",
@@ -499,11 +499,11 @@
     {
       "id": "f93-ver-html",
       "type": "replace_regex",
-      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）（2026-09-26 darwin P2 批目标就地更新 1.3.5→1.3.6）（2026-09-26 复评微批目标就地更新 1.3.6→1.3.7）",
+      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）（2026-09-26 darwin P2 批目标就地更新 1.3.5→1.3.6）（2026-09-26 复评微批目标就地更新 1.3.6→1.3.7）（2026-09-27 eh1 批目标就地更新 1.3.7→1.3.8）",
       "glob": "tri-html/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.3.7",
-      "already_marker": "version: 1.3.7"
+      "replacement": "version: 1.3.8",
+      "already_marker": "version: 1.3.8"
     },
     {
       "id": "f111-cl-html",
@@ -2452,6 +2452,51 @@
       "old": "## [1.1.6] - 2026-09-26",
       "new": "## [1.1.7] - 2026-09-27\n\n### 修复\n\n- **兜底表 ④ 引用路径补全**：`hooks/intent-gate.py` → `tri-intent/hooks/intent-gate.py`（与 §路由归属 的可执行真源表述一致；原先裸写会被读作本 skill 根下的相对路径 → 断链）。\n\n## [1.1.6] - 2026-09-26",
       "already_marker": "## [1.1.7] - 2026-09-27"
+    },
+    {
+      "id": "eh1-lottie-tests-t3",
+      "type": "replace_text",
+      "label": "tri-lottie T3 根因：tests 用例头部版本声明 v1.0.2 → v1.0.6（版本四件套对齐，eval-harness pilot pilot-gate-20260927 抓出）",
+      "glob": "tri-lottie/tests/tri-lottie-full-testcases.md",
+      "old": "基于 tri-lottie v1.0.2",
+      "new": "基于 tri-lottie v1.0.6",
+      "already_marker": "基于 tri-lottie v1.0.6"
+    },
+    {
+      "id": "eh1-lottie-tree-t5",
+      "type": "replace_text",
+      "label": "tri-lottie T5 根因：SKILL.md 目录树 references/ 补列 version-check-spec.md（磁盘存在而声明缺失）",
+      "glob": "tri-lottie/SKILL.md",
+      "old": "│   └── recipe-patterns.md          # 按钮/卡片/状态反馈/加载/编排成品配方",
+      "new": "│   ├── recipe-patterns.md          # 按钮/卡片/状态反馈/加载/编排成品配方\n│   └── version-check-spec.md       # 版本门第零步细则（唯一真源）",
+      "already_marker": "version-check-spec.md       # 版本门第零步细则"
+    },
+    {
+      "id": "eh1-lottie-changelog",
+      "type": "replace_text",
+      "label": "tri-lottie CHANGELOG：前插 [1.0.6] 条目（P2 属人工内容）",
+      "glob": "tri-lottie/CHANGELOG.md",
+      "old": "## [1.0.5] - 2026-09-26",
+      "new": "## [1.0.6] - 2026-09-27\n\n### 修复\n\n- **T3 版本四件套**：tests 用例头部版本声明 v1.0.2 → v1.0.6（与 SKILL.md / CHANGELOG / _meta 对齐）。来源：eval-harness pilot（pilot-gate-20260927）基线抓出。\n- **T5 目录树**：SKILL.md 目录结构补列 `references/version-check-spec.md`（磁盘存在而声明缺失）。\n\n## [1.0.5] - 2026-09-26",
+      "already_marker": "## [1.0.6]"
+    },
+    {
+      "id": "eh1-html-gate-env",
+      "type": "replace_text",
+      "label": "tri-html S4 修复：gate() 注入 TRI_ALLOW_REMOTE=1 解除自维护短路，使 --simulate-* 可达 fetch 层恢复 B/C/D 态覆盖（2026-09-27 pilot 归因：测试期望过期于 fork 转自维护之前，非产品缺陷）",
+      "glob": "tri-html/tests/run_exec_tests.py",
+      "old": "def gate(work, *extra):\n    cache = work / \"gate-cache\"\n    cache.mkdir(exist_ok=True)\n    return run([PYTHON, str(CHECK_UPDATE), *GATE_BASE,\n                \"--cache-dir\", str(cache), *extra], timeout=60)",
+      "new": "def gate(work, *extra):\n    # TRI_ALLOW_REMOTE=1：解除自维护短路（check_update.py 在自维护分支提前 return，\n    # --simulate-* 走不到 fetch 层 ⇒ S4.1/S4.2/S4.4 恒 A 态。2026-09-27 pilot 归因）。\n    cache = work / \"gate-cache\"\n    cache.mkdir(exist_ok=True)\n    env = {**os.environ, \"TRI_ALLOW_REMOTE\": \"1\"}\n    return run([PYTHON, str(CHECK_UPDATE), *GATE_BASE,\n                \"--cache-dir\", str(cache), *extra], timeout=60, env=env)",
+      "already_marker": "\"TRI_ALLOW_REMOTE\": \"1\""
+    },
+    {
+      "id": "eh1-html-changelog",
+      "type": "replace_text",
+      "label": "tri-html CHANGELOG：前插 [1.3.8] 条目（P2 属人工内容）",
+      "glob": "tri-html/CHANGELOG.md",
+      "old": "## [1.3.7] - 2026-09-26",
+      "new": "## [1.3.8] - 2026-09-27\n\n### 修复\n\n- **S4 版本门测试**：`gate()` 注入 `TRI_ALLOW_REMOTE=1` 解除自维护 fork 短路，使 `--simulate-net` / `--simulate-fetch-ok` 可达 fetch 层；S4.1/S4.2/S4.4 恢复 B/C/D 态覆盖（此前恒 A 态 exit 0 —— 测试期望过期于 fork 转自维护之前，非产品缺陷）。来源：eval-harness pilot（pilot-gate-20260927）基线抓出。\n\n## [1.3.7] - 2026-09-26",
+      "already_marker": "## [1.3.8]"
     },
     {
       "id": "sync-version-meta",

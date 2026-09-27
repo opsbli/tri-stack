@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-CN/spec/v2.0.0.html).
 
+## [1.3.8] - 2026-09-27
+
+### 修复
+
+- **S4 版本门测试**：`gate()` 注入 `TRI_ALLOW_REMOTE=1` 解除自维护 fork 短路，使 `--simulate-net` / `--simulate-fetch-ok` 可达 fetch 层；S4.1/S4.2/S4.4 恢复 B/C/D 态覆盖（此前恒 A 态 exit 0 —— 测试期望过期于 fork 转自维护之前，非产品缺陷）。来源：eval-harness pilot（pilot-gate-20260927）基线抓出。
+
 ## [1.3.7] - 2026-09-26
 
 ### 修复

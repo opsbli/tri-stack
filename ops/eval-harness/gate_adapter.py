@@ -131,7 +131,7 @@ def norm_lottie(skill, argv, out, rc, srcdir):
 
 def norm_html(skill, argv, out, rc, srcdir):
     glob = GATES[skill]["report_glob"]
-    runs = sorted((REPO).glob(glob))
+    runs = sorted((REPO).glob(glob), key=lambda p: p.stat().st_mtime)
     if not runs:
         raise RuntimeError(f"未找到 exec-test 报告（glob={glob}）；门禁可能未产出产物")
     d = json.loads(runs[-1].read_text(encoding="utf-8"))

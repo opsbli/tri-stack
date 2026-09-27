@@ -434,10 +434,13 @@ GATE_BASE = ["--slug", "tri-html", "--json", "--force", "--dry-run"]
 
 
 def gate(work, *extra):
+    # TRI_ALLOW_REMOTE=1：解除自维护短路（check_update.py 在自维护分支提前 return，
+    # --simulate-* 走不到 fetch 层 ⇒ S4.1/S4.2/S4.4 恒 A 态。2026-09-27 pilot 归因）。
     cache = work / "gate-cache"
     cache.mkdir(exist_ok=True)
+    env = {**os.environ, "TRI_ALLOW_REMOTE": "1"}
     return run([PYTHON, str(CHECK_UPDATE), *GATE_BASE,
-                "--cache-dir", str(cache), *extra], timeout=60)
+                "--cache-dir", str(cache), *extra], timeout=60, env=env)
 
 
 def tc_s4_1_offline(work):

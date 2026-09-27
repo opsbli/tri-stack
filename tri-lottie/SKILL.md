@@ -1,7 +1,7 @@
 ---
 name: tri-lottie
 slug: tri-lottie
-version: 1.0.5
+version: 1.0.6
 displayName: 跨端动效执行
 description: >
   跨端动效决策与执行库——先把任意动效需求转化为技术栈无关的「动效规格单」（情绪→人格→属性→时长→缓动→层次），
@@ -229,7 +229,8 @@ tri-lottie/
 │   ├── motion-personality.md       # 4 人格原型 + 关键词匹配 + 品牌三常量
 │   ├── emotion-mapping.md          # 情绪→路径/缓动/时长 + 场景默认
 │   ├── quality-gate.md             # 三级质量门 + 排障表 + 快速诊断
-│   └── recipe-patterns.md          # 按钮/卡片/状态反馈/加载/编排成品配方
+│   ├── recipe-patterns.md          # 按钮/卡片/状态反馈/加载/编排成品配方
+│   └── version-check-spec.md       # 版本门第零步细则（唯一真源）
 ├── stacks/                         # 执行层（六端）
 │   ├── web/implementation.md
 │   ├── android/implementation.md

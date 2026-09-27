@@ -1,7 +1,7 @@
 ---
 name: 架构可视化分析
 slug: tri-html
-version: 1.3.7
+version: 1.3.8
 displayName: 架构可视化分析
 description: 项目架构可视化分析下游执行 skill。以系统架构设计师视角对指定项目（默认当前项目）进行全面深度架构分析，涵盖架构设计/目录结构/技术栈选型/代码设计/功能设计/特殊设计（安全/性能等）六维，双引擎生成可视化产物：高精度 viewer 引擎（Typed JSON IR → 确定性校验 showcase 门禁 → 单文件交互 HTML：架构图/工作流/时序图/数据流/生命周期五类，深浅主题、聚焦、路径探查、角色透镜、故事播放、PNG/SVG/WebM 导出）+ Mermaid 兼容模式（目录树/类图/ER/旅程图）。当 tri-intent 快照下游路由建议指向本 skill（L2=I10、L3=arch-viz）时激活。支持独立安装，含上游依赖检测三态逻辑与渲染引擎 Node 探测降级链。
 summary: 六维架构分析方法论 + 双渲染引擎（viewer 确定性高精引擎 / Mermaid 兼容）+ showcase 客观门禁 + 结构化诊断修复回执（2 轮上限）+ 单文件 HTML 交付，含双审批门与 §代码版权与许可证合规。

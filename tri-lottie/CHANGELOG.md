@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-09-27
+
+### 修复
+
+- **T3 版本四件套**：tests 用例头部版本声明 v1.0.2 → v1.0.6（与 SKILL.md / CHANGELOG / _meta 对齐）。来源：eval-harness pilot（pilot-gate-20260927）基线抓出。
+- **T5 目录树**：SKILL.md 目录结构补列 `references/version-check-spec.md`（磁盘存在而声明缺失）。
+
 ## [1.0.5] - 2026-09-26
 
 ### 变更

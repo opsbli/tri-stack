@@ -120,3 +120,10 @@ ops/eval-harness/
 tri-html S4.1/S4.2/S4.4（版本门环境解析为在线 A 态，exit 0 ≠ 预期 10/11/12）、
 tri-lottie T3（版本四件套 tests=1.0.2 滞后）+ T5（目录声明缺 `version-check-spec.md`）。
 诊断入口：`trace_store.py show --run-id pilot-gate-20260927 --case-id <id>`。
+
+**修复后复测**（eh1 批，run-id `eh1-postfix2-20260927`）：执行 7 · pass 6 · fail 1。
+tri-lottie T3/T5 已修（compliance 10/10）、tri-html S4.x 已修（exec tests 31/31，
+`gate()` 注入 `TRI_ALLOW_REMOTE=1` 解除自维护短路）。剩余 fail = `tri-forge-envelope-01`
+（#11 CHANGELOG 1.2.0 ≠ SKILL 1.0.5，属并行 session 在途漂移，登记不越界修）。
+附带修复：`gate_adapter.norm_html` 报告选择由 run-id 字典序改为 **mtime 最新**
+（随机 run-id 与时间无关，曾取到过期报告）。
