@@ -1,8 +1,8 @@
 ---
-name: 代码审查
+name: tri-review
 slug: tri-review
 version: 1.7.2
-displayName: 代码审查
+displayName: tri-review
 description: 代码审查下游执行 skill。支持三模式：① 工作流集成模式——由 tri-coding/tri-fix 在门③执行前确认时调用；② 独立调用模式——读取 tri-intent 快照 §三；③ 增量审计模式——以系统架构设计师视角，文档驱动学习设计意图，对增量改动进行三维审计（代码设计改动/架构设计实现/功能设计实现），产出审计结果+修复建议+优先级。自主管理「Phase 0 架构师增量审计（可选）→ Phase 1 规格合规 → Phase 2 代码质量 → 审查/审计报告」完整链路，含双审批门。当 tri-intent 快照下游路由建议指向本 skill，或由 tri-coding/tri-fix 在门③确认时调用，或用户直接要求增量审计即激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 三模式代码审查（工作流集成/独立调用/增量审计）+ precision-first（宁可少报不可误报，recall 由覆盖度账本兜底）+ Phase 0 架构师增量审计（文档驱动4级降级+三维审计+修复建议优先级）+ Phase 1 规格合规 + Phase 2 代码质量 + Fowler 坏味基线 + 覆盖度账本（双源分离+gaps+skipped 封闭判据）+ 反证据关闭门 + 严重度校准 rubric + 反规避机制 + 审查执行纪律十则（确定性验证/非对称复核/证据锚降级/语义捆绑分桶/预分析/注入防线/发现定位分类与提交前反思/项目级评审规则/覆盖收尾/超限恢复）+ 双审批门。
 tags: [code-review, spec-compliance, code-quality, incremental-audit, architecture-audit, coverage-ledger, counterevidence, severity-calibration, workflow, approval-gate, two-stage]

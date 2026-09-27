@@ -1,8 +1,8 @@
 ---
-name: 调试修复
+name: tri-fix
 slug: tri-fix
 version: 1.5.4
-displayName: 调试修复
+displayName: tri-fix
 description: 调试修复下游执行 skill（I12）——先造出一条能变红的紧密反馈循环，再定位根因，最后最小化修复。当用户说「调试」「debug 一下」「查一下这个 bug」「帮我看看这个报错」，或报告程序报错/崩溃/抛异常/跑不通/结果不对/数据错乱/偶发失败/线上才复现/变慢了/接口超时时激活；也在 tri-intent 快照 §三 下游路由建议指向本 skill 时激活。目标代码尚不存在的新功能交 tri-coding，只看不改的代码审查交 tri-review，只求解释不求修复的咨询在本分支未包含（原 tri-ask）。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 以「没有能变红的循环就没有假设阶段」为铁律的系统化调试方法论——6 阶段（建立反馈循环→复现最小化→假设生成→插桩验证→修复回归→清理复盘）串联三道审批门，强制因果确认与最小化修复。
 tags: [debugging, bug-fix, root-cause, feedback-loop, workflow, approval-gate, regression-test]

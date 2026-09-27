@@ -1,8 +1,8 @@
 ---
-name: 规划拆解
+name: tri-plan
 slug: tri-plan
 version: 1.3.5
-displayName: 规划拆解
+displayName: tri-plan
 description: 规划拆解下游执行 skill。读取 tri-intent 快照 §三，处理 I13（规划拆解）意图，产出计划/方案/任务清单/排期等结构化规划成果物。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/待识别/引导安装）。
 summary: 依据 tri-intent 快照自主管理规划全链路（规划纲要→完整规划→任务清单），融合 WBS 分解与 SMART 目标校准方法论，含三门审批机制。
 tags: [planning, wbs, smart, workflow, approval-gate, task-breakdown]

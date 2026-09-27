@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""门④ 合规自检 —— `references/compliance-checklist.md` 22 条硬约束的可执行实现。
+"""门④ 合规自检 —— `references/compliance-checklist.md` 24 条硬约束的可执行实现。
 
 定位（家族硬约束第 18 条：可执行实现与 prompt 分离）：
   确定性判定由本脚本承担；prompt 层只「调用本脚本 + 解析 JSON + 按状态处置」。
@@ -476,7 +476,156 @@ def check(d: Path) -> dict:
         f"自身指针={'有' if self_ref else '无'}；指向外部={('是（违规）:' + ','.join(sorted(set(foreign))[:2])) if foreign else '否'}",
         f"该节 {lines} 行" + ("（超 STUB 建议值 30 行，属建议项、不阻断）" if lines > 30 else ""))
 
-    # 门④ 判定：**建议项 FAIL 不阻断**（家族既有惯例：必检项 + 建议项，建议项记入「建议改进项」）
+    # 23 规范性判据单一事实源（**必检**，pilot1 证据）
+    #    口径经「26 个家族对象 + 23 个第三方对象」实测校准（2026-09-27）：
+    #    初版只按 skill 目录解析 ⇒ 误报 tri-coding / tri-req-audit——二者实为**跨 skill 引用**
+    #    （`tri-verify/templates/verdict.md`、`tri-forge/references/family-spec.md`），在仓库根下均可达。
+    #    故解析顺序 MUST 为「skill 目录 → 仓库根」，任一命中即 PASS；家族 26 个对象实测 0 FAIL。
+    #
+    #    **实测淘汰的两个候选判据**（不作判据，归人工复核）：
+    #      · 「指针所在段落须含『单一事实源』等词」—— 34 个适用对象中 28 个 FAIL（82%），零区分度；
+    #      · 「同一阈值字面量出现于 ≥3 个文件」—— 33 个适用对象中 15 个 FAIL（45%），
+    #        命中物多为 CHANGELOG 记录与测试用例断言（正常重述），「定义 vs 引用 vs 断言」机械化不可分。
+    PTR23 = re.compile(r"`([\w./-]*(?:references|scripts|templates|assets)/[\w./-]+\.[A-Za-z0-9]+)`")
+    ptrs = sorted(set(PTR23.findall(t)))
+    unresolved = [p for p in ptrs if not (d / p).exists() and not (REPO / p).exists()]
+    add(23, "规范性判据单一事实源",
+        "PASS" if not unresolved else "FAIL",
+        f"包内指针 {len(ptrs)} 个；不可解析 {len(unresolved)}" + (f"：{unresolved[:3]}" if unresolved else ""),
+        "口径：指针 MUST 可解析（先相对 skill 目录，再相对仓库根兜底）；"
+        "「判据是否被重述到多处」实测不可机械判定，归人工复核")
+
+    # 24 评估产物含案级结构化结论（**必检**，pilot2b 证据；2026-09-27 由建议项升为必检）
+    # ==================================================================
+    # 2026-09-27 **二次校准**（证据：tri-forge-handoff/D24-PRECONDITION-AUDIT.md）
+    # 首版口径有三层缺陷，实测在 5 个 FAIL 上**全部不可信**（无一例是真缺口）：
+    #   F-a 适用性闸门过松：文件级「提到即算」——CHANGELOG / tests/ / README 目录树 /
+    #       frontmatter(tags) 全被当作「schema 定义」（tri-evolve 7 处命中里 6 处是噪音）；
+    #   F-b 共现粒度错：在**文件级**对两个闸门做 AND，不要求同区块——tri-review 的
+    #       `ledger`(frontmatter L7/8) 与 `| 字段 |`(相隔 77 行的输入表 L85) 仍被判命中；
+    #   F-c 词表过窄 + 口径/实现不一致：不认 spec_id / testId / lesson_id / proposal_id /
+    #       检查项；且 `EVAL_PRODUCT` 只写「台账」漏「账本」⇒ tri-review 真 schema
+    #       （references/review-checklists.md §5）被整体漏检。
+    # 修正：L1 只认结构化产物定义区块（**且限定在「评估产物章节」内**）；
+    #       L2 案级键与结论字段 MUST 落在**同一区块**；
+    #       L3 词表补同义形态。
+    # ==================================================================
+    EVAL_PRODUCT = re.compile(
+        r"(ledger|台账|账本|signals\.jsonl|lessons\.(db|jsonl)|proposals\.(db|jsonl)"
+        r"|results\.tsv|run-log\.jsonl|round-ledger\.jsonl)")
+    CASE_KEY = re.compile(
+        r"case[_-]?id|用例\s*[Ii][Dd]|test[_-]?[Ii]d|spec[_-]?id|unit[_-]?id|"
+        r"lesson[_-]?id|proposal[_-]?id|issue[_-]?id|item[_-]?id|案级|检查项|条目",
+        re.I)
+    VERDICT_KEY = re.compile(
+        r"verdict|结论|裁决|decision|status|result|判定|盖章|confirmed|ruled_out", re.I)
+    HEADER_FIELD = re.compile(r"(字段|\bfield[s]?\b|字段名|检查项|条目|键名)")
+    AGG_DIM = re.compile(r"\bround\b|批次|\b轮\b|batch|\bts\b|时间戳", re.I)
+    GUARD_DECL = re.compile(r"单调性|守卫|收敛造假|趋势型|\bguard\b|\btrend\b", re.I)
+    INPUT_CTX = re.compile(r"输入|参数|请求|调用方式")
+    # L1b 产物语境白名单：schema 区块的**上级标题**须点明它是「产物 / 账本 / schema」，
+    #     否则视为普通叙述表格（实测：不加这一层，「| # | 维度 | 判据 |」这类审视表、
+    #     甚至第 24 条自身的规则描述表都会被误判为产物 schema，15 处命中里 6 处是偶然命中）。
+    #     SQL DDL 例外：`CREATE TABLE` 自证是 schema 定义，不依赖标题语境。
+    PRODUCT_CTX = re.compile(r"账本|台账|ledger|schema|产物|交付|落账|回执", re.I)
+    EXCL_PARTS = ("__pycache__", ".git", "node_modules", "tests")
+    EXCL_FILES = {"CHANGELOG.md"}
+
+    def _strip_fm(_t):
+        _m = re.match(r"\A---\r?\n.*?\r?\n---\r?\n", _t, re.S)
+        return _t[_m.end():] if _m else _t
+
+    def _k_sep(_lines, _i):
+        """判断 _lines[_i] 是否为**真表头**：其后（跳过空行）MUST 是 markdown 分隔行 `|---|`。
+
+        不加这条会把**数据行**当表头（实测 tri-sdlc 的 `| \\`monitoring.md\\` | 日志四要素… |`
+        因行内含「检查项」而被当成字段表表头 ⇒ 造成误报）。
+        """
+        _j = _i + 1
+        while _j < len(_lines) and not _lines[_j].strip():
+            _j += 1
+        return _j < len(_lines) and bool(re.match(r"^\|[\s:|-]+\|?\s*$", _lines[_j]))
+
+    def _schema_blocks(_t):
+        """只取「结构化产物定义区块」：① SQL DDL ② markdown 字段表 ③ 内联字段枚举行。
+
+        返回 (最近上级标题, 区块正文) 列表。**排除输入侧区块**（如 `## 输入契约` 的字段表）：
+        第 24 条考察的是**产物 / 评估** schema，输入契约表结构上不属此列 ——
+        不排除会把「文件里恰有一张输入字段表」误判为「定义了评估产物 schema」
+        （实测：tri-fix 因此被误报为 FAIL）。
+        """
+        out, _lines, _i, _n, _head = [], _t.splitlines(), 0, len(_t.splitlines()), ""
+        while _i < _n:
+            _ln = _lines[_i]
+            if re.match(r"^#{1,6}\s", _ln):
+                _head = _ln
+            if re.match(r"^\s*CREATE\s+TABLE\s", _ln, re.I):                 # ① DDL
+                _buf, _k = [_ln], _i + 1
+                while _k < _n and not re.match(r"^\s*\)\s*;?\s*$", _lines[_k]):
+                    _buf.append(_lines[_k]); _k += 1
+                if _k < _n:
+                    _buf.append(_lines[_k]); _k += 1
+                out.append((_head, "\n".join(_buf), True)); _i = _k; continue
+            if _ln.lstrip().startswith("|") and HEADER_FIELD.search(_ln) \
+                    and _k_sep(_lines, _i):                                   # ② 字段表（须是真表头）
+                _buf, _k = [_ln], _i + 1
+                while _k < _n and _lines[_k].lstrip().startswith("|"):
+                    _buf.append(_lines[_k]); _k += 1
+                out.append((_head, "\n".join(_buf), False)); _i = _k; continue
+            # ③ 内联字段枚举：同一行既有产物名，又有 `{a, b, c, ...}`（≥3 项）
+            if EVAL_PRODUCT.search(_ln) and re.search(r"\{[^{}]*,[^{}]*,[^{}]*\}", _ln):
+                out.append((_head, _ln, False))
+            _i += 1
+        # 排除输入侧区块（如 `## 输入契约` 的字段表）与无产物语境的普通表格
+        return [(h, b) for h, b, ddl in out
+                if not INPUT_CTX.search(h) and (ddl or PRODUCT_CTX.search(h))]
+
+    eval_files, block_hits, agg_blocks = [], [], []
+    for _p in sorted(d.rglob("*")):
+        if not _p.is_file() or _p.suffix.lower() not in (".md", ".json", ".jsonl", ".tsv", ".py"):
+            continue
+        if any(x in _p.parts for x in EXCL_PARTS) or _p.name in EXCL_FILES:
+            continue
+        _txt = _strip_fm(read(_p))
+        if not EVAL_PRODUCT.search(_txt):             # L1：文件须与评估产物相关（frontmatter 已剥离）
+            continue
+        _blocks = _schema_blocks(_txt)
+        if not _blocks:                               # 仅「提到」而不含结构化定义 ⇒ 不计入适用面
+            continue
+        eval_files.append(_p.relative_to(d).as_posix())
+        for _h, _b in _blocks:
+            if CASE_KEY.search(_b) and VERDICT_KEY.search(_b):            # L2：同区块共现
+                block_hits.append(f"{_p.relative_to(d).as_posix()} › {_b.splitlines()[0][:46]}")
+            if AGG_DIM.search(_b) and VERDICT_KEY.search(_b):
+                agg_blocks.append(_p.relative_to(d).as_posix())
+    _guard = bool(GUARD_DECL.search(read(d / "SKILL.md"))) if (d / "SKILL.md").is_file() else False
+
+    if not eval_files:
+        add(24, "评估产物含案级结构化结论", "N-A",
+            "包内未定义评估 / 台账类产物的字段结构",
+            "本项仅定义了评估产物 schema 的 skill 适用（理由：无评估产物则无案级结构可言）",
+            advisory=False)
+    elif block_hits:
+        add(24, "评估产物含案级结构化结论", "PASS",
+            f"评估产物文件 {len(eval_files)} 个；含案级键 + 结论字段的 schema 区块 "
+            f"{len(block_hits)} 处（{block_hits[0]}）",
+            "口径（2026-09-27 二次校准）：L1 只认结构化产物定义区块（DDL / 字段表 / 内联枚举）"
+            "且排除 CHANGELOG 与 tests/；L2 案级键与结论字段 MUST 同区块；"
+            "L3 词表含同义形态（spec_id / testId / 检查项…）",
+            advisory=False)
+    elif agg_blocks and _guard:
+        add(24, "评估产物含案级结构化结论", "N-A",
+            f"账本按聚合维度（轮 / 批次 / 时间）落账（{sorted(set(agg_blocks))}）",
+            "不适用理由：该包账本声明了**守卫 / 单调性**用途，按轮聚合系刻意设计；"
+            "案级维度位于报告侧，账本本身无案级结构可言",
+            advisory=False)
+    else:
+        add(24, "评估产物含案级结构化结论", "FAIL",
+            f"评估产物文件 {len(eval_files)} 个；含案级键 + 结论字段的 schema 区块 0 处",
+            "口径：案级键与结论字段 MUST 落在**同一 schema 区块**内；缺一即 FAIL",
+            advisory=False)
+
+    # 门④ 判定：**必检项 FAIL 即门④ FAIL**（第 24 条已于 2026-09-27 升为必检）
     fails = [x for x in r if x["status"] == "FAIL" and not x.get("advisory")]
     advisory = [x for x in r if x["status"] == "FAIL" and x.get("advisory")]
     return {"slug": slug, "dir": d.as_posix(), "items": r,
@@ -527,7 +676,7 @@ def main() -> int:
     if args.json:
         print(json.dumps({"results": results}, ensure_ascii=False, indent=2))
     else:
-        print(f"# 门④ 合规自检（compliance-checklist.md 22 条）\n")
+        print(f"# 门④ 合规自检（compliance-checklist.md 24 条）\n")
         print(f"审计对象 **{len(results)}** 个；门④ FAIL **{sum(1 for r in results if r.get('verdict')=='FAIL')}** 个\n")
         for r in results:
             print(render(r))

@@ -2,7 +2,7 @@
 name: tri-req-audit
 slug: tri-req-audit
 version: 1.1.1
-displayName: 需求文档审核（tri-req-audit）
+displayName: tri-req-audit
 description: "内部专用工具 skill（不注册为 tri-intent 下属路由项，由用户直接调用）。对 tri-prototype 产出的 requirements.md 做开工前审核：先做家族专有的三重前置本地校验（结构完整性 / 证据溯源 / tri-coding 门② 可消费性），再按注册表优先级二跳委派市面 PRD 审核 skill（prd-review → requirement-testability-review → bg-requirement-review），最后聚合为 P0/P1/P2 问题清单、岗位就绪度矩阵与修订清单。只出问题不改原文。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。"
 summary: 三重前置本地校验 + 二跳委派市面 PRD 审核 skill + 结论聚合 → P0/P1/P2 问题清单与修订清单；市面 skill 不可用时降级为自带九维审核规则。
 tags: [requirements, prd, audit, quality-gate, delegation, internal-tool]

@@ -1,0 +1,90 @@
+{
+  "sealed": true,
+  "why": "eval 组期望封存。split 纪律：eval 组只允许在**变更验收（门④.5）**时运行，开发优化期 NEVER 读取本文件——防的是「对着 eval 组调参」这一过拟合形态本身。",
+  "runner": "scripts/battery_run.py --split eval --i-am-accepting",
+  "generated_at": "2026-09-27",
+  "cases": [
+    {
+      "case_id": "E-001",
+      "verdict_token": "PASS",
+      "clauses": [
+        "#8"
+      ]
+    },
+    {
+      "case_id": "E-002",
+      "verdict_token": "FAIL:23",
+      "clauses": [
+        "#8",
+        "#23"
+      ]
+    },
+    {
+      "case_id": "E-003",
+      "verdict_token": "FAIL:17",
+      "clauses": [
+        "#8",
+        "#17"
+      ]
+    },
+    {
+      "case_id": "E-004",
+      "verdict_token": "FAIL:11",
+      "clauses": [
+        "#8",
+        "#11"
+      ]
+    },
+    {
+      "case_id": "E-005",
+      "verdict_token": "PASS",
+      "clauses": [
+        "#8"
+      ]
+    },
+    {
+      "case_id": "M-24-a",
+      "verdict_token": "PASS",
+      "clauses": [
+        "#8"
+      ]
+    },
+    {
+      "case_id": "M-24-b",
+      "verdict_token": "PASS",
+      "clauses": [
+        "#8"
+      ]
+    },
+    {
+      "case_id": "M-24-c",
+      "verdict_token": "PASS",
+      "clauses": [
+        "#8"
+      ]
+    },
+    {
+      "case_id": "M-24-d",
+      "verdict_token": "PASS",
+      "clauses": [
+        "#8"
+      ]
+    },
+    {
+      "case_id": "M-24-e",
+      "verdict_token": "PASS",
+      "clauses": [
+        "#8"
+      ]
+    },
+    {
+      "case_id": "M-24-f",
+      "verdict_token": "FAIL:24",
+      "clauses": [
+        "#8",
+        "#24"
+      ]
+    }
+  ],
+  "note_2026_09_27": "M-24-a…f 为**元级判据用例**：它们检验的不是被审计 skill，而是第 24 条**判据本身**（正例 3 / 负例 2 / 反例 1）。存在理由：仅凭「26 个家族对象变绿」无法区分「判据修对了」与「判据被调到刚好放过这 26 个对象」。**2026-09-27 第 24 条升为必检（v1.2.0）**：M-24-f 的 token 由 `PASS+adv24` 重戳为 `FAIL:24`。"
+}

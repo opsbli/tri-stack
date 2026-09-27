@@ -2,7 +2,7 @@
 name: tri-domain
 slug: tri-domain
 version: 1.0.2
-displayName: 领域建模（tri-domain）
+displayName: tri-domain
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项）。维护项目的领域模型：共享术语表（CONTEXT.md）、架构决策记录（docs/adr/）、边界场景清单。主动挑战模糊术语、发明边界场景、在决策定型的瞬间记录 ADR——NEVER 只在事后补写。供 tri-grill（质询对齐）、tri-coding（门② 设计）、tri-review（审查依据）消费。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 领域建模：术语表（CONTEXT.md）+ 架构决策记录（ADR）+ 边界场景清单，供 tri-grill / tri-coding / tri-review 消费。
 tags: [domain-modeling, glossary, adr, ubiquitous-language, internal-tool]

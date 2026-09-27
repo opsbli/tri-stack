@@ -1,0 +1,276 @@
+{
+  "version": "1.0.0",
+  "spec": "references/case-battery-spec.md",
+  "battery_of": "tri-forge 自身门禁（scripts/compliance_check.py，24 条）",
+  "generated_at": "2026-09-27",
+  "ratification_levels": {
+    "by-design": "期望有**独立于脚本**的 ground truth（单点 op 的 by-design 断言，或与另一条 case 的对照关系）。",
+    "baseline-frozen": "期望取自本次基线快照。**只用于变更检测（防回归），MUST NOT 当作「判据正确性」的证据。**"
+  },
+  "cases": [
+    {
+      "case_id": "C-001",
+      "kind": "real",
+      "target": "tri-coding",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "baseline-frozen",
+      "basis": "下游型角色 ⇒ #8（意图认领 MECE）结构性转 MANUAL，属待人工项而非缺陷。"
+    },
+    {
+      "case_id": "C-002",
+      "kind": "real",
+      "target": "tri-forge",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": []
+      },
+      "ratification": "baseline-frozen",
+      "basis": "内部工具型，24 条全 PASS / N-A 且 #8 不适用 ⇒ clauses 为空。自举用例：本 skill 必须过自己的门。"
+    },
+    {
+      "case_id": "C-003",
+      "kind": "real",
+      "target": "tri-intent",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": []
+      },
+      "ratification": "baseline-frozen",
+      "basis": "根路由：多条判据走 N-A 分支（#2/#3/#6/#7），是 N-A 路径的覆盖用例。"
+    },
+    {
+      "case_id": "C-004",
+      "kind": "real",
+      "target": "tri-sdlc",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "baseline-frozen",
+      "basis": "children 子 skill（67 文件，家族最大包）⇒ 目录结构 / 章序的规模压力用例。"
+    },
+    {
+      "case_id": "C-005",
+      "kind": "real",
+      "target": "tri-meta",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "baseline-frozen",
+      "basis": "家族最小包（7 文件），#24 N-A 的覆盖用例。"
+    },
+    {
+      "case_id": "C-006",
+      "kind": "real",
+      "target": "tri-evolve",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#20"
+        ]
+      },
+      "ratification": "baseline-frozen",
+      "basis": "横向型 ⇒ #20 结构性 MANUAL。**2026-09-27 重戳**（v1.1.1 第 24 条口径修正）：原期望 `PASS+adv24`——当时判据把采集流 `signals.jsonl` 当评估产物、且不认 `lesson_id`/`proposal_id`，故误报；修正后 #24 PASS（DDL `CREATE TABLE lessons` 含 `lesson_id`+`status`），token 收敛为 `PASS`。"
+    },
+    {
+      "case_id": "C-007",
+      "kind": "real",
+      "target": "tri-req-audit",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": []
+      },
+      "ratification": "baseline-frozen",
+      "basis": "#23 的关键回归用例：该包含**跨 skill 指针**（`tri-forge/references/family-spec.md`），仅按 skill 目录解析会误报。**2026-09-27 重戳**（v1.1.1）：#24 由误报 FAIL 改为 `N-A`（附理由：`round-ledger.jsonl` 系**守卫型**账本，按轮聚合是刻意设计，案级维度在报告侧）⇒ token 由 `PASS+adv24` 收敛为 `PASS`，clauses 转空（本 case 全 PASS/N-A，`clauses` 空列表是合法形态）。"
+    },
+    {
+      "case_id": "C-008",
+      "kind": "real",
+      "target": "tri-verify",
+      "split": "search",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#20"
+        ]
+      },
+      "ratification": "baseline-frozen",
+      "basis": "被 tri-coding 跨 skill 引用的被引方。**2026-09-27 重戳**（v1.1.1）：#24 由误报 FAIL 改为 PASS——`run-log.jsonl` 的 `{round, engine, testId, runId, status, …}` 本就是「案级键（`testId`）+ 结论字段（`status`）」，只是初版词表不认 `testId`（而判据正文却自称接受「用例 ID」）⇒ token 由 `PASS+adv24` 收敛为 `PASS`。"
+    },
+    {
+      "case_id": "E-001",
+      "kind": "fixture",
+      "target": "E-001-clean-baseline",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "零 op 金丝雀。期望 = 基准包裁决本身；任何使基准包漂移的改动必被此条抓到。"
+    },
+    {
+      "case_id": "E-002",
+      "kind": "fixture",
+      "target": "E-002-dangling-pointer",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "FAIL:23",
+        "clauses": [
+          "#8",
+          "#23"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "单点 op（追加一个不存在的 `references/` 指针）⇒ **且仅** #23 应翻。第 23 条的「有牙」断言。"
+    },
+    {
+      "case_id": "E-003",
+      "kind": "fixture",
+      "target": "E-003-hardcoded-count",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "FAIL:17",
+        "clauses": [
+          "#8",
+          "#17"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "单点 op（追加「本家族共 19 个下游 skill。」）⇒ **且仅** #17 应翻。"
+    },
+    {
+      "case_id": "E-004",
+      "kind": "fixture",
+      "target": "E-004-changelog-version-drop",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "FAIL:11",
+        "clauses": [
+          "#8",
+          "#11"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "单点 op（CHANGELOG 首条版本降为 0.0.1）⇒ **且仅** #11 应翻。"
+    },
+    {
+      "case_id": "E-005",
+      "kind": "fixture",
+      "target": "E-005-criteria-redefinition",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "**盲区对照（negative control）**：注入一次「判据被重述且自称真源」，期望与 E-001 **完全相同**——即当前机械层面检不出它。作用是把已知盲区固化成可回归断言；哪天口径升级到能判重述，这条会立刻翻为变更并被发现。MUST NOT 因它未翻而修改期望。"
+    },
+    {
+      "case_id": "M-24-a",
+      "kind": "fixture",
+      "target": "M-24-a-ddl-case-key",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "**元级判据用例（第 24 条 · 正例 · DDL）**：DDL 形式的评估产物 schema，含 `case_id` + `verdict` ⇒ 期望 PASS。判据过严误判为 FAIL 时 token 会多出 `+adv24`。"
+    },
+    {
+      "case_id": "M-24-b",
+      "kind": "fixture",
+      "target": "M-24-b-en-case-key",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "**元级判据用例（第 24 条 · 正例 · 英文案级键）**：字段表用 `test_id`（初版词表只认 `case_id`/「用例 ID」⇒ 曾把 tri-verify 误判 FAIL）⇒ 期望 PASS。"
+    },
+    {
+      "case_id": "M-24-c",
+      "kind": "fixture",
+      "target": "M-24-c-zh-ledger",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "**元级判据用例（第 24 条 · 正例 · 中文账本）**：全文只用「**账本**」不用「台账」（初版 `EVAL_PRODUCT` 只写「台账」⇒ tri-review 真 schema 被整体漏检）⇒ 期望 PASS。"
+    },
+    {
+      "case_id": "M-24-d",
+      "kind": "fixture",
+      "target": "M-24-d-changelog-noise",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "**元级判据用例（第 24 条 · 负例 · F-a 噪音）**：只在 `CHANGELOG.md` 提到评估产物，无结构化定义 ⇒ 期望 N-A（token 与基线同）。断言 CHANGELOG 排除不回归。"
+    },
+    {
+      "case_id": "M-24-e",
+      "kind": "fixture",
+      "target": "M-24-e-mention-not-definition",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "PASS",
+        "clauses": [
+          "#8"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "**元级判据用例（第 24 条 · 负例 · 提及 ≠ 定义）**：提到「台账」但无任何结构化定义 ⇒ 期望 N-A。"
+    },
+    {
+      "case_id": "M-24-f",
+      "kind": "fixture",
+      "target": "M-24-f-missing-verdict",
+      "split": "eval",
+      "expected": {
+        "verdict_token": "FAIL:24",
+        "clauses": [
+          "#8",
+          "#24"
+        ]
+      },
+      "ratification": "by-design",
+      "basis": "**元级判据用例（第 24 条 · 反例 · 判据「有牙」）**：确实定义了评估产物结构（有案级键：案级），但**没有结论字段** —— 缺一即 FAIL。**2026-09-27 升必检后重戳**：token 由 `PASS+adv24` 变为 `FAIL:24`（建议项期不阻断 ⇒ 升必检后必须阻断，这正是强度变更的可观测证据）。MUST NOT 因它翻红就改期望。"
+    }
+  ]
+}

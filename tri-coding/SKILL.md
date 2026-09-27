@@ -1,8 +1,8 @@
 ---
-name: 编码开发
+name: tri-coding
 slug: tri-coding
 version: 1.8.3
-displayName: 编码开发
+displayName: tri-coding
 description: 编码开发下游执行 skill。读取 tri-intent 快照 §三，处理 I11（编码开发）意图，自主管理「需求→设计→任务→执行→实现报告」完整编码工作流，含双审批门+执行前确认。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照自主管理编码全链路（需求→设计→任务→执行→实现报告），含双审批门+执行前确认+可扩展技术栈加载方法论+工具结果治理六条纪律，专注 I11 编码开发。
 tags: [coding, development, workflow, approval-gate, tech-stack]

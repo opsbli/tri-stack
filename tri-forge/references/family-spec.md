@@ -1,7 +1,7 @@
 # 家族硬规范（family-spec）
 
 > **本文件是 tri-forge 生成 / 补全 / 审计 skill 的「生成单一事实源」。**
-> 生成物 MUST 满足本文 §三 的 12 条家族硬约束；完整 22 条合规判据以
+> 生成物 MUST 满足本文 §三 的 12 条家族硬约束；完整 24 条合规判据以
 > `references/compliance-checklist.md` 为准（本文的 12 条是其前 12 条）。
 >
 > **口径纪律（硬约束第 17 条）**：本文**NEVER 硬编码家族计数**。
@@ -129,6 +129,11 @@ hook 是家族的**外部触发源**：由宿主（WorkBuddy 等）在特定事�
 **命名固定**：`SKILL.md` / `README.md` / `CHANGELOG.md` / `_meta.json` 文件名固定，
 NEVER 改名——门禁与路由按固定文件名定位。
 
+> **按需资产（不属生成物强制项）：变更验收电池**。具备**机械可判门禁**的 skill 应配一份 case 电池
+> 用于变更验收：`tests/battery/battery.json`（单一事实源）+ `fixtures.json`（反例夹具，delta 形式）
+> + `_sealed/`（eval 期望封存；**执行体禁读**）。规范见 `tri-forge/references/case-battery-spec.md`。
+> **普通生成物可不设**——电池是为「有门禁、且会被变更」的 skill 准备的；无门禁则无从验收。
+
 ---
 
 ## 三、家族硬约束（12 条 · 生成物必须全部满足）
@@ -204,5 +209,5 @@ NEVER 改名——门禁与路由按固定文件名定位。
 2. **生成中**：按 §四 章序产九章；`references/version-check-spec.md` 从模板复制内部持有副本
 3. **门③**：若为路由型下游，按 `references/tri-intent-integration.md` 回填路由真源
 4. **门④**：`python scripts/compliance_check.py --skill <slug>` 逐条自检，全过方可落盘
-5. **交付**：产出交付摘要（产物清单 + 22 条结果 + 路由回填记录 + 安装评估）
+5. **交付**：产出交付摘要（产物清单 + 24 条结果 + 路由回填记录 + 安装评估）
 6. **变更时（版本纪律 · MUST）**：凡对 `SKILL.md` **正文**做章节级增 / 删 / 重写（含补章、并章、改章节结构）⇒ MUST **至少 PATCH 升版**（`version` 第三段 +1）并在 `CHANGELOG.md` 追加对应条目（首条 = frontmatter version，硬约束第 11 条）；纯字形 / 行尾 / 措辞微调不强制升版，但**一旦升版** MUST 同步 `_meta.json`（由 `sync-version-meta` 承接）与文档层（由 `version-lint --apply-docs` 承接）。

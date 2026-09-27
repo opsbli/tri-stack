@@ -1,8 +1,8 @@
 ---
-name: 操作执行
+name: tri-action
 slug: tri-action
 version: 1.2.6
-displayName: 操作执行
+displayName: tri-action
 description: 操作执行下游执行 skill。读取 tri-intent 快照 §三，处理 I14（操作执行）意图，调用工具真实执行动作（下单/设提醒/发消息/调用 API 等）并返回操作结果。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测两态逻辑（快照模式/引导安装）。
 summary: 依据 tri-intent 快照处理 I14 操作执行意图，含 4 级操作分级（L0–L3）、L2/L3 确认门与失败不擅重试机制，确保高风险操作可追溯。
 tags: [action, execution, safety, confirmation-gate, side-effects]

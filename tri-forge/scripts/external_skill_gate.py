@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """external_skill_gate.py — 第三方 skill 质量门禁（门④式回执）。
 
-背景：tri-forge 家族门④（compliance_check.py 22 条）含 15 条家族专属判据
+背景：tri-forge 家族门④（compliance_check.py 24 条）含 15 条家族专属判据
 （frontmatter slug/version、九类章节命名、独立安装声明、版本检查内部化等），
 对第三方 skill 零区分度（2026-09-26 实测 22/22 全 FAIL 14–15 条，方差为零）。
 第三方不走家族门④，走本门禁。

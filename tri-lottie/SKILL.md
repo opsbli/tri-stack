@@ -2,7 +2,7 @@
 name: tri-lottie
 slug: tri-lottie
 version: 1.0.6
-displayName: 跨端动效执行
+displayName: tri-lottie
 description: >
   跨端动效决策与执行库——先把任意动效需求转化为技术栈无关的「动效规格单」（情绪→人格→属性→时长→缓动→层次），
   再按用户技术栈路由到 stacks/ 子目录生成对应动画代码：Web(lottie-web)、Android(lottie-android/lottie-compose)、

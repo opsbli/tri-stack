@@ -1,8 +1,8 @@
 ---
-name: 验证执行
+name: tri-verify
 slug: tri-verify
 version: 1.0.1
-displayName: 验证执行（tri-verify）
+displayName: tri-verify
 description: 横向验证型 skill，为 tri-xxx 家族提供「驱动运行中应用的真实功能验证」能力——把交付物真的跑起来、按行为契约驱动用户路径、取同源失败证据，并在失败时驱动「三类归因 → 修复 → 复验」有界循环，直到功能真正可用或明确升级人审。不认领 tri-intent 下游路由，由 tri-coding（交付前）／tri-fix（修复后）／tri-sdlc（P6-P7）委派激活，亦可由用户直接调用。引擎可插拔：默认本地引擎（Playwright/pytest，零外部依赖、可离线、零成本），可选云端引擎（TestSprite CLI，语义定位 + 同源失败证据包）。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 横向验证型 skill。补上家族唯一缺口——「没有任何环节真的驱动运行中的应用」。引擎可插拔（本地 Playwright/pytest 默认，TestSprite CLI 可选）；三类归因（产品/契约/环境，C 类由退出码机械判定）；有界循环 ≤2 轮后升级人审；风险预筛式的确定性触发规则 V1–V5；单一门禁权威纪律；降级不阻断交付。
 tags: [verification, e2e, runtime-app, behavior-contract, attribution, bounded-retry, pluggable-engine, degradation, lateral]

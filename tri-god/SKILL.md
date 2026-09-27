@@ -1,8 +1,8 @@
 ---
-name: 蒸馏造物
+name: tri-god
 slug: tri-god
 version: 1.2.5
-displayName: 蒸馏造物
+displayName: tri-god
 description: 蒸馏元 skill 下游执行 skill；读取快照§三直接执行；处理蒸馏类意图（把人/工作流/专业技能/事物/其它提炼为可用 skill）；当 tri-intent 快照下游路由建议指向本 skill 时激活；支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）
 summary: 依据 tri-intent 快照识别蒸馏对象类型并 registry 驱动加载对应方法论，把人类/工作流/专业技能/事物提炼为可独立调用的 skill，含双审批门+执行前确认、敏感信息脱敏边界与结论置信标注。
 tags: [tri, god, distill, meta]

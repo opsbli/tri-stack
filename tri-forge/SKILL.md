@@ -2,9 +2,9 @@
 name: tri-forge
 slug: tri-forge
 version: 1.0.5
-displayName: 技能锻造（tri-forge）
-description: 内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于「按家族硬规范生成 / 补全 / 审计一个 skill」：以 references/family-spec.md 为生成单一事实源，通过三模式（A 规范顾问·不落盘 / B 补全审计 / C 锻造生成·五门流程）产出或修复**合规的 skill 包**，并以 references/compliance-checklist.md 的 22 条硬约束在门④逐条自检，全过方可落盘；生成物若具备 tri-intent 下游身份，MUST 在门③同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / README 表，NEVER 只生成 skill 而不接通路由。同时承接家族的四点版本一致性校验（原 sync_registry.py 职能）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。
-summary: 三模式技能锻造工具（A 规范顾问 / B 补全审计 / C 锻造生成五门流程）+ 家族硬规范单源 + 22 条合规硬约束门④自检 + 门③路由回流强制 + 四点版本一致性校验 + 四平台安装。
+displayName: tri-forge
+description: 内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于「按家族硬规范生成 / 补全 / 审计一个 skill」：以 references/family-spec.md 为生成单一事实源，通过三模式（A 规范顾问·不落盘 / B 补全审计 / C 锻造生成·五门流程）产出或修复**合规的 skill 包**，并以 references/compliance-checklist.md 的 24 条硬约束在门④逐条自检，全过方可落盘；生成物若具备 tri-intent 下游身份，MUST 在门③同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / README 表，NEVER 只生成 skill 而不接通路由。同时承接家族的四点版本一致性校验（原 sync_registry.py 职能）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。
+summary: 三模式技能锻造工具（A 规范顾问 / B 补全审计 / C 锻造生成五门流程）+ 家族硬规范单源 + 24 条合规硬约束门④自检 + 门③路由回流强制 + 四点版本一致性校验 + 四平台安装。
 tags: [skill-forge, compliance, family-spec, scaffolding, version-registry, internal-tool]
 license: MIT
 ---
@@ -13,11 +13,11 @@ license: MIT
 
 > 本 skill 是 tri-xxx 家族的**内部专用工具**，**不注册为 tri-intent 的下游路由项**——用户直接调用，不经意图识别。
 > 用户心智：把 AI 当「家族规范的守门人与工匠」——你说「按家族规范造一个 skill」或「审计这个 skill 合不合规」，
-> 它拿家族硬规范当尺子，缺什么补什么，造完先按 22 条硬约束自检，全过才交给你。
+> 它拿家族硬规范当尺子，缺什么补什么，造完先按 24 条硬约束自检，全过才交给你。
 
 > **来源说明**：上游作者将此 skill 私有化（上游 `.gitignore` 显式排除 `tri-forge/`，平台亦未发布）。
 > 本仓库为自维护 fork，依据仓库内 `tri-mece-audit/tri-mece-audit.html` 记录的规格自行重建
-> （定位、职责边界、四分支触发、三模式、五门流程、门④ 22 条约束来源、自检句格式），
+> （定位、职责边界、四分支触发、三模式、五门流程、门④ 24 条约束来源、自检句格式），
 > 并以家族现有 skill 的实际形态为校准基准。
 
 ## 强制执行契约（Execution Contract · 最高优先级）
@@ -27,8 +27,8 @@ license: MIT
 0. **版本检查前置硬门（第零步）**：MUST 先通过 §版本检查与更新机制（按 `references/version-check-spec.md` 契约执行，本仓库为自维护 fork，走本地一致性校验；不一致时按态处置）——此为执行流程第零步，优先于后续所有步骤。版本检查完成前 NEVER 进入后续步骤。本条目优先级高于所有其他强制前置条目。
 
 1. **强制前置**：激活后 MUST 先判定本次**执行模式**（A 规范顾问 / B 补全审计 / C 锻造生成），再读取对应输入，NEVER 跳过判定直接动手。若本次来自 tri-intent 快照（兼容分支），MUST 先读取快照 §三；独立使用时 MUST 先走 §上游依赖检测 判定模式。
-2. **单一事实源强制**：生成 / 补全 / 审计 skill MUST 以 `references/family-spec.md` 为**生成单一事实源**，以 `references/compliance-checklist.md` 的 **22 条硬约束**为**合规判定唯一标准**。NEVER 凭印象或自创标准替代。
-3. **门④ 逐条自检强制**：C 模式下产物落盘前 MUST 逐条执行 22 条硬约束自检，**全部 PASS / N/A（须附理由）方可落盘**；任一条 FAIL → 回炉门② 修正，NEVER 带缺口交付。可执行实现见 `scripts/compliance_check.py`。
+2. **单一事实源强制**：生成 / 补全 / 审计 skill MUST 以 `references/family-spec.md` 为**生成单一事实源**，以 `references/compliance-checklist.md` 的 **24 条硬约束**为**合规判定唯一标准**。NEVER 凭印象或自创标准替代。
+3. **门④ 逐条自检强制**：C 模式下产物落盘前 MUST 逐条执行 24 条硬约束自检，**全部 PASS / N/A（须附理由）方可落盘**；任一条 FAIL → 回炉门② 修正，NEVER 带缺口交付。可执行实现见 `scripts/compliance_check.py`。
 4. **门③ 路由回流强制**：生成物若**具备 tri-intent 下游身份**（认领 L2/L3 意图编码），MUST 在门③同步回填——路由映射表 / L3 子类 note / 下游依赖检测路径 / 家族计数 / README 相关表。**NEVER 只生成 skill 而不接通路由**。回填规则见 `references/tri-intent-integration.md`。
 5. **跨真源交叉比对强制**：门④ 的「意图认领 MECE 不重叠」一条 MUST 以 `tri-intent/SKILL.md` 的**路由映射表**（路由真源）为比对基准，**不得**以 `family-spec.md` 内的路由副本为唯一依据。
 6. **职责边界（NEVER 越界）**：本 skill 产出的是「**合规的 skill 包**」，不是业务代码、不是普通答复、不是内容成果物。不做纯咨询作答（本分支未包含，原 tri-ask）、不做常规编码开发（→ tri-coding）、不做缺陷修复（→ tri-fix）、不做非 skill 类蒸馏（→ tri-god，见 §职责边界）。A 模式**不落盘**，NEVER 借 A 模式之名写入任何文件。
@@ -116,7 +116,7 @@ license: MIT
 
 ## 职责边界
 
-- **本 skill 负责**：判定执行模式 → 依家族硬规范生成 / 补全 / 审计 skill 包 → 门④ 22 条合规自检 → 门③ 路由回流 → 交付；并承接家族四点版本一致性校验。
+- **本 skill 负责**：判定执行模式 → 依家族硬规范生成 / 补全 / 审计 skill 包 → 门④ 24 条合规自检 → 门③ 路由回流 → 交付；并承接家族四点版本一致性校验。
 - **不负责**：意图识别（tri-intent）、业务代码（tri-coding）、缺陷修复（tri-fix）、业务代码审查（tri-review）、内容与多媒体产出（本分支未包含，原 tri-content / tri-article / tri-mm）、非 skill 类蒸馏（tri-god）、skill 安全审计（本分支未包含，原 tri-guard）。
 - **与 tri-intent 的关系**：**不注册为下游**。本 skill 的产物若具备下游身份，由**本 skill 在门③主动回填** tri-intent——即本 skill 是「下游的制造者」，而不是下游之一。
 - **产物归属**：本 skill 产出**合规的 skill 包**（可被独立安装、被路由、被检测）。产物落盘后即脱离本 skill 管辖，后续维护由维护者按家族规范进行。
@@ -130,8 +130,8 @@ license: MIT
 | 模式 | 是否落盘 | 深度 | 适用 | 门的范围 |
 |---|---|---|---|---|
 | **A · 规范顾问** | ❌ 不落盘 | 只读 | 回答「家族规范是什么」「这条约束怎么判」 | 不适用（不产生产物） |
-| **B · 补全审计** | ✅ 产出审计报告；补全产物视用户确认 | 逐条对照 22 条 | 已有 skill 包，按规范审计并补齐缺口 | 门① 范围确认 → 门②（可选：补全） → 门④ 自检 → 门⑤ 交付 |
-| **C · 锻造生成** | ✅ 产出完整 skill 包 | 五门全流程 | 从零生成一个合规 skill | 门①→②→③→④→⑤ |
+| **B · 补全审计** | ✅ 产出审计报告；补全产物视用户确认 | 逐条对照 24 条 | 已有 skill 包，按规范审计并补齐缺口 | 门① 范围确认 → 门②（可选：补全） → 门④ 自检 → **门④.5 变更验收**（仅发生写入时） → 门⑤ 交付 |
+| **C · 锻造生成** | ✅ 产出完整 skill 包 | 五门全流程 | 从零生成一个合规 skill | 门①→②→③→④→⑤（门④.5 通常 N-A，除非本次实为「改写既有 skill」） |
 
 ### 兜底处理（四类，NEVER 静默失败）
 
@@ -139,6 +139,7 @@ license: MIT
 |---|---|
 | **版本检查异常** | 自维护模式下版本声明不一致 → 标注漂移明细并**放行**（附修订动作）；脚本自身异常 → 兜底降级放行 |
 | **门④ 自检不过** | 回炉门② 修正；同一约束连续 3 轮不过 → 停止自动回炉，向用户报告卡点并请求人工介入 |
+| **门④.5 变更验收不过** | `FAIL`/`INCOMPLETE` → 回炉门②；**无基线台账 / 无电池** → 判 `N-A` 并在交付摘要显式声明理由（NEVER 以"看起来没问题"代替）；脚本异常 → 降级放行并标注 |
 | **上游缺失** | 降级模式 C（自构造等价输入 + 显式声明精度降低） |
 | **安装评估不通过** | **不阻断交付**，但 MUST 记录原因到交付摘要（如目标目录不可写、slug 冲突） |
 
@@ -148,6 +149,7 @@ license: MIT
 2. **新增模式**：在 §模式总览 追加一行，并在 §触发分支表 补上对应信号
 3. **新增模板**：在 `templates/` 增文件，并在 `family-spec.md` §骨架清单 登记
 4. **替换审计实现**：只要 `compliance_check.py` 的输入输出契约不变（读合规清单 → 输出逐条判定 JSON），可整体替换实现
+5. **新增门**：在 §处理流程 的链路里追加，并在 `references/` 下建对应**判据单一事实源**文件；SKILL.md 与 `compliance-checklist.md` 只留**瘦指针**，NEVER 重述判据（门④.5 即此模式的实例）
 
 ## 版本检查与更新机制（强制技术约束 · 硬红线）
 
@@ -189,19 +191,40 @@ python scripts/check_registry.py --apply     # 规则化回写可自动修正的
    │ 通过
 门③ 回流约束        ── 【强制】若为 tri-intent 下游：同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / 家族计数 / README 表；并确保 .tribro/ 落盘约定写入
    │ 通过
-门④ 合规自检        ── 【门禁】逐条执行 22 条硬约束（scripts/compliance_check.py）；全部 PASS/N-A 方可继续；任一条 FAIL → 回炉门②
+门④ 合规自检        ── 【门禁】逐条执行 24 条硬约束（scripts/compliance_check.py）；全部 PASS/N-A 方可继续；任一条 FAIL → 回炉门②
    │ 全过
-门⑤ 落盘交付        ── 写入目标目录；产出交付摘要（产物清单 + 22 条自检结果 + 路由回填记录）
+门④.5 变更验收      ── 【门禁 · 仅变更既有 skill 时触发】按 references/change-acceptance-gate.md 跑案级条款集 diff
+   │                    （scripts/acceptance_diff.py）；B1/B2/B3 任一 FAIL/INCOMPLETE → 回炉门②
+   │ 全过 或 N-A
+门⑤ 落盘交付        ── 写入目标目录；产出交付摘要（产物清单 + 24 条自检结果 + 门④.5 结果 + 路由回填记录）
 ```
 
 **门③ 与门④ 的顺序不可颠倒**：先接通路由，再自检合规——因为第 8 条「意图认领 MECE 不重叠」
 需要比对**已回填后**的路由表，顺序颠倒会漏检路由冲突。
 
+### 门④.5 变更验收（仅变更既有 skill 时触发）
+
+> 判据单一事实源：`references/change-acceptance-gate.md`（**本文件不重述其判据**）；
+> 可执行实现：`scripts/acceptance_diff.py`。
+
+**门④ 与门④.5 的分工**：门④ 查「这个包**合规吗**」（静态）；门④.5 查「这次变更**真的改变了行为吗、改在哪条**」（动态）。
+前者对**任何**产物执行；后者**仅当本次任务变更了既有 skill**（改正文 / `references/` / `scripts/` 中的规范性判据，
+或 B 模式补全且发生写入）时执行；从零生成新 skill / A 模式 / 纯字形调整 → `N-A`（MUST 附理由）。
+
+**输入**：变更前后各一份**案级台账**（`case_id` / `verdict_token` / `clauses`）。
+**输入来源**：内置 case 电池 `tests/battery/`（单一事实源 + **search / eval 分离**，规范见 `references/case-battery-spec.md`）；
+用 `scripts/battery_run.py --split all --i-am-accepting` 产台账（`--gate` 可指向改前脚本以产 before 侧）。
+**覆盖范围声明**：若某 op 的变更不在电池覆盖对象内（如改测试脚本而非判据），该 op MUST 标 `out_of_scope` **并附理由**，
+NEVER 假装「无 case 翻转」——那是拿超范围声明掩盖未翻转。
+**输出**：`case_id | 前版条款集 | 后版条款集 | 翻转? | 方向 | 条款差` 表 + 三条硬门 B1/B2/B3 判定，
+可直接充当 changeset 的「哪些行为变了、因为哪条改了」一节。
+**阻断**：B1/B2/B3 任一 `FAIL` 或 `INCOMPLETE` → 回炉门②；`N-A` 不阻断但 MUST 在交付摘要声明理由。
+
 ## 🔴 检查点与红灯清单（STOP · NEVER）
 
 ### 🔴 用户确认检查点（STOP）
 - 🔴 **STOP**：门① 需求确认——澄清 skill 名/slug/职责/是否下游/上游态数并向用户复述供确认，未获用户确认 NEVER 进入门②。
-- 🔴 **STOP**：门④ 合规自检——22 条硬约束逐条自检，任一条 FAIL 回炉门②，未全过 NEVER 落盘交付。
+- 🔴 **STOP**：门④ 合规自检——24 条硬约束逐条自检，任一条 FAIL 回炉门②，未全过 NEVER 落盘交付。
 - 🔴 **STOP**：关键输入缺失——C 模式必填项缺失且无法从快照/对话推断时在门① 提出澄清，未获用户答复 NEVER 凭默认值猜。
 
 ### 🚫 红灯清单（NEVER）
@@ -218,8 +241,8 @@ python scripts/check_registry.py --apply     # 规则化回写可自动修正的
 | 产物 | 文件名 | 内容 | 触发模式 |
 |---|---|---|---|
 | 规范顾问答复 | 不落盘 | 家族规范说明 / 单条约束的判定方法与示例 | A |
-| 合规审计报告 | `reports/<slug>-compliance.md` | 22 条逐条判定（PASS/FAIL/N-A + 证据位置）+ 缺口清单 + 修订建议 | B |
-| 锻造交付摘要 | `reports/<slug>-forge.md` | 产物清单 + 门④ 22 条自检结果 + 门③ 路由回填记录 + 安装评估 | C |
+| 合规审计报告 | `reports/<slug>-compliance.md` | 24 条逐条判定（PASS/FAIL/N-A + 证据位置）+ 缺口清单 + 修订建议 | B |
+| 锻造交付摘要 | `reports/<slug>-forge.md` | 产物清单 + 门④ 24 条自检结果 + 门③ 路由回填记录 + 安装评估 | C |
 | 生成的 skill 包 | `<slug>/` | 见下「骨架清单」 | C |
 
 ### 二、生成的 skill 包骨架（C 模式产物）
@@ -252,23 +275,28 @@ python scripts/check_registry.py --apply     # 规则化回写可自动修正的
 
 ```
 tri-forge/
-├── SKILL.md                       主入口：三模式判定 + 五门流程 + 22 条门禁 + 路由回流
+├── SKILL.md                       主入口：三模式判定 + 五门流程 + 24 条门禁 + 路由回流
 ├── README.md                      特性/安装/用法/目录结构/设计原则
 ├── CHANGELOG.md                   版本变更记录
 ├── references/                    静态参考资料（非流程逻辑）
 │   ├── family-spec.md             家族硬规范（生成单一事实源；含骨架清单与 12 条家族硬约束）
-│   ├── compliance-checklist.md    22 条合规核对清单（12 家族 + 8 增强 + 1 安装 + 1 版本检查去重）
+│   ├── compliance-checklist.md    24 条合规核对清单（12 家族 + 8 增强 + 1 安装 + 1 版本检查去重 + 2 证据驱动）
 │   ├── version-check-spec.md      版本检查执行规范（内部化持有，满足硬约束第 22 条）
-│   └── tri-intent-integration.md  门③ 下游同步回填规则（单一事实源）
+│   ├── tri-intent-integration.md  门③ 下游同步回填规则（单一事实源）
+│   ├── change-acceptance-gate.md  门④.5 变更验收判据（单一事实源）
+│   └── case-battery-spec.md       case 电池规范（门④.5 的输入真源；单一事实源）
 ├── scripts/                       可执行实现（确定性逻辑）
 │   ├── check_update.py            版本门（与家族同源，自维护模式）
 │   ├── check_registry.py          家族五点版本一致性校验（--check / --apply）
-│   └── compliance_check.py        门④ 22 条硬约束自检（读合规清单 → 逐条判定 JSON）
+│   ├── compliance_check.py        门④ 24 条硬约束自检（读合规清单 → 逐条判定 JSON）
+│   ├── acceptance_diff.py         门④.5 案级条款集 diff（台账比对 → 硬门 B1/B2/B3 判定）
+│   └── battery_run.py             电池运行器（case → 案级台账，供 acceptance_diff 消费）
 ├── templates/                     生成物模板
 │   ├── skill-md.md                SKILL.md 九章骨架
 │   ├── readme.md                  README.md 骨架
 │   └── changelog.md               CHANGELOG.md 骨架（Keep a Changelog）
 └── tests/
-    ├── tri-forge-full-testcases.md  全场景测试用例（含 22 条硬约束自检用例）
-    └── mutation-gate.py             门④ 负向测试（mutation testing，验证判据有牙）
+    ├── tri-forge-full-testcases.md  全场景测试用例（含 24 条硬约束自检用例）
+    ├── mutation-gate.py             门④ 负向测试（mutation testing，验证判据有牙；副本变异、零写入真实 skill）
+    └── battery/                     门④.5 的 case 电池（battery.json 单一事实源 + fixtures.json + _sealed/）
 ```

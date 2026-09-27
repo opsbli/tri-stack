@@ -1,0 +1,130 @@
+{
+  "spec": "tri-forge/tests/battery/fixtures.json",
+  "note": "eval 组夹具以「基准包 + 单点 op」的 delta 形式定义，运行期物化到临时目录。这样夹具体积恒定（不随基准包增长），且每个夹具的期望与基线只差**一处**，可直接充当 by-design 断言。",
+  "op_language": [
+    "append        {path, text}                      文件末尾追加",
+    "prepend       {path, text}                      文件开头插入",
+    "regex_replace {path, pattern, repl, count}      正则替换（count 省略=全部，1=仅首次，flags 固定 re.M）",
+    "delete_file   {path}                            删除文件",
+    "add_file      {path, text}                      新增文件（自动建父目录）"
+  ],
+  "fixtures": {
+    "E-001-clean-baseline": {
+      "base": "tri-coding",
+      "ops": [],
+      "design": "回归金丝雀：零 op。期望 = 基准包本身的裁决。任何使基准包裁决漂移的改动都会被这一条抓到。"
+    },
+    "E-002-dangling-pointer": {
+      "base": "tri-coding",
+      "ops": [
+        {
+          "op": "append",
+          "path": "SKILL.md",
+          "text": "\n- 判定细则详见 `references/__battery_dangling__.md`（本文件不存在，用于证明第 23 条有牙）。\n"
+        }
+      ],
+      "design": "by-design 断言：仅 #23（规范性判据单一事实源）应翻为 FAIL。其余条目 MUST 与 E-001 同。"
+    },
+    "E-003-hardcoded-count": {
+      "base": "tri-coding",
+      "ops": [
+        {
+          "op": "append",
+          "path": "SKILL.md",
+          "text": "\n- 本家族共 19 个下游 skill。\n"
+        }
+      ],
+      "design": "by-design 断言：仅 #17（禁止硬编码家族计数）应翻为 FAIL。"
+    },
+    "E-004-changelog-version-drop": {
+      "base": "tri-coding",
+      "ops": [
+        {
+          "op": "regex_replace",
+          "path": "CHANGELOG.md",
+          "pattern": "^##\\s*\\[[0-9.]+\\]",
+          "repl": "## [0.0.1]",
+          "count": 1
+        }
+      ],
+      "design": "by-design 断言：仅 #11（CHANGELOG 首条版本）应翻为 FAIL。"
+    },
+    "E-005-criteria-redefinition": {
+      "base": "tri-coding",
+      "ops": [
+        {
+          "op": "append",
+          "path": "SKILL.md",
+          "text": "\n## 附：A/B 验证判定（本处为规范原文，单一事实源）\n\n本 skill 规定：提议 MUST 经 A/B 验证，lift ≥ 阈值（默认 5%）且统计显著（p<0.05）才可沉淀为 verified 经验。\n未验证的经验 NEVER 注入下游 skill 提示。本节阈值即为全包判据真源。\n"
+        }
+      ],
+      "design": "**盲区对照（negative control）**：这是一次「判据被重述且自称真源」的注入，期望裁决**与 E-001 完全相同**——\n即当前门④在机械层面检不出它。该夹具的作用不是抓 bug，而是把已知盲区固化成可回归的断言：\n哪天口径升级到能判「重述」，这条会立刻翻为变更并被发现。MUST NOT 因为「它没翻」而修改其期望。"
+    },
+    "M-24-a-ddl-case-key": {
+      "base": "tri-meta",
+      "ops": [
+        {
+          "op": "add_file",
+          "path": "references/run-ledger-schema.md",
+          "text": "# 运行账本 schema（单一事实源）\n\n```sql\nCREATE TABLE run_ledger (\n  case_id   TEXT PRIMARY KEY,   -- 案级键\n  verdict   TEXT NOT NULL,      -- 结论字段\n  clause    TEXT\n);\n```\n\n每条案级记录 MUST 含案级键与结论字段。\n"
+        }
+      ],
+      "design": "**元级判据用例（第 24 条 · 正例 · DDL 形态）**：注入一份 DDL 形式的评估产物 schema，含 `case_id` + `verdict`。\n期望第 24 条 **PASS**（与基线 tri-meta 的裁决同）。若判据过严而误判为 FAIL，token 会多出 `+adv24` ⇒ 本条即报错。"
+    },
+    "M-24-b-en-case-key": {
+      "base": "tri-meta",
+      "ops": [
+        {
+          "op": "add_file",
+          "path": "references/run-ledger.md",
+          "text": "# 运行账本（Run Ledger）字段结构\n\n| 字段 | 类型 | 必填 | 说明 |\n|---|---|---|---|\n| test_id | string | ✅ | 用例编号（案级键） |\n| status | string | ✅ | passed / failed / blocked |\n| attribution | string | ⬜ | 归因 |\n"
+        }
+      ],
+      "design": "**元级判据用例（第 24 条 · 正例 · 英文案级键）**：字段表用 `test_id`，而判据词表初版只认 `case_id`/「用例 ID」⇒ 曾把 tri-verify 误判为 FAIL。\n期望 **PASS**。这是「案级键同义形态」的回归断言。"
+    },
+    "M-24-c-zh-ledger": {
+      "base": "tri-meta",
+      "ops": [
+        {
+          "op": "add_file",
+          "path": "references/coverage-ledger.md",
+          "text": "# 覆盖度账本（Coverage Ledger）最小结构\n\n| 检查项 | 源 | 结论 | 证据 |\n|---|---|---|---|\n| 覆盖维度 | self_reported | confirmed | file:line |\n"
+        }
+      ],
+      "design": "**元级判据用例（第 24 条 · 正例 · 中文账本）**：全文只用「**账本**」不用「台账」——判据初版 `EVAL_PRODUCT` 只写了「台账」，\n导致 tri-review 的真 schema（`references/review-checklists.md` §5）被**整体漏检**（同一包内反而是 tags 里的 `coverage-ledger` 被误检）。\n期望 **PASS**。这是「账本 ≠ 台账」一字之差的回归断言。"
+    },
+    "M-24-d-changelog-noise": {
+      "base": "tri-meta",
+      "ops": [
+        {
+          "op": "append",
+          "path": "CHANGELOG.md",
+          "text": "\n## [0.0.2]\n\n- 新增 `signals.jsonl` 采集流说明（jsonl 逐行事件格式）。\n- 台账字段补充说明。\n"
+        }
+      ],
+      "design": "**元级判据用例（第 24 条 · 负例 · F-a 噪音）**：只在 `CHANGELOG.md` 里提到评估产物，无任何结构化定义。\n期望 **N-A**（与基线 tri-meta 裁决同）。判据初版在**文件级**做共现 AND，把 CHANGELOG 也算作「定义了 schema」（tri-evolve 7 处命中里 6 处属此类）。"
+    },
+    "M-24-e-mention-not-definition": {
+      "base": "tri-meta",
+      "ops": [
+        {
+          "op": "add_file",
+          "path": "references/notes.md",
+          "text": "# 台账说明\n\n本 skill 的运行台账以追加写方式落盘，容量轮转，详见上级 skill 的约定。\n本节只做说明，不定义任何字段结构。\n"
+        }
+      ],
+      "design": "**元级判据用例（第 24 条 · 负例 · 提及 ≠ 定义）**：文件提到「台账」但**不含任何结构化定义**（无 DDL / 无字段表 / 无内联字段枚举）。\n期望 **N-A**。断言「提到即算」这一 F-a 缺陷不会回归。"
+    },
+    "M-24-f-missing-verdict": {
+      "base": "tri-meta",
+      "ops": [
+        {
+          "op": "add_file",
+          "path": "references/run-ledger.md",
+          "text": "# 运行账本 structure（本文件为产物结构定义）\n\n| 字段 | 说明 |\n|---|---|\n| 案级 | 用例编号 |\n| 条款 | 引用条款 |\n| 证据 | 原文引句 |\n"
+        }
+      ],
+      "design": "**元级判据用例（第 24 条 · 反例 · 判据「有牙」）**：它**确实**定义了评估产物结构（有案级键：案级），但**没有结论字段** —— 缺一即应 FAIL。\n期望 **FAIL**（建议项期 token = `PASS+adv24`；升为必检后 token = `FAIL:24`）。\n本条是判据「不会因放宽适用性而变哑」的核心断言：MUST NOT 因为它翻红就修改其期望。"
+    }
+  }
+}
