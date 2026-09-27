@@ -229,26 +229,58 @@ def token_of(items):
     return tok
 
 
-def run_gate(skill, dir_override=None):
+def run_gate(skill, dir_override=None, clean_tree: bool = False):
+    """跑门禁并归一。clean_tree=True 时在 HEAD 的临时 worktree 中运行
+    （iter1 采纳项：脏工作区会让门禁测到未落地的在途态——如并行 session
+    已写 CHANGELOG 未 settle frontmatter——clean 模式只看已提交事实）。"""
     g = GATES.get(skill)
     if not g:
         raise KeyError(f"未注册的门禁：{skill}（已注册：{', '.join(GATES)}）")
-    srcdir = _skill_dir(skill, dir_override)
-    argv = [a.replace("{dir}", str(srcdir)) for a in g["argv"]]
-    r = _run(argv, REPO)
-    out = (r.stdout or "").strip()
-    if not out and r.returncode == 2:
-        raise RuntimeError(f"{skill} 门禁无输出且 rc=2：{(r.stderr or '')[:200]}")
-    _, items = NORMALIZERS[g["kind"]](skill, argv, out, r.returncode, srcdir)
-    if not items:
-        raise RuntimeError(f"{skill} 门禁归一后 items 为空 —— 拒绝产出空 PASS")
-    tok = token_of(items)
-    verdict = "PASS" if tok == "PASS" else "FAIL"
-    return {
-        "skill": skill, "verdict": verdict, "token": tok, "items": items,
-        "source": {"kind": g["kind"], "rc": r.returncode, "argv": argv},
-        "volatile": g.get("volatile", []),
-    }
+    import shutil as _shutil
+    import tempfile as _tempfile
+    import subprocess as _subprocess
+
+    wt = None
+    try:
+        cwd = REPO
+        if clean_tree:
+            tmp_root = Path(_tempfile.mkdtemp(prefix="gate-clean-"))
+            r = _subprocess.run(
+                ["git", "worktree", "add", "--detach", str(tmp_root / "wt"), "HEAD"],
+                cwd=str(REPO), capture_output=True, text=True, timeout=300)
+            if r.returncode != 0:
+                raise RuntimeError(f"worktree 创建失败：{r.stderr.strip()[:160]}")
+            wt = tmp_root / "wt"
+            cwd = wt
+            srcdir = wt / skill
+        else:
+            srcdir = _skill_dir(skill, dir_override)
+        argv = [a.replace("{dir}", str(srcdir)) for a in g["argv"]]
+        if clean_tree and g["kind"] == "eval-val":
+            # run_eval 在 worktree 内自举（worktree 含 .git 链接 ⇒ REPO 解析正确）
+            argv = [str(wt / argv[0])] + argv[1:]
+        r = _run(argv, cwd)
+        out = (r.stdout or "").strip()
+        if not out and r.returncode == 2:
+            raise RuntimeError(f"{skill} 门禁无输出且 rc=2：{(r.stderr or '')[:200]}")
+        _, items = NORMALIZERS[g["kind"]](skill, argv, out, r.returncode, srcdir)
+        if not items:
+            raise RuntimeError(f"{skill} 门禁归一后 items 为空 —— 拒绝产出空 PASS")
+        tok = token_of(items)
+        verdict = "PASS" if tok == "PASS" else "FAIL"
+        source = {"kind": g["kind"], "rc": r.returncode, "argv": argv}
+        if clean_tree:
+            source["worktree"] = "HEAD-detached-clean"
+        return {
+            "skill": skill, "verdict": verdict, "token": tok, "items": items,
+            "source": source,
+            "volatile": g.get("volatile", []),
+        }
+    finally:
+        if wt is not None:
+            _subprocess.run(["git", "worktree", "remove", "--force", str(wt)],
+                            cwd=str(REPO), capture_output=True, timeout=120)
+            _shutil.rmtree(wt.parent, ignore_errors=True)
 
 
 # ---------------------------------------------------------------- 自证
@@ -331,6 +363,8 @@ def main() -> int:
     ap.add_argument("cmd", choices=["list", "run", "self-test"])
     ap.add_argument("--skill", default=None)
     ap.add_argument("--dir", default=None)
+    ap.add_argument("--clean", action="store_true",
+                    help="在 HEAD 的临时 worktree 中跑门禁（只看已提交事实，防脏工作区污染判定）")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
 
@@ -347,7 +381,7 @@ def main() -> int:
         print("ERROR: run 需要 --skill", file=sys.stderr)
         return 2
     try:
-        env = run_gate(a.skill, a.dir)
+        env = run_gate(a.skill, a.dir, clean_tree=a.clean)
     except Exception as e:  # noqa: BLE001
         print(f"ERROR: {type(e).__name__}: {e}", file=sys.stderr)
         return 2

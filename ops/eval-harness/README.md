@@ -115,6 +115,16 @@ ops/eval-harness/
 2. val 驱动迭代可反复跑；test split NEVER 用来调 skill。
 3. 失败 case 的修复走 `optimizer-contract.md` 流程（独立 optimizer → op candidate → paired 评审 → D30），**NEVER 顺手直改**。
 
+## 门禁运行模式（iter1 采纳项）
+
+`gate_adapter.py run --skill <s> [--clean]`：
+
+- **默认（脏树）**：在主工作区跑——门禁测到的是**工作区现状**，含并行 session 未提交的在途态。
+- **`--clean`**：先 `git worktree add --detach` 出 HEAD 临时快照再跑——门禁只看**已提交事实**。
+  适用：门禁型 verdict / 判定「是缺陷还是在途态」（对照实验：tri-forge #11 脏树 FAIL，clean PASS，
+  证实系在途批次而非缺陷）。eval-val 门禁在 worktree 内自举（worktree 含 .git 链接，REPO 解析正确），
+  trace 落 worktree 内随清理丢弃——要留 per-case trace 请用主树 run_eval。
+
 ## pilot 基线（2026-09-27，run-id `pilot-gate-20260927`）
 
 执行 7 · pass 5 · fail 2 · skipped(pending) 6。失败均为真实仓库缺陷信号（非 scorer 误报）：
