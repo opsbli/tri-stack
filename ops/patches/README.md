@@ -516,6 +516,8 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw10-impl-changelog` | replace_text | `tri-impl` CHANGELOG：追加 [1.1.8]（dw10 批） |
 | `dw10-registry-skilldoctor-x5` | replace_text | external-gate-registry：skill-doctor X5 人工核验结案（声明性本职 opt-in 双守卫），登记语境豁免；X4 行剥离旧「X5 不豁免」表述（dw10 批） |
 | `dw10-registry-x5-closure` | replace_text | external-gate-registry 缺陷表：skill-doctor X5 行改写为已结案痕迹（dw10 批） |
+| `dw11-fed-hook-path` | replace_text | `tri-frontend-design` 兜底表 ④ 引用路径补全：裸 `hooks/intent-gate.py` → `tri-intent/hooks/intent-gate.py`（dw11 批） |
+| `dw11-fed-changelog` | replace_text | `tri-frontend-design` CHANGELOG：追加 [1.1.7]（dw11 批） |
 
 ## 每项补丁的依据
 
@@ -1199,3 +1201,22 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 
 回执：`apply.py` 首轮 8/8「应用 1」（2 settle + 6 新 op，无 marker 毒化）、二轮 0 真应用；
 `version-lint` EXIT=0；`external_skill_gate.py --self-test` PASS（含 registry 豁免生效断言）。
+
+### 计数（2026-09-27 · dw11 批增量 · dim7 断链修复）
+
+> 上节计数为时点快照，**冻结**。本批 = dim7「整体架构」实测仅存的 1 处真缺陷：
+> `tri-frontend-design/SKILL.md` 兜底表 ④ 裸写 `hooks/intent-gate.py`（被读作本 skill 根下相对路径 → 断链；
+> 同文件 §路由归属 的真源表述为 `tri-intent/hooks/intent-gate.py`）。1.1.6→**1.1.7**（settle 就地更新，不占新行）。
+> 文档层 `WORKFLOW-GUIDE.html` / `README.md` 由 `version-lint.py --apply-docs` 幂等同步。
+> **并发注记**：`ops/patches/apply.py` 与 `tri-forge/*` 当前存在另一会话的在途未提交改动
+> （`drop_block` op 类型 / tri-forge 升版线），本批未触碰、未提交；故本批 op 只用 HEAD 已支持的
+> `replace_text`，保证 HEAD 版本 apply.py 重放仍成立。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 329 | **331** | +2（`dw11-*`：hook 路径 1 + CHANGELOG 1） |
+| §当前补丁清单 数据行数 | 331 | **333** | +2；对账恒等式：333 − 划除 2 = manifest **331** ✅ |
+| `ops/README.md` / 根 `README.md` op 计数 | 329 | **331** | 当前态账本同批回写 |
+
+回执：`apply.py` 首轮 3/3「应用 1」（1 settle + 2 新 op）、二轮 0 真应用；`version-lint` 文档层 0 漂移
+（残留 `tri-forge` P2 为并发会话在途项，本批未触碰）。

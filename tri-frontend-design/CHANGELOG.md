@@ -6,6 +6,12 @@
 
 > 来源与归属：动效/多变体知识蒸馏自 emilkowalski/skills（MIT License, Copyright (c) 2026 Emil Kowalski），去产品化改写，保留法律归属声明，不建 LICENSE 文件。
 
+## [1.1.7] - 2026-09-27
+
+### 修复
+
+- **兜底表 ④ 引用路径补全**：`hooks/intent-gate.py` → `tri-intent/hooks/intent-gate.py`（与 §路由归属 的可执行真源表述一致；原先裸写会被读作本 skill 根下的相对路径 → 断链）。
+
 ## [1.1.6] - 2026-09-26
 
 ### 变更

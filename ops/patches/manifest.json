@@ -463,11 +463,11 @@
     {
       "id": "f91-ver-frontend-design",
       "type": "replace_regex",
-      "label": "tri-frontend-design 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.5→1.1.6）",
+      "label": "tri-frontend-design 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.5→1.1.6）（2026-09-27 dw11 批目标就地更新 1.1.6→1.1.7）",
       "glob": "tri-frontend-design/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.6",
-      "already_marker": "version: 1.1.6"
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
     },
     {
       "id": "f109-cl-frontend-design",
@@ -2434,6 +2434,24 @@
       "old": "| `skill-doctor__skillhub` | X5 | scripts/deep_analysis.py 代码内 URL，待人工核验是否实际外呼 |",
       "new": "| `skill-doctor__skillhub` | X5 | **已结案（2026-09-26）**：核验确认为声明性本职（opt-in 双守卫，无 key 不外呼），已移入豁免表 X5 行 |",
       "already_marker": "已结案（2026-09-26）"
+    },
+    {
+      "id": "dw11-fed-hook-path",
+      "type": "replace_text",
+      "label": "tri-frontend-design 兜底表 ④ 引用路径补全：裸 `hooks/intent-gate.py` → `tri-intent/hooks/intent-gate.py`（与 §路由归属 真源表述一致；裸写被读作本 skill 根下相对路径 → 断链）",
+      "glob": "tri-frontend-design/SKILL.md",
+      "old": "无 hook 环境功能完整；`hooks/intent-gate.py` 仅在路由入口参与，未启用时由用户直呼入口等价承接",
+      "new": "无 hook 环境功能完整；`tri-intent/hooks/intent-gate.py` 仅在路由入口参与，未启用时由用户直呼入口等价承接",
+      "already_marker": "`tri-intent/hooks/intent-gate.py` 仅在路由入口参与"
+    },
+    {
+      "id": "dw11-fed-changelog",
+      "type": "replace_text",
+      "label": "tri-frontend-design CHANGELOG：追加 [1.1.7] 条目（兜底表 ④ 断链修复）",
+      "glob": "tri-frontend-design/CHANGELOG.md",
+      "old": "## [1.1.6] - 2026-09-26",
+      "new": "## [1.1.7] - 2026-09-27\n\n### 修复\n\n- **兜底表 ④ 引用路径补全**：`hooks/intent-gate.py` → `tri-intent/hooks/intent-gate.py`（与 §路由归属 的可执行真源表述一致；原先裸写会被读作本 skill 根下的相对路径 → 断链）。\n\n## [1.1.6] - 2026-09-26",
+      "already_marker": "## [1.1.7] - 2026-09-27"
     },
     {
       "id": "sync-version-meta",

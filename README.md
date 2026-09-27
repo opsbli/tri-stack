@@ -78,7 +78,7 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-frontend-design](tri-frontend-design/) | 1.1.6 | 前端设计方向：设计令牌 / 动效基线 / 多变体探索 |
+| [tri-frontend-design](tri-frontend-design/) | 1.1.7 | 前端设计方向：设计令牌 / 动效基线 / 多变体探索 |
 | [tri-lottie](tri-lottie/) | 1.0.5 | 动效实现 / Lottie 集成 |
 | [tri-prototype](tri-prototype/) | 1.1.3 | PM→Dev 桥接：解析原型 + PRD → tri-coding 需求说明书 |
 
@@ -135,7 +135,7 @@ ops/
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
 ├── versions.json            自主版本线基线（35 skill 快照：顶层 26 + tri-sdlc 子 skill 9）
-└── patches/                 本地补丁层（329 个 op，幂等重放）
+└── patches/                 本地补丁层（331 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器
