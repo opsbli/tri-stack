@@ -18,6 +18,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+# 强制 UTF-8 输出：避免中文 Windows (GBK) 控制台打印 emoji/特殊字符时
+# UnicodeEncodeError 崩溃（如 ⏭✅🔄 等）。reconfigure 在 Python 3.7+ 可用。
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass  # 非文本流或无法重配时静默忽略
+
 
 def find_repo_root(start: Path) -> Path:
     for cand in (start, *start.parents):
