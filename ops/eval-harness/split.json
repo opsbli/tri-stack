@@ -11,7 +11,9 @@
   "tri-intent": {
     "train": [],
     "val": ["tri-intent-route-01", "tri-intent-route-02", "tri-intent-route-03",
-            "tri-intent-route-04", "tri-intent-route-05", "tri-intent-route-06"],
+            "tri-intent-route-04", "tri-intent-route-05", "tri-intent-route-06",
+            "tri-intent-route-07", "tri-intent-route-08", "tri-intent-route-09",
+            "tri-intent-route-10", "tri-intent-route-11"],
     "test": []
   }
 }

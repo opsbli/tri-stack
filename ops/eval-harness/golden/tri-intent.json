@@ -45,6 +45,41 @@
       "prompt": "这段正则是什么意思，讲讲看",
       "expected": "L2=I01–I05（Asking 咨询求解）→ 咨询作答，不路由下游 skill",
       "gt": { "l2": ["I01", "I02", "I03", "I04", "I05"], "downstream": null }
+    },
+    {
+      "case_id": "tri-intent-route-07",
+      "scorer": { "kind": "rollout_file" },
+      "prompt": "停！先别执行刚才那个操作",
+      "expected": "L2=M05（中止确认）→「不落盘」类，即时叫停/放行，不路由下游、不产快照",
+      "gt": { "l2": ["M05"], "downstream": null }
+    },
+    {
+      "case_id": "tri-intent-route-08",
+      "scorer": { "kind": "rollout_file" },
+      "prompt": "把我们每周的发布流程编排成自动化工作流",
+      "expected": "L2=I13 工作流设计 / I14 工作流编排（子类一跳覆写，两读法均合法）→ 下游 tri-workflow",
+      "gt": { "l2": ["I13", "I14"], "downstream": "tri-workflow" }
+    },
+    {
+      "case_id": "tri-intent-route-09",
+      "scorer": { "kind": "rollout_file" },
+      "prompt": "帮我管这个项目从需求、开发到发布上线的完整生命周期",
+      "expected": "全生命周期子类一跳覆写（I11/I13/I14 均收敛 tri-sdlc，三读法均合法）→ 下游 tri-sdlc",
+      "gt": { "l2": ["I11", "I13", "I14"], "downstream": "tri-sdlc" }
+    },
+    {
+      "case_id": "tri-intent-route-10",
+      "scorer": { "kind": "rollout_file" },
+      "prompt": "给这个产品定一套前端视觉风格与设计方向（指导方针，不实现代码）",
+      "expected": "L2=I11（编码开发）前端设计方向子类一跳覆写 → 下游 tri-frontend-design",
+      "gt": { "l2": ["I11"], "downstream": "tri-frontend-design" }
+    },
+    {
+      "case_id": "tri-intent-route-11",
+      "scorer": { "kind": "rollout_file" },
+      "prompt": "你上一轮理解偏了，我说的是另一个意思，我重新讲一遍",
+      "expected": "L2=M01–M04（Meta 元操作：针对上一轮的澄清/纠错/细化）→ 下游 tri-meta",
+      "gt": { "l2": ["M01", "M02", "M03", "M04"], "downstream": "tri-meta" }
     }
   ]
 }
