@@ -68,18 +68,28 @@ def run_command_case(case: dict) -> list[dict]:
     actual = json.loads(r.stdout)
     asserts = []
     for a in case.get("asserts", []):
-        if a["kind"] != "json_eq":
+        if a["kind"] == "json_eq":
+            try:
+                got = path_get(actual, a["path"])
+                ok = got == a["value"]
+                detail = f"{a['path']} 期望 {a['value']!r} 实得 {got!r}"
+            except KeyError:
+                ok = False
+                detail = f"{a['path']} 不存在于输出"
+            asserts.append({"name": f"json_eq:{a['path']}", "passed": ok, "detail": detail})
+        elif a["kind"] == "json_is_array":
+            ok = isinstance(actual, list)
+            asserts.append({"name": "json_is_array", "passed": ok,
+                            "detail": f"输出为数组={ok}（len={len(actual) if ok else '-'}）"})
+        elif a["kind"] == "array_item_keys":
+            ok = (isinstance(actual, list) and len(actual) > 0
+                  and all(set(a["value"]).issubset(set(x)) for x in actual
+                          if isinstance(x, dict)))
+            asserts.append({"name": f"array_item_keys:{','.join(a['value'])}", "passed": ok,
+                            "detail": f"数组每项含必填键={ok}"})
+        else:
             asserts.append({"name": a["kind"], "passed": False,
                             "detail": f"未知断言 kind：{a['kind']}"})
-            continue
-        try:
-            got = path_get(actual, a["path"])
-            ok = got == a["value"]
-            detail = f"{a['path']} 期望 {a['value']!r} 实得 {got!r}"
-        except KeyError:
-            ok = False
-            detail = f"{a['path']} 不存在于输出"
-        asserts.append({"name": f"json_eq:{a['path']}", "passed": ok, "detail": detail})
     case["_actual"] = json.dumps(actual, ensure_ascii=False)[:2000]
     return asserts
 
@@ -172,7 +182,9 @@ def run_envelope_case(case: dict) -> list[dict]:
 
 
 def record_case(run_id: str, root: Path, case: dict, skill: str,
-                asserts: list[dict], status: str | None) -> None:
+                asserts: list[dict], status: str | None, quiet: bool = False) -> None:
+    import contextlib
+    import io
     n_pass = sum(1 for x in asserts if x.get("passed"))
     ns = argparse.Namespace(
         run_id=run_id, case_id=case["case_id"], skill=skill,
@@ -180,7 +192,10 @@ def record_case(run_id: str, root: Path, case: dict, skill: str,
         actual=case.get("_actual", ""), actual_file=None,
         assertions=json.dumps(asserts, ensure_ascii=False), assertions_file=None,
         meta=None, status=status)
-    trace_store.cmd_record(ns, root)
+    # --json 模式下静默 record 的路径打印，保证 stdout 是纯 JSON（gate_adapter eval-val 依赖）
+    sink = io.StringIO() if quiet else None
+    with contextlib.redirect_stdout(sink or sys.stdout):
+        trace_store.cmd_record(ns, root)
 
 
 def main() -> int:
@@ -221,7 +236,7 @@ def main() -> int:
         kind = case["scorer"]["kind"]
         if kind == "pending":
             n_skip += 1
-            record_case(a.run_id, root, case, sk, [], status="unknown")
+            record_case(a.run_id, root, case, sk, [], status="unknown", quiet=a.json)
             rows.append((case["case_id"], "skipped", "-", kind))
             continue
         try:
@@ -236,7 +251,7 @@ def main() -> int:
                         "detail": f"{type(e).__name__}: {e}"[:180]}]
         n_pass = sum(1 for x in asserts if x["passed"])
         status = "pass" if n_pass == len(asserts) and asserts else "fail"
-        record_case(a.run_id, root, case, sk, asserts, status=None)
+        record_case(a.run_id, root, case, sk, asserts, status=None, quiet=a.json)
         rows.append((case["case_id"], status, f"{n_pass}/{len(asserts)}", kind))
         if status == "fail":
             fails.append(case["case_id"])

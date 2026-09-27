@@ -1,0 +1,18 @@
+{
+  "skill": "tri-evolve",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-evolve/scripts/evolve_learn.py --list --json（EVOLVE 台账列表：每项含 candidate_id/status/by/at）",
+  "kind_note": "command 型：--list 是只读确定性视图。台账内容随使用变化 ⇒ 只断言结构（数组 + 必填键），不断言具体条目。",
+  "cases": [
+    {
+      "case_id": "tri-evolve-list-01",
+      "scorer": { "kind": "command", "argv": ["tri-evolve/scripts/evolve_learn.py", "--list", "--json"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "输出为 JSON 数组，每项含 candidate_id/status/by/at 四键（台账结构完整性）",
+      "asserts": [
+        { "kind": "json_is_array" },
+        { "kind": "array_item_keys", "value": ["candidate_id", "status", "by", "at"] }
+      ]
+    }
+  ]
+}

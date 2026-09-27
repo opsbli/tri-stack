@@ -1,0 +1,26 @@
+{
+  "skill": "tri-checklist",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-checklist/scripts/build_checklist.py（四维 DIMENSIONS 与 references/audit-checklist-template.md 一致；--dry-run 仅校验不输出）",
+  "kind_note": "command 型：经 fixtures/tri_checklist_probe.py 构造最小 diff.json+template.json（%TEMP% 隔离）驱动真实组装器。",
+  "cases": [
+    {
+      "case_id": "tri-checklist-build-01",
+      "scorer": { "kind": "command", "argv": ["ops/eval-harness/fixtures/tri_checklist_probe.py", "--scenario", "dry_run_validate", "--json"] },
+      "prompt": "（fixture 探针 case）",
+      "expected": "最小合法 diff.json+template.json 通过 --dry-run 校验 ⇒ rc=0 且 ok=true",
+      "asserts": [
+        { "kind": "json_eq", "path": "ok", "value": true }
+      ]
+    },
+    {
+      "case_id": "tri-checklist-build-02",
+      "scorer": { "kind": "command", "argv": ["ops/eval-harness/fixtures/tri_checklist_probe.py", "--scenario", "build_dimensions", "--json"] },
+      "prompt": "（fixture 探针 case）",
+      "expected": "全量组装产物 Markdown 含四维标题（改动点/审查点/测试点/测试步骤）——四维覆盖核心语义",
+      "asserts": [
+        { "kind": "json_eq", "path": "ok", "value": true }
+      ]
+    }
+  ]
+}

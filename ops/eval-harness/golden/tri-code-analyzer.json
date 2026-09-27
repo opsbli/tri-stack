@@ -1,0 +1,18 @@
+{
+  "skill": "tri-code-analyzer",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-code-analyzer/scripts/stack_detect.py（主信号必中语义；未命中任何已建卡栈 ⇒ hit=false 并标注走 acquire-unknown-stack 协议）",
+  "kind_note": "command 型：对本仓自跑（本仓为 Python/JS 工具仓，不含 INDEX.md 已建卡栈 ⇒ hit=false 是文档化确定性结论）。hit=true 的 fixture 级 case 留待构造已知栈样例仓后补充。",
+  "cases": [
+    {
+      "case_id": "tri-code-analyzer-stack-01",
+      "scorer": { "kind": "command", "argv": ["tri-code-analyzer/scripts/stack_detect.py", ".", "--json"] },
+      "prompt": "（gate 探针 case：对本仓自跑）",
+      "expected": "本仓无已建卡栈 ⇒ hit=false、stacks=[]、标注走 acquire 协议（脚本文档化语义）",
+      "asserts": [
+        { "kind": "json_eq", "path": "hit", "value": false },
+        { "kind": "json_eq", "path": "stacks", "value": [] }
+      ]
+    }
+  ]
+}

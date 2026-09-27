@@ -1,0 +1,26 @@
+{
+  "skill": "tri-action",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-action/scripts/hash_confirm.py（SHA-256 防篡改语义：--write 写哈希行 / --verify 比对，篡改必须检出）",
+  "kind_note": "command 型：经 fixtures/tri_action_probe.py 在 %TEMP% 隔离跑真实行为（NEVER 触仓库文件）。",
+  "cases": [
+    {
+      "case_id": "tri-action-hash-01",
+      "scorer": { "kind": "command", "argv": ["ops/eval-harness/fixtures/tri_action_probe.py", "--scenario", "write_verify", "--json"] },
+      "prompt": "（fixture 探针 case）",
+      "expected": "--write 写哈希行后 --verify 与记录行比对一致 ⇒ rc=0 且 ok=true",
+      "asserts": [
+        { "kind": "json_eq", "path": "ok", "value": true }
+      ]
+    },
+    {
+      "case_id": "tri-action-hash-02",
+      "scorer": { "kind": "command", "argv": ["ops/eval-harness/fixtures/tri_action_probe.py", "--scenario", "tamper", "--json"] },
+      "prompt": "（fixture 探针 case）",
+      "expected": "写入后篡改内容，--verify 必须检出（rc≠0）——防篡改核心语义",
+      "asserts": [
+        { "kind": "json_eq", "path": "ok", "value": true }
+      ]
+    }
+  ]
+}

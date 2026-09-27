@@ -97,6 +97,42 @@ GATES = {
         "dir_mode": "self",
         "note": "只转述其 self-test 退出码，NEVER 重列 9 条映射表（判据单一事实源）",
     },
+    # ---- eval-val 型：验证集即门禁（run_eval val 全过 = PASS）----
+    "tri-intent": {
+        "kind": "eval-val",
+        "argv": ["ops/eval-harness/run_eval.py", "--split", "val",
+                 "--skills", "tri-intent", "--run-id", "gate-adapter", "--json"],
+        "dir_mode": "self",
+        "note": "rollout_file 验证集（11 case GT 锁 §一 路由表）",
+    },
+    "tri-action": {
+        "kind": "eval-val",
+        "argv": ["ops/eval-harness/run_eval.py", "--split", "val",
+                 "--skills", "tri-action", "--run-id", "gate-adapter", "--json"],
+        "dir_mode": "self",
+        "note": "hash_confirm 防篡改行为探针（fixture 隔离）",
+    },
+    "tri-checklist": {
+        "kind": "eval-val",
+        "argv": ["ops/eval-harness/run_eval.py", "--split", "val",
+                 "--skills", "tri-checklist", "--run-id", "gate-adapter", "--json"],
+        "dir_mode": "self",
+        "note": "build_checklist 四维组装探针（fixture 隔离）",
+    },
+    "tri-code-analyzer": {
+        "kind": "eval-val",
+        "argv": ["ops/eval-harness/run_eval.py", "--split", "val",
+                 "--skills", "tri-code-analyzer", "--run-id", "gate-adapter", "--json"],
+        "dir_mode": "self",
+        "note": "stack_detect 本仓自跑（文档化 hit=false 语义）",
+    },
+    "tri-evolve": {
+        "kind": "eval-val",
+        "argv": ["ops/eval-harness/run_eval.py", "--split", "val",
+                 "--skills", "tri-evolve", "--run-id", "gate-adapter", "--json"],
+        "dir_mode": "self",
+        "note": "--list 台账结构完整性",
+    },
 }
 
 
@@ -154,11 +190,27 @@ def norm_self_test(skill, argv, out, rc, srcdir):
                      "status": "FAIL", "evidence": name, "advisory": False}]
 
 
+def norm_eval_val(skill, argv, out, rc, srcdir):
+    """run_eval --json → envelope。每 case 一条 item；failed 列表非空 ⇒ FAIL。"""
+    d = json.loads(out)
+    items = []
+    for row in d.get("rows", []):
+        st = row.get("status", "unknown")
+        items.append({"ref": row.get("case_id", "?"),
+                      "name": f"val case（scorer 见 golden）",
+                      "status": {"pass": "PASS", "fail": "FAIL"}.get(st, "N-A"),
+                      "evidence": f"score={row.get('score', '-')}",
+                      "advisory": False})
+    failed = d.get("failed", [])
+    return ("PASS" if not failed else "FAIL"), items
+
+
 NORMALIZERS = {
     "battery-native": norm_battery_native,
     "lottie-json": norm_lottie,
     "html-exec-report": norm_html,
     "self-test-exitcode": norm_self_test,
+    "eval-val": norm_eval_val,
 }
 
 

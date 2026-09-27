@@ -48,17 +48,16 @@ TOP = {
                    "9 退出码映射 / 轮次 / 盖章 + self-test"),
     "tri-lottie": ("A", "tri-lottie/scripts/compliance_check.py",
                    "T1–T10 十项合规判据"),
-    "tri-checklist": ("B", "tri-checklist/scripts/build_checklist.py",
-                      "四维覆盖率可由 checklist 产物统计（缺 scorer）"),
-    "tri-action": ("B", "tri-action/scripts/hash_confirm.py",
-                   "确认哈希可校验（缺 I14 执行结果度量）"),
-    "tri-code-analyzer": ("B", "tri-code-analyzer/scripts/stack_detect.py",
-                          "栈检测可测（缺七阶段报告质量度量）"),
-    "tri-evolve": ("B", "tri-evolve/scripts/evolve_learn.py",
-                   "归因可测（缺画像复用效果度量）"),
-    "tri-intent": ("B", "ops/eval-harness/run_eval.py（rollout_file scorer）",
-                   "rollout_file scorer 已建（2026-09-27）：golden 6 case 确定性断言（§一 真源 GT）；"
-                   "余缺口=集成 check_downstream 安装检测与快照落盘断言"),
+    "tri-checklist": ("A", "ops/eval-harness/run_eval.py",
+                      "build_checklist 四维组装探针（dry-run 校验 + 产物四维齐备，fixture 隔离）"),
+    "tri-action": ("A", "ops/eval-harness/run_eval.py",
+                   "hash_confirm 防篡改行为探针（write→verify 一致 + 篡改检出，fixture 隔离）"),
+    "tri-code-analyzer": ("A", "ops/eval-harness/run_eval.py",
+                          "stack_detect 文档化语义（本仓 hit=false → 走 acquire 协议）"),
+    "tri-evolve": ("A", "ops/eval-harness/run_eval.py",
+                   "--list 台账结构完整性（JSON 数组 + candidate_id/status/by/at 必填键）"),
+    "tri-intent": ("A", "ops/eval-harness/run_eval.py",
+                   "rollout_file 验证集 11 case（GT 锁 §一 路由表；snapshot + 安装检测一致性断言）"),
 }
 B_SUBS = {"tri-intent": ["asking", "doing", "expressing", "meta", "clarify-gate"]}
 
