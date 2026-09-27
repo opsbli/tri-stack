@@ -1,0 +1,18 @@
+{
+  "skill": "tri-lottie",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-lottie/scripts/compliance_check.py（T1–T10 十项合规判据）经 gate_adapter 归一",
+  "kind_note": "envelope 型：无 --dir 只能审自身。",
+  "cases": [
+    {
+      "case_id": "tri-lottie-envelope-01",
+      "scorer": { "kind": "gate_envelope", "skill": "tri-lottie" },
+      "prompt": "（envelope 探针 case：tri-lottie 自审）",
+      "expected": "T1–T10 全 PASS ⇒ verdict=PASS，items=10",
+      "asserts": [
+        { "kind": "verdict_eq", "value": "PASS" },
+        { "kind": "items_min", "value": 1 }
+      ]
+    }
+  ]
+}

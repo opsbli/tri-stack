@@ -1,0 +1,17 @@
+{
+  "_comment": "train/val/test 三分。纪律（SkillOpt）：val 驱动迭代（可反复跑），test 仅在优化循环终局跑一次（防过拟合，NEVER 用 test 调 skill）。case_id 必须能在 golden/*.json 找到；golden 里的孤儿 case 会以 warning 列出（fail-closed 可见）。",
+  "tri-verify": {
+    "train": ["tri-verify-cls-00", "tri-verify-cls-01", "tri-verify-cls-03", "tri-verify-cls-04"],
+    "val": ["tri-verify-cls-05", "tri-verify-cls-06", "tri-verify-cls-07", "tri-verify-cls-10"],
+    "test": ["tri-verify-cls-11", "tri-verify-cls-99"]
+  },
+  "tri-html": { "train": [], "val": ["tri-html-envelope-01"], "test": [] },
+  "tri-forge": { "train": [], "val": ["tri-forge-envelope-01"], "test": [] },
+  "tri-lottie": { "train": [], "val": ["tri-lottie-envelope-01"], "test": [] },
+  "tri-intent": {
+    "train": [],
+    "val": ["tri-intent-route-01", "tri-intent-route-02", "tri-intent-route-03",
+            "tri-intent-route-04", "tri-intent-route-05", "tri-intent-route-06"],
+    "test": []
+  }
+}

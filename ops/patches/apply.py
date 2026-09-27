@@ -20,8 +20,11 @@
       另支持整行守卫 skip_line_containing 与文件跳过 skip_names / skip_prefixes
     - converge_version_section：already_marker 命中即跳过；无遗留标记的节一律不碰
     - sync_version_meta / sync_readme_version：语义值一致则跳过
+    - drop_block：按 begin/end 锚点整块删除。**纯删除型修正的幂等表达**——
+      `begin` 命中即删，`begin` 已缺失即判「已应用」（块已不存在）；
+      锚点不唯一时 **fail-closed**（不做动作并报 not_found），绝不「猜一个」删掉
 
-绝不删除文件；绝不触碰 exclude_paths。
+绝不删除文件（`drop_block` 只删除**文件内文本块**，不做文件级删除）；绝不触碰 exclude_paths。
 """
 from __future__ import annotations
 
@@ -484,12 +487,82 @@ def op_replace_regex(op, repo, skip, dry):
             "not_found": 0, "details": details}
 
 
+def op_drop_block(op, repo, skip, dry):
+    """整块删除 —— 补 `replace_text` 表达不了 `delete` 动作的能力缺口。
+
+    缺口（可证明，见 README 坑 4 / patch-batch-workflow `references/lessons.md` #2）：
+    纯删除型修正的 `new` 若不引入新文本，则改后文本的每个连续子串都已在改前文本中
+    （含跨删除边界的接缝）⇒ `already_marker` 要么**改前已存在**（永不生效）、要么
+    **改后不存在**（永不幂等）。故 `delete` 在本补丁层无法用 `replace_text` 表达，
+    此前只能绕道「在 `new` 里塞一段改前不存在的新文本充当标记」。
+
+    本 op 的判据（三态，与 `replace_text` 同构，但把「内容指纹」换成「块存在性」）：
+      - `begin` 命中 → 删除 [begin 所在行首, end 所在行末]，本文件计 applied
+      - `begin` 未命中 且 `removed_witness` 亦未命中 → 判「已应用」（块已不存在）
+      - `begin` 未命中 但 `removed_witness` 仍命中 → 判 not_found（**锚点漂移 / 半删除态**）
+    `removed_witness` 缺省取 `begin`（begin 必随块一起消失）。此时后两态合并为
+    「begin 缺失 ⇒ 已应用」——这是纯删除型的正确幂等语义，代价是 **begin 写错会
+    被误判为已应用**；故锚点唯一性 MUST 由构建期断言保证（工作流 Step 2：改前
+    `txt.count(begin) == 1`），本 op 只是最后一道闸。需要更强保护时显式给出一个
+    与 begin 不同的 `removed_witness`，即可恢复三态判别。
+
+    **fail-closed（比 `replace_text` 更严）**：任一匹配文件出现
+      `begin` 出现次数 ≠ 1、`end` 出现次数 ≠ 1、或 `end` 位于 `begin` 之前，
+    该文件**不动作**并计入 not_found；只要 not_found > 0，整 op 状态即 not_found
+    （`replace_text` 在部分成功时仍报 ok，本 op 刻意不沿用 —— 静默降级是坑 1 的同类）。
+
+    字段：`glob` / `begin` / `end` / `removed_witness`? / `swallow_trailing_blank`?（默认 True）
+    """
+    begin = op["begin"].replace("\r\n", "\n")
+    end = op["end"].replace("\r\n", "\n")
+    witness = (op.get("removed_witness") or begin).replace("\r\n", "\n")
+    swallow = op.get("swallow_trailing_blank", True)
+    applied = already = missing = 0
+    details = []
+    for f in collect(repo, op["glob"], skip):
+        try:
+            txt, crlf = read_norm(f)
+        except OSError:
+            continue
+        rel = f.relative_to(repo).as_posix()
+        n_begin, n_end = txt.count(begin), txt.count(end)
+        if n_begin == 0:
+            if witness in txt:
+                missing += 1
+                details.append(f"{rel}：锚点漂移（begin 缺失但 removed_witness 仍在）")
+            else:
+                already += 1
+            continue
+        if n_begin != 1 or n_end != 1:
+            missing += 1
+            details.append(f"{rel}：锚点不唯一 begin×{n_begin} / end×{n_end}（fail-closed，不动作）")
+            continue
+        lines = txt.split("\n")
+        i = next(k for k, ln in enumerate(lines) if begin in ln)
+        j = next(k for k, ln in enumerate(lines) if end in ln)
+        if j < i:
+            missing += 1
+            details.append(f"{rel}：end 出现在 begin 之前（锚点顺序异常，fail-closed）")
+            continue
+        lo, hi = i, j + 1
+        if swallow and hi < len(lines) and lines[hi].strip() == "":
+            hi += 1
+        if not dry:
+            write_keep(f, "\n".join(lines[:lo] + lines[hi:]), crlf)
+        applied += 1
+        details.append(f"{rel}：删 {hi - lo} 行（L{lo + 1}–L{hi}）")
+    ok = bool(missing == 0 and (applied or already))
+    return {"status": "ok" if ok else "not_found",
+            "applied": applied, "already": already, "not_found": missing, "details": details}
+
+
 DISPATCH = {"sync_spec": op_sync_spec, "replace_text": op_replace_text,
             "replace_regex": op_replace_regex,
             "sync_version_meta": op_sync_version_meta,
             "converge_version_section": op_converge_version_section,
             "sync_script": op_sync_script,
-            "sync_readme_version": op_sync_readme_version}
+            "sync_readme_version": op_sync_readme_version,
+            "drop_block": op_drop_block}
 
 
 def main() -> int:
@@ -532,6 +605,9 @@ def main() -> int:
                 desc = f"应用 {r['applied']}｜已应用 {r['already']}"
             elif r["type"] == "replace_regex":
                 desc = f"应用 {r['applied']}｜已应用 {r['already']}"
+            elif r["type"] == "drop_block":
+                desc = (f"删除 {r['applied']}｜已应用 {r['already']}"
+                        f"｜未找到 {r['not_found']}")
             else:
                 desc = r.get("detail", "")
             mark = {"ok": "✅", "not_found": "⬜", "error": "🔴"}.get(r["status"], "?")

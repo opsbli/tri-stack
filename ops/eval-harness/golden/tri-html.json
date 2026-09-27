@@ -1,0 +1,18 @@
+{
+  "skill": "tri-html",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-html/tests/run_exec_tests.py（31 例可执行面病例）经 gate_adapter 归一后的 envelope",
+  "kind_note": "envelope 型：跑门禁全量并对归一 envelope 断言。token 级断言暂不写入（advisory 失败合法存在），由 baseline 台账观测后再定。",
+  "cases": [
+    {
+      "case_id": "tri-html-envelope-01",
+      "scorer": { "kind": "gate_envelope", "skill": "tri-html" },
+      "prompt": "（envelope 探针 case：tri-html 全量 exec tests）",
+      "expected": "31 例全 PASS ⇒ verdict=PASS，items 非空（拒绝空 PASS）",
+      "asserts": [
+        { "kind": "verdict_eq", "value": "PASS" },
+        { "kind": "items_min", "value": 1 }
+      ]
+    }
+  ]
+}

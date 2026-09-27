@@ -1,0 +1,118 @@
+{
+  "skill": "tri-verify",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-verify/scripts/verify_gate.py EXIT_MAP（真源：references/engine-contract.md §3.1，2026-09-27 一手实测注入，NEVER 手抄历史值）",
+  "kind_note": "command 型：gate 探针，同输入必同输出。rollout 型 case（带 skill 跑完整验证循环）待建，另行追加且 scorer kind 不同。",
+  "cases": [
+    {
+      "case_id": "tri-verify-cls-00",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "0"] },
+      "prompt": "（gate 探针 case，无自然语言 prompt）",
+      "expected": "exit 0 → passed，不计入轮次，无契约偏离",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "passed" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-01",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "1"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 1 → pending，计入轮次（A/B 归因待定）",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "pending" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": true },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-03",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "3"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 3 → C（凭证/权限），不计轮次",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "C" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-04",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "4"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 4 → B（用例/运行不存在），不计轮次",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "B" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-05",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "5"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 5 → B（校验错误/证据包不同源），不计轮次",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "B" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-06",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "6"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 6 → C（冲突：已有运行实例），不计轮次",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "C" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-07",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "7"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 7 → C（超时），不计轮次",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "C" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-10",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "10"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 10 → C（传输/网络失败），不计轮次",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "C" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-11",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "11"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "exit 11 → C（限流），不计轮次",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "C" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": false }
+      ]
+    },
+    {
+      "case_id": "tri-verify-cls-99",
+      "scorer": { "kind": "command", "argv": ["tri-verify/scripts/verify_gate.py", "--json", "classify", "--exit-code", "99"] },
+      "prompt": "（gate 探针 case）",
+      "expected": "未知退出码 → 按 C 处置且 MUST 标记引擎契约偏离（NEVER 静默当作通过）",
+      "asserts": [
+        { "kind": "json_eq", "path": "attribution", "value": "C" },
+        { "kind": "json_eq", "path": "countsTowardRound", "value": false },
+        { "kind": "json_eq", "path": "deviation", "value": true }
+      ]
+    }
+  ]
+}

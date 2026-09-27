@@ -1,0 +1,18 @@
+{
+  "skill": "tri-forge",
+  "scorer_protocol": "v1",
+  "source_of_truth": "tri-forge/scripts/compliance_check.py（24 条判据 + case 电池 + mutation-gate）经 gate_adapter 恒等变换",
+  "kind_note": "envelope 型：--dir 审自身。battery-native 恒等变换兼作 adapter 回归。",
+  "cases": [
+    {
+      "case_id": "tri-forge-envelope-01",
+      "scorer": { "kind": "gate_envelope", "skill": "tri-forge" },
+      "prompt": "（envelope 探针 case：tri-forge 自审）",
+      "expected": "自审 24 条全 PASS ⇒ verdict=PASS，items 非空",
+      "asserts": [
+        { "kind": "verdict_eq", "value": "PASS" },
+        { "kind": "items_min", "value": 1 }
+      ]
+    }
+  ]
+}
