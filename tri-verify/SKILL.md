@@ -1,7 +1,7 @@
 ---
 name: tri-verify
 slug: tri-verify
-version: 1.2.0
+version: 1.2.1
 displayName: tri-verify
 description: 横向验证型 skill，为 tri-xxx 家族提供「驱动运行中应用的真实功能验证」能力——把交付物真的跑起来、按行为契约驱动用户路径、取同源失败证据，并在失败时驱动「三类归因 → 修复 → 复验」有界循环，直到功能真正可用或明确升级人审。不认领 tri-intent 下游路由，由 tri-coding（交付前）／tri-fix（修复后）／tri-sdlc（P6-P7）委派激活，亦可由用户直接调用。引擎可插拔：默认本地引擎（Playwright/pytest，零外部依赖、可离线、零成本），可选云端引擎（TestSprite CLI，语义定位 + 同源失败证据包）。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 横向验证型 skill。补上家族唯一缺口——「没有任何环节真的驱动运行中的应用」。引擎可插拔（本地 Playwright/pytest 默认，TestSprite CLI 可选）；三类归因（产品/契约/环境，C 类由退出码机械判定）；有界循环 ≤2 轮后升级人审；风险预筛式的确定性触发规则 V1–V5；单一门禁权威纪律；降级不阻断交付。
@@ -367,6 +367,15 @@ python scripts/check_update.py --slug tri-verify --json
 >
 > **「修复后通过」MUST 记录回炉轮次与 commit 链**（如 `fdd8cda` / `103fc94` / `c6d40ef`），使归因可追溯——
 > 只有标签没有证据链的「通过」等同未验证。
+> 
+> **可执行载体（tt4 批）**：本节三条 MUST——**标签封闭**（表外标签即判据未产出）、
+> **「修复后通过」commit 链**、**证据锚定**（runId / 用例输出粘贴 / 截图路径）——
+> 由 `scripts/verify_gate.py verdict --file <verdict.md>` 承担，返回码 0 = 合规、
+> 1 = 命中违规（`off-set-label` / `missing-verdict` / `missing-commit-chain` /
+> `missing-evidence-anchor`）。落盘 `verdict.md` 后 MUST 跑一次；命中违规视为判据未产出，
+> NEVER 交付。印章语法从本 skill 的 `STAMP_STATES` **单一真源派生**——新增或改名盖章态
+> 只需改 `STAMP_STATES` 一处，脚本校验不会与本表漂移；`--self-test` 含
+> tri-stack-train M4a/M4b 实证的表外标签反例夹具。
 
 ### 三、落盘规则
 

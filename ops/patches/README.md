@@ -1284,6 +1284,31 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 | `tt3-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.11.0] 条目（P2 补齐）（tt3 批） |
 | `tt3-cl-test` | replace_text | `tri-sdlc/children/tri-test/CHANGELOG.md` 追加 [1.2.0] 条目（P2 补齐）（tt3 批） |
 | `tt3-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行（本行自身在内）+ 补登报告与 tt2 计数小节 |
+| `tt4-vg-usage` | replace_text | `verify_gate.py` docstring 用法补 `verdict` 子命令（tt4 批） |
+| `tt4-vg-stamp-regex` | replace_text | `verify_gate.py` 新增印章语法正则派生：`STAMP_REGEXES` 从 `STAMP_STATES` 单一真源派生（tt4 批） |
+| `tt4-vg-audit` | replace_text | `verify_gate.py` 新增 `audit_verdict_text` / `audit_verdict`：标签封闭 / commit 链 / 证据锚定三条判据可执行化（tt4 批） |
+| `tt4-vg-selftest` | replace_text | `verify_gate.py` self-test 补 verdict 反例夹具（M4a/M4b 实证 5 例 + 防误报 + mutation 断言）（tt4 批） |
+| `tt4-vg-cli` | replace_text | `verify_gate.py` 新增 `verdict --file <path>/verdict.md [--json]` 子命令（tt4 批） |
+| `tt4-vg-dispatch` | replace_text | `verify_gate.py` 分发 `verdict` 子命令 + 返回码扩展（命中违规返回 1）（tt4 批） |
+| `tt4-verify-verdict-audit-carrier` | replace_text | `tri-verify/SKILL.md` §二 追加「可执行载体」注：三条 prompt 层 MUST 落到脚本 + 单一真源声明（tt4 批） |
+| `tt4-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.2.1] 条目（P2 补齐）（tt4 批） |
+| `tt4-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行（本行自身在内）+ 计数小节 |
+
+### 计数（2026-09-29 · tt4 批增量 · 门④ 判据从 prompt 层落成可执行断言）
+
+> 本批关掉 `reports/TRI-TRAIN-AUDIT-M4-M4B-20260929.md` §五 点名的两个「无校验器」诚实边界**之一**：
+> 门④ 的 verdict 标签此前**只写在 prompt 条文里，无任何可执行载体**，所以 M4a/M4b 能把判据写成
+> 表外的「✅ 完全通过」而没有任何东西拦下。
+> 另一个（tt3 的「反同源静态检查」）**仍未脚本化**——判据是「被 mock 的函数是否等于被测对象直接调用的
+> 那个依赖」，需要调用图分析，做不出可靠实现，仍为 prompt 层约束。
+>
+> 版本线：`tri-verify` **1.2.1**（PATCH——为既有已记录的 MUST 补可执行载体，**未新增规则**；
+> `dw2-tri-verify-version` 就地 retarget 1.2.0 → 1.2.1）。
+> 计数：382 → **391**（+9：6 脚本 + 1 SKILL.md + 1 CHANGELOG + 1 清单登记；
+> 1 个版本 settle 与 2 个文档计数 settle 均就地更新）。
+>
+> **边界**：三条判据中的「证据锚定」是**启发式**——只认 runId 关键字、代码围栏、图片扩展名、
+> 7-40 位 hex 四类形态；真实证据（人工截图描述、口头确认）不会被识别，属预期的召回下限而非缺陷。
 
 ### 计数（2026-09-29 · tt3 批增量 · tri-train 审计「反同源假设」）
 

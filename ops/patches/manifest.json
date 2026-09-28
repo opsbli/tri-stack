@@ -1421,11 +1421,11 @@
     {
       "id": "dw2-tri-verify-version",
       "type": "replace_regex",
-      "label": "`tri-verify` 版本线 settle → 1.0.1（darwin P1 批；settle 形式，任意旧版收敛）；tt 批 2026-09-28 就地 retarget 1.0.1 → 1.1.0（登记值 1.0.1 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.2.0：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
+      "label": "`tri-verify` 版本线 settle → 1.0.1（darwin P1 批；settle 形式，任意旧版收敛）；tt 批 2026-09-28 就地 retarget 1.0.1 → 1.1.0（登记值 1.0.1 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.2.0：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）（2026-09-29 tt4 批就地 retarget → 1.2.1：verdict 可执行载体）",
       "glob": "tri-verify/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.0",
-      "already_marker": "version: 1.2.0"
+      "replacement": "version: 1.2.1",
+      "already_marker": "version: 1.2.1"
     },
     {
       "id": "dw2-tri-charter-version",
@@ -3161,20 +3161,20 @@
     {
       "id": "cdd-doc-opsreadme-count",
       "type": "replace_regex",
-      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382",
+      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382；tt4 批 2026-09-29 就地 retarget 382 → 391",
       "glob": "ops/README.md",
       "pattern": "唯一事实源，当前 \\d+ 个 op）",
-      "replacement": "唯一事实源，当前 382 个 op）",
-      "already_marker": "唯一事实源，当前 382 个 op）"
+      "replacement": "唯一事实源，当前 391 个 op）",
+      "already_marker": "唯一事实源，当前 391 个 op）"
     },
     {
       "id": "cdd-doc-rootreadme-count",
       "type": "replace_regex",
-      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382",
+      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382；tt4 批 2026-09-29 就地 retarget 382 → 391",
       "glob": "README.md",
       "pattern": "本地补丁层（\\d+ 个 op，幂等重放）",
-      "replacement": "本地补丁层（382 个 op，幂等重放）",
-      "already_marker": "本地补丁层（382 个 op，幂等重放）"
+      "replacement": "本地补丁层（391 个 op，幂等重放）",
+      "already_marker": "本地补丁层（391 个 op，幂等重放）"
     },
     {
       "id": "cdd-doc-registry-rows",
@@ -3454,6 +3454,87 @@
       "old": "| `tt2-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt2 批 9 行（本行自身在内）（tt2 批） |",
       "new": "| `tt2-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt2 批 9 行（本行自身在内）（tt2 批） |\n| `tt3-coding-anti-same-origin` | replace_text | `tri-coding/SKILL.md` §质量标准新增「反同源假设（夹具独立）」维度：断言 MUST 来自需求而非实现；mock 目标 MUST NOT 是被测对象直接调用的依赖函数；分支覆盖 NEVER 计入功能正确性证据（审计 M4a）（tt3 批） |\n| `tt3-test-anti-same-origin` | replace_text | `tri-sdlc/children/tri-test/SKILL.md` 维度 3 新增「反同源假设」三条判据 + 降级兼容（与既有 P6-M3 互补：M3 管执行侧、本条管编写侧）（审计 M4a）（tt3 批） |\n| `tt3-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.11.0] 条目（P2 补齐）（tt3 批） |\n| `tt3-cl-test` | replace_text | `tri-sdlc/children/tri-test/CHANGELOG.md` 追加 [1.2.0] 条目（P2 补齐）（tt3 批） |\n| `tt3-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行（本行自身在内）+ 补登报告与 tt2 计数小节 |\n\n### 计数（2026-09-29 · tt3 批增量 · tri-train 审计「反同源假设」）\n\n> 本批 = `reports/TRI-TRAIN-AUDIT-M4-M4B-20260929.md` §2.2 病灶 B 落地，即审计建议 **#5**。\n> 单开一批而非并入 tt2，是因为落点需要双重论证：这是**测试编写**规范而非交付门控，\n> 且**单放 `tri-test` 会重犯 tt2 §三 A 的错**——tri-stack-train 走的是 `tri-coding` I11 直调路径，\n> 根本不经过 `tri-sdlc` / `tri-test`。所以两处都落：`tri-coding`（实际写测试的地方）\n> + `tri-test`（SDLC 流程的家）。\n>\n> 版本线：`tri-coding` **1.11.0**（`f90-ver-coding` 就地 retarget 1.10.0 → 1.11.0）/\n> `tri-test` **1.2.0**（`dw-tri-test-version` 就地 retarget 1.1.9 → 1.2.0）；\n> 均不新增版本 op、防 settle 互搏。\n> 计数：377 → **382**（+5：2 内容 + 2 CHANGELOG + 1 清单登记；2 个版本 settle 与 2 个文档计数 settle 均就地更新）。\n>\n> **诚实边界**：`tri-coding` 与 `tri-test` 两处条文仍均为 **prompt 层约束，无校验器实现**——\n> 「mock 目标是被测对象直接调用的依赖函数」这条静态检查目前要求 Agent 人工执行，\n> 后续若做成脚本需落在 `tri-test/scripts/` 或 `tri-coding/scripts/`。",
       "already_marker": "`tt3-coding-anti-same-origin` | replace_text"
+    },
+    {
+      "id": "tt4-vg-usage",
+      "label": "`verify_gate.py` docstring 用法补 `verdict` 子命令（tt4 批）",
+      "glob": "tri-verify/scripts/verify_gate.py",
+      "type": "replace_text",
+      "old": "    python scripts/verify_gate.py stamp --state fixed --engine local --cases 3/3 [--json]",
+      "new": "    python scripts/verify_gate.py stamp --state fixed --engine local --cases 3/3 [--json]\n    python scripts/verify_gate.py verdict --file <path>/verdict.md [--json]",
+      "already_marker": "verdict --file <path>/verdict.md [--json]"
+    },
+    {
+      "id": "tt4-vg-stamp-regex",
+      "label": "`verify_gate.py` 新增印章语法正则派生：`STAMP_REGEXES` 从 `STAMP_STATES` **单一真源派生**，新增/改名盖章态只需改一处，脚本校验不会与 SKILL.md 判据漂移（tt4 批）；批中补正：`re.split` 双捕获组位序错乱改 `re.finditer`（落盘后 self-test 实测报 re.PatternError 而修正）；批中补正 3：字面量改逐字符转义 `_lit`（Python 3.14 的 `re.escape` 会转义空格，先 escape 再 replace 空格会命中错误位置）；批中补正 4：`_lit` docstring 改 raw（反斜杠+空格触发 SyntaxWarning）",
+      "glob": "tri-verify/scripts/verify_gate.py",
+      "type": "replace_text",
+      "old": "TRIGGER_RULES = (\"V1\", \"V2\", \"V3\", \"V4\", \"V5\")",
+      "new": "TRIGGER_RULES = (\"V1\", \"V2\", \"V3\", \"V4\", \"V5\")\n\n# ── verdict.md 判据校验（tt4 批 · 审计 M4a/M4b） ────────────────────────────\n# SKILL.md §二 的三条 MUST（标签封闭 / 「修复后通过」commit 链 / 证据锚定）\n# 此前只存在于 prompt 条文、**无任何可执行载体**；本块是它的可执行实现。\n# 印章语法从 STAMP_STATES **单一真源派生**——新增或改名盖章态只需改 STAMP_STATES，\n# 脚本校验不会与 SKILL.md 判据漂移。\nVERDICT_DECL_RE = re.compile(r\"(裁定|盖章|功能验证|verdict)\", re.I)\n# 只扫描「像声明」的行：既有裁定类关键词、又有结论类关键词。\n# 否则 `## 门④·交付裁定` 这类纯节标题会被误判成表外标签（实测已踩过）。\nVERDICT_VALUE_RE = re.compile(r\"(通过|未执行|未触发|人审|部分|失败|阻塞|FAIL)\")\nCOMMIT_HASH_RE = re.compile(r\"\\b[0-9a-f]{7,40}\\b\")\nEVIDENCE_RE = re.compile(\n    r\"(?i)\\brunId\\b|```|\\.png\\b|\\.jpe?g\\b|\\.gif\\b|\\.webp\\b|\\b[0-9a-f]{7,40}\\b\")\n_MD_PREFIX_RE = re.compile(r\"^(?:#{1,6}|[-*>+]+|\\|\\s*)[\\s:：]*\")\n\n\ndef _lit(s: str) -> str:\n    r\"\"\"字面量 → 正则片段：空格放宽为 `[ \\t]*`、半角冒号放宽为 `[:：]`，其余逐字转义。\n\n    逐字符处理，**不能**先 `re.escape` 再 `.replace(\" \", ...)`——Python 3.14 的\n    `re.escape` 会把空格转成 `\\ `（反斜杠+空格），replace 命中的是那个反斜杠后面\n    的空格，产物变成 `\\[ \\t]*`（字面 `[` + 空格 + `\\t*`）而不是字符类 `[ \\t]*`，\n    五个盖章正则全部匹配失败（实测踩过，self-test 3 项红）。\n    \"\"\"\n    out = []\n    for ch in s:\n        if ch == \" \":\n            out.append(r\"[ \\t]*\")\n        elif ch == \":\":\n            out.append(\"[:：]\")\n        else:\n            out.append(re.escape(ch))\n    return \"\".join(out)\n\n\ndef _stamp_pattern(tpl: str) -> \"re.Pattern\":\n    \"\"\"由 STAMP_STATES 模板派生校验正则——印章语法单一真源。\n\n    `{var}` → `(?P<var>[^）)]+)`；其余按 `_lit` 转义。\n    用 `re.finditer` 而非 `re.split`——双捕获组的 split 会把内层组名也当独立条目\n    插回序列、打乱奇偶位序（实测踩过：组名变成 `{cases}` 报 bad character）。\n    \"\"\"\n    out = []\n    for m in re.finditer(r\"\\{(\\w+)\\}|([^{}]+)\", tpl):\n        if m.group(1):\n            out.append(\"(?P<%s>[^）)]+)\" % m.group(1))\n        else:\n            out.append(_lit(m.group(2)))\n    return re.compile(\"\".join(out))\n\n\nSTAMP_REGEXES = [(s, _stamp_pattern(t)) for s, t in STAMP_STATES.items()]",
+      "already_marker": "def _stamp_pattern("
+    },
+    {
+      "id": "tt4-vg-audit",
+      "label": "`verify_gate.py` 新增 `audit_verdict_text` / `audit_verdict`：三条判据可执行化——① 标签封闭（声明行标签 MUST ∈ 五态）② 「修复后通过」MUST 引用 commit hash ③ 「通过/修复后通过」MUST 引用 runId/用例输出/截图路径（tt4 批）",
+      "glob": "tri-verify/scripts/verify_gate.py",
+      "type": "replace_text",
+      "old": "def main() -> int:",
+      "new": "def audit_verdict_text(text: str) -> dict:\n    \"\"\"校验 verdict.md 文本。返回 {file?, states, offSetLabels, violations, violationDetails}。\n\n    三条判据逐条对应 SKILL.md §二 条文（**非本脚本自创**）：\n      ① 标签封闭——每个「裁定/盖章」声明行的标签 MUST ∈ STAMP_STATES 五态；\n         命中表外标签（如「✅ 完全通过」）即判违规。\n      ② commit 链——`修复后通过` MUST 引用 ≥1 个 commit hash（7-40 位 hex）。\n      ③ 证据锚定——`通过` / `修复后通过` MUST 引用 runId、用例输出代码块或截图路径。\n    \"\"\"\n    states, off_set = [], []\n    in_fence = False\n    for ln in re.sub(r\"\\r\", \"\", text).split(\"\\n\"):\n        s = ln.strip()\n        if s.startswith(\"```\"):\n            in_fence = not in_fence\n            continue\n        if in_fence or not VERDICT_DECL_RE.search(s) or not VERDICT_VALUE_RE.search(s):\n            continue\n        hit = None\n        for st, pat in STAMP_REGEXES:\n            if pat.search(s):\n                hit = st\n                break\n        if hit:\n            if hit not in states:\n                states.append(hit)\n        else:\n            lbl = _MD_PREFIX_RE.sub(\"\", re.split(r\"[:：]\", s)[-1].strip() or s)\n            off_set.append({\"line\": ln.rstrip(), \"label\": lbl.replace(\"**\", \"\").strip()[:60]})\n\n    vios = [{\"type\": \"off-set-label\", \"detail\": \"标签不在封闭集内\", **x} for x in off_set]\n    if not states and not off_set:\n        vios.append({\"type\": \"missing-verdict\",\n                     \"detail\": \"全文无「裁定/盖章」声明行——判据未产出\"})\n    if \"fixed\" in states and not COMMIT_HASH_RE.search(text):\n        vios.append({\"type\": \"missing-commit-chain\",\n                     \"detail\": \"「修复后通过」未引用任何 commit hash\"})\n    if (\"passed\" in states or \"fixed\" in states) and not EVIDENCE_RE.search(text):\n        vios.append({\"type\": \"missing-evidence-anchor\",\n                     \"detail\": \"「通过/修复后通过」未引用 runId / 用例输出代码块 / 截图路径\"})\n    return {\"states\": states, \"matchedStamps\": len(states),\n            \"offSetLabels\": off_set, \"violations\": len(vios),\n            \"violationDetails\": vios}\n\n\ndef audit_verdict(path: Path) -> dict:\n    \"\"\"校验单个 verdict.md 文件（`verdict --file` 入口）。\"\"\"\n    res = audit_verdict_text(path.read_bytes().decode(\"utf-8\", errors=\"replace\"))\n    res[\"file\"] = str(path)\n    return res\n\n\ndef main() -> int:",
+      "already_marker": "def audit_verdict_text("
+    },
+    {
+      "id": "tt4-vg-selftest",
+      "label": "`verify_gate.py` self-test 补 verdict 反例夹具：M4a/M4b 实证的表外标签「✅ 完全通过」、自相矛盾形态「✅ 通过（附…待确认）」、无 commit 链、无证据锚定、无盖章行、纯节标题防误报，外加 off-set 判成 OK 的 mutation 断言（tt4 批）",
+      "glob": "tri-verify/scripts/verify_gate.py",
+      "type": "replace_text",
+      "old": "    try:\n        make_stamp(\"bogus\")\n        fails.append(\"未知盖章态应报错\")\n    except SystemExit:\n        pass",
+      "new": "    try:\n        make_stamp(\"bogus\")\n        fails.append(\"未知盖章态应报错\")\n    except SystemExit:\n        pass\n\n    # verdict.md 判据校验（tt4 批 · tri-stack-train M4a/M4b 实证反例夹具）\n    eq(audit_verdict_text(\n        \"## 最终裁定：功能验证: 通过（engine=local，用例 83/83）\\n\"\n        \"\\n证据：runId r-20260928-a1b2\\n\")[\"violations\"], 0, \"合法盖章 + 证据锚定应零违规\")\n    # 反例 1：M4a/M4b 实测的表外标签「✅ 完全通过」\n    v_off = audit_verdict_text(\"## 门④ 最终裁定：✅ 完全通过\\n\")\n    eq(v_off[\"violations\"], 1, \"表外标签「✅ 完全通过」必须被拦\")\n    eq(v_off[\"violationDetails\"][0][\"type\"], \"off-set-label\", \"违规类型应为 off-set-label\")\n    eq(v_off[\"violationDetails\"][0][\"label\"], \"✅ 完全通过\", \"违规标签应原样回显\")\n    # 反例 2：M4a 实证的自相矛盾形态「✅ 通过（附本机冒烟待用户确认）」\n    v2 = audit_verdict_text(\n        \"## 裁定：✅ 通过（附本机冒烟待用户确认）\\n\\n证据：runId r-1\\n\")\n    eq(v2[\"violations\"], 1, \"「✅ 通过（附…待确认）」不是合法盖章\")\n    # 反例 3：「修复后通过」无 commit 链\n    v3 = audit_verdict_text(\n        \"## 最终裁定：功能验证: 修复后通过（轮次 1，归因 C）\\n\\n证据：runId r-1\\n\")\n    eq(any(d[\"type\"] == \"missing-commit-chain\" for d in v3[\"violationDetails\"]), True,\n       \"「修复后通过」无 commit hash 必须被拦\")\n    # 反例 4：「通过」无证据锚定（M4b-AC6 实证的「用户确认通过」一句话盖章）\n    v4 = audit_verdict_text(\n        \"## 最终裁定：功能验证: 通过（engine=local，用例 3/3）\\n\\n用户确认通过。\\n\")\n    eq(any(d[\"type\"] == \"missing-evidence-anchor\" for d in v4[\"violationDetails\"]), True,\n       \"「通过」无 runId/输出/截图必须被拦\")\n    # 反例 5：全文无盖章行\n    v5 = audit_verdict_text(\"# 交付裁定\\n\\n一切正常。\\n\")\n    eq(any(d[\"type\"] == \"missing-verdict\" for d in v5[\"violationDetails\"]), True,\n       \"无盖章行必须报 missing-verdict\")\n    # 纯节标题 `## 门④·交付裁定` 不是表外标签（防误报，实测已踩）\n    eq(audit_verdict_text(\"## 门④·交付裁定\\n\\n一切正常。\\n\")[\"offSetLabels\"], [],\n       \"纯节标题不得误判为表外标签\")\n    # mutation：若把 off-set 判成 OK，上面「✅ 完全通过」那条必须变红\n    eq(v_off[\"violations\"] > 0, True, \"mutation: 表外标签不得被当作通过\")",
+      "already_marker": "label\"], \"✅ 完全通过\""
+    },
+    {
+      "id": "tt4-vg-cli",
+      "label": "`verify_gate.py` 新增 `verdict --file <path>/verdict.md [--json]` 子命令（tt4 批）",
+      "glob": "tri-verify/scripts/verify_gate.py",
+      "type": "replace_text",
+      "old": "    sub.add_parser(\"self-test\", help=\"内置自检（含 mutation 断言）\")",
+      "new": "    sub.add_parser(\"self-test\", help=\"内置自检（含 mutation 断言）\")\n\n    p4 = sub.add_parser(\"verdict\", help=\"校验 verdict.md：标签封闭 + commit 链 + 证据锚定\")\n    p4.add_argument(\"--file\", required=True)",
+      "already_marker": "sub.add_parser(\"verdict\""
+    },
+    {
+      "id": "tt4-vg-dispatch",
+      "label": "`verify_gate.py` 分发 `verdict` 子命令，返回码扩展：命中违规返回 1（与既有 escalate/deviation 同语义——判定结果需人工介入）（tt4 批）",
+      "glob": "tri-verify/scripts/verify_gate.py",
+      "type": "replace_text",
+      "old": "    elif args.cmd == \"stamp\":\n        res = make_stamp(args.state, engine=args.engine, cases=args.cases,\n                         rounds=args.rounds, attribution=args.attribution, reason=args.reason)\n    else:\n        ap.print_help()\n        return 2\n\n    if args.json:\n        print(json.dumps(res, ensure_ascii=False, indent=2))\n    else:\n        for k, v in res.items():\n            print(f\"{k}: {v}\")\n    return 1 if res.get(\"escalate\") or res.get(\"deviation\") else 0",
+      "new": "    elif args.cmd == \"stamp\":\n        res = make_stamp(args.state, engine=args.engine, cases=args.cases,\n                         rounds=args.rounds, attribution=args.attribution, reason=args.reason)\n    elif args.cmd == \"verdict\":\n        res = audit_verdict(Path(args.file))\n    else:\n        ap.print_help()\n        return 2\n\n    if args.json:\n        print(json.dumps(res, ensure_ascii=False, indent=2))\n    else:\n        for k, v in res.items():\n            print(f\"{k}: {v}\")\n    return 1 if (res.get(\"escalate\") or res.get(\"deviation\")\n                 or res.get(\"violations\")) else 0",
+      "already_marker": "elif args.cmd == \"verdict\":"
+    },
+    {
+      "id": "tt4-verify-verdict-audit-carrier",
+      "type": "replace_text",
+      "glob": "tri-verify/SKILL.md",
+      "old": "> 只有标签没有证据链的「通过」等同未验证。",
+      "new": "> 只有标签没有证据链的「通过」等同未验证。\n> \n> **可执行载体（tt4 批）**：本节三条 MUST——**标签封闭**（表外标签即判据未产出）、\n> **「修复后通过」commit 链**、**证据锚定**（runId / 用例输出粘贴 / 截图路径）——\n> 由 `scripts/verify_gate.py verdict --file <verdict.md>` 承担，返回码 0 = 合规、\n> 1 = 命中违规（`off-set-label` / `missing-verdict` / `missing-commit-chain` /\n> `missing-evidence-anchor`）。落盘 `verdict.md` 后 MUST 跑一次；命中违规视为判据未产出，\n> NEVER 交付。印章语法从本 skill 的 `STAMP_STATES` **单一真源派生**——新增或改名盖章态\n> 只需改 `STAMP_STATES` 一处，脚本校验不会与本表漂移；`--self-test` 含\n> tri-stack-train M4a/M4b 实证的表外标签反例夹具。",
+      "already_marker": "可执行载体（tt4 批）",
+      "label": "`tri-verify/SKILL.md` §二 追加「可执行载体」注：把标签封闭 / commit 链 / 证据锚定三条 prompt 层 MUST 落到 `scripts/verify_gate.py verdict`，并声明印章语法从 `STAMP_STATES` 单一真源派生（tt4 批）；批中补正：注解与前文合并为同一 blockquote（空行会断开 blockquote）"
+    },
+    {
+      "id": "tt4-cl-verify",
+      "type": "replace_text",
+      "glob": "tri-verify/CHANGELOG.md",
+      "old": "## [1.2.0] - 2026-09-29",
+      "new": "## [1.2.1] - 2026-09-29\n\n### 变更\n\n- **新增 `scripts/verify_gate.py verdict` 子命令**：把 §二 的三条 prompt 层 MUST 变成可执行断言——\n  ① **标签封闭**：每个「裁定/盖章」声明行的标签 MUST ∈ 五态封闭集，命中表外标签即违规\n  （违规类型 `off-set-label`）；② **commit 链**：`修复后通过` MUST 引用 ≥1 个 commit hash\n  （`missing-commit-chain`）；③ **证据锚定**：`通过` / `修复后通过` MUST 引用 runId、用例输出代码块\n  或截图路径（`missing-evidence-anchor`）。全文无声明行报 `missing-verdict`。返回码 0 = 合规、\n  1 = 命中违规（与既有 `escalate` / `deviation` 同语义）。\n  **动机**：tt2 批把标签封闭写成条文，但**无任何可执行载体**——tri-stack-train M4a/M4b 两份 verdict\n  就写了表外的「✅ 完全通过」（M4a 实为 1 次回炉、M4b 实为 2 次回炉，且 M4b 与同表 AC5「⚠️部分」并存），\n  没有任何脚本拦住。\n  **设计要点**：印章语法从 `STAMP_STATES` **单一真源派生**（`_stamp_pattern` 把 `{var}` 转成\n  `(?P<var>[^）)]+)`，半角冒号放宽为 `[:：]`、空格放宽为 `[ \\t]*`），新增或改名盖章态只需改\n  `STAMP_STATES` 一处，脚本校验不会与本表漂移。\n  **防误报**：只扫描「既有裁定类关键词、又有结论类关键词」的行——否则 `## 门④·交付裁定` 这类纯节标题\n  会被误判成表外标签（实测已踩过，self-test 有断言）。\n  **self-test 反例夹具**：M4a/M4b 实证的表外标签「✅ 完全通过」、自相矛盾形态「✅ 通过（附…待确认）」、\n  无 commit 链、无证据锚定（M4b-AC6「用户确认冒烟通过」一句话盖章）、无盖章行、纯节标题防误报，\n  外加 off-set 判成 OK 的 mutation 断言。\n\n## [1.2.0] - 2026-09-29",
+      "already_marker": "## [1.2.1] - 2026-09-29",
+      "label": "`tri-verify/CHANGELOG.md` 追加 [1.2.1] 条目（P2 属人工内容，由 op 表达而非手改文件）（tt4 批 · verdict 可执行载体）"
+    },
+    {
+      "id": "tt4-doc-registry-rows",
+      "type": "replace_text",
+      "glob": "ops/patches/README.md",
+      "old": "| `tt3-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行（本行自身在内）+ 补登报告与 tt2 计数小节 |",
+      "new": "| `tt3-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行（本行自身在内）+ 补登报告与 tt2 计数小节 |\n| `tt4-vg-usage` | replace_text | `verify_gate.py` docstring 用法补 `verdict` 子命令（tt4 批） |\n| `tt4-vg-stamp-regex` | replace_text | `verify_gate.py` 新增印章语法正则派生：`STAMP_REGEXES` 从 `STAMP_STATES` 单一真源派生（tt4 批） |\n| `tt4-vg-audit` | replace_text | `verify_gate.py` 新增 `audit_verdict_text` / `audit_verdict`：标签封闭 / commit 链 / 证据锚定三条判据可执行化（tt4 批） |\n| `tt4-vg-selftest` | replace_text | `verify_gate.py` self-test 补 verdict 反例夹具（M4a/M4b 实证 5 例 + 防误报 + mutation 断言）（tt4 批） |\n| `tt4-vg-cli` | replace_text | `verify_gate.py` 新增 `verdict --file <path>/verdict.md [--json]` 子命令（tt4 批） |\n| `tt4-vg-dispatch` | replace_text | `verify_gate.py` 分发 `verdict` 子命令 + 返回码扩展（命中违规返回 1）（tt4 批） |\n| `tt4-verify-verdict-audit-carrier` | replace_text | `tri-verify/SKILL.md` §二 追加「可执行载体」注：三条 prompt 层 MUST 落到脚本 + 单一真源声明（tt4 批） |\n| `tt4-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.2.1] 条目（P2 补齐）（tt4 批） |\n| `tt4-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行（本行自身在内）+ 计数小节 |\n\n### 计数（2026-09-29 · tt4 批增量 · 门④ 判据从 prompt 层落成可执行断言）\n\n> 本批关掉 `reports/TRI-TRAIN-AUDIT-M4-M4B-20260929.md` §五 点名的两个「无校验器」诚实边界**之一**：\n> 门④ 的 verdict 标签此前**只写在 prompt 条文里，无任何可执行载体**，所以 M4a/M4b 能把判据写成\n> 表外的「✅ 完全通过」而没有任何东西拦下。\n> 另一个（tt3 的「反同源静态检查」）**仍未脚本化**——判据是「被 mock 的函数是否等于被测对象直接调用的\n> 那个依赖」，需要调用图分析，做不出可靠实现，仍为 prompt 层约束。\n>\n> 版本线：`tri-verify` **1.2.1**（PATCH——为既有已记录的 MUST 补可执行载体，**未新增规则**；\n> `dw2-tri-verify-version` 就地 retarget 1.2.0 → 1.2.1）。\n> 计数：382 → **391**（+9：6 脚本 + 1 SKILL.md + 1 CHANGELOG + 1 清单登记；\n> 1 个版本 settle 与 2 个文档计数 settle 均就地更新）。\n>\n> **边界**：三条判据中的「证据锚定」是**启发式**——只认 runId 关键字、代码围栏、图片扩展名、\n> 7-40 位 hex 四类形态；真实证据（人工截图描述、口头确认）不会被识别，属预期的召回下限而非缺陷。",
+      "already_marker": "`tt4-vg-usage` | replace_text",
+      "label": "`ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行 + 「计数（tt4 批增量）」小节（含仍未脚本化的反同源假设 + 证据锚定启发式的诚实边界）（tt4 批）"
     }
   ]
 }

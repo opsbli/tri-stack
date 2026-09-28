@@ -123,7 +123,7 @@
 |---|---|---|
 | [tri-evolve](tri-evolve/) | 1.1.9 | 自进化 / 用户画像：OODA 闭环 + 经验条目库 + A/B 验证门 + 回滚（不认领 L2、不进路由） |
 | [tri-true](tri-true/) | 1.1.8 | 四道防线消除幻觉：置信度 → 事实源（T1–T4）→ 多模型交叉 → 自反思修正（不认领 L2、不进路由） |
-| [tri-verify](tri-verify/) | 1.2.0 | 运行中应用验证：V1–V5 触发 + 三类归因 + 有界循环 + 五态印章；引擎可插拔（本地 / TestSprite） |
+| [tri-verify](tri-verify/) | 1.2.1 | 运行中应用验证：V1–V5 触发 + 三类归因 + 有界循环 + 五态印章；引擎可插拔（本地 / TestSprite） |
 
 ---
 
@@ -135,7 +135,7 @@ ops/
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
 ├── versions.json            自主版本线基线（35 skill 快照：顶层 26 + tri-sdlc 子 skill 9）
-└── patches/                 本地补丁层（382 个 op，幂等重放）
+└── patches/                 本地补丁层（391 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器

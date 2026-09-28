@@ -11,6 +11,7 @@
     python scripts/verify_gate.py classify --exit-code 7 [--json]
     python scripts/verify_gate.py round --log run-log.jsonl [--json]
     python scripts/verify_gate.py stamp --state fixed --engine local --cases 3/3 [--json]
+    python scripts/verify_gate.py verdict --file <path>/verdict.md [--json]
     python scripts/verify_gate.py self-test
 
 退出码：0 = 判定完成且未升级；1 = 判定结果需人工介入（升级人审 / 参数错误为 2）
@@ -52,6 +53,58 @@ STAMP_STATES = {
     "not-triggered": "功能验证: 未触发（可交付）",
 }
 TRIGGER_RULES = ("V1", "V2", "V3", "V4", "V5")
+
+# ── verdict.md 判据校验（tt4 批 · 审计 M4a/M4b） ────────────────────────────
+# SKILL.md §二 的三条 MUST（标签封闭 / 「修复后通过」commit 链 / 证据锚定）
+# 此前只存在于 prompt 条文、**无任何可执行载体**；本块是它的可执行实现。
+# 印章语法从 STAMP_STATES **单一真源派生**——新增或改名盖章态只需改 STAMP_STATES，
+# 脚本校验不会与 SKILL.md 判据漂移。
+VERDICT_DECL_RE = re.compile(r"(裁定|盖章|功能验证|verdict)", re.I)
+# 只扫描「像声明」的行：既有裁定类关键词、又有结论类关键词。
+# 否则 `## 门④·交付裁定` 这类纯节标题会被误判成表外标签（实测已踩过）。
+VERDICT_VALUE_RE = re.compile(r"(通过|未执行|未触发|人审|部分|失败|阻塞|FAIL)")
+COMMIT_HASH_RE = re.compile(r"\b[0-9a-f]{7,40}\b")
+EVIDENCE_RE = re.compile(
+    r"(?i)\brunId\b|```|\.png\b|\.jpe?g\b|\.gif\b|\.webp\b|\b[0-9a-f]{7,40}\b")
+_MD_PREFIX_RE = re.compile(r"^(?:#{1,6}|[-*>+]+|\|\s*)[\s:：]*")
+
+
+def _lit(s: str) -> str:
+    r"""字面量 → 正则片段：空格放宽为 `[ \t]*`、半角冒号放宽为 `[:：]`，其余逐字转义。
+
+    逐字符处理，**不能**先 `re.escape` 再 `.replace(" ", ...)`——Python 3.14 的
+    `re.escape` 会把空格转成 `\ `（反斜杠+空格），replace 命中的是那个反斜杠后面
+    的空格，产物变成 `\[ \t]*`（字面 `[` + 空格 + `\t*`）而不是字符类 `[ \t]*`，
+    五个盖章正则全部匹配失败（实测踩过，self-test 3 项红）。
+    """
+    out = []
+    for ch in s:
+        if ch == " ":
+            out.append(r"[ \t]*")
+        elif ch == ":":
+            out.append("[:：]")
+        else:
+            out.append(re.escape(ch))
+    return "".join(out)
+
+
+def _stamp_pattern(tpl: str) -> "re.Pattern":
+    """由 STAMP_STATES 模板派生校验正则——印章语法单一真源。
+
+    `{var}` → `(?P<var>[^）)]+)`；其余按 `_lit` 转义。
+    用 `re.finditer` 而非 `re.split`——双捕获组的 split 会把内层组名也当独立条目
+    插回序列、打乱奇偶位序（实测踩过：组名变成 `{cases}` 报 bad character）。
+    """
+    out = []
+    for m in re.finditer(r"\{(\w+)\}|([^{}]+)", tpl):
+        if m.group(1):
+            out.append("(?P<%s>[^）)]+)" % m.group(1))
+        else:
+            out.append(_lit(m.group(2)))
+    return re.compile("".join(out))
+
+
+STAMP_REGEXES = [(s, _stamp_pattern(t)) for s, t in STAMP_STATES.items()]
 
 
 def classify(exit_code: int) -> dict:
@@ -250,6 +303,39 @@ def self_test() -> int:
     except SystemExit:
         pass
 
+    # verdict.md 判据校验（tt4 批 · tri-stack-train M4a/M4b 实证反例夹具）
+    eq(audit_verdict_text(
+        "## 最终裁定：功能验证: 通过（engine=local，用例 83/83）\n"
+        "\n证据：runId r-20260928-a1b2\n")["violations"], 0, "合法盖章 + 证据锚定应零违规")
+    # 反例 1：M4a/M4b 实测的表外标签「✅ 完全通过」
+    v_off = audit_verdict_text("## 门④ 最终裁定：✅ 完全通过\n")
+    eq(v_off["violations"], 1, "表外标签「✅ 完全通过」必须被拦")
+    eq(v_off["violationDetails"][0]["type"], "off-set-label", "违规类型应为 off-set-label")
+    eq(v_off["violationDetails"][0]["label"], "✅ 完全通过", "违规标签应原样回显")
+    # 反例 2：M4a 实证的自相矛盾形态「✅ 通过（附本机冒烟待用户确认）」
+    v2 = audit_verdict_text(
+        "## 裁定：✅ 通过（附本机冒烟待用户确认）\n\n证据：runId r-1\n")
+    eq(v2["violations"], 1, "「✅ 通过（附…待确认）」不是合法盖章")
+    # 反例 3：「修复后通过」无 commit 链
+    v3 = audit_verdict_text(
+        "## 最终裁定：功能验证: 修复后通过（轮次 1，归因 C）\n\n证据：runId r-1\n")
+    eq(any(d["type"] == "missing-commit-chain" for d in v3["violationDetails"]), True,
+       "「修复后通过」无 commit hash 必须被拦")
+    # 反例 4：「通过」无证据锚定（M4b-AC6 实证的「用户确认通过」一句话盖章）
+    v4 = audit_verdict_text(
+        "## 最终裁定：功能验证: 通过（engine=local，用例 3/3）\n\n用户确认通过。\n")
+    eq(any(d["type"] == "missing-evidence-anchor" for d in v4["violationDetails"]), True,
+       "「通过」无 runId/输出/截图必须被拦")
+    # 反例 5：全文无盖章行
+    v5 = audit_verdict_text("# 交付裁定\n\n一切正常。\n")
+    eq(any(d["type"] == "missing-verdict" for d in v5["violationDetails"]), True,
+       "无盖章行必须报 missing-verdict")
+    # 纯节标题 `## 门④·交付裁定` 不是表外标签（防误报，实测已踩）
+    eq(audit_verdict_text("## 门④·交付裁定\n\n一切正常。\n")["offSetLabels"], [],
+       "纯节标题不得误判为表外标签")
+    # mutation：若把 off-set 判成 OK，上面「✅ 完全通过」那条必须变红
+    eq(v_off["violations"] > 0, True, "mutation: 表外标签不得被当作通过")
+
     if fails:
         print("self-test FAILED:")
         for f in fails:
@@ -257,6 +343,58 @@ def self_test() -> int:
         return 1
     print(f"self-test OK（{len(EXIT_MAP)} 个退出码映射 · 轮次上限 {ROUND_LIMIT} · {len(STAMP_STATES)} 个盖章态）")
     return 0
+
+
+def audit_verdict_text(text: str) -> dict:
+    """校验 verdict.md 文本。返回 {file?, states, offSetLabels, violations, violationDetails}。
+
+    三条判据逐条对应 SKILL.md §二 条文（**非本脚本自创**）：
+      ① 标签封闭——每个「裁定/盖章」声明行的标签 MUST ∈ STAMP_STATES 五态；
+         命中表外标签（如「✅ 完全通过」）即判违规。
+      ② commit 链——`修复后通过` MUST 引用 ≥1 个 commit hash（7-40 位 hex）。
+      ③ 证据锚定——`通过` / `修复后通过` MUST 引用 runId、用例输出代码块或截图路径。
+    """
+    states, off_set = [], []
+    in_fence = False
+    for ln in re.sub(r"\r", "", text).split("\n"):
+        s = ln.strip()
+        if s.startswith("```"):
+            in_fence = not in_fence
+            continue
+        if in_fence or not VERDICT_DECL_RE.search(s) or not VERDICT_VALUE_RE.search(s):
+            continue
+        hit = None
+        for st, pat in STAMP_REGEXES:
+            if pat.search(s):
+                hit = st
+                break
+        if hit:
+            if hit not in states:
+                states.append(hit)
+        else:
+            lbl = _MD_PREFIX_RE.sub("", re.split(r"[:：]", s)[-1].strip() or s)
+            off_set.append({"line": ln.rstrip(), "label": lbl.replace("**", "").strip()[:60]})
+
+    vios = [{"type": "off-set-label", "detail": "标签不在封闭集内", **x} for x in off_set]
+    if not states and not off_set:
+        vios.append({"type": "missing-verdict",
+                     "detail": "全文无「裁定/盖章」声明行——判据未产出"})
+    if "fixed" in states and not COMMIT_HASH_RE.search(text):
+        vios.append({"type": "missing-commit-chain",
+                     "detail": "「修复后通过」未引用任何 commit hash"})
+    if ("passed" in states or "fixed" in states) and not EVIDENCE_RE.search(text):
+        vios.append({"type": "missing-evidence-anchor",
+                     "detail": "「通过/修复后通过」未引用 runId / 用例输出代码块 / 截图路径"})
+    return {"states": states, "matchedStamps": len(states),
+            "offSetLabels": off_set, "violations": len(vios),
+            "violationDetails": vios}
+
+
+def audit_verdict(path: Path) -> dict:
+    """校验单个 verdict.md 文件（`verdict --file` 入口）。"""
+    res = audit_verdict_text(path.read_bytes().decode("utf-8", errors="replace"))
+    res["file"] = str(path)
+    return res
 
 
 def main() -> int:
@@ -280,6 +418,9 @@ def main() -> int:
 
     sub.add_parser("self-test", help="内置自检（含 mutation 断言）")
 
+    p4 = sub.add_parser("verdict", help="校验 verdict.md：标签封闭 + commit 链 + 证据锚定")
+    p4.add_argument("--file", required=True)
+
     args = ap.parse_args()
     if args.cmd == "self-test":
         return self_test()
@@ -290,6 +431,8 @@ def main() -> int:
     elif args.cmd == "stamp":
         res = make_stamp(args.state, engine=args.engine, cases=args.cases,
                          rounds=args.rounds, attribution=args.attribution, reason=args.reason)
+    elif args.cmd == "verdict":
+        res = audit_verdict(Path(args.file))
     else:
         ap.print_help()
         return 2
@@ -299,7 +442,8 @@ def main() -> int:
     else:
         for k, v in res.items():
             print(f"{k}: {v}")
-    return 1 if res.get("escalate") or res.get("deviation") else 0
+    return 1 if (res.get("escalate") or res.get("deviation")
+                 or res.get("violations")) else 0
 
 
 if __name__ == "__main__":
