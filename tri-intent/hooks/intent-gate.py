@@ -96,7 +96,7 @@ ROUTE_SLUGS = {
     # —— 本分支未包含（分类保留、无下游）——
     "I01": "", "I02": "", "I03": "", "I04": "", "I05": "",
     "I06": "", "I07": "", "I08": "", "I09": "",
-    "I10": "",   # I10 默认无下游；三个子类见下方 SUBTYPE_SLUGS
+    "I10": "",   # I10 默认无下游；四个子类见下方 SUBTYPE_SLUGS
     "I15": "", "I16": "",
     "I17": "", "I18": "", "I19": "", "I20": "",
     "M05": "",
@@ -119,6 +119,7 @@ SUBTYPE_SLUGS = {
     ("I10", "arch-viz"): "tri-html",
     ("I10", "audit-checklist"): "tri-checklist",
     ("I10", "code-analyzer"): "tri-code-analyzer",
+    ("I10", "design-doc"): "code-design-doc",
 }
 
 # ---- 置信度阈值（单一事实源，与 SKILL.md §置信度机制 对齐）------------------

@@ -63,7 +63,7 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-intent](tri-intent/) | 1.14.3 | 意图识别总路由。第一层三分法（Asking/Doing/Expressing/Meta）→ 下钻二级意图 → 产出快照交接下游 |
+| [tri-intent](tri-intent/) | 1.14.4 | 意图识别总路由。第一层三分法（Asking/Doing/Expressing/Meta）→ 下钻二级意图 → 产出快照交接下游 |
 | [tri-meta](tri-meta/) | 1.2.9 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
 
 ### 编程主干（写 → 修 → 审）
@@ -105,7 +105,7 @@
 | 名称 | 版本 | 描述 |
 |---|---|---|
 | [tri-init](tri-init/) | 1.0.4 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
-| [tri-forge](tri-forge/) | 1.0.5 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
+| [tri-forge](tri-forge/) | 1.2.0 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
 | [tri-god](tri-god/) | 1.2.5 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
 
 ### 相邻支撑
@@ -135,7 +135,7 @@ ops/
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
 ├── versions.json            自主版本线基线（35 skill 快照：顶层 26 + tri-sdlc 子 skill 9）
-└── patches/                 本地补丁层（336 个 op，幂等重放）
+└── patches/                 本地补丁层（353 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器

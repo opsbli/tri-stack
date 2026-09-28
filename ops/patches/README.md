@@ -518,6 +518,23 @@ dry-run 的 `not_found` 只能证明「此刻树上没有」，**不能**证明�
 | `dw10-registry-x5-closure` | replace_text | external-gate-registry 缺陷表：skill-doctor X5 行改写为已结案痕迹（dw10 批） |
 | `dw11-fed-hook-path` | replace_text | `tri-frontend-design` 兜底表 ④ 引用路径补全：裸 `hooks/intent-gate.py` → `tri-intent/hooks/intent-gate.py`（dw11 批） |
 | `dw11-fed-changelog` | replace_text | `tri-frontend-design` CHANGELOG：追加 [1.1.7]（dw11 批） |
+| `cdd-ti-route-row` | replace_text | `tri-intent/SKILL.md` 路由映射表 I10 行补 `code-design-doc`（design-doc 子类，用户级安装）（cdd 批） |
+| `cdd-ti-note` | replace_text | `tri-intent/SKILL.md` I10 子类说明三子类→四子类（补 design-doc 条目 / MECE 边界 / 下游依赖检测路径）（cdd 批） |
+| `cdd-ti-i10-section` | replace_text | `tri-intent/doing/I10-analyze.md` 子类判定真源新增 `design-doc` 子类段（触发语义 / 下游覆写 / 职责 / 依赖检测）（cdd 批） |
+| `cdd-ti-i10-mece` | replace_text | `tri-intent/doing/I10-analyze.md` 子类 MECE 论证表补 `design-doc` 行，且「三个子类」表述改「四个子类」（cdd 批） |
+| `cdd-ti-hook` | replace_text | `tri-intent/hooks/intent-gate.py` `SUBTYPE_SLUGS` 补 `("I10","design-doc") → code-design-doc`（可执行映射与路由真源对齐）（cdd 批） |
+| `cdd-ti-readme` | replace_text | `tri-intent/README.md` L3 子类路由表补 `design-doc` 行（cdd 批） |
+| `cdd-ti-desc` | replace_text | `tri-intent/SKILL.md` frontmatter description「仅 I10 三子类」→「仅 I10 四子类」（cdd 批） |
+| `cdd-ti-summary` | replace_text | `tri-intent/SKILL.md` frontmatter summary「16 个下游」→「17 个下游」（cdd 批） |
+| `cdd-ti-counts` | replace_text | `tri-intent/SKILL.md` §四 对称检测计数口径：路由型 16 → 17，slug 枚举补 `code-design-doc`（cdd 批） |
+| `cdd-ti-cl` | replace_text | `tri-intent` CHANGELOG：追加 [1.14.4] 条目（P2 属人工内容）（cdd 批） |
+| `cdd-forge-fspec` | replace_text | `tri-forge/references/family-spec.md` §五 待登记项：登记「I10 第四 L3 子类 design-doc」（家族首个用户级安装的 L3 子类下游）（cdd 批） |
+| `cdd-doc-opsreadme-count` | replace_regex（settle） | `ops/README.md` 目录树 op 计数 → 353（批中补正：字面 replace_text 改 settle 形式）（cdd 批） |
+| `cdd-doc-rootreadme-count` | replace_regex（settle） | 根 `README.md` 目录树 op 计数 → 353（批中补正：字面 replace_text 改 settle 形式）（cdd 批） |
+| `cdd-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 cdd 批 17 行（cdd 批） |
+| `cdd-doc-count-section` | replace_text | `ops/patches/README.md` 追加「计数（2026-09-28 · cdd 批增量）」小节（cdd 批） |
+| `cdd-ti-i10-intro` | replace_text | `tri-intent/doing/I10-analyze.md` 子类路由引言「现有三个 L3 子类」→「四个」（**批中补正**：原 `cdd-ti-i10-mece` 只覆盖 MECE 段同义句，漏本行）（cdd 批） |
+| `cdd-ti-hook-comment` | replace_text | `tri-intent/hooks/intent-gate.py` `SUBTYPE_SLUGS` 上方注释「三个子类」→「四个」（**批中补正**）（cdd 批） |
 
 ## 每项补丁的依据
 
@@ -1220,3 +1237,52 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 
 回执：`apply.py` 首轮 3/3「应用 1」（1 settle + 2 新 op）、二轮 0 真应用；`version-lint` 文档层 0 漂移
 （残留 `tri-forge` P2 为并发会话在途项，本批未触碰）。
+
+### 计数（2026-09-28 · cdd 批增量 · code-design-doc 锻造 + I10 第四子类路由回填）
+
+> 上节计数为时点快照，**冻结**。本批 = tri-forge C 模式锻造 `code-design-doc`（详细设计说明书模板填充）
+> 后的门③ 路由回填：L2=I10 新增第四 L3 子类 `design-doc`，一跳覆写至**平台用户级** skill
+> `~/.workbuddy/skills/code-design-doc/`（非 `tri-*` 前缀，不进源码树）。
+> `tri-intent` 1.14.3 → **1.14.4**，由**既有 settle op `f94-ver-intent` 就地更新**（不占新行；
+> 「settle 目标就地更新、NEVER 追加链式 op」——本批首轮曾误新增 `cdd-ti-ver`，与 `f94` 同 glob 同 pattern
+> 形成两个 settle op 互搏：每次重放 `f94` 先写回 1.14.3、`cdd-ti-ver` 再写 1.14.4，二者各报「应用 1」，
+> 且 `sync-version-meta` 排在两者之间 ⇒ `_meta.json` 停在 1.14.3。按未 commit 范式**回滚 + 就地改 `f94`**，
+> 未新增任何纠错 op）。`tri-forge/references/family-spec.md` §五 同步登记。
+>
+> **批中补正（同批，未 commit）**：门④ 复核发现两处**由本批引入**的残留计数——`doing/I10-analyze.md` 子类路由引言「现有三个 L3 子类」与 `hooks/intent-gate.py` 的 `SUBTYPE_SLUGS` 上方注释「三个子类」——两者均未随第四子类联动（原 `cdd-ti-i10-mece` 只覆盖 MECE 段同义句，漏了引言）。补 2 个 `cdd-*` op（`cdd-ti-i10-intro` / `cdd-ti-hook-comment`）后，cdd 批共 **17** 个新 op。
+> 同时按仓库「未 commit 就地改 op」范式，**把 2 个文档计数 op 由字面 `replace_text` 改为 settle 形式 `replace_regex`**（pattern 收敛任意旧值）——否则「计数随 op 数联动」每批都要再追加一条纠错 op，即 f86/f97 同款永动。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |
+| `ops/README.md` / 根 `README.md` op 计数 | 336 | **353** | 当前态账本同批回写 |
+| 顶层 skill 数 / 校验覆盖 | 26 / 35 | **26 / 35** | 不变——`code-design-doc` 落平台用户级，**不进源码树**，故不入 `tri-*` 计数 |
+| `tri-intent` §四 路由型下游计数 | 16 | **17** | §一路由映射表新增 `code-design-doc`（该集合首次含非 `tri-*` 前缀成员） |
+
+回执：`apply.py` 首轮 17/17 新建 op「应用 1」（含 2 个文档计数 op）+ `f94` 就地更新「应用 1」；
+二轮全部「应用 0｜已应用 1」零真应用；`compliance_check.py --dir ~/.workbuddy/skills/code-design-doc`
+= **FAIL 0**（24 条，1 项 MANUAL 已人工核实）；`version-lint` 文档层 0 漂移，包内漂移 **1**（=`tri-forge` P2≠P1，**非本批引入**）——该漂移已于同日按下方 §版本线修正 对齐，最终 **包内漂移 0**。本批由单会话完成，无并发写入。
+
+### 版本线修正（2026-09-28 · 非 cdd 项）：`tri-forge` P1 对齐 1.0.5 → 1.2.0
+
+> **触发**：cdd 批收尾跑 `version-lint` 报「包内漂移 1」——`tri-forge` **P2（CHANGELOG 首条 1.2.0）≠ P1（SKILL.md 1.0.5）**。
+> **一手取证（非凭记忆）**：1.0.6 → 1.1.0 → 1.1.1 → 1.2.0 四轮均有 `Approved: yes` proposal，且声明变更**逐条在树内可核验** ——
+> `compliance_check.py` 的四处 `add(24, …)` 全部 `advisory=False`（第 607/615/621/626 行）+ 第 628 行注释「已于 2026-09-27 升为必检」；
+> `references/compliance-checklist.md` 含 `24/24`、「两条均为必检」，第 24 条已去〔建议项〕并含二次校准记录；
+> `tests/battery/battery.json` 含 `M-24-a…f`（12 处引用）、`_sealed/eval-expect.json` 含 `FAIL:24`、用测试档含 T27/T35–T37；
+> `references/change-acceptance-gate.md` / `case-battery-spec.md` / `scripts/acceptance_diff.py` / `battery_run.py` / `tests/mutation-gate.py` 均在。
+> ⇒ **真值 = 1.2.0**；P1/P3/P5 三处滞后，成因是 `dw2-tri-forge-version` 于 2026-09-26 写入 1.0.5 后，
+> 1.0.6→1.2.0 的 gate 工作**漏同步版本位点**（非「1.2.0 被回退」，故非内容问题）。
+
+| 处置 | 实测回执 |
+|---|---|
+| `dw2-tri-forge-version` 目标**就地更新** 1.0.5 → 1.2.0 | 应用 1｜已应用 0；该 glob 上**唯一**版本线 op（写前枚举断言，防 settle 互搏） |
+| P3 `_meta.json` | `sync-version-meta` 写入 1 → 1.2.0 |
+| P5 `README.md` 徽章 | `sync-readme-version` 写入 1 → 1.2.0 |
+| 文档层 D1/D2/D4 | `version-lint.py --apply-docs` 幂等修正 **3** 处（`WORKFLOW-GUIDE.html` D1 + D2、根 `README.md` D4） |
+| 终局 | `version-lint` → **检查 35 个 skill；存在漂移 0 个**（全表 ✅），文档层无漂移 |
+
+> **未新增任何 op**（含纠错 op）：补丁层 op 数保持 **353**。`tri-forge` **无内容变更、无行为变更**，仅版本声明位点对齐。
+> 二轮重放 `dw2` 报「应用 0｜已应用 1」——幂等成立。
+> 注：§当前补丁清单中 `dw2` 的登记行仍显示 1.0.5 —— 与本表既有 **4 例同型**（`f43-req-audit-version-1-1-0` 登记 1.1.0 / 实为 1.1.1；`f85-ver-lottie` 登记 1.0.4 / 实为 1.0.6；`f93-ver-html` 登记 1.3.4 / 实为 1.3.8；`f94-ver-intent` 登记 1.14.2 / 实为 1.14.4）：**家族惯例 = 登记行只记首次注册值，就地 retarget 由日期增量小节 + 该 op 的 `label` 承载**，故不chase、不新增纠错 op。
+

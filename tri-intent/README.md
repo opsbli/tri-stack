@@ -90,6 +90,7 @@ tri-intent/
 | `arch-viz` | I10 | `tri-html` | 项目架构可视化分析（单文件 HTML，六维架构分析） |
 | `audit-checklist` | I10 | `tri-checklist` | 项目审计清单生成（Markdown 复选框，四维审计） |
 | `code-analyzer` | I10 | `tri-code-analyzer` | 代码库全维度深度剖析（双视角五部分 Markdown 报告 + Mermaid 四图 + file:line 证据锚 + 技术栈知识库对照 + 上手/重构指南） |
+| `design-doc` | I10 | `code-design-doc` | 详细设计说明书模板填充（按甲方模板逐节填「补充：xxx」六段式 + 设计表；每条断言强制 file:line 证据锚 + 案级证据台账；**用户级安装** `~/.workbuddy/skills/code-design-doc/`） |
 | `pm` | I06 | （本分支未包含，原 `tri-pm`） | PM 领域产物（PRD/战略画布/路线图/OKR/GTM/竞品分析/AI 交付审计包） |
 | `frontend-design` | I11 | `tri-frontend-design` | 前端设计方向（风格锚点 CSS 令牌 + 动效引擎 + 多变体探索；代码实现仍走 tri-coding） |
 | `motion` | I11 | `tri-lottie` | 动效实现（8 步规格单决策 → 六端动画代码：Web/Android/iOS/鸿蒙 ArkTS/React Native/Flutter；Lottie 集成与动效审查） |

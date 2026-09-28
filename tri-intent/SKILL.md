@@ -1,10 +1,10 @@
 ---
 name: tri-intent
 slug: tri-intent
-version: 1.14.3
+version: 1.14.4
 displayName: tri-intent
-description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。**本分支为编程工作流专线**：仅 I10 三子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill，其余落点分类保留但无下游（全量版见归档分支 archive-full-skills-20260924）。
-summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约；本分支为编程工作流专线，仅 16 个下游 skill 可用。
+description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。**本分支为编程工作流专线**：仅 I10 四子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill，其余落点分类保留但无下游（全量版见归档分支 archive-full-skills-20260924）。
+summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约；本分支为编程工作流专线，仅 17 个下游 skill 可用。
 tags: [intent-routing, mece, snapshot, classification, router, confidence]
 license: MIT
 ---
@@ -263,7 +263,7 @@ python scripts/check_update.py --slug tri-intent --json
 
 | L2 意图 | 下游 skill slug | skill 目录名 |
 |---|---|---|
-| I10 | tri-html / tri-checklist / tri-code-analyzer | **仅 L3 子类有下游**（一跳覆写）：`tri-html/`（arch-viz）、`tri-checklist/`（audit-checklist）、`tri-code-analyzer/`（code-analyzer）；I10 默认（通用分析）本分支未包含 |
+| I10 | tri-html / tri-checklist / tri-code-analyzer / code-design-doc | **仅 L3 子类有下游**（一跳覆写）：`tri-html/`（arch-viz）、`tri-checklist/`（audit-checklist）、`tri-code-analyzer/`（code-analyzer）、`code-design-doc/`（design-doc，**用户级安装**）；I10 默认（通用分析）本分支未包含 |
 | I11 | tri-coding | `tri-coding/`（默认）；前端设计方向子类→`tri-frontend-design/`（见下）；动效实现子类→`tri-lottie/`（见下）；PM 原型解析子类→`tri-prototype/`（见下）；全生命周期子类→`tri-sdlc/` |
 | I12 | tri-fix | `tri-fix/` |
 | 代码审查（CR） | tri-review | `tri-review/` |
@@ -282,14 +282,15 @@ python scripts/check_update.py --slug tri-intent --json
 > I06 文章撰写子类（`L3=article` → 原 `tri-article/`）、I06 PM 产物子类（`L3=pm` → 原 `tri-pm/`）。
 > 三者在本分支**不再产出下游路由建议**；识别仍标注对应 `L3_子意图`，但 `下游路由建议` 置为「本分支未包含」。
 
-> **I10 三个子类说明（子类路由 · 本分支全部保留）**：L2=I10 分析处理时，按产出物形态三选一（一跳覆写）：
+> **I10 四个子类说明（子类路由 · 本分支全部保留）**：L2=I10 分析处理时，按产出物形态四选一（一跳覆写）：
 > - `L3=arch-viz`（分析项目架构 / 生成架构可视化 HTML / 画项目架构图 / 项目全貌报告 / 架构师视角分析项目）→ **tri-html**
 > - `L3=audit-checklist`（生成审计 checklist / 项目自检清单 / 改动审查测试清单 / commit 提交前检查清单）→ **tri-checklist**
 > - `L3=code-analyzer`（剖析代码库 / 帮我读懂这个项目 / 接手项目全维度分析 / 代码库 onboarding）→ **tri-code-analyzer**
+> - `L3=design-doc`（按甲方详细设计说明书模板填设计文档 / 补充：xxx 按模板格式填写 / 照着模板把每一节补全）→ **code-design-doc**（**安装于平台用户级** `~/.workbuddy/skills/code-design-doc/`，非本仓库源码树成员）
 >
-> **三者 MECE**：产出物是**可视化 HTML 图表** → tri-html；是**可勾选审计清单** → tri-checklist；是**代码级深剖 Markdown 报告** → tri-code-analyzer；同时命中时按用户指定输出物形态判定（详见 `doing/I10-analyze.md` §冲突消解）。
+> **四者 MECE**：产出物是**可视化 HTML 图表** → tri-html；是**可勾选审计清单** → tri-checklist；是**无模板约束的自由代码剖析 Markdown 报告** → tri-code-analyzer；是**受甲方模板逐节约束的交付文档** → code-design-doc；同时命中时按用户指定输出物形态判定（详见 `doing/I10-analyze.md` §冲突消解）。
 > **I10 默认（通用分析）在本分支无下游**——原承载方 `tri-content` 未包含在本分支。
-> 下游依赖检测分别检测 `tri-html/`、`tri-checklist/`、`tri-code-analyzer/`（及 `.tribro/skills/<slug>/`），缺失即提示安装。
+> 下游依赖检测分别检测 `tri-html/`、`tri-checklist/`、`tri-code-analyzer/`、`code-design-doc/`（后者位于平台用户级 `~/.workbuddy/skills/`，由 `tri-intent/scripts/check_downstream.py` 候选路径 ③ 检出），及 `.tribro/skills/<slug>/`，缺失即提示安装。
 
 > **I11/I13/I14 全生命周期子类说明（子类路由）**：当 L2 ∈ {I11, I13, I14}，且任务要点含全生命周期语义（全生命周期/SDLC/研发流程/立项到上线/端到端交付/完整开发流程/从需求到发布/阶段门禁）时，
 > `L3_子意图` 标注为 `sdlc`，`下游路由建议` **覆写为 tri-sdlc**（一跳）。三个 L2 共用同一子类键，因为「按完整流程做个项目」可能以编码（I11）、规划（I13）或推进执行（I14）为表层动词，但交付对象同为「一个走完九阶段的真实项目」。
@@ -408,7 +409,9 @@ graph LR
 >
 > 双向检测确保：无论用户先安装哪一端，缺失的另一端都会被检测到并给出安装引导。
 >
-> 计数口径（MUST 随 §一 枚举联动更新，NEVER 沿用历史值）：路由型 **16** = §一路由映射表全部下游 slug 去重
+> 计数口径（MUST 随 §一 枚举联动更新，NEVER 沿用历史值）：路由型 **17** = §一路由映射表全部下游 slug 去重
 > （`tri-coding` / `tri-frontend-design` / `tri-lottie` / `tri-prototype` / `tri-sdlc` / `tri-fix` / `tri-review` /
 > `tri-plan` / `tri-workflow` / `tri-action` / `tri-loop` / `tri-html` / `tri-checklist` / `tri-code-analyzer` /
-> `tri-god` / `tri-meta`）；横向型 **2** = `tri-evolve` / `tri-true`（不认领 L2 编码、不进路由表，由委派或显式调用激活）。任一枚举变更 MUST 同步本节。
+> `code-design-doc` / `tri-god` / `tri-meta`）；横向型 **2** = `tri-evolve` / `tri-true`（不认领 L2 编码、不进路由表，由委派或显式调用激活）。
+> 该集合**含 1 个非 `tri-*` 前缀成员**（`code-design-doc`，平台用户级安装）：它参与 §一 路由表与下游依赖检测，
+> **但不计入仓库顶层 skill 数**（§四 上一段「N 个 tri-* skill 已实现」只统计源码树成员）。任一枚举变更 MUST 同步本节。

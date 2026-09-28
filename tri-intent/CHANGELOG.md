@@ -4,6 +4,22 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.14.4] - 2026-09-28
+
+### 变更
+
+- **新增 I10 第四个 L3 子类 `design-doc`（一跳覆写 → `code-design-doc`）**：路由映射表 I10 行补 slug；
+  I10 子类说明由「三子类」扩为「四子类」，补 design-doc 条目、四者 MECE 边界与下游依赖检测路径；
+  同步 `doing/I10-analyze.md`（子类判定真源：新增子类段 + MECE 论证表补行）与
+  `hooks/intent-gate.py`（`SUBTYPE_SLUGS` 可执行映射）。
+- **§四 对称检测计数口径**：路由型 16 → **17**，slug 枚举补入 `code-design-doc`；
+  frontmatter 的 description（「I10 三子类」→「I10 四子类」）与 summary（「16 个下游」→「17 个下游」）随之更新。
+- **形态说明（家族首次）**：`code-design-doc` 非 `tri-*` 前缀、安装于**平台用户级**
+  `~/.workbuddy/skills/code-design-doc/`，不进本仓库源码树，故不计入顶层 skill 数；
+  由 `scripts/check_downstream.py` 候选路径 ③（平台用户级）检出。已在
+  `tri-forge/references/family-spec.md` §五 登记。
+- 文档与路由补全，无既有下游行为变更（无代码逻辑改动）。
+
 ## [1.14.3] - 2026-09-26
 
 ### 变更

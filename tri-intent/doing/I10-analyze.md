@@ -24,7 +24,7 @@ description: 【Doing·I10 分析处理】用户提供数据/文本/现象，要
 
 ## 子类路由
 
-> I10 分析处理现有三个 L3 子类，均**直接覆写下游 slug**（一跳，无需中介 skill），与 I06 article 子类设计一致。
+> I10 分析处理现有四个 L3 子类，均**直接覆写下游 slug**（一跳，无需中介 skill），与 I06 article 子类设计一致。
 
 ### arch-viz（架构可视化分析）
 
@@ -50,6 +50,14 @@ description: 【Doing·I10 分析处理】用户提供数据/文本/现象，要
 - **下游职责**：以架构师+程序员双视角对代码库执行七阶段剖析管道（定位→识别→拓扑→穿透→横切→对照→交付），产出五部分 Markdown 报告（架构拓扑/工程实现/风格审计/Mermaid 四图/上手指南），每条结论强制附 file:line 证据锚，对照内置技术栈知识库（arkts/electron/flutter/qt/react-native/taro/uni-app/通用后端）校准，未覆盖栈经官方文档联网建卡
 - **下游依赖检测**：检测源码树 `tri-code-analyzer/` 或 `.tribro/skills/tri-code-analyzer/`，缺失即提示安装
 
+### design-doc（详细设计说明书模板填充）
+
+- **触发语义**：任务要点含「按既有模板填写设计文档」语义（按这个模板填设计文档 / 把详细设计说明书写了 / 补充：xxx 按模板格式填写 / 照着模板把每一节补全）
+- **L3 子意图**：`design-doc`
+- **下游覆写**：默认 I10 → **`code-design-doc`**（I10 默认通用分析在本分支无下游，原 tri-content）；该 skill **安装于平台用户级** `~/.workbuddy/skills/code-design-doc/`，非本仓库源码树成员
+- **下游职责**：以甲方《详细设计说明书》模板为骨架、以真实源码为唯一证据源，逐节填充「补充：xxx」小节与设计表格；五阶段串行（模板解析 → 代码取证 → 六段式填充 → 证据门禁 → 回填交付），每条断言强制 `file:line` 证据锚，无证据标 `[待确认]`，产出案级证据台账
+- **下游依赖检测**：检测 `code-design-doc/`（本仓库源码树 / `.tribro/skills/` / **平台用户级** `~/.workbuddy|.trae|.cursor|.qcoder/skills/` / 注册表），缺失即提示安装
+
 ### 子类 MECE 论证
 
 | 子类 | 分析对象 | 产出 | 与 I10 默认的边界 |
@@ -57,8 +65,9 @@ description: 【Doing·I10 分析处理】用户提供数据/文本/现象，要
 | arch-viz | 项目整体架构 | 单文件 HTML 可视化 | I10 默认（原 tri-content）是通用分析，arch-viz 专司架构可视化 |
 | audit-checklist | 项目改动/审查/测试点 | Markdown checklist | I10 默认（原 tri-content）是通用分析，audit-checklist 专司审计清单 |
 | code-analyzer | 代码库工程实现细节 | 五部分深度剖析报告（Markdown + 内嵌 Mermaid） | I10 默认（原 tri-content）是通用分析，code-analyzer 专司代码级剖析（证据锚定+上手指南） |
+| design-doc | 源码 + 甲方设计说明书模板 | 按模板格式填满的交付文档（六段式分节 + 设计表） | I10 默认（原 tri-content）是通用分析，design-doc 专司**受模板逐节约束**的设计文档产出（证据锚定 + 案级台账） |
 
-三个子类交付物形态互斥（HTML 图表 / 复选框清单 / 深度报告），分析对象与深度不同，MECE 成立。默认 I10（无子类语义）在本分支无下游（原 tri-content 未包含）。
+四个子类交付物形态互斥（HTML 图表 / 复选框清单 / 深度剖析报告 / 模板化交付文档），分析对象与深度不同，MECE 成立。默认 I10（无子类语义）在本分支无下游（原 tri-content 未包含）。
 
 ### 冲突消解（code-analyzer × arch-viz）
 

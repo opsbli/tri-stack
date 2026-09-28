@@ -110,7 +110,7 @@
   <h1>使用手册：从一句需求到落地交付</h1>
   <p class="sub">本仓库（opsbli/tri-stack）为<b>完全自维护</b>：不依赖上游、不从平台下载、26 个 skill 全部经 junction 安装可用。手册按<b>仓库实测契约 + 真实项目实战教训</b>重写——所有数字、路径与坑均取自当前源码与 ops-pilot 实战校准，非历史稿抄改。</p>
   <div class="meta">
-    <span class="chip">入口 tri-intent v1.14.3</span>
+    <span class="chip">入口 tri-intent v1.14.4</span>
     <span class="chip">27 个意图落点</span>
     <span class="chip">26 个顶层 skill · 编程线 23 + 横向 3</span>
     <span class="chip">版本一致性 26/26 ✅</span>
@@ -173,7 +173,7 @@
 <div class="layer">
   <div class="lh"><span class="dot" style="background:var(--purple)"></span><span class="nm">G0 控制面 · 分流与自我修正</span><span class="cnt">2</span></div>
   <div class="skills">
-    <span class="sk"><b>tri-intent</b> <span class="v">1.14.3</span></span>
+    <span class="sk"><b>tri-intent</b> <span class="v">1.14.4</span></span>
     <span class="sk"><b>tri-meta</b> <span class="v">1.2.9</span></span>
   </div>
   <p style="margin:8px 0 0;font-size:12.5px"><b>tri-intent</b>=唯一入口：三分法（Asking / Doing / Expressing / Meta）→ 下钻 I01–I21/CR/M01–M05 → 标 D1–D5 → 打置信度 → 落快照 → 交接下游（含 <code>clarify-gate</code> 子组件）。<b>tri-meta</b>=针对「上一轮回复」的元操作 M01–M04，在原上下文响应并重路由回原 skill。两者都<b>在所有交付组之上</b>，不产出交付物。</p>
@@ -225,7 +225,7 @@
   <div class="lh"><span class="dot" style="background:var(--amber)"></span><span class="nm">G5 内务 / 造物 · 直调</span><span class="cnt">3</span></div>
   <div class="skills">
     <span class="sk"><b>tri-init</b> <span class="v">1.0.4</span> <span class="v">项目接入</span></span>
-    <span class="sk"><b>tri-forge</b> <span class="v">1.0.5</span> <span class="v">skill 锻造</span></span>
+    <span class="sk"><b>tri-forge</b> <span class="v">1.2.0</span> <span class="v">skill 锻造</span></span>
     <span class="sk"><b>tri-god</b> <span class="v">1.2.5</span> <span class="v">I21 蒸馏造物</span></span>
   </div>
   <p style="margin:8px 0 0;font-size:12.5px">三者<b>都不承载用户任务语义</b>，是维护这套体系本身的工具。<b>tri-init</b>=扫描技术栈 → 生成 AGENTS.md + project-profile.json + .tribro/（新项目第一步，对 AI 说「初始化 D:\path\to\project」）；<b>tri-forge</b>=在家族硬规范下生成 / 审计 skill（mode C 五门流程 + mutation 负向测试）；<b>tri-god</b>=I21，把人 / 工作流 / 方法论蒸馏成可独立调用的新 skill。</p>
@@ -968,7 +968,7 @@ flowchart LR
 
 <footer>
   tri-stack 使用手册 · 自维护版 · 按仓库实测契约 + 真实项目实战教训重写<br>
-  契约基线：tri-intent v1.14.3 ／ tri-coding v1.8.3 ／ tri-review v1.7.2 ／ tri-sdlc v1.1.7 ／ tri-prototype v1.1.3 ／ tri-forge v1.0.5 ／ tri-init v1.0.4<br>
+  契约基线：tri-intent v1.14.4 ／ tri-coding v1.8.3 ／ tri-review v1.7.2 ／ tri-sdlc v1.1.7 ／ tri-prototype v1.1.3 ／ tri-forge v1.2.0 ／ tri-init v1.0.4<br>
   26 个顶层 skill ／ 27 个意图落点 ／ 家族设计总纲 <code>tri-intent/references/version-gate.md</code><br>
   <span style="color:#6b7480">✅ 远端比对已停用（自维护模式）✅ 26 个顶层 skill 全部 junction 安装 ✅ 版本一致性 35/35（含 9 个子 skill）✅ 实战校准：ops-pilot / ops-pilot-web</span>
 </footer>

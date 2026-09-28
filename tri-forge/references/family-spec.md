@@ -198,6 +198,7 @@ NEVER 改名——门禁与路由按固定文件名定位。
 | **引擎抽象与判据印章登记 · `tri-verify`** | 新增四个家族级概念的单一事实源位置：① **引擎七方法契约**（可达性预检 / 创建 / 执行 / 快速分流 / 取失败证据 / 运行对比 / 停止）→ `tri-verify/references/engine-contract.md`；② **三类归因**（产品 / 契约 / 环境，其中环境类由**退出码机械判定**）→ `tri-verify/references/attribution-rules.md`；③ **有界循环五规则**（连续同类 2 轮 / B·C 打断连续链 / 同用例契约变更 2 次 / 重试 1 次 / 总迭代 6 次）→ 可执行真源 `tri-verify/scripts/verify_gate.py`；④ **判据印章五态**（通过 / 修复后通过 / 已升级人审 / 未执行 / 未触发）→ `tri-verify/templates/verdict.md`。登记理由：上述概念会被其它 skill 的委派契约引用（`tri-coding` / `tri-fix` / `tri-sdlc`），不登记则后续生成者会各自重定义。 |
 | **对抗委派二跳 · `tri-req-audit`** | 中介 = `tri-req-audit`；被执行方 = **家族外** skill `metago-adversarial-review`（MetaGO，红队视角，本机已装 v1.0.6），**不注册**为 tri-intent 下游。**未安装即降级为内置 D9 对抗维**并在报告中登记 `delegation.adversarial=unavailable`。登记理由：① 这是家族内首个「**跨家族**被委派方」的二跳链，与 `tri-req-audit` 的市面 PRD 审核委派（家族外撰写/审核类）并列但**判据来源不同**（后者给通用产品视角、前者给攻击者视角）；② 家族原有横向型（`tri-true` / `tri-evolve` / `tri-verify`）**均不含对抗/证伪维度**，本 skill 的 D9 是家族内首个「对抗判据」的单一事实源（`tri-req-audit/references/audit-dimensions.md` §二 D9），可执行守卫为 `tri-req-audit/scripts/audit_gate.py`。 |
 
+| **I10 第四 L3 子类 · `design-doc`** | 下游 = `code-design-doc`（**非 `tri-*` 前缀，安装于平台用户级** `~/.workbuddy/skills/`），由 L2=I10 一跳覆写。登记理由：家族内首个「**用户级安装的 L3 子类下游**」——它不进本仓库源码树，故不计入顶层 skill 计数；但被 §一 路由映射表收录、被下游依赖检测的候选路径 ③（平台用户级）检出。判据单一事实源为该 skill 包内自带的模板画像与门禁两份 references 与自带的版本检查规范。生成 / 变更时 MUST 同步四处：`tri-intent/SKILL.md` §一 路由行 + I10 子类说明、`tri-intent/doing/I10-analyze.md` 子类判定段、`tri-intent/README.md` L3 表、本表。 |
 > **登记的意义**：家族内同类概念 MUST 有唯一表述。未登记的变体会让后续生成者
 > 误套模板，产生又一处定义漂移（F3 即此类）。
 

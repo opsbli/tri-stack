@@ -517,11 +517,11 @@
     {
       "id": "f94-ver-intent",
       "type": "replace_regex",
-      "label": "tri-intent 版本线 1.14.1 → 1.14.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.14.2→1.14.3）",
+      "label": "tri-intent 版本线 1.14.1 → 1.14.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.14.2→1.14.3）（2026-09-28 cdd 批目标就地更新 1.14.3→1.14.4）",
       "glob": "tri-intent/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.14.3",
-      "already_marker": "version: 1.14.3"
+      "replacement": "version: 1.14.4",
+      "already_marker": "version: 1.14.4"
     },
     {
       "id": "f112-cl-intent",
@@ -1394,11 +1394,11 @@
     {
       "id": "dw2-tri-forge-version",
       "type": "replace_regex",
-      "label": "`tri-forge` 版本线 settle → 1.0.5（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-forge` 版本线 settle → **1.2.0**（darwin P1 批 settle 至 1.0.5）（2026-09-28 版本线修正批**目标就地更新** 1.0.5→1.2.0：实测 CHANGELOG 首条 1.2.0 为真值——1.0.6→1.2.0 四轮 gate 工作的声明变更逐条在树内可核验；P1 滞后系漏同步版本位点，非内容回退）",
       "glob": "tri-forge/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.5",
-      "already_marker": "version: 1.0.5"
+      "replacement": "version: 1.2.0",
+      "already_marker": "version: 1.2.0"
     },
     {
       "id": "dw2-tri-grill-version",
@@ -3040,6 +3040,159 @@
       "old": "## 交付产物",
       "new": "## 兜底处理（NEVER 静默失败）\n\n本 skill 在下列五类异常下 MUST 走显式降级路径并**在产物中标注**，NEVER 静默失败：\n\n| 异常类 | 触发 | 兜底路径 |\n|---|---|---|\n| ① 版本检查异常 | `scripts/check_update.py` 返回非 A/D 或 ≥20（BLOCK） | 按 §版本检查与更新机制 处置；BLOCK 时停止编译并报告 |\n| ② 门禁不过 | §阶段 5：校验验证 未通过 | 回到 §阶段 4：编译优化 修正后重校验；**不得交付未过校验的工作流** |\n| ③ 上游缺失 | 无 tri-intent 快照、无需求描述 | 走 §模式 B：独立使用 —— 经 §阶段 3：对话补全 收集需求；NEVER 凭空造工作流 |\n| ④ hook 缺失 | 本 skill 以快照 / 对话为触发源 | 不适用；若产物工作流内含 hook 触发而运行环境无 hook，MUST 在产物中给出无 hook 时的替代触发路径 |\n| ⑤ 异常场景 | 模板匹配不到、目标平台不支持、§阶段 7：迭代反馈 信号缺失 | 显式标注降级（如「无匹配模板，改用通用骨架」）；进入 §阶段 7：迭代反馈 收集修正信号；NEVER 静默产出未验证的工作流 |\n\n## 交付产物",
       "already_marker": "## 兜底处理（NEVER 静默失败）"
+    },
+    {
+      "id": "cdd-ti-route-row",
+      "type": "replace_text",
+      "label": "`tri-intent/SKILL.md` 路由映射表 I10 行补 `code-design-doc`（design-doc 子类，用户级安装）（cdd 批）",
+      "glob": "tri-intent/SKILL.md",
+      "old": "| I10 | tri-html / tri-checklist / tri-code-analyzer | **仅 L3 子类有下游**（一跳覆写）：`tri-html/`（arch-viz）、`tri-checklist/`（audit-checklist）、`tri-code-analyzer/`（code-analyzer）；I10 默认（通用分析）本分支未包含 |",
+      "new": "| I10 | tri-html / tri-checklist / tri-code-analyzer / code-design-doc | **仅 L3 子类有下游**（一跳覆写）：`tri-html/`（arch-viz）、`tri-checklist/`（audit-checklist）、`tri-code-analyzer/`（code-analyzer）、`code-design-doc/`（design-doc，**用户级安装**）；I10 默认（通用分析）本分支未包含 |",
+      "already_marker": "`code-design-doc/`（design-doc，**用户级安装**）"
+    },
+    {
+      "id": "cdd-ti-note",
+      "type": "replace_text",
+      "label": "`tri-intent/SKILL.md` I10 子类说明三子类→四子类（补 design-doc 条目 / MECE / 依赖检测路径）（cdd 批）",
+      "glob": "tri-intent/SKILL.md",
+      "old": "> **I10 三个子类说明（子类路由 · 本分支全部保留）**：L2=I10 分析处理时，按产出物形态三选一（一跳覆写）：\n> - `L3=arch-viz`（分析项目架构 / 生成架构可视化 HTML / 画项目架构图 / 项目全貌报告 / 架构师视角分析项目）→ **tri-html**\n> - `L3=audit-checklist`（生成审计 checklist / 项目自检清单 / 改动审查测试清单 / commit 提交前检查清单）→ **tri-checklist**\n> - `L3=code-analyzer`（剖析代码库 / 帮我读懂这个项目 / 接手项目全维度分析 / 代码库 onboarding）→ **tri-code-analyzer**\n>\n> **三者 MECE**：产出物是**可视化 HTML 图表** → tri-html；是**可勾选审计清单** → tri-checklist；是**代码级深剖 Markdown 报告** → tri-code-analyzer；同时命中时按用户指定输出物形态判定（详见 `doing/I10-analyze.md` §冲突消解）。\n> **I10 默认（通用分析）在本分支无下游**——原承载方 `tri-content` 未包含在本分支。\n> 下游依赖检测分别检测 `tri-html/`、`tri-checklist/`、`tri-code-analyzer/`（及 `.tribro/skills/<slug>/`），缺失即提示安装。",
+      "new": "> **I10 四个子类说明（子类路由 · 本分支全部保留）**：L2=I10 分析处理时，按产出物形态四选一（一跳覆写）：\n> - `L3=arch-viz`（分析项目架构 / 生成架构可视化 HTML / 画项目架构图 / 项目全貌报告 / 架构师视角分析项目）→ **tri-html**\n> - `L3=audit-checklist`（生成审计 checklist / 项目自检清单 / 改动审查测试清单 / commit 提交前检查清单）→ **tri-checklist**\n> - `L3=code-analyzer`（剖析代码库 / 帮我读懂这个项目 / 接手项目全维度分析 / 代码库 onboarding）→ **tri-code-analyzer**\n> - `L3=design-doc`（按甲方详细设计说明书模板填设计文档 / 补充：xxx 按模板格式填写 / 照着模板把每一节补全）→ **code-design-doc**（**安装于平台用户级** `~/.workbuddy/skills/code-design-doc/`，非本仓库源码树成员）\n>\n> **四者 MECE**：产出物是**可视化 HTML 图表** → tri-html；是**可勾选审计清单** → tri-checklist；是**无模板约束的自由代码剖析 Markdown 报告** → tri-code-analyzer；是**受甲方模板逐节约束的交付文档** → code-design-doc；同时命中时按用户指定输出物形态判定（详见 `doing/I10-analyze.md` §冲突消解）。\n> **I10 默认（通用分析）在本分支无下游**——原承载方 `tri-content` 未包含在本分支。\n> 下游依赖检测分别检测 `tri-html/`、`tri-checklist/`、`tri-code-analyzer/`、`code-design-doc/`（后者位于平台用户级 `~/.workbuddy/skills/`，由 `tri-intent/scripts/check_downstream.py` 候选路径 ③ 检出），及 `.tribro/skills/<slug>/`，缺失即提示安装。",
+      "already_marker": "> **I10 四个子类说明（子类路由 · 本分支全部保留）**"
+    },
+    {
+      "id": "cdd-ti-i10-section",
+      "type": "replace_text",
+      "label": "`tri-intent/doing/I10-analyze.md` 子类判定真源新增 `design-doc` 子类段（cdd 批）",
+      "glob": "tri-intent/doing/I10-analyze.md",
+      "old": "### 子类 MECE 论证",
+      "new": "### design-doc（详细设计说明书模板填充）\n\n- **触发语义**：任务要点含「按既有模板填写设计文档」语义（按这个模板填设计文档 / 把详细设计说明书写了 / 补充：xxx 按模板格式填写 / 照着模板把每一节补全）\n- **L3 子意图**：`design-doc`\n- **下游覆写**：默认 I10 → **`code-design-doc`**（I10 默认通用分析在本分支无下游，原 tri-content）；该 skill **安装于平台用户级** `~/.workbuddy/skills/code-design-doc/`，非本仓库源码树成员\n- **下游职责**：以甲方《详细设计说明书》模板为骨架、以真实源码为唯一证据源，逐节填充「补充：xxx」小节与设计表格；五阶段串行（模板解析 → 代码取证 → 六段式填充 → 证据门禁 → 回填交付），每条断言强制 `file:line` 证据锚，无证据标 `[待确认]`，产出案级证据台账\n- **下游依赖检测**：检测 `code-design-doc/`（本仓库源码树 / `.tribro/skills/` / **平台用户级** `~/.workbuddy|.trae|.cursor|.qcoder/skills/` / 注册表），缺失即提示安装\n\n### 子类 MECE 论证",
+      "already_marker": "### design-doc（详细设计说明书模板填充）"
+    },
+    {
+      "id": "cdd-ti-i10-mece",
+      "type": "replace_text",
+      "label": "`tri-intent/doing/I10-analyze.md` MECE 论证表补 `design-doc` 行 + 「三个子类」→「四个子类」（cdd 批）",
+      "glob": "tri-intent/doing/I10-analyze.md",
+      "old": "| code-analyzer | 代码库工程实现细节 | 五部分深度剖析报告（Markdown + 内嵌 Mermaid） | I10 默认（原 tri-content）是通用分析，code-analyzer 专司代码级剖析（证据锚定+上手指南） |\n\n三个子类交付物形态互斥（HTML 图表 / 复选框清单 / 深度报告），分析对象与深度不同，MECE 成立。默认 I10（无子类语义）在本分支无下游（原 tri-content 未包含）。",
+      "new": "| code-analyzer | 代码库工程实现细节 | 五部分深度剖析报告（Markdown + 内嵌 Mermaid） | I10 默认（原 tri-content）是通用分析，code-analyzer 专司代码级剖析（证据锚定+上手指南） |\n| design-doc | 源码 + 甲方设计说明书模板 | 按模板格式填满的交付文档（六段式分节 + 设计表） | I10 默认（原 tri-content）是通用分析，design-doc 专司**受模板逐节约束**的设计文档产出（证据锚定 + 案级台账） |\n\n四个子类交付物形态互斥（HTML 图表 / 复选框清单 / 深度剖析报告 / 模板化交付文档），分析对象与深度不同，MECE 成立。默认 I10（无子类语义）在本分支无下游（原 tri-content 未包含）。",
+      "already_marker": "四个子类交付物形态互斥（HTML 图表 / 复选框清单 / 深度剖析报告 / 模板化交付文档）"
+    },
+    {
+      "id": "cdd-ti-i10-intro",
+      "type": "replace_text",
+      "label": "`tri-intent/doing/I10-analyze.md` 子类路由引言「现有三个 L3 子类」→「四个」（**批中补正**：第四子类联动漏行）（cdd 批）",
+      "glob": "tri-intent/doing/I10-analyze.md",
+      "old": "> I10 分析处理现有三个 L3 子类，均**直接覆写下游 slug**（一跳，无需中介 skill），与 I06 article 子类设计一致。",
+      "new": "> I10 分析处理现有四个 L3 子类，均**直接覆写下游 slug**（一跳，无需中介 skill），与 I06 article 子类设计一致。",
+      "already_marker": "> I10 分析处理现有四个 L3 子类，均"
+    },
+    {
+      "id": "cdd-ti-hook-comment",
+      "type": "replace_text",
+      "label": "`tri-intent/hooks/intent-gate.py` `SUBTYPE_SLUGS` 上方注释「三个子类」→「四个」（**批中补正**）（cdd 批）",
+      "glob": "tri-intent/hooks/intent-gate.py",
+      "old": "    \"I10\": \"\",   # I10 默认无下游；三个子类见下方 SUBTYPE_SLUGS",
+      "new": "    \"I10\": \"\",   # I10 默认无下游；四个子类见下方 SUBTYPE_SLUGS",
+      "already_marker": "    \"I10\": \"\",   # I10 默认无下游；四个子类见下方 SUBTYPE_SLUGS"
+    },
+    {
+      "id": "cdd-ti-hook",
+      "type": "replace_text",
+      "label": "`tri-intent/hooks/intent-gate.py` SUBTYPE_SLUGS 补 `(\"I10\",\"design-doc\") → code-design-doc`（cdd 批）",
+      "glob": "tri-intent/hooks/intent-gate.py",
+      "old": "    (\"I10\", \"code-analyzer\"): \"tri-code-analyzer\",\n}",
+      "new": "    (\"I10\", \"code-analyzer\"): \"tri-code-analyzer\",\n    (\"I10\", \"design-doc\"): \"code-design-doc\",\n}",
+      "already_marker": "    (\"I10\", \"design-doc\"): \"code-design-doc\","
+    },
+    {
+      "id": "cdd-ti-readme",
+      "type": "replace_text",
+      "label": "`tri-intent/README.md` L3 子类路由表补 `design-doc` 行（cdd 批）",
+      "glob": "tri-intent/README.md",
+      "old": "| `code-analyzer` | I10 | `tri-code-analyzer` | 代码库全维度深度剖析（双视角五部分 Markdown 报告 + Mermaid 四图 + file:line 证据锚 + 技术栈知识库对照 + 上手/重构指南） |",
+      "new": "| `code-analyzer` | I10 | `tri-code-analyzer` | 代码库全维度深度剖析（双视角五部分 Markdown 报告 + Mermaid 四图 + file:line 证据锚 + 技术栈知识库对照 + 上手/重构指南） |\n| `design-doc` | I10 | `code-design-doc` | 详细设计说明书模板填充（按甲方模板逐节填「补充：xxx」六段式 + 设计表；每条断言强制 file:line 证据锚 + 案级证据台账；**用户级安装** `~/.workbuddy/skills/code-design-doc/`） |",
+      "already_marker": "| `design-doc` | I10 | `code-design-doc` |"
+    },
+    {
+      "id": "cdd-ti-desc",
+      "type": "replace_text",
+      "label": "`tri-intent/SKILL.md` frontmatter description「仅 I10 三子类」→「仅 I10 四子类」（cdd 批）",
+      "glob": "tri-intent/SKILL.md",
+      "old": "仅 I10 三子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill",
+      "new": "仅 I10 四子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill",
+      "already_marker": "仅 I10 四子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill"
+    },
+    {
+      "id": "cdd-ti-summary",
+      "type": "replace_text",
+      "label": "`tri-intent/SKILL.md` frontmatter summary「16 个下游」→「17 个下游」（cdd 批）",
+      "glob": "tri-intent/SKILL.md",
+      "old": "仅 16 个下游 skill 可用。",
+      "new": "仅 17 个下游 skill 可用。",
+      "already_marker": "仅 17 个下游 skill 可用。"
+    },
+    {
+      "id": "cdd-ti-counts",
+      "type": "replace_text",
+      "label": "`tri-intent/SKILL.md` §四 计数口径：路由型 16 → 17，枚举补 `code-design-doc`（cdd 批）",
+      "glob": "tri-intent/SKILL.md",
+      "old": "> 计数口径（MUST 随 §一 枚举联动更新，NEVER 沿用历史值）：路由型 **16** = §一路由映射表全部下游 slug 去重\n> （`tri-coding` / `tri-frontend-design` / `tri-lottie` / `tri-prototype` / `tri-sdlc` / `tri-fix` / `tri-review` /\n> `tri-plan` / `tri-workflow` / `tri-action` / `tri-loop` / `tri-html` / `tri-checklist` / `tri-code-analyzer` /\n> `tri-god` / `tri-meta`）；横向型 **2** = `tri-evolve` / `tri-true`（不认领 L2 编码、不进路由表，由委派或显式调用激活）。任一枚举变更 MUST 同步本节。",
+      "new": "> 计数口径（MUST 随 §一 枚举联动更新，NEVER 沿用历史值）：路由型 **17** = §一路由映射表全部下游 slug 去重\n> （`tri-coding` / `tri-frontend-design` / `tri-lottie` / `tri-prototype` / `tri-sdlc` / `tri-fix` / `tri-review` /\n> `tri-plan` / `tri-workflow` / `tri-action` / `tri-loop` / `tri-html` / `tri-checklist` / `tri-code-analyzer` /\n> `code-design-doc` / `tri-god` / `tri-meta`）；横向型 **2** = `tri-evolve` / `tri-true`（不认领 L2 编码、不进路由表，由委派或显式调用激活）。\n> 该集合**含 1 个非 `tri-*` 前缀成员**（`code-design-doc`，平台用户级安装）：它参与 §一 路由表与下游依赖检测，\n> **但不计入仓库顶层 skill 数**（§四 上一段「N 个 tri-* skill 已实现」只统计源码树成员）。任一枚举变更 MUST 同步本节。",
+      "already_marker": "路由型 **17** = §一路由映射表全部下游 slug 去重"
+    },
+    {
+      "id": "cdd-ti-cl",
+      "type": "replace_text",
+      "label": "`tri-intent` CHANGELOG：追加 [1.14.4] 条目（I10 第四子类 design-doc 路由回填；P2 属人工内容）（cdd 批）",
+      "glob": "tri-intent/CHANGELOG.md",
+      "old": "## [1.14.3] - 2026-09-26\n",
+      "new": "## [1.14.4] - 2026-09-28\n\n### 变更\n\n- **新增 I10 第四个 L3 子类 `design-doc`（一跳覆写 → `code-design-doc`）**：路由映射表 I10 行补 slug；\n  I10 子类说明由「三子类」扩为「四子类」，补 design-doc 条目、四者 MECE 边界与下游依赖检测路径；\n  同步 `doing/I10-analyze.md`（子类判定真源：新增子类段 + MECE 论证表补行）与\n  `hooks/intent-gate.py`（`SUBTYPE_SLUGS` 可执行映射）。\n- **§四 对称检测计数口径**：路由型 16 → **17**，slug 枚举补入 `code-design-doc`；\n  frontmatter 的 description（「I10 三子类」→「I10 四子类」）与 summary（「16 个下游」→「17 个下游」）随之更新。\n- **形态说明（家族首次）**：`code-design-doc` 非 `tri-*` 前缀、安装于**平台用户级**\n  `~/.workbuddy/skills/code-design-doc/`，不进本仓库源码树，故不计入顶层 skill 数；\n  由 `scripts/check_downstream.py` 候选路径 ③（平台用户级）检出。已在\n  `tri-forge/references/family-spec.md` §五 登记。\n- 文档与路由补全，无既有下游行为变更（无代码逻辑改动）。\n\n## [1.14.3] - 2026-09-26\n",
+      "already_marker": "## [1.14.4] - 2026-09-28"
+    },
+    {
+      "id": "cdd-forge-fspec",
+      "type": "replace_text",
+      "label": "`tri-forge/references/family-spec.md` §五 待登记项：登记「I10 第四 L3 子类 design-doc」（家族首个用户级安装的 L3 子类下游）（cdd 批）",
+      "glob": "tri-forge/references/family-spec.md",
+      "old": "\n> **登记的意义**：家族内同类概念 MUST 有唯一表述。未登记的变体会让后续生成者",
+      "new": "\n| **I10 第四 L3 子类 · `design-doc`** | 下游 = `code-design-doc`（**非 `tri-*` 前缀，安装于平台用户级** `~/.workbuddy/skills/`），由 L2=I10 一跳覆写。登记理由：家族内首个「**用户级安装的 L3 子类下游**」——它不进本仓库源码树，故不计入顶层 skill 计数；但被 §一 路由映射表收录、被下游依赖检测的候选路径 ③（平台用户级）检出。判据单一事实源为该 skill 包内自带的模板画像与门禁两份 references 与自带的版本检查规范。生成 / 变更时 MUST 同步四处：`tri-intent/SKILL.md` §一 路由行 + I10 子类说明、`tri-intent/doing/I10-analyze.md` 子类判定段、`tri-intent/README.md` L3 表、本表。 |\n> **登记的意义**：家族内同类概念 MUST 有唯一表述。未登记的变体会让后续生成者",
+      "already_marker": "| **I10 第四 L3 子类 · `design-doc`** |"
+    },
+    {
+      "id": "cdd-doc-opsreadme-count",
+      "type": "replace_regex",
+      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）",
+      "glob": "ops/README.md",
+      "pattern": "唯一事实源，当前 \\d+ 个 op）",
+      "replacement": "唯一事实源，当前 353 个 op）",
+      "already_marker": "唯一事实源，当前 353 个 op）"
+    },
+    {
+      "id": "cdd-doc-rootreadme-count",
+      "type": "replace_regex",
+      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）",
+      "glob": "README.md",
+      "pattern": "本地补丁层（\\d+ 个 op，幂等重放）",
+      "replacement": "本地补丁层（353 个 op，幂等重放）",
+      "already_marker": "本地补丁层（353 个 op，幂等重放）"
+    },
+    {
+      "id": "cdd-doc-registry-rows",
+      "type": "replace_text",
+      "label": "`ops/patches/README.md` §当前补丁清单补登 cdd 批 17 行 + f94 就地更新注记（cdd 批）",
+      "glob": "ops/patches/README.md",
+      "old": "| `dw11-fed-changelog` | replace_text | `tri-frontend-design` CHANGELOG：追加 [1.1.7]（dw11 批） |",
+      "new": "| `dw11-fed-changelog` | replace_text | `tri-frontend-design` CHANGELOG：追加 [1.1.7]（dw11 批） |\n| `cdd-ti-route-row` | replace_text | `tri-intent/SKILL.md` 路由映射表 I10 行补 `code-design-doc`（design-doc 子类，用户级安装）（cdd 批） |\n| `cdd-ti-note` | replace_text | `tri-intent/SKILL.md` I10 子类说明三子类→四子类（补 design-doc 条目 / MECE 边界 / 下游依赖检测路径）（cdd 批） |\n| `cdd-ti-i10-section` | replace_text | `tri-intent/doing/I10-analyze.md` 子类判定真源新增 `design-doc` 子类段（触发语义 / 下游覆写 / 职责 / 依赖检测）（cdd 批） |\n| `cdd-ti-i10-mece` | replace_text | `tri-intent/doing/I10-analyze.md` 子类 MECE 论证表补 `design-doc` 行，且「三个子类」表述改「四个子类」（cdd 批） |\n| `cdd-ti-hook` | replace_text | `tri-intent/hooks/intent-gate.py` `SUBTYPE_SLUGS` 补 `(\"I10\",\"design-doc\") → code-design-doc`（可执行映射与路由真源对齐）（cdd 批） |\n| `cdd-ti-readme` | replace_text | `tri-intent/README.md` L3 子类路由表补 `design-doc` 行（cdd 批） |\n| `cdd-ti-desc` | replace_text | `tri-intent/SKILL.md` frontmatter description「仅 I10 三子类」→「仅 I10 四子类」（cdd 批） |\n| `cdd-ti-summary` | replace_text | `tri-intent/SKILL.md` frontmatter summary「16 个下游」→「17 个下游」（cdd 批） |\n| `cdd-ti-counts` | replace_text | `tri-intent/SKILL.md` §四 对称检测计数口径：路由型 16 → 17，slug 枚举补 `code-design-doc`（cdd 批） |\n| `cdd-ti-cl` | replace_text | `tri-intent` CHANGELOG：追加 [1.14.4] 条目（P2 属人工内容）（cdd 批） |\n| `cdd-forge-fspec` | replace_text | `tri-forge/references/family-spec.md` §五 待登记项：登记「I10 第四 L3 子类 design-doc」（家族首个用户级安装的 L3 子类下游）（cdd 批） |\n| `cdd-doc-opsreadme-count` | replace_regex（settle） | `ops/README.md` 目录树 op 计数 → 353（批中补正：字面 replace_text 改 settle 形式）（cdd 批） |\n| `cdd-doc-rootreadme-count` | replace_regex（settle） | 根 `README.md` 目录树 op 计数 → 353（批中补正：字面 replace_text 改 settle 形式）（cdd 批） |\n| `cdd-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 cdd 批 17 行（cdd 批） |\n| `cdd-doc-count-section` | replace_text | `ops/patches/README.md` 追加「计数（2026-09-28 · cdd 批增量）」小节（cdd 批） |\n| `cdd-ti-i10-intro` | replace_text | `tri-intent/doing/I10-analyze.md` 子类路由引言「现有三个 L3 子类」→「四个」（**批中补正**：原 `cdd-ti-i10-mece` 只覆盖 MECE 段同义句，漏本行）（cdd 批） |\n| `cdd-ti-hook-comment` | replace_text | `tri-intent/hooks/intent-gate.py` `SUBTYPE_SLUGS` 上方注释「三个子类」→「四个」（**批中补正**）（cdd 批） |",
+      "already_marker": "| `cdd-ti-route-row` | replace_text |"
+    },
+    {
+      "id": "cdd-doc-count-section",
+      "type": "replace_text",
+      "label": "`ops/patches/README.md` 追加「计数（2026-09-28 · cdd 批增量）」小节（cdd 批）",
+      "glob": "ops/patches/README.md",
+      "old": "回执：`apply.py` 首轮 3/3「应用 1」（1 settle + 2 新 op）、二轮 0 真应用；`version-lint` 文档层 0 漂移\n（残留 `tri-forge` P2 为并发会话在途项，本批未触碰）。",
+      "new": "回执：`apply.py` 首轮 3/3「应用 1」（1 settle + 2 新 op）、二轮 0 真应用；`version-lint` 文档层 0 漂移\n（残留 `tri-forge` P2 为并发会话在途项，本批未触碰）。\n\n### 计数（2026-09-28 · cdd 批增量 · code-design-doc 锻造 + I10 第四子类路由回填）\n\n> 上节计数为时点快照，**冻结**。本批 = tri-forge C 模式锻造 `code-design-doc`（详细设计说明书模板填充）\n> 后的门③ 路由回填：L2=I10 新增第四 L3 子类 `design-doc`，一跳覆写至**平台用户级** skill\n> `~/.workbuddy/skills/code-design-doc/`（非 `tri-*` 前缀，不进源码树）。\n> `tri-intent` 1.14.3 → **1.14.4**，由**既有 settle op `f94-ver-intent` 就地更新**（不占新行；\n> 「settle 目标就地更新、NEVER 追加链式 op」——本批首轮曾误新增 `cdd-ti-ver`，与 `f94` 同 glob 同 pattern\n> 形成两个 settle op 互搏：每次重放 `f94` 先写回 1.14.3、`cdd-ti-ver` 再写 1.14.4，二者各报「应用 1」，\n> 且 `sync-version-meta` 排在两者之间 ⇒ `_meta.json` 停在 1.14.3。按未 commit 范式**回滚 + 就地改 `f94`**，\n> 未新增任何纠错 op）。`tri-forge/references/family-spec.md` §五 同步登记。\n>\n> **批中补正（同批，未 commit）**：门④ 复核发现两处**由本批引入**的残留计数——`doing/I10-analyze.md` 子类路由引言「现有三个 L3 子类」与 `hooks/intent-gate.py` 的 `SUBTYPE_SLUGS` 上方注释「三个子类」——两者均未随第四子类联动（原 `cdd-ti-i10-mece` 只覆盖 MECE 段同义句，漏了引言）。补 2 个 `cdd-*` op（`cdd-ti-i10-intro` / `cdd-ti-hook-comment`）后，cdd 批共 **17** 个新 op。\n> 同时按仓库「未 commit 就地改 op」范式，**把 2 个文档计数 op 由字面 `replace_text` 改为 settle 形式 `replace_regex`**（pattern 收敛任意旧值）——否则「计数随 op 数联动」每批都要再追加一条纠错 op，即 f86/f97 同款永动。\n\n| 项 | 原值 | 现值 | 依据 |\n|---|---|---|---|\n| 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |\n| `ops/README.md` / 根 `README.md` op 计数 | 336 | **353** | 当前态账本同批回写 |\n| 顶层 skill 数 / 校验覆盖 | 26 / 35 | **26 / 35** | 不变——`code-design-doc` 落平台用户级，**不进源码树**，故不入 `tri-*` 计数 |\n| `tri-intent` §四 路由型下游计数 | 16 | **17** | §一路由映射表新增 `code-design-doc`（该集合首次含非 `tri-*` 前缀成员） |\n\n回执：`apply.py` 首轮 17/17 新建 op「应用 1」（含 2 个文档计数 op）+ `f94` 就地更新「应用 1」；\n二轮全部「应用 0｜已应用 1」零真应用；`compliance_check.py --dir ~/.workbuddy/skills/code-design-doc`\n= **FAIL 0**（24 条，1 项 MANUAL 已人工核实）；`version-lint` 文档层 0 漂移，包内漂移 **1**（=`tri-forge` P2≠P1，**非本批引入**）——该漂移已于同日按下方 §版本线修正 对齐，最终 **包内漂移 0**。本批由单会话完成，无并发写入。\n\n### 版本线修正（2026-09-28 · 非 cdd 项）：`tri-forge` P1 对齐 1.0.5 → 1.2.0\n\n> **触发**：cdd 批收尾跑 `version-lint` 报「包内漂移 1」——`tri-forge` **P2（CHANGELOG 首条 1.2.0）≠ P1（SKILL.md 1.0.5）**。\n> **一手取证（非凭记忆）**：1.0.6 → 1.1.0 → 1.1.1 → 1.2.0 四轮均有 `Approved: yes` proposal，且声明变更**逐条在树内可核验** ——\n> `compliance_check.py` 的四处 `add(24, …)` 全部 `advisory=False`（第 607/615/621/626 行）+ 第 628 行注释「已于 2026-09-27 升为必检」；\n> `references/compliance-checklist.md` 含 `24/24`、「两条均为必检」，第 24 条已去〔建议项〕并含二次校准记录；\n> `tests/battery/battery.json` 含 `M-24-a…f`（12 处引用）、`_sealed/eval-expect.json` 含 `FAIL:24`、用测试档含 T27/T35–T37；\n> `references/change-acceptance-gate.md` / `case-battery-spec.md` / `scripts/acceptance_diff.py` / `battery_run.py` / `tests/mutation-gate.py` 均在。\n> ⇒ **真值 = 1.2.0**；P1/P3/P5 三处滞后，成因是 `dw2-tri-forge-version` 于 2026-09-26 写入 1.0.5 后，\n> 1.0.6→1.2.0 的 gate 工作**漏同步版本位点**（非「1.2.0 被回退」，故非内容问题）。\n\n| 处置 | 实测回执 |\n|---|---|\n| `dw2-tri-forge-version` 目标**就地更新** 1.0.5 → 1.2.0 | 应用 1｜已应用 0；该 glob 上**唯一**版本线 op（写前枚举断言，防 settle 互搏） |\n| P3 `_meta.json` | `sync-version-meta` 写入 1 → 1.2.0 |\n| P5 `README.md` 徽章 | `sync-readme-version` 写入 1 → 1.2.0 |\n| 文档层 D1/D2/D4 | `version-lint.py --apply-docs` 幂等修正 **3** 处（`WORKFLOW-GUIDE.html` D1 + D2、根 `README.md` D4） |\n| 终局 | `version-lint` → **检查 35 个 skill；存在漂移 0 个**（全表 ✅），文档层无漂移 |\n\n> **未新增任何 op**（含纠错 op）：补丁层 op 数保持 **353**。`tri-forge` **无内容变更、无行为变更**，仅版本声明位点对齐。\n> 二轮重放 `dw2` 报「应用 0｜已应用 1」——幂等成立。\n> 注：§当前补丁清单中 `dw2` 的登记行仍显示 1.0.5 —— 与本表既有 **4 例同型**（`f43-req-audit-version-1-1-0` 登记 1.1.0 / 实为 1.1.1；`f85-ver-lottie` 登记 1.0.4 / 实为 1.0.6；`f93-ver-html` 登记 1.3.4 / 实为 1.3.8；`f94-ver-intent` 登记 1.14.2 / 实为 1.14.4）：**家族惯例 = 登记行只记首次注册值，就地 retarget 由日期增量小节 + 该 op 的 `label` 承载**，故不chase、不新增纠错 op。\n",
+      "already_marker": "### 计数（2026-09-28 · cdd 批增量 · code-design-doc 锻造 + I10 第四子类路由回填）"
     }
   ]
 }
