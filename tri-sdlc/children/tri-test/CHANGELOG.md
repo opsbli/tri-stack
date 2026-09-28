@@ -4,6 +4,21 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.2.0] - 2026-09-29
+
+### 变更
+
+- **维度 3 新增「反同源假设」三条判据 + 降级兼容**：① 断言来源可追溯——期望值 MUST 可追溯到
+  `acceptance-criteria.md`，NEVER 从被测代码当前行为反推；② 反同源静态检查——mock 目标 MUST NOT 是
+  被测对象**直接调用**的那个依赖函数，命中即补一条走真实实现的对照用例；
+  ③ 分支覆盖 ≠ 正确——覆盖率与分支覆盖数 NEVER 计入功能正确性证据，须与通过率分开登记。
+  降级兼容：目标依赖确实不可替换（进程原生 API / Electron 全局对象）时 MUST 登记技术理由 + 降级证据形式，
+  并在 `test-report.md` 显式标注「该用例结论不含功能正确性证据」，NEVER 静默计入通过率。
+  **动机**：tri-stack-train M4a 实证——`shell-probe` 的探测缺陷（`existsSync('cmd.exe')` 在 Windows
+  只查 CWD）被测试夹具 `mockExistsSync.mockReturnValue(false)` 固化成期望行为，112/112 全绿而真机全失败。
+  **与既有 P6-M3「真实执行」的关系**：P6-M3 约束**执行侧**（结果必须真跑出来），本条约束**编写侧**
+  （期望值必须独立产生）；两侧缺一，绿灯都不算证据。
+
 ## [1.1.9] - 2026-09-28
 
 ### 新增

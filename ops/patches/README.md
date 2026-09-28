@@ -1270,6 +1270,59 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 | `tt-cl-review` | replace_text | `tri-review/CHANGELOG.md` 追加 [1.8.0] 条目（P2 补齐）（tt 批） |
 | `tt-cl-init` | replace_text | `tri-init/CHANGELOG.md` 追加 [1.1.0] 条目（P2 补齐）（tt 批） |
 | `tt-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt 批 15 行（本行自身在内）（tt 批） |
+| `tt2-intent-clarify-semantic` | replace_text | `tri-intent/clarify-gate/SKILL.md` 新增「语义拷问」节：定性词 → 可判定断言，作 G2 反问必答项（审计 M4a/M4b 治本项）（tt2 批） |
+| `tt2-coding-ac-decidable` | replace_text | `tri-coding/templates/requirements.md` §6 验收标准禁词硬红线 + 每条 MUST 附可观测断言（审计 M4b）（tt2 批） |
+| `tt2-coding-at-uplift` | replace_text | `tri-coding/SKILL.md` §质量标准新增「AT 硬化（模板约束上移）」+ 实例化后自检规则（审计 M4a/M4b 结构性发现）（tt2 批） |
+| `tt2-verify-verdict-tag-gate` | replace_text | `tri-verify/SKILL.md` §二 verdict 判据追加标签封闭校验 + 回炉轮次/commit 链要求（审计 M4a/M4b）（tt2 批） |
+| `tt2-coding-review-existence-gate` | replace_text | `tri-coding/SKILL.md` 功能验证门强制规则追加 tri-review 存在性检查（审计 M4a/M4b：review 全程 0 次读取）（tt2 批） |
+| `tt2-cl-intent` | replace_text | `tri-intent/CHANGELOG.md` 追加 [1.15.0] 条目（P2 补齐）（tt2 批） |
+| `tt2-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.10.0] 条目（P2 补齐）（tt2 批） |
+| `tt2-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.2.0] 条目（P2 补齐）（tt2 批） |
+| `tt2-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt2 批 9 行（本行自身在内）（tt2 批） |
+| `tt3-coding-anti-same-origin` | replace_text | `tri-coding/SKILL.md` §质量标准新增「反同源假设（夹具独立）」维度：断言 MUST 来自需求而非实现；mock 目标 MUST NOT 是被测对象直接调用的依赖函数；分支覆盖 NEVER 计入功能正确性证据（审计 M4a）（tt3 批） |
+| `tt3-test-anti-same-origin` | replace_text | `tri-sdlc/children/tri-test/SKILL.md` 维度 3 新增「反同源假设」三条判据 + 降级兼容（与既有 P6-M3 互补：M3 管执行侧、本条管编写侧）（审计 M4a）（tt3 批） |
+| `tt3-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.11.0] 条目（P2 补齐）（tt3 批） |
+| `tt3-cl-test` | replace_text | `tri-sdlc/children/tri-test/CHANGELOG.md` 追加 [1.2.0] 条目（P2 补齐）（tt3 批） |
+| `tt3-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行（本行自身在内）+ 补登报告与 tt2 计数小节 |
+
+### 计数（2026-09-29 · tt3 批增量 · tri-train 审计「反同源假设」）
+
+> 本批 = `reports/TRI-TRAIN-AUDIT-M4-M4B-20260929.md` §2.2 病灶 B 落地，即审计建议 **#5**。
+> 单开一批而非并入 tt2，是因为落点需要双重论证：这是**测试编写**规范而非交付门控，
+> 且**单放 `tri-test` 会重犯 tt2 §三 A 的错**——tri-stack-train 走的是 `tri-coding` I11 直调路径，
+> 根本不经过 `tri-sdlc` / `tri-test`。所以两处都落：`tri-coding`（实际写测试的地方）
+> + `tri-test`（SDLC 流程的家）。
+>
+> 版本线：`tri-coding` **1.11.0**（`f90-ver-coding` 就地 retarget 1.10.0 → 1.11.0）/
+> `tri-test` **1.2.0**（`dw-tri-test-version` 就地 retarget 1.1.9 → 1.2.0）；
+> 均不新增版本 op、防 settle 互搏。
+> 计数：377 → **382**（+5：2 内容 + 2 CHANGELOG + 1 清单登记；2 个版本 settle 与 2 个文档计数 settle 均就地更新）。
+>
+> **诚实边界**：`tri-coding` 与 `tri-test` 两处条文仍均为 **prompt 层约束，无校验器实现**——
+> 「mock 目标是被测对象直接调用的依赖函数」这条静态检查目前要求 Agent 人工执行，
+> 后续若做成脚本需落在 `tri-test/scripts/` 或 `tri-coding/scripts/`。
+
+### 计数（2026-09-29 · tt2 批增量 · tri-train 审计 M4a/M4b 复测修补）
+
+> 本批 = `reports/TRI-TRAIN-USAGE-AUDIT-20260928.md` **M4a/M4b 补证**落地。与 tt 批的关键差异是
+> **一条结构性发现**：同一批修补里，写在 `SKILL.md` 的 commit 硬门完整生效，只写在
+> `templates/*.md` 的 AT 硬化规则在实例化后**出现 0 次**——即**约束写在哪一层决定它会不会被执行**。
+> 故本批不止补规则，还把规则**上移到 `SKILL.md`** 并加实例化后自检。
+>
+> 内容 5 条：**#1** clarify-gate 语义拷问（治本：只拷问参数、从不拷问语义）；**#2** requirements §6 验收标准
+> 禁词 + 可观测断言（治「AC 把通过定义成用户说通过」）；**#3** AT 硬化上移 SKILL.md + 实例化后自检
+> （治模板约束蒸发）；**#4** verdict 标签封闭校验（治「✅ 完全通过」表外标签）；**#5** tri-review 存在性检查
+> （治 review 全程 0 次读取且无人检查）。
+>
+> 版本线：`tri-intent` **1.15.0** / `tri-coding` **1.10.0** / `tri-verify` **1.2.0**（既有 settle op
+> **就地 retarget**：`f94-ver-intent` / `f90-ver-coding` / `dw2-tri-verify-version`，不新增版本 op、防 settle 互搏）。
+> 计数：368 → **377**（+9：5 内容 + 3 CHANGELOG + 1 清单登记；3 个版本 settle 与 2 个文档计数 settle 均就地更新）。
+>
+> **⚠️ 附带修复（settle 漂移 · 35 个 skill）**：host-compat 批（`e659978`）把 35 个 skill 各升一个 PATCH，
+> 但**漏 retarget `manifest.json` 里的 35 个 settle 版本 op** ⇒ 彼时运行 `apply.py` 会把 **35 个 skill
+> 全部降级一个 PATCH**（`apply.py --dry-run` 实测各报「应用 1」）。本批将全部 35 个 settle 目标就地对齐
+> 工作区真值（32 个退回工作区现值、3 个指向本批新版本），`apply.py` 由「静默降级」回到幂等空转。
+> `version-lint` 不比对 settle 目标，故该漂移从未被检出——属工具覆盖盲区，非本批引入。
 | `ops/README.md` / 根 `README.md` op 计数 | 336 | **353** | 当前态账本同批回写 |
 | 顶层 skill 数 / 校验覆盖 | 26 / 35 | **26 / 35** | 不变——`code-design-doc` 落平台用户级，**不进源码树**，故不入 `tri-*` 计数 |
 | `tri-intent` §四 路由型下游计数 | 16 | **17** | §一路由映射表新增 `code-design-doc`（该集合首次含非 `tri-*` 前缀成员） |

@@ -1,7 +1,7 @@
 ---
 name: tri-intent
 slug: tri-intent
-version: 1.14.5
+version: 1.15.0
 displayName: tri-intent
 description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。**本分支为编程工作流专线**：仅 I10 四子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill，其余落点分类保留但无下游（全量版见归档分支 archive-full-skills-20260924）。
 summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约；本分支为编程工作流专线，仅 17 个下游 skill 可用。

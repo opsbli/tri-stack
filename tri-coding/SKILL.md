@@ -1,7 +1,7 @@
 ---
 name: tri-coding
 slug: tri-coding
-version: 1.9.1
+version: 1.11.0
 displayName: tri-coding
 description: 编码开发下游执行 skill。读取 tri-intent 快照 §三，处理 I11（编码开发）意图，自主管理「需求→设计→任务→执行→实现报告」完整编码工作流，含双审批门+执行前确认。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照自主管理编码全链路（需求→设计→任务→执行→实现报告），含双审批门+执行前确认+可扩展技术栈加载方法论+工具结果治理六条纪律，专注 I11 编码开发。
@@ -289,6 +289,13 @@ tri-intent 快照 §三
 - `已升级人审` 时 **NEVER 自动交付**。
 - 验证失败需修复时 MUST 回炉 `tasks.md` 并委派 `tri-fix`；本 skill NEVER 自行改码绕过门禁。
 - `tri-verify` 未安装 → 标注「tri-verify 未安装，功能验证门已降级为跳过」并**显式盖章**，NEVER 阻断交付，也 NEVER 假装已验证。
+- **tri-review 存在性检查（交付前自检 · tt2 批）**：本 skill 不负责代码审查（由 tri-review 承担），
+  但交付前 MUST 自检**审查是否真的发生过**——NEVER 在 tri-review 未被调用（或未加载
+  `tri-review/references/review-checklists.md`）的状态下宣告交付。tri-review 未安装时 MUST 显式盖章
+  「tri-review 未安装，代码审查门已降级为跳过」，NEVER 假装已审。
+  *（来源：tri-stack-train M4a/M4b 实测——tri-review 全程 **0 次**读取，比 M1–M3a 更彻底；
+  既有 checklist 硬门只约束 review **内部**行为，无人负责检查 review **有没有发生**，
+  故本检查须由交付责任方本 skill 承担）*
 
 ## 交付前风险预筛自动门（tri-true 自动委派 · 防幻觉硬门）
 
@@ -407,6 +414,29 @@ tri-intent 快照 §三
 | 落盘完整 | 四文档（requirements/design/tasks/implements）齐全且一致 | 落盘目录清单核对 |
 | 工具结果治理 | 长输出经限幅+溢出暂存处理，异常可见化，完成判据为产物与校验结果 | `## 工具结果治理` 六条纪律逐项核对 |
 | 功能验证 | 功能验证门已执行，或有明确盖章（未执行 / 未触发须附原因）；`已升级人审` 时不得自动交付 | `verdict.md` 五态盖章 + `tri-verify/scripts/verify_gate.py self-test` |
+| AT 硬化（模板约束上移） | 涉及 UI/renderer 交互的验收点 MUST 落为组件测试 / E2E 等**可执行断言**任务项，NEVER 用「留用户冒烟」替代自动化断言；自动化确实不可行时 MUST 登记具体技术理由与降级证据形式 | `tasks.md` §3.3 AT 清单逐项核对，**无「冒烟 / 用户确认」字样残留** |
+| 反同源假设（夹具独立） | 单测**夹具与断言 MUST 与被测实现独立产生**；NEVER 通过 mock 掉被测依赖把「实现的实际行为」直接固化为期望值——测出来的绿于是与被测代码同源，实现错了测试必绿 | 静态检查：`vi.mock` / `mockReturnValue` 的目标 MUST NOT 是**被测对象直接调用的那个依赖函数**；命中即要求补「走真实实现」的对照用例（`vi.importActual` + 真实临时目录） |
+
+> **反同源假设（tt3 批）**：断言必须来自**需求**，不来自**实现**。
+> tri-stack-train M4a 实证——`shell-probe.test.ts` 的 `describe('UT09（存在性检查分支）')`
+> 里几乎每条用例都把 `mockExistsSync` 设成 `false`，于是「Windows 上 `existsSync('cmd.exe')`
+> 只查 CWD、探测永远返回 false」这个**实现缺陷被当作期望行为固化进断言**：83/83、112/112 全绿，
+> 真机 shell 探测全失败。修复后实现自己写了注释印证：
+> `// Windows 下 existsSync('cmd.exe') 仅检查 CWD，无法命中 PATH；必须自己展开。`
+> 这是「测试越严谨越掩盖 bug」的最锋利形式：**不是 mock 掉了被测逻辑，而是测试与实现共享了同一个错误前提。**
+> 三条判据：① 断言来源可追溯——每条断言的期望值 MUST 来自 `requirements.md` 的某条验收标准
+> （§质量标准「需求可追溯」的测试侧落点），NEVER 从被测代码的当前行为反推；
+> ② **反同源静态检查**——mock 目标是被测对象直接调用的那个依赖函数 ⇒ MUST 补一条走真实实现的对照用例；
+> ③ **「分支覆盖」不等于「正确」**——覆盖了某个失败分支不代表没测错对象，
+> 分支覆盖统计 NEVER 计入功能正确性证据。
+
+> **模板约束上移（tt2 批 · 实例化丢失防线）**：tri-stack-train M4a/M4b 实测的对照实验——AT 硬化规则
+> **只**写在 `templates/tasks.md` 时，实例化后的 `tasks.md` 中该规则出现 **0 次**，AT 项全部写成
+> 「本机冒烟（用户）」，正是该规则明令禁止的写法；同一批**写在 `SKILL.md`** 的 commit 硬门则完整生效。
+> **判据：写在 `SKILL.md` 的约束会被执行，只写在 `templates/*.md` 的约束会在实例化时被静默丢弃。**
+> 故本 skill 立两条规则：① 所有 MUST / NEVER 级硬约束 MUST 在本 SKILL.md 中有对应条文，模板仅作填写指引；
+> ② **实例化后自检**——`tasks.md` 落盘后 MUST 自检 AT 清单无「冒烟 / 用户确认 / 手动通过」字样，
+> 命中即回退重写，NEVER 带着违规项进入门③。
 
 ## 工具结果治理（执行阶段）
 

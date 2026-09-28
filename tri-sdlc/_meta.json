@@ -2,5 +2,8 @@
   "ownerId": "610289",
   "publishedAt": 1789701813171,
   "slug": "tri-sdlc",
-  "version": "1.1.8"
+  "version": "1.1.8",
+  "children": {
+    "tri-test": "1.2.0"
+  }
 }

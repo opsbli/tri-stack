@@ -36,11 +36,11 @@
     {
       "id": "f16-tri-init-version",
       "type": "replace_regex",
-      "label": "tri-init 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；P3 由规则化 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.3→1.0.4）；tt 批 2026-09-28 就地 retarget 1.0.4 → 1.1.0（登记值 1.0.4 = 首次注册值）",
+      "label": "tri-init 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；P3 由规则化 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.3→1.0.4）；tt 批 2026-09-28 就地 retarget 1.0.4 → 1.1.0（登记值 1.0.4 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.1.1：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-init/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.0",
-      "already_marker": "version: 1.1.0"
+      "replacement": "version: 1.1.1",
+      "already_marker": "version: 1.1.1"
     },
     {
       "id": "f17-tri-init-changelog",
@@ -124,11 +124,11 @@
     {
       "id": "f43-req-audit-version-1-1-0",
       "type": "replace_regex",
-      "label": "tri-req-audit 版本线 1.0.0 → 1.1.0（新增审核维度属 minor；**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随）（2026-09-25）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.0→1.1.1）",
+      "label": "tri-req-audit 版本线 1.0.0 → 1.1.0（新增审核维度属 minor；**必须排在 `sync-version-meta` / `sync-readme-version` 之前**，P3/P5 才能同轮跟随）（2026-09-25）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.0→1.1.1）（2026-09-29 tt2 批就地 retarget → 1.1.2：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-req-audit/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.1",
-      "already_marker": "version: 1.1.1"
+      "replacement": "version: 1.1.2",
+      "already_marker": "version: 1.1.2"
     },
     {
       "id": "f46a-req-audit-rename-nine-md",
@@ -265,11 +265,11 @@
     {
       "id": "f80-ver-action",
       "type": "replace_regex",
-      "label": "tri-action 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.5→1.2.6）",
+      "label": "tri-action 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.5→1.2.6）（2026-09-29 tt2 批就地 retarget → 1.2.7：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-action/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.6",
-      "already_marker": "version: 1.2.6"
+      "replacement": "version: 1.2.7",
+      "already_marker": "version: 1.2.7"
     },
     {
       "id": "f98-cl-action",
@@ -283,11 +283,11 @@
     {
       "id": "f81-ver-checklist",
       "type": "replace_regex",
-      "label": "tri-checklist 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.5→1.1.6）",
+      "label": "tri-checklist 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.5→1.1.6）（2026-09-29 tt2 批就地 retarget → 1.1.7：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-checklist/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.6",
-      "already_marker": "version: 1.1.6"
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
     },
     {
       "id": "f99-cl-checklist",
@@ -301,11 +301,11 @@
     {
       "id": "f82-ver-evolve",
       "type": "replace_regex",
-      "label": "tri-evolve 版本线 1.1.6 → 1.1.7（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.7→1.1.8）",
+      "label": "tri-evolve 版本线 1.1.6 → 1.1.7（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.7→1.1.8）（2026-09-29 tt2 批就地 retarget → 1.1.9：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-evolve/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.8",
-      "already_marker": "version: 1.1.8"
+      "replacement": "version: 1.1.9",
+      "already_marker": "version: 1.1.9"
     },
     {
       "id": "f100-cl-evolve",
@@ -319,11 +319,11 @@
     {
       "id": "f83-ver-fix",
       "type": "replace_regex",
-      "label": "tri-fix 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.5.2→1.5.3）（2026-09-26 darwin P2 批目标就地更新 1.5.3→1.5.4）",
+      "label": "tri-fix 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.5.2→1.5.3）（2026-09-26 darwin P2 批目标就地更新 1.5.3→1.5.4）（2026-09-29 tt2 批就地 retarget → 1.5.5：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-fix/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.5.4",
-      "already_marker": "version: 1.5.4"
+      "replacement": "version: 1.5.5",
+      "already_marker": "version: 1.5.5"
     },
     {
       "id": "f101-cl-fix",
@@ -337,11 +337,11 @@
     {
       "id": "f84-ver-loop",
       "type": "replace_regex",
-      "label": "tri-loop 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.5→1.2.6）",
+      "label": "tri-loop 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.5→1.2.6）（2026-09-29 tt2 批就地 retarget → 1.2.7：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-loop/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.6",
-      "already_marker": "version: 1.2.6"
+      "replacement": "version: 1.2.7",
+      "already_marker": "version: 1.2.7"
     },
     {
       "id": "f102-cl-loop",
@@ -355,11 +355,11 @@
     {
       "id": "f85-ver-lottie",
       "type": "replace_regex",
-      "label": "tri-lottie 版本线 1.0.3 → 1.0.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.4→1.0.5）（2026-09-27 eh1 批目标就地更新 1.0.5→1.0.6）",
+      "label": "tri-lottie 版本线 1.0.3 → 1.0.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.4→1.0.5）（2026-09-27 eh1 批目标就地更新 1.0.5→1.0.6）（2026-09-29 tt2 批就地 retarget → 1.0.7：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-lottie/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.6",
-      "already_marker": "version: 1.0.6"
+      "replacement": "version: 1.0.7",
+      "already_marker": "version: 1.0.7"
     },
     {
       "id": "f103-cl-lottie",
@@ -373,11 +373,11 @@
     {
       "id": "f86-ver-meta",
       "type": "replace_regex",
-      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.2.5→1.2.6）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）（2026-09-26 darwin P2 批目标就地更新 1.2.7→1.2.8）（2026-09-26 tri-meta 重写批目标就地更新 1.2.8→1.2.9）",
+      "label": "tri-meta 版本线 1.2.4 → 1.2.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.2.5→1.2.6）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）（2026-09-26 darwin P2 批目标就地更新 1.2.7→1.2.8）（2026-09-26 tri-meta 重写批目标就地更新 1.2.8→1.2.9）（2026-09-29 tt2 批就地 retarget → 1.2.10：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-meta/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.9",
-      "already_marker": "version: 1.2.9"
+      "replacement": "version: 1.2.10",
+      "already_marker": "version: 1.2.10"
     },
     {
       "id": "f104-cl-meta",
@@ -391,11 +391,11 @@
     {
       "id": "f87-ver-sdlc",
       "type": "replace_regex",
-      "label": "tri-sdlc 版本线 1.1.5 → 1.1.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.6→1.1.7）",
+      "label": "tri-sdlc 版本线 1.1.5 → 1.1.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.6→1.1.7）（2026-09-29 tt2 批就地 retarget → 1.1.8：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.7",
-      "already_marker": "version: 1.1.7"
+      "replacement": "version: 1.1.8",
+      "already_marker": "version: 1.1.8"
     },
     {
       "id": "f105-cl-sdlc",
@@ -409,11 +409,11 @@
     {
       "id": "f88-ver-workflow",
       "type": "replace_regex",
-      "label": "tri-workflow 版本线 1.2.5 → 1.2.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）",
+      "label": "tri-workflow 版本线 1.2.5 → 1.2.6（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.6→1.2.7）（2026-09-29 tt2 批就地 retarget → 1.2.8：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-workflow/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.7",
-      "already_marker": "version: 1.2.7"
+      "replacement": "version: 1.2.8",
+      "already_marker": "version: 1.2.8"
     },
     {
       "id": "f106-cl-workflow",
@@ -427,11 +427,11 @@
     {
       "id": "f89-ver-code-analyzer",
       "type": "replace_regex",
-      "label": "tri-code-analyzer 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.5.2→1.5.3）",
+      "label": "tri-code-analyzer 版本线 1.5.1 → 1.5.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.5.2→1.5.3）（2026-09-29 tt2 批就地 retarget → 1.5.4：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-code-analyzer/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.5.3",
-      "already_marker": "version: 1.5.3"
+      "replacement": "version: 1.5.4",
+      "already_marker": "version: 1.5.4"
     },
     {
       "id": "f107-cl-code-analyzer",
@@ -445,11 +445,11 @@
     {
       "id": "f90-ver-coding",
       "type": "replace_regex",
-      "label": "tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.8.2→1.8.3）；tt 批 2026-09-28 就地 retarget 1.8.3 → 1.9.0（登记值 1.8.3 = 首次注册值）",
+      "label": "tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.8.2→1.8.3）；tt 批 2026-09-28 就地 retarget 1.8.3 → 1.9.0（登记值 1.8.3 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.10.0：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）（2026-09-29 tt3 批就地 retarget → 1.11.0：反同源假设）",
       "glob": "tri-coding/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.9.0",
-      "already_marker": "version: 1.9.0"
+      "replacement": "version: 1.11.0",
+      "already_marker": "version: 1.11.0"
     },
     {
       "id": "f108-cl-coding",
@@ -463,11 +463,11 @@
     {
       "id": "f91-ver-frontend-design",
       "type": "replace_regex",
-      "label": "tri-frontend-design 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.5→1.1.6）（2026-09-27 dw11 批目标就地更新 1.1.6→1.1.7）",
+      "label": "tri-frontend-design 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.1.5→1.1.6）（2026-09-27 dw11 批目标就地更新 1.1.6→1.1.7）（2026-09-29 tt2 批就地 retarget → 1.1.8：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-frontend-design/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.7",
-      "already_marker": "version: 1.1.7"
+      "replacement": "version: 1.1.8",
+      "already_marker": "version: 1.1.8"
     },
     {
       "id": "f109-cl-frontend-design",
@@ -481,11 +481,11 @@
     {
       "id": "f92-ver-god",
       "type": "replace_regex",
-      "label": "tri-god 版本线 1.2.3 → 1.2.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.4→1.2.5）",
+      "label": "tri-god 版本线 1.2.3 → 1.2.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.2.4→1.2.5）（2026-09-29 tt2 批就地 retarget → 1.2.6：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-god/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.5",
-      "already_marker": "version: 1.2.5"
+      "replacement": "version: 1.2.6",
+      "already_marker": "version: 1.2.6"
     },
     {
       "id": "f110-cl-god",
@@ -499,11 +499,11 @@
     {
       "id": "f93-ver-html",
       "type": "replace_regex",
-      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）（2026-09-26 darwin P2 批目标就地更新 1.3.5→1.3.6）（2026-09-26 复评微批目标就地更新 1.3.6→1.3.7）（2026-09-27 eh1 批目标就地更新 1.3.7→1.3.8）",
+      "label": "tri-html 版本线 1.3.3 → 1.3.4（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.4→1.3.5）（2026-09-26 darwin P2 批目标就地更新 1.3.5→1.3.6）（2026-09-26 复评微批目标就地更新 1.3.6→1.3.7）（2026-09-27 eh1 批目标就地更新 1.3.7→1.3.8）（2026-09-29 tt2 批就地 retarget → 1.3.9：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-html/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.3.8",
-      "already_marker": "version: 1.3.8"
+      "replacement": "version: 1.3.9",
+      "already_marker": "version: 1.3.9"
     },
     {
       "id": "f111-cl-html",
@@ -517,11 +517,11 @@
     {
       "id": "f94-ver-intent",
       "type": "replace_regex",
-      "label": "tri-intent 版本线 1.14.1 → 1.14.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.14.2→1.14.3）（2026-09-28 cdd 批目标就地更新 1.14.3→1.14.4）",
+      "label": "tri-intent 版本线 1.14.1 → 1.14.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.14.2→1.14.3）（2026-09-28 cdd 批目标就地更新 1.14.3→1.14.4）（2026-09-29 tt2 批就地 retarget → 1.15.0：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-intent/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.14.4",
-      "already_marker": "version: 1.14.4"
+      "replacement": "version: 1.15.0",
+      "already_marker": "version: 1.15.0"
     },
     {
       "id": "f112-cl-intent",
@@ -535,11 +535,11 @@
     {
       "id": "f95-ver-plan",
       "type": "replace_regex",
-      "label": "tri-plan 版本线 1.3.2 → 1.3.3（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.3→1.3.4）（2026-09-26 darwin P2 批目标就地更新 1.3.4→1.3.5）",
+      "label": "tri-plan 版本线 1.3.2 → 1.3.3（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.3.3→1.3.4）（2026-09-26 darwin P2 批目标就地更新 1.3.4→1.3.5）（2026-09-29 tt2 批就地 retarget → 1.3.6：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-plan/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.3.5",
-      "already_marker": "version: 1.3.5"
+      "replacement": "version: 1.3.6",
+      "already_marker": "version: 1.3.6"
     },
     {
       "id": "f113-cl-plan",
@@ -553,11 +553,11 @@
     {
       "id": "f96-ver-review",
       "type": "replace_regex",
-      "label": "tri-review 版本线 1.7.0 → 1.7.1（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.7.1→1.7.2）；tt 批 2026-09-28 就地 retarget 1.7.2 → 1.8.0（登记值 1.7.2 = 首次注册值）",
+      "label": "tri-review 版本线 1.7.0 → 1.7.1（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.7.1→1.7.2）；tt 批 2026-09-28 就地 retarget 1.7.2 → 1.8.0（登记值 1.7.2 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.8.1：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-review/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.8.0",
-      "already_marker": "version: 1.8.0"
+      "replacement": "version: 1.8.1",
+      "already_marker": "version: 1.8.1"
     },
     {
       "id": "f114-cl-review",
@@ -571,11 +571,11 @@
     {
       "id": "f97-ver-true",
       "type": "replace_regex",
-      "label": "tri-true 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.1.5→1.1.6）（2026-09-26 darwin P1 批目标就地更新 1.1.6→1.1.7）",
+      "label": "tri-true 版本线 1.1.4 → 1.1.5（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-25 darwin P0 批目标就地更新 1.1.5→1.1.6）（2026-09-26 darwin P1 批目标就地更新 1.1.6→1.1.7）（2026-09-29 tt2 批就地 retarget → 1.1.8：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-true/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.7",
-      "already_marker": "version: 1.1.7"
+      "replacement": "version: 1.1.8",
+      "already_marker": "version: 1.1.8"
     },
     {
       "id": "f115-cl-true",
@@ -623,11 +623,11 @@
     {
       "id": "dw-tri-orchestrate-version",
       "type": "replace_regex",
-      "label": "`tri-orchestrate` 版本线 settle → 1.0.2（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.0.2→1.0.3）",
+      "label": "`tri-orchestrate` 版本线 settle → 1.0.2（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.0.2→1.0.3）（2026-09-29 tt2 批就地 retarget → 1.0.4：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-orchestrate/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.3",
-      "already_marker": "version: 1.0.3"
+      "replacement": "version: 1.0.4",
+      "already_marker": "version: 1.0.4"
     },
     {
       "id": "dw-orchestrate-changelog",
@@ -664,11 +664,11 @@
     {
       "id": "dw-tri-design-version",
       "type": "replace_regex",
-      "label": "`tri-design` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）",
+      "label": "`tri-design` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-29 tt2 批就地 retarget → 1.1.7：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-design/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.6",
-      "already_marker": "version: 1.1.6"
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
     },
     {
       "id": "dw-design-changelog",
@@ -689,11 +689,11 @@
     {
       "id": "dw-tri-impl-version",
       "type": "replace_regex",
-      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）",
+      "label": "`tri-impl` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）（2026-09-29 tt2 批就地 retarget → 1.1.9：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-impl/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.8",
-      "already_marker": "version: 1.1.8"
+      "replacement": "version: 1.1.9",
+      "already_marker": "version: 1.1.9"
     },
     {
       "id": "dw-impl-changelog",
@@ -714,11 +714,11 @@
     {
       "id": "dw-tri-test-version",
       "type": "replace_regex",
-      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）",
+      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）（2026-09-29 tt2 批就地 retarget → 1.1.9：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）（2026-09-29 tt3 批就地 retarget → 1.2.0：反同源假设）",
       "glob": "tri-sdlc/children/tri-test/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.8",
-      "already_marker": "version: 1.1.8"
+      "replacement": "version: 1.2.0",
+      "already_marker": "version: 1.2.0"
     },
     {
       "id": "dw-test-changelog",
@@ -1385,101 +1385,101 @@
     {
       "id": "dw2-tri-domain-version",
       "type": "replace_regex",
-      "label": "`tri-domain` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-domain` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-29 tt2 批就地 retarget → 1.0.3：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-domain/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.2",
-      "already_marker": "version: 1.0.2"
+      "replacement": "version: 1.0.3",
+      "already_marker": "version: 1.0.3"
     },
     {
       "id": "dw2-tri-forge-version",
       "type": "replace_regex",
-      "label": "`tri-forge` 版本线 settle → **1.2.0**（darwin P1 批 settle 至 1.0.5）（2026-09-28 版本线修正批**目标就地更新** 1.0.5→1.2.0：实测 CHANGELOG 首条 1.2.0 为真值——1.0.6→1.2.0 四轮 gate 工作的声明变更逐条在树内可核验；P1 滞后系漏同步版本位点，非内容回退）",
+      "label": "`tri-forge` 版本线 settle → **1.2.0**（darwin P1 批 settle 至 1.0.5）（2026-09-28 版本线修正批**目标就地更新** 1.0.5→1.2.0：实测 CHANGELOG 首条 1.2.0 为真值——1.0.6→1.2.0 四轮 gate 工作的声明变更逐条在树内可核验；P1 滞后系漏同步版本位点，非内容回退）（2026-09-29 tt2 批就地 retarget → 1.2.1：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-forge/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.2.1",
+      "already_marker": "version: 1.2.1"
+    },
+    {
+      "id": "dw2-tri-grill-version",
+      "type": "replace_regex",
+      "label": "`tri-grill` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.0.2→1.0.3）（2026-09-26 复评微批目标就地更新 1.0.3→1.0.4）（2026-09-29 tt2 批就地 retarget → 1.0.5：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
+      "glob": "tri-grill/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.0.5",
+      "already_marker": "version: 1.0.5"
+    },
+    {
+      "id": "dw2-tri-prototype-version",
+      "type": "replace_regex",
+      "label": "`tri-prototype` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-29 tt2 批就地 retarget → 1.1.4：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
+      "glob": "tri-prototype/SKILL.md",
+      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
+      "replacement": "version: 1.1.4",
+      "already_marker": "version: 1.1.4"
+    },
+    {
+      "id": "dw2-tri-verify-version",
+      "type": "replace_regex",
+      "label": "`tri-verify` 版本线 settle → 1.0.1（darwin P1 批；settle 形式，任意旧版收敛）；tt 批 2026-09-28 就地 retarget 1.0.1 → 1.1.0（登记值 1.0.1 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.2.0：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
+      "glob": "tri-verify/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
       "replacement": "version: 1.2.0",
       "already_marker": "version: 1.2.0"
     },
     {
-      "id": "dw2-tri-grill-version",
-      "type": "replace_regex",
-      "label": "`tri-grill` 版本线 settle → 1.0.2（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.0.2→1.0.3）（2026-09-26 复评微批目标就地更新 1.0.3→1.0.4）",
-      "glob": "tri-grill/SKILL.md",
-      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.4",
-      "already_marker": "version: 1.0.4"
-    },
-    {
-      "id": "dw2-tri-prototype-version",
-      "type": "replace_regex",
-      "label": "`tri-prototype` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）",
-      "glob": "tri-prototype/SKILL.md",
-      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.3",
-      "already_marker": "version: 1.1.3"
-    },
-    {
-      "id": "dw2-tri-verify-version",
-      "type": "replace_regex",
-      "label": "`tri-verify` 版本线 settle → 1.0.1（darwin P1 批；settle 形式，任意旧版收敛）；tt 批 2026-09-28 就地 retarget 1.0.1 → 1.1.0（登记值 1.0.1 = 首次注册值）",
-      "glob": "tri-verify/SKILL.md",
-      "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.0",
-      "already_marker": "version: 1.1.0"
-    },
-    {
       "id": "dw2-tri-charter-version",
       "type": "replace_regex",
-      "label": "`tri-charter` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-charter` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-29 tt2 批就地 retarget → 1.1.6：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-charter/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw2-tri-cr-version",
       "type": "replace_regex",
-      "label": "`tri-cr` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-cr` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-29 tt2 批就地 retarget → 1.1.6：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-cr/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw2-tri-devenv-version",
       "type": "replace_regex",
-      "label": "`tri-devenv` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-devenv` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-29 tt2 批就地 retarget → 1.1.6：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-devenv/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw2-tri-ops-version",
       "type": "replace_regex",
-      "label": "`tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）",
+      "label": "`tri-ops` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-29 tt2 批就地 retarget → 1.1.6：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-ops/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.5",
-      "already_marker": "version: 1.1.5"
+      "replacement": "version: 1.1.6",
+      "already_marker": "version: 1.1.6"
     },
     {
       "id": "dw2-tri-release-version",
       "type": "replace_regex",
-      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw8 批目标就地更新 1.1.5→1.1.6）",
+      "label": "`tri-release` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw8 批目标就地更新 1.1.5→1.1.6）（2026-09-29 tt2 批就地 retarget → 1.1.7：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-release/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.6",
-      "already_marker": "version: 1.1.6"
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
     },
     {
       "id": "dw2-tri-require-version",
       "type": "replace_regex",
-      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw8 批目标就地更新 1.1.5→1.1.6）",
+      "label": "`tri-require` 版本线 settle → 1.1.3（darwin P1 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P2 批目标就地更新 1.1.3→1.1.4）（2026-09-26 dw5 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw8 批目标就地更新 1.1.5→1.1.6）（2026-09-29 tt2 批就地 retarget → 1.1.7：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）",
       "glob": "tri-sdlc/children/tri-require/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.1.6",
-      "already_marker": "version: 1.1.6"
+      "replacement": "version: 1.1.7",
+      "already_marker": "version: 1.1.7"
     },
     {
       "id": "dw3-ops-contract-fix",
@@ -3161,20 +3161,20 @@
     {
       "id": "cdd-doc-opsreadme-count",
       "type": "replace_regex",
-      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368",
+      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382",
       "glob": "ops/README.md",
       "pattern": "唯一事实源，当前 \\d+ 个 op）",
-      "replacement": "唯一事实源，当前 368 个 op）",
-      "already_marker": "唯一事实源，当前 368 个 op）"
+      "replacement": "唯一事实源，当前 382 个 op）",
+      "already_marker": "唯一事实源，当前 382 个 op）"
     },
     {
       "id": "cdd-doc-rootreadme-count",
       "type": "replace_regex",
-      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368",
+      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382",
       "glob": "README.md",
       "pattern": "本地补丁层（\\d+ 个 op，幂等重放）",
-      "replacement": "本地补丁层（368 个 op，幂等重放）",
-      "already_marker": "本地补丁层（368 个 op，幂等重放）"
+      "replacement": "本地补丁层（382 个 op，幂等重放）",
+      "already_marker": "本地补丁层（382 个 op，幂等重放）"
     },
     {
       "id": "cdd-doc-registry-rows",
@@ -3328,6 +3328,132 @@
       "old": "| 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |",
       "new": "| 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |\n| `tt-coding-commit-skill` | replace_text | `tri-coding/SKILL.md` 门③ 任务执行段追加 **commit 硬门**（审计 #4）（tt 批） |\n| `tt-coding-commit-tasks` | replace_text | `tri-coding/templates/tasks.md` §8 尾部同步 commit 硬门（审计 #4）（tt 批） |\n| `tt-coding-commit-implements` | replace_text | `tri-coding/templates/implements.md` §8 补 commit hash 回填位 + 表增列（审计 #4）（tt 批） |\n| `tt-coding-at-tasks` | replace_text | `tri-coding/templates/tasks.md` §3.3 AT 硬化规则（审计 #5）（tt 批） |\n| `tt-coding-at-implements` | replace_text | `tri-coding/templates/implements.md` §3.3 同步 AT 硬化（审计 #5）（tt 批） |\n| `tt-verify-degrade-row` | replace_text | `tri-verify/SKILL.md` 降级矩阵追加「V1 无法真机驱动」行（审计 #6）（tt 批） |\n| `tt-verify-verdict-evidence` | replace_text | `tri-verify/SKILL.md` verdict 四态追加证据锚定条款（审计 #6）（tt 批） |\n| `tt-review-checklist-gate` | replace_text | `tri-review/SKILL.md` §一 尾部追加 checklist 加载硬门（审计 #7）（tt 批） |\n| `tt-init-agents-git` | replace_text | `tri-init/templates/AGENTS.md` ⭐ 区补 git 纪律 + 环境降级提示（审计 #8）（tt 批） |\n| `tt-counts-note` | replace_text | `ops/patches/README.md` 追加「计数（tt 批增量）」小节（含批中补正说明）（tt 批） |\n| `tt-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.9.0] 条目（P2 补齐）（tt 批） |\n| `tt-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.1.0] 条目（P2 补齐）（tt 批） |\n| `tt-cl-review` | replace_text | `tri-review/CHANGELOG.md` 追加 [1.8.0] 条目（P2 补齐）（tt 批） |\n| `tt-cl-init` | replace_text | `tri-init/CHANGELOG.md` 追加 [1.1.0] 条目（P2 补齐）（tt 批） |\n| `tt-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt 批 15 行（本行自身在内）（tt 批） |",
       "already_marker": "| `tt-coding-commit-skill` |"
+    },
+    {
+      "id": "tt2-intent-clarify-semantic",
+      "type": "replace_text",
+      "label": "`tri-intent/clarify-gate/SKILL.md` 新增「语义拷问」节：FR 中的自然语言定性词 MUST 逐词译成可判定断言并作 G2 反问必答项（审计 M4a/M4b 治本项；既有澄清只拷问参数、从不拷问语义）（tt2 批）",
+      "glob": "tri-intent/clarify-gate/SKILL.md",
+      "old": "## 与 M01 的正交说明",
+      "new": "## 语义拷问（自然语言词 → 可判定断言 · G2 子规则）\n\n> **来源**：tri-stack-train M4b 实证——FR 用「内嵌」一词，clarify-gate 只问了 UI 位置 / User-Agent / 存储\n> 三个**参数**，从未问「内嵌 = 主窗口内嵌还是独立窗口」；agent 按「独立窗口」交付，门④ 标\n> 「⚠️ 部分通过」仍判交付完成。失败模式不是「问得少」，而是**问的层次错：只拷问参数，从不拷问语义**。\n\n- **触发**：需求 / 验收标准中出现**无法机器判定的定性词**（内嵌 / 可交互 / 优雅降级 / 自动 / 实时 / 轻量 / 无缝 / 直观 / 友好 / 快速 …）\n- **做法**：逐词产出「**词 → 可判定断言**」映射，作为 G2 反问的**必答项**交用户确认：\n  - 每个定性词 MUST 落为一句可观测陈述——DOM 选择器+断言 / IPC 事件名+期望 payload / 进程退出码 / 面板挂载位置 / 可测阈值，**至少其一**\n  - 映射表随澄清反问卡一并呈现，用户逐词确认后才算语义达标\n- **禁止**：NEVER 用「参数已澄清」代替「语义已澄清」——只问 UI 位置 / 依赖选型 / 存储位置，不构成对定性词的拷问\n- **判定顺序**：语义拷问**先于**参数澄清；定性词未译出可判定断言时，NEVER 进入下游交付\n\n**与 G1/G2 的关系**：语义拷问是 G2 的子规则——当模糊项不是「缺信息」而是「用词歧义」时走 G2 而非 G1。\n\n## 与 M01 的正交说明",
+      "already_marker": "词 → 可判定断言"
+    },
+    {
+      "id": "tt2-coding-ac-decidable",
+      "type": "replace_text",
+      "label": "`tri-coding/templates/requirements.md` §6 验收标准追加**禁词硬红线**（禁「本机冒烟 / 用户确认」等自证口径）+ 每条验收点 MUST 附一句可观测断言（审计 M4b：AC 期望结果写「本机冒烟通过」⇒ 112/112 全绿但 0 缺陷被捕获）（tt2 批）",
+      "glob": "tri-coding/templates/requirements.md",
+      "old": "- [ ] <验收点 1：可观测、可判定，如「可编译、含单测、覆盖率 ≥80%」>\n- [ ] <验收点 2>\n- [ ] <验收点 3>",
+      "new": "> **禁词（硬红线）**：本节每条验收点 MUST 可机器判定，NEVER 出现「本机冒烟 / 用户冒烟 / 用户确认 /\n> 手动通过 / 肉眼观察 / 看起来正常」等字样——那是把「通过」定义成「用户说通过」，等于无验收。\n> **每条验收点 MUST 附一句可观测断言**：DOM 选择器+断言 / IPC 事件名+期望 payload / 进程退出码 / 文件哈希 /\n> 可测阈值，至少其一。**来源**：tri-stack-train M4b 实证——AC 期望结果直接写「本机冒烟通过」，\n> 导致 112/112 全绿却 **0** 个缺陷被自动化捕获。\n\n- [ ] <验收点 1：可观测、可判定，如「可编译、含单测、覆盖率 ≥80%」>\n      断言：<如「`document.querySelector('.term-panel')` 非空且高度 >0」>\n- [ ] <验收点 2>\n      断言：<…>\n- [ ] <验收点 3>\n      断言：<…>",
+      "already_marker": "那是把「通过」定义成「用户说通过」"
+    },
+    {
+      "id": "tt2-coding-at-uplift",
+      "type": "replace_text",
+      "label": "`tri-coding/SKILL.md` §质量标准追加「AT 硬化（模板约束上移）」行 + **模板约束上移**规则：MUST/NEVER 级约束 MUST 在 SKILL.md 有条文，`tasks.md` 落盘后 MUST 自检无「冒烟 / 用户确认」字样（审计 M4a/M4b：AT 硬化只写在 templates/ 时实例化后出现 0 次，同批写在 SKILL.md 的 commit 硬门完整生效）（tt2 批）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "| 功能验证 | 功能验证门已执行，或有明确盖章（未执行 / 未触发须附原因）；`已升级人审` 时不得自动交付 | `verdict.md` 五态盖章 + `tri-verify/scripts/verify_gate.py self-test` |",
+      "new": "| 功能验证 | 功能验证门已执行，或有明确盖章（未执行 / 未触发须附原因）；`已升级人审` 时不得自动交付 | `verdict.md` 五态盖章 + `tri-verify/scripts/verify_gate.py self-test` |\n| AT 硬化（模板约束上移） | 涉及 UI/renderer 交互的验收点 MUST 落为组件测试 / E2E 等**可执行断言**任务项，NEVER 用「留用户冒烟」替代自动化断言；自动化确实不可行时 MUST 登记具体技术理由与降级证据形式 | `tasks.md` §3.3 AT 清单逐项核对，**无「冒烟 / 用户确认」字样残留** |\n\n> **模板约束上移（tt2 批 · 实例化丢失防线）**：tri-stack-train M4a/M4b 实测的对照实验——AT 硬化规则\n> **只**写在 `templates/tasks.md` 时，实例化后的 `tasks.md` 中该规则出现 **0 次**，AT 项全部写成\n> 「本机冒烟（用户）」，正是该规则明令禁止的写法；同一批**写在 `SKILL.md`** 的 commit 硬门则完整生效。\n> **判据：写在 `SKILL.md` 的约束会被执行，只写在 `templates/*.md` 的约束会在实例化时被静默丢弃。**\n> 故本 skill 立两条规则：① 所有 MUST / NEVER 级硬约束 MUST 在本 SKILL.md 中有对应条文，模板仅作填写指引；\n> ② **实例化后自检**——`tasks.md` 落盘后 MUST 自检 AT 清单无「冒烟 / 用户确认 / 手动通过」字样，\n> 命中即回退重写，NEVER 带着违规项进入门③。",
+      "already_marker": "写在 `SKILL.md` 的约束会被执行"
+    },
+    {
+      "id": "tt2-verify-verdict-tag-gate",
+      "type": "replace_text",
+      "label": "`tri-verify/SKILL.md` §二 verdict 判据追加**标签封闭校验**（盖章 MUST ∈ 封闭集，表外标签如「✅ 完全通过」视为判据未产出、NEVER 交付）+ 「修复后通过」MUST 记录回炉轮次与 commit 链（审计 M4a/M4b：两里程碑均写表外标签、各 1/2 次回炉却被判「完全通过」）（tt2 批）",
+      "glob": "tri-verify/SKILL.md",
+      "old": "> **证据锚定（真机实证）**：`通过（engine=<id>…）` 与 `修复后通过` 两态 MUST 引用同源证据（runId / 用例输出粘贴 / 用户提供的截图路径）。真机/手测场景中，用户的实测结论 ONLY 在附具体证据时才可采信为「通过」——NEVER 凭「成功了」一句话盖章。",
+      "new": "> **证据锚定（真机实证）**：`通过（engine=<id>…）` 与 `修复后通过` 两态 MUST 引用同源证据（runId / 用例输出粘贴 / 用户提供的截图路径）。真机/手测场景中，用户的实测结论 ONLY 在附具体证据时才可采信为「通过」——NEVER 凭「成功了」一句话盖章。\n>\n> **标签封闭校验（tt2 批）**：盖章字符串 MUST 逐字取自上表封闭集，**NEVER 使用表外标签**。\n> tri-stack-train M4a 实测把判据写成「✅ 完全通过」——该标签不在封闭集内，且实际经历 1 次回炉，\n> 应为「修复后通过（轮次 1，归因 A/B/C）」；M4b 同表并存「✅ 完全通过」+「⚠️ 部分通过」，\n> 自相矛盾（实际 2 次回炉）。故：落盘 `verdict.md` 前 MUST 校验「最终裁定」行的标签 **∈ 上表封闭集**，\n> 命中表外标签即视为判据未产出，NEVER 交付。\n>\n> **「修复后通过」MUST 记录回炉轮次与 commit 链**（如 `fdd8cda` / `103fc94` / `c6d40ef`），使归因可追溯——\n> 只有标签没有证据链的「通过」等同未验证。",
+      "already_marker": "标签封闭校验（tt2 批）"
+    },
+    {
+      "id": "tt2-coding-review-existence-gate",
+      "type": "replace_text",
+      "label": "`tri-coding/SKILL.md` 功能验证自动门 §强制规则追加 **tri-review 存在性检查**：交付前 MUST 自检审查是否真的发生过，NEVER 在 tri-review 未被调用 / 未加载 checklist 的状态宣告交付（审计 M4a/M4b：tri-review 全程 0 次读取，既有 checklist 硬门只约束 review 内部、无人检查 review 有没有发生）（tt2 批）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "- `tri-verify` 未安装 → 标注「tri-verify 未安装，功能验证门已降级为跳过」并**显式盖章**，NEVER 阻断交付，也 NEVER 假装已验证。",
+      "new": "- `tri-verify` 未安装 → 标注「tri-verify 未安装，功能验证门已降级为跳过」并**显式盖章**，NEVER 阻断交付，也 NEVER 假装已验证。\n- **tri-review 存在性检查（交付前自检 · tt2 批）**：本 skill 不负责代码审查（由 tri-review 承担），\n  但交付前 MUST 自检**审查是否真的发生过**——NEVER 在 tri-review 未被调用（或未加载\n  `tri-review/references/review-checklists.md`）的状态下宣告交付。tri-review 未安装时 MUST 显式盖章\n  「tri-review 未安装，代码审查门已降级为跳过」，NEVER 假装已审。\n  *（来源：tri-stack-train M4a/M4b 实测——tri-review 全程 **0 次**读取，比 M1–M3a 更彻底；\n  既有 checklist 硬门只约束 review **内部**行为，无人负责检查 review **有没有发生**，\n  故本检查须由交付责任方本 skill 承担）*",
+      "already_marker": "tri-review 存在性检查"
+    },
+    {
+      "id": "tt2-cl-intent",
+      "type": "replace_text",
+      "label": "`tri-intent/CHANGELOG.md` 追加 [1.15.0] 条目（P2 属人工内容，由 op 表达而非手改文件）（tt2 批 · clarify-gate 语义拷问）",
+      "glob": "tri-intent/CHANGELOG.md",
+      "old": "## [1.14.5] - 2026-09-28",
+      "new": "## [1.15.0] - 2026-09-29\n\n### 变更\n\n- **clarify-gate 新增「语义拷问」节（G2 子规则）**：需求 / 验收标准中出现的**无法机器判定的定性词**\n  （内嵌 / 可交互 / 优雅降级 / 自动 / 实时 / 轻量 / 无缝 / 直观 / 友好 / 快速 …）MUST 逐词产出\n  「**词 → 可判定断言**」映射，作为 G2 反问的**必答项**交用户确认；每个词 MUST 落为一句可观测陈述\n  （DOM 选择器+断言 / IPC 事件名+期望 payload / 进程退出码 / 面板挂载位置 / 可测阈值，至少其一）。\n  **NEVER 用「参数已澄清」代替「语义已澄清」**；语义拷问先于参数澄清，定性词未译出可判定断言时 NEVER 进入下游交付。\n  **动机**：tri-stack-train M4b 实证——FR 用「内嵌」一词，既有澄清只问了 UI 位置 / User-Agent / 存储\n  三个参数、**从不问「内嵌 = 主窗口内嵌还是独立窗口」**，agent 按独立窗口交付仍被判交付完成。\n  失败模式不是问得少，而是**问的层次错：只拷问参数，从不拷问语义**。\n\n## [1.14.5] - 2026-09-28",
+      "already_marker": "## [1.15.0] - 2026-09-29"
+    },
+    {
+      "id": "tt2-cl-coding",
+      "type": "replace_text",
+      "label": "`tri-coding/CHANGELOG.md` 追加 [1.10.0] 条目（P2 属人工内容，由 op 表达而非手改文件）（tt2 批 · AC 禁词 + AT 硬化上移 + tri-review 存在性检查）",
+      "glob": "tri-coding/CHANGELOG.md",
+      "old": "## [1.9.1] - 2026-09-28",
+      "new": "## [1.10.0] - 2026-09-29\n\n### 变更\n\n- **验收标准禁词硬红线（`templates/requirements.md` §6）**：每条验收点 MUST 可机器判定，NEVER 出现\n  「本机冒烟 / 用户冒烟 / 用户确认 / 手动通过 / 肉眼观察 / 看起来正常」等字样——那是把「通过」定义成\n  「用户说通过」，等于无验收；每条验收点 MUST 附一句**可观测断言**（DOM 选择器+断言 / IPC 事件名+期望\n  payload / 进程退出码 / 文件哈希 / 可测阈值，至少其一）。**动机**：tri-stack-train M4b 的 AC 期望结果\n  直接写「本机冒烟通过」，导致 112/112 全绿却 **0** 个缺陷被自动化捕获。\n- **AT 硬化上移 `SKILL.md` + 实例化后自检（§质量标准）**：新增「AT 硬化（模板约束上移）」质量维度，并立\n  两条规则——① 所有 MUST / NEVER 级硬约束 MUST 在本 SKILL.md 中有对应条文，模板仅作填写指引；\n  ② `tasks.md` 落盘后 MUST 自检 AT 清单无「冒烟 / 用户确认 / 手动通过」字样，命中即回退重写，\n  NEVER 带着违规项进入门③。**动机**：M4a/M4b 的对照实验——AT 硬化规则只写在 `templates/tasks.md` 时，\n  实例化后的 `tasks.md` 中该规则出现 **0 次**、AT 项全部写成「本机冒烟（用户）」；同批**写在 SKILL.md**\n  的 commit 硬门则完整生效。即「写在 SKILL.md 的约束会被执行，只写在 `templates/*.md` 的会在实例化时被静默丢弃」。\n- **tri-review 存在性检查（§交付前功能验证自动门 强制规则）**：本 skill 不负责代码审查，但交付前 MUST 自检\n  **审查是否真的发生过**——NEVER 在 tri-review 未被调用（或未加载 `references/review-checklists.md`）的状态\n  下宣告交付；tri-review 未安装时 MUST 显式盖章降级，NEVER 假装已审。**动机**：M4a/M4b 实测 tri-review\n  全程 **0 次**读取；既有 checklist 硬门只约束 review **内部**行为，无人负责检查 review **有没有发生**，\n  故该检查须由交付责任方本 skill 承担。\n\n## [1.9.1] - 2026-09-28",
+      "already_marker": "## [1.10.0] - 2026-09-29"
+    },
+    {
+      "id": "tt2-cl-verify",
+      "type": "replace_text",
+      "label": "`tri-verify/CHANGELOG.md` 追加 [1.2.0] 条目（P2 属人工内容，由 op 表达而非手改文件）（tt2 批 · verdict 标签封闭校验 + 回炉证据链）",
+      "glob": "tri-verify/CHANGELOG.md",
+      "old": "## [1.1.1] - 2026-09-28",
+      "new": "## [1.2.0] - 2026-09-29\n\n### 变更\n\n- **verdict 判据追加「标签封闭校验」**：盖章字符串 MUST 逐字取自五态封闭集，**NEVER 使用表外标签**；\n  落盘 `verdict.md` 前 MUST 校验「最终裁定」行的标签 **∈ 封闭集**，命中表外标签即视为判据未产出，NEVER 交付。\n  **动机**：tri-stack-train M4a 把判据写成「✅ 完全通过」——该标签不在封闭集内，且实际经历 1 次回炉，\n  应为「修复后通过（轮次 1，归因 A/B/C）」；M4b 同表并存「✅ 完全通过」+「⚠️ 部分通过」，自相矛盾\n  （实际 2 次回炉）。原四态定义无校验器，故形同虚设。\n- **「修复后通过」MUST 记录回炉轮次与 commit 链**（如 `fdd8cda` / `103fc94` / `c6d40ef`），使归因可追溯——\n  只有标签没有证据链的「通过」等同未验证。\n\n## [1.1.1] - 2026-09-28",
+      "already_marker": "## [1.2.0] - 2026-09-29"
+    },
+    {
+      "id": "tt2-doc-registry-rows",
+      "type": "replace_text",
+      "label": "`ops/patches/README.md` §当前补丁清单补登 tt2 批 9 行 + 「计数（tt2 批增量）」小节（含 35 个 settle 漂移修复说明）（tt2 批）",
+      "glob": "ops/patches/README.md",
+      "old": "| `tt-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt 批 15 行（本行自身在内）（tt 批） |",
+      "new": "| `tt-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt 批 15 行（本行自身在内）（tt 批） |\n| `tt2-intent-clarify-semantic` | replace_text | `tri-intent/clarify-gate/SKILL.md` 新增「语义拷问」节：定性词 → 可判定断言，作 G2 反问必答项（审计 M4a/M4b 治本项）（tt2 批） |\n| `tt2-coding-ac-decidable` | replace_text | `tri-coding/templates/requirements.md` §6 验收标准禁词硬红线 + 每条 MUST 附可观测断言（审计 M4b）（tt2 批） |\n| `tt2-coding-at-uplift` | replace_text | `tri-coding/SKILL.md` §质量标准新增「AT 硬化（模板约束上移）」+ 实例化后自检规则（审计 M4a/M4b 结构性发现）（tt2 批） |\n| `tt2-verify-verdict-tag-gate` | replace_text | `tri-verify/SKILL.md` §二 verdict 判据追加标签封闭校验 + 回炉轮次/commit 链要求（审计 M4a/M4b）（tt2 批） |\n| `tt2-coding-review-existence-gate` | replace_text | `tri-coding/SKILL.md` 功能验证门强制规则追加 tri-review 存在性检查（审计 M4a/M4b：review 全程 0 次读取）（tt2 批） |\n| `tt2-cl-intent` | replace_text | `tri-intent/CHANGELOG.md` 追加 [1.15.0] 条目（P2 补齐）（tt2 批） |\n| `tt2-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.10.0] 条目（P2 补齐）（tt2 批） |\n| `tt2-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.2.0] 条目（P2 补齐）（tt2 批） |\n| `tt2-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt2 批 9 行（本行自身在内）（tt2 批） |\n\n### 计数（2026-09-29 · tt2 批增量 · tri-train 审计 M4a/M4b 复测修补）\n\n> 本批 = `reports/TRI-TRAIN-USAGE-AUDIT-20260928.md` **M4a/M4b 补证**落地。与 tt 批的关键差异是\n> **一条结构性发现**：同一批修补里，写在 `SKILL.md` 的 commit 硬门完整生效，只写在\n> `templates/*.md` 的 AT 硬化规则在实例化后**出现 0 次**——即**约束写在哪一层决定它会不会被执行**。\n> 故本批不止补规则，还把规则**上移到 `SKILL.md`** 并加实例化后自检。\n>\n> 内容 5 条：**#1** clarify-gate 语义拷问（治本：只拷问参数、从不拷问语义）；**#2** requirements §6 验收标准\n> 禁词 + 可观测断言（治「AC 把通过定义成用户说通过」）；**#3** AT 硬化上移 SKILL.md + 实例化后自检\n> （治模板约束蒸发）；**#4** verdict 标签封闭校验（治「✅ 完全通过」表外标签）；**#5** tri-review 存在性检查\n> （治 review 全程 0 次读取且无人检查）。\n>\n> 版本线：`tri-intent` **1.15.0** / `tri-coding` **1.10.0** / `tri-verify` **1.2.0**（既有 settle op\n> **就地 retarget**：`f94-ver-intent` / `f90-ver-coding` / `dw2-tri-verify-version`，不新增版本 op、防 settle 互搏）。\n> 计数：368 → **377**（+9：5 内容 + 3 CHANGELOG + 1 清单登记；3 个版本 settle 与 2 个文档计数 settle 均就地更新）。\n>\n> **⚠️ 附带修复（settle 漂移 · 35 个 skill）**：host-compat 批（`e659978`）把 35 个 skill 各升一个 PATCH，\n> 但**漏 retarget `manifest.json` 里的 35 个 settle 版本 op** ⇒ 彼时运行 `apply.py` 会把 **35 个 skill\n> 全部降级一个 PATCH**（`apply.py --dry-run` 实测各报「应用 1」）。本批将全部 35 个 settle 目标就地对齐\n> 工作区真值（32 个退回工作区现值、3 个指向本批新版本），`apply.py` 由「静默降级」回到幂等空转。\n> `version-lint` 不比对 settle 目标，故该漂移从未被检出——属工具覆盖盲区，非本批引入。",
+      "already_marker": "`tt2-intent-clarify-semantic` | replace_text"
+    },
+    {
+      "id": "tt3-coding-anti-same-origin",
+      "type": "replace_text",
+      "label": "`tri-coding/SKILL.md` §质量标准追加「反同源假设（夹具独立）」维度：断言 MUST 来自需求而非实现，mock 目标 MUST NOT 是被测对象直接调用的依赖函数，命中即补走真实实现的对照用例；分支覆盖 NEVER 计入功能正确性证据（审计 M4a：shell-probe 测试把「探测返回 false」的实现缺陷固化为期望行为，83/83、112/112 全绿而真机全失败）（tt3 批）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "| AT 硬化（模板约束上移） | 涉及 UI/renderer 交互的验收点 MUST 落为组件测试 / E2E 等**可执行断言**任务项，NEVER 用「留用户冒烟」替代自动化断言；自动化确实不可行时 MUST 登记具体技术理由与降级证据形式 | `tasks.md` §3.3 AT 清单逐项核对，**无「冒烟 / 用户确认」字样残留** |",
+      "new": "| AT 硬化（模板约束上移） | 涉及 UI/renderer 交互的验收点 MUST 落为组件测试 / E2E 等**可执行断言**任务项，NEVER 用「留用户冒烟」替代自动化断言；自动化确实不可行时 MUST 登记具体技术理由与降级证据形式 | `tasks.md` §3.3 AT 清单逐项核对，**无「冒烟 / 用户确认」字样残留** |\n| 反同源假设（夹具独立） | 单测**夹具与断言 MUST 与被测实现独立产生**；NEVER 通过 mock 掉被测依赖把「实现的实际行为」直接固化为期望值——测出来的绿于是与被测代码同源，实现错了测试必绿 | 静态检查：`vi.mock` / `mockReturnValue` 的目标 MUST NOT 是**被测对象直接调用的那个依赖函数**；命中即要求补「走真实实现」的对照用例（`vi.importActual` + 真实临时目录） |\n\n> **反同源假设（tt3 批）**：断言必须来自**需求**，不来自**实现**。\n> tri-stack-train M4a 实证——`shell-probe.test.ts` 的 `describe('UT09（存在性检查分支）')`\n> 里几乎每条用例都把 `mockExistsSync` 设成 `false`，于是「Windows 上 `existsSync('cmd.exe')`\n> 只查 CWD、探测永远返回 false」这个**实现缺陷被当作期望行为固化进断言**：83/83、112/112 全绿，\n> 真机 shell 探测全失败。修复后实现自己写了注释印证：\n> `// Windows 下 existsSync('cmd.exe') 仅检查 CWD，无法命中 PATH；必须自己展开。`\n> 这是「测试越严谨越掩盖 bug」的最锋利形式：**不是 mock 掉了被测逻辑，而是测试与实现共享了同一个错误前提。**\n> 三条判据：① 断言来源可追溯——每条断言的期望值 MUST 来自 `requirements.md` 的某条验收标准\n> （§质量标准「需求可追溯」的测试侧落点），NEVER 从被测代码的当前行为反推；\n> ② **反同源静态检查**——mock 目标是被测对象直接调用的那个依赖函数 ⇒ MUST 补一条走真实实现的对照用例；\n> ③ **「分支覆盖」不等于「正确」**——覆盖了某个失败分支不代表没测错对象，\n> 分支覆盖统计 NEVER 计入功能正确性证据。",
+      "already_marker": "反同源假设（tt3 批）"
+    },
+    {
+      "id": "tt3-test-anti-same-origin",
+      "type": "replace_text",
+      "label": "`tri-sdlc/children/tri-test/SKILL.md` 维度 3 追加「反同源假设」三条判据 + 降级兼容：断言来源可追溯 / 反同源静态检查 / 分支覆盖≠正确（审计 M4a 同上证实；与既有 P6-M3「真实执行」互补——M3 管执行侧、本条管编写侧）（tt3 批）",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "| 阻塞用例 | 计入分母 | 视同未通过，MUST 说明阻塞原因 |",
+      "new": "| 阻塞用例 | 计入分母 | 视同未通过，MUST 说明阻塞原因 |\n\n#### 反同源假设（夹具与断言 MUST 独立于实现 · 硬红线）\n\n> **实证**：tri-stack-train M4a——`shell-probe` 的 Windows shell 探测缺陷是\n> `existsSync('cmd.exe')` 只查 CWD、不命中 PATH，导致探测永远返回 false。\n> 而 `shell-probe.test.ts` 的 `describe('UT09（存在性检查分支）')` 中几乎每条用例\n> 都把 `mockExistsSync` 设为 `false`，**把实现缺陷的症状固化成期望行为**：\n> 112/112 全绿、真机全失败。\n> 根因是夹具与被测实现**同源**：期望值是从「实现现在怎么做」反推的，而不是从需求推出来的。\n\n| # | 判据 | 判据形式 |\n|---|---|---|\n| ① 断言来源可追溯 | 每条断言的期望值 MUST 可追溯到 `acceptance-criteria.md` 的某条验收标准；NEVER 从被测代码的当前行为反推 | 用例表「关联验收标准」列必填，且期望值与 AC 期望结果**字面对得上** |\n| ② 反同源静态检查 | `vi.mock` / `mockReturnValue` / `mockResolvedValue` 的目标 **MUST NOT** 是被测对象**直接调用**的那个依赖函数 | 静态检查：若命中，MUST 补**一条**走真实实现的对照用例（`vi.importActual` + 真实临时目录） |\n| ③ 分支覆盖 ≠ 正确 | 覆盖到「失败分支」不代表没测错对象；覆盖率与分支覆盖数 NEVER 计入功能正确性证据 | 通过率统计与「反同源检查通过数」分开登记，NEVER 合并为一个数字 |\n\n> **降级兼容**：目标依赖确实不可替换（如进程原生 API、Electron 全局对象）时，\n> MUST 登记具体技术理由 + 降级证据形式（如真机手测记录、运行截图路径），\n> 并在 `test-report.md` 显式标注「该用例结论不含功能正确性证据」——NEVER 让它静默计入通过率。\n>\n> **与「真实执行」（P6-M3）的关系**：P6-M3 约束**执行侧**（结果必须真跑出来），\n> 本条约束**编写侧**（期望值必须独立产生）。两侧缺一，绿灯都不算证据。",
+      "already_marker": "反同源假设（夹具与断言 MUST 独立于实现"
+    },
+    {
+      "id": "tt3-cl-coding",
+      "type": "replace_text",
+      "label": "`tri-coding/CHANGELOG.md` 追加 [1.11.0] 条目（P2 属人工内容，由 op 表达而非手改文件）（tt3 批 · 反同源假设（夹具独立））",
+      "glob": "tri-coding/CHANGELOG.md",
+      "old": "## [1.10.0] - 2026-09-29",
+      "new": "## [1.11.0] - 2026-09-29\n\n### 变更\n\n- **§质量标准新增「反同源假设（夹具独立）」维度**：单测的夹具与断言 MUST 与被测实现**独立产生**；\n  NEVER 通过 mock 掉被测依赖把「实现的实际行为」直接固化为期望值——那样测出来的绿与被测代码同源，\n  实现错了测试必绿。三条判据：① **断言来源可追溯**——每条断言的期望值 MUST 来自\n  `requirements.md` 的某条验收标准（§质量标准「需求可追溯」的测试侧落点），NEVER 从被测代码当前行为反推；\n  ② **反同源静态检查**——`vi.mock` / `mockReturnValue` 的目标是被测对象直接调用的那个依赖函数时，\n  MUST 补一条走真实实现的对照用例（`vi.importActual` + 真实临时目录）；\n  ③ **分支覆盖 ≠ 正确**——覆盖了某个失败分支不代表没测错对象，分支覆盖统计 NEVER 计入功能正确性证据。\n  **动机**：tri-stack-train M4a 实证——`shell-probe.test.ts` 的 `describe('UT09（存在性检查分支）')`\n  里几乎每条用例都把 `mockExistsSync` 设为 `false`，于是「Windows 上 `existsSync('cmd.exe')`\n  只查 CWD、探测永远返回 false」这个**实现缺陷被固化成期望行为**：83/83、112/112 全绿，\n  真机 shell 探测全失败。修复后的实现自己写了注释印证该缺陷。这是「测试越严谨越掩盖 bug」的\n  最锋利形式：不是 mock 掉了被测逻辑，而是**测试与实现共享了同一个错误前提**。\n\n## [1.10.0] - 2026-09-29",
+      "already_marker": "## [1.11.0] - 2026-09-29"
+    },
+    {
+      "id": "tt3-cl-test",
+      "type": "replace_text",
+      "label": "`tri-sdlc/children/tri-test/CHANGELOG.md` 追加 [1.2.0] 条目（P2 属人工内容，由 op 表达而非手改文件）（tt3 批 · 反同源假设三条判据）",
+      "glob": "tri-sdlc/children/tri-test/CHANGELOG.md",
+      "old": "## [1.1.9] - 2026-09-28",
+      "new": "## [1.2.0] - 2026-09-29\n\n### 变更\n\n- **维度 3 新增「反同源假设」三条判据 + 降级兼容**：① 断言来源可追溯——期望值 MUST 可追溯到\n  `acceptance-criteria.md`，NEVER 从被测代码当前行为反推；② 反同源静态检查——mock 目标 MUST NOT 是\n  被测对象**直接调用**的那个依赖函数，命中即补一条走真实实现的对照用例；\n  ③ 分支覆盖 ≠ 正确——覆盖率与分支覆盖数 NEVER 计入功能正确性证据，须与通过率分开登记。\n  降级兼容：目标依赖确实不可替换（进程原生 API / Electron 全局对象）时 MUST 登记技术理由 + 降级证据形式，\n  并在 `test-report.md` 显式标注「该用例结论不含功能正确性证据」，NEVER 静默计入通过率。\n  **动机**：tri-stack-train M4a 实证——`shell-probe` 的探测缺陷（`existsSync('cmd.exe')` 在 Windows\n  只查 CWD）被测试夹具 `mockExistsSync.mockReturnValue(false)` 固化成期望行为，112/112 全绿而真机全失败。\n  **与既有 P6-M3「真实执行」的关系**：P6-M3 约束**执行侧**（结果必须真跑出来），本条约束**编写侧**\n  （期望值必须独立产生）；两侧缺一，绿灯都不算证据。\n\n## [1.1.9] - 2026-09-28",
+      "already_marker": "## [1.2.0] - 2026-09-29"
+    },
+    {
+      "id": "tt3-doc-registry-rows",
+      "type": "replace_text",
+      "label": "`ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行 + 「计数（tt3 批增量）」小节（含落点双重论证与无校验器的诚实边界）（tt3 批）",
+      "glob": "ops/patches/README.md",
+      "old": "| `tt2-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt2 批 9 行（本行自身在内）（tt2 批） |",
+      "new": "| `tt2-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt2 批 9 行（本行自身在内）（tt2 批） |\n| `tt3-coding-anti-same-origin` | replace_text | `tri-coding/SKILL.md` §质量标准新增「反同源假设（夹具独立）」维度：断言 MUST 来自需求而非实现；mock 目标 MUST NOT 是被测对象直接调用的依赖函数；分支覆盖 NEVER 计入功能正确性证据（审计 M4a）（tt3 批） |\n| `tt3-test-anti-same-origin` | replace_text | `tri-sdlc/children/tri-test/SKILL.md` 维度 3 新增「反同源假设」三条判据 + 降级兼容（与既有 P6-M3 互补：M3 管执行侧、本条管编写侧）（审计 M4a）（tt3 批） |\n| `tt3-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.11.0] 条目（P2 补齐）（tt3 批） |\n| `tt3-cl-test` | replace_text | `tri-sdlc/children/tri-test/CHANGELOG.md` 追加 [1.2.0] 条目（P2 补齐）（tt3 批） |\n| `tt3-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行（本行自身在内）+ 补登报告与 tt2 计数小节 |\n\n### 计数（2026-09-29 · tt3 批增量 · tri-train 审计「反同源假设」）\n\n> 本批 = `reports/TRI-TRAIN-AUDIT-M4-M4B-20260929.md` §2.2 病灶 B 落地，即审计建议 **#5**。\n> 单开一批而非并入 tt2，是因为落点需要双重论证：这是**测试编写**规范而非交付门控，\n> 且**单放 `tri-test` 会重犯 tt2 §三 A 的错**——tri-stack-train 走的是 `tri-coding` I11 直调路径，\n> 根本不经过 `tri-sdlc` / `tri-test`。所以两处都落：`tri-coding`（实际写测试的地方）\n> + `tri-test`（SDLC 流程的家）。\n>\n> 版本线：`tri-coding` **1.11.0**（`f90-ver-coding` 就地 retarget 1.10.0 → 1.11.0）/\n> `tri-test` **1.2.0**（`dw-tri-test-version` 就地 retarget 1.1.9 → 1.2.0）；\n> 均不新增版本 op、防 settle 互搏。\n> 计数：377 → **382**（+5：2 内容 + 2 CHANGELOG + 1 清单登记；2 个版本 settle 与 2 个文档计数 settle 均就地更新）。\n>\n> **诚实边界**：`tri-coding` 与 `tri-test` 两处条文仍均为 **prompt 层约束，无校验器实现**——\n> 「mock 目标是被测对象直接调用的依赖函数」这条静态检查目前要求 Agent 人工执行，\n> 后续若做成脚本需落在 `tri-test/scripts/` 或 `tri-coding/scripts/`。",
+      "already_marker": "`tt3-coding-anti-same-origin` | replace_text"
     }
   ]
 }
