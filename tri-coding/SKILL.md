@@ -1,7 +1,7 @@
 ---
 name: tri-coding
 slug: tri-coding
-version: 1.9.0
+version: 1.9.1
 displayName: tri-coding
 description: 编码开发下游执行 skill。读取 tri-intent 快照 §三，处理 I11（编码开发）意图，自主管理「需求→设计→任务→执行→实现报告」完整编码工作流，含双审批门+执行前确认。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照自主管理编码全链路（需求→设计→任务→执行→实现报告），含双审批门+执行前确认+可扩展技术栈加载方法论+工具结果治理六条纪律，专注 I11 编码开发。
@@ -159,6 +159,22 @@ python scripts/check_update.py --slug tri-coding --json
 
 - 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 编码工作流（设计类链路）
 > 执行顺序固定：§版本检查与更新机制（第零步）→ 上游依赖检测 → 读取快照 §三 → 核心执行。版本检查未通过前 NEVER 进入以下任一执行步骤。
 

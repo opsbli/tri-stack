@@ -1,7 +1,7 @@
 ---
 name: 运维与监控
 slug: tri-ops
-version: 1.1.5
+version: 1.1.6
 displayName: 运维与监控
 description: SDLC P8 运维与监控子SKILL。读取 tri-sdlc 转交的阶段任务（P7 发布报告与巡检结论 + P2 容量性能目标 + P6 缺陷台账 + P8 门禁条目清单），定义日志四要素方案、三类监控指标与采集方式、指标阈值与告警四要素、健康检查与失败处置、备份容灾与恢复演练计划，并沉淀 ≥3 条含现象/定位/处置的故障处置条目，产出 ops-runbook.md / monitoring.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P8 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 运维监控专家，产出日志与监控方案、告警阈值矩阵、健康检查、备份容灾与故障处置手册，面向 P8 门禁 7 条必检项交付。
@@ -204,6 +204,22 @@ python scripts/check_update.py --slug tri-ops --json
 
 - 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 处理流程
 
 > 执行顺序固定：§版本检查与更新机制（第零步）→ 上游依赖检测 → 读取快照 §三 → 核心执行。版本检查未通过前 NEVER 进入以下任一执行步骤。

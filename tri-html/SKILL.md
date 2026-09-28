@@ -1,7 +1,7 @@
 ---
 name: tri-html
 slug: tri-html
-version: 1.3.8
+version: 1.3.9
 displayName: tri-html
 description: 项目架构可视化分析下游执行 skill。以系统架构设计师视角对指定项目（默认当前项目）进行全面深度架构分析，涵盖架构设计/目录结构/技术栈选型/代码设计/功能设计/特殊设计（安全/性能等）六维，双引擎生成可视化产物：高精度 viewer 引擎（Typed JSON IR → 确定性校验 showcase 门禁 → 单文件交互 HTML：架构图/工作流/时序图/数据流/生命周期五类，深浅主题、聚焦、路径探查、角色透镜、故事播放、PNG/SVG/WebM 导出）+ Mermaid 兼容模式（目录树/类图/ER/旅程图）。当 tri-intent 快照下游路由建议指向本 skill（L2=I10、L3=arch-viz）时激活。支持独立安装，含上游依赖检测三态逻辑与渲染引擎 Node 探测降级链。
 summary: 六维架构分析方法论 + 双渲染引擎（viewer 确定性高精引擎 / Mermaid 兼容）+ showcase 客观门禁 + 结构化诊断修复回执（2 轮上限）+ 单文件 HTML 交付，含双审批门与 §代码版权与许可证合规。
@@ -181,6 +181,22 @@ python scripts/check_update.py --slug tri-html --json
 
 - 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 处理流程
 
 > 执行顺序固定：§版本检查与更新机制（第零步）→ 上游依赖检测 → 读取快照 §三 → 核心执行。版本检查未通过前 NEVER 进入以下任一执行步骤。

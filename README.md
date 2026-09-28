@@ -63,67 +63,67 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-intent](tri-intent/) | 1.14.4 | 意图识别总路由。第一层三分法（Asking/Doing/Expressing/Meta）→ 下钻二级意图 → 产出快照交接下游 |
-| [tri-meta](tri-meta/) | 1.2.9 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
+| [tri-intent](tri-intent/) | 1.14.5 | 意图识别总路由。第一层三分法（Asking/Doing/Expressing/Meta）→ 下钻二级意图 → 产出快照交接下游 |
+| [tri-meta](tri-meta/) | 1.2.10 | 元操作处理（M01–M04）：纠错 / 追加细化 / 能力询问，并重路由回原 skill |
 
 ### 编程主干（写 → 修 → 审）
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-coding](tri-coding/) | 1.9.0 | 编码开发，三门流程：需求审批 → 设计审批 → 执行确认（I11） |
-| [tri-fix](tri-fix/) | 1.5.4 | 调试修复：先造出一条能变红的反馈循环，再定位根因（I12） |
-| [tri-review](tri-review/) | 1.8.0 | 代码审查：三模式 + Fowler 12 坏味 + 审查执行纪律八则（CR） |
+| [tri-coding](tri-coding/) | 1.9.1 | 编码开发，三门流程：需求审批 → 设计审批 → 执行确认（I11） |
+| [tri-fix](tri-fix/) | 1.5.5 | 调试修复：先造出一条能变红的反馈循环，再定位根因（I12） |
+| [tri-review](tri-review/) | 1.8.1 | 代码审查：三模式 + Fowler 12 坏味 + 审查执行纪律八则（CR） |
 
 ### 编码子类（I11 一跳覆写）
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-frontend-design](tri-frontend-design/) | 1.1.7 | 前端设计方向：设计令牌 / 动效基线 / 多变体探索 |
-| [tri-lottie](tri-lottie/) | 1.0.6 | 动效实现 / Lottie 集成 |
-| [tri-prototype](tri-prototype/) | 1.1.3 | PM→Dev 桥接：解析原型 + PRD → tri-coding 需求说明书 |
+| [tri-frontend-design](tri-frontend-design/) | 1.1.8 | 前端设计方向：设计令牌 / 动效基线 / 多变体探索 |
+| [tri-lottie](tri-lottie/) | 1.0.7 | 动效实现 / Lottie 集成 |
+| [tri-prototype](tri-prototype/) | 1.1.4 | PM→Dev 桥接：解析原型 + PRD → tri-coding 需求说明书 |
 
 ### 代码洞察（I10 一跳覆写）
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-code-analyzer](tri-code-analyzer/) | 1.5.3 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
-| [tri-html](tri-html/) | 1.3.8 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
-| [tri-checklist](tri-checklist/) | 1.1.6 | 审计清单生成：改动点 / 审查点 / 测试点 / 测试步骤四维 |
+| [tri-code-analyzer](tri-code-analyzer/) | 1.5.4 | 代码库深度剖析：五部分报告 + Mermaid 可视化 |
+| [tri-html](tri-html/) | 1.3.9 | 架构可视化分析（高精度 viewer 引擎 + showcase 门禁） |
+| [tri-checklist](tri-checklist/) | 1.1.7 | 审计清单生成：改动点 / 审查点 / 测试点 / 测试步骤四维 |
 
 ### 全流程 / 协作对齐
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-sdlc](tri-sdlc/) | 1.1.7 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
-| [tri-orchestrate](tri-orchestrate/) | 1.0.3 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
-| [tri-grill](tri-grill/) | 1.0.4 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
-| [tri-req-audit](tri-req-audit/) | 1.1.1 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
-| [tri-domain](tri-domain/) | 1.0.2 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
+| [tri-sdlc](tri-sdlc/) | 1.1.8 | SDLC 全生命周期编排：九阶段 + 68 必检项 + 三剖面 |
+| [tri-orchestrate](tri-orchestrate/) | 1.0.4 | 协作编排：拆分需求 → 分配 → 并行执行 → 回执收集 → master-todo 回写 |
+| [tri-grill](tri-grill/) | 1.0.5 | 质询对齐：六维质询（歧义/边界/反例/术语/依赖/优先级）直到共识 |
+| [tri-req-audit](tri-req-audit/) | 1.1.2 | 需求文档审核：三重前置校验 + 二跳委派市面 PRD 审核 skill → P0/P1/P2 问题清单（自建） |
+| [tri-domain](tri-domain/) | 1.0.3 | 领域建模：术语表（CONTEXT.md）+ ADR + 边界场景清单 |
 
 ### 内务 / 造物
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-init](tri-init/) | 1.1.0 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
-| [tri-forge](tri-forge/) | 1.2.0 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
-| [tri-god](tri-god/) | 1.2.5 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
+| [tri-init](tri-init/) | 1.1.1 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
+| [tri-forge](tri-forge/) | 1.2.1 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
+| [tri-god](tri-god/) | 1.2.6 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
 
 ### 相邻支撑
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-plan](tri-plan/) | 1.3.5 | 规划拆解：WBS + 依赖图 + 风险登记（I13） |
-| [tri-action](tri-action/) | 1.2.6 | 操作执行（I14） |
-| [tri-workflow](tri-workflow/) | 1.2.7 | 工作流设计引擎：7 阶段混合智能流水线（I13/I14 子类） |
-| [tri-loop](tri-loop/) | 1.2.6 | 知识库 loop 启动（I14 子类） |
+| [tri-plan](tri-plan/) | 1.3.6 | 规划拆解：WBS + 依赖图 + 风险登记（I13） |
+| [tri-action](tri-action/) | 1.2.7 | 操作执行（I14） |
+| [tri-workflow](tri-workflow/) | 1.2.8 | 工作流设计引擎：7 阶段混合智能流水线（I13/I14 子类） |
+| [tri-loop](tri-loop/) | 1.2.7 | 知识库 loop 启动（I14 子类） |
 
 ### 横向方法论
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-evolve](tri-evolve/) | 1.1.8 | 自进化 / 用户画像：OODA 闭环 + 经验条目库 + A/B 验证门 + 回滚（不认领 L2、不进路由） |
-| [tri-true](tri-true/) | 1.1.7 | 四道防线消除幻觉：置信度 → 事实源（T1–T4）→ 多模型交叉 → 自反思修正（不认领 L2、不进路由） |
-| [tri-verify](tri-verify/) | 1.1.0 | 运行中应用验证：V1–V5 触发 + 三类归因 + 有界循环 + 五态印章；引擎可插拔（本地 / TestSprite） |
+| [tri-evolve](tri-evolve/) | 1.1.9 | 自进化 / 用户画像：OODA 闭环 + 经验条目库 + A/B 验证门 + 回滚（不认领 L2、不进路由） |
+| [tri-true](tri-true/) | 1.1.8 | 四道防线消除幻觉：置信度 → 事实源（T1–T4）→ 多模型交叉 → 自反思修正（不认领 L2、不进路由） |
+| [tri-verify](tri-verify/) | 1.1.1 | 运行中应用验证：V1–V5 触发 + 三类归因 + 有界循环 + 五态印章；引擎可插拔（本地 / TestSprite） |
 
 ---
 

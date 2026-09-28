@@ -1,7 +1,7 @@
 ---
 name: tri-forge
 slug: tri-forge
-version: 1.2.0
+version: 1.2.1
 displayName: tri-forge
 description: 内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。用于「按家族硬规范生成 / 补全 / 审计一个 skill」：以 references/family-spec.md 为生成单一事实源，通过三模式（A 规范顾问·不落盘 / B 补全审计 / C 锻造生成·五门流程）产出或修复**合规的 skill 包**，并以 references/compliance-checklist.md 的 24 条硬约束在门④逐条自检，全过方可落盘；生成物若具备 tri-intent 下游身份，MUST 在门③同步回填路由映射表 / L3 子类 note / 下游依赖检测路径 / README 表，NEVER 只生成 skill 而不接通路由。同时承接家族的四点版本一致性校验（原 sync_registry.py 职能）。支持独立安装，含上游依赖检测三态逻辑（快照模式 / 引导安装 / 降级模式）。
 summary: 三模式技能锻造工具（A 规范顾问 / B 补全审计 / C 锻造生成五门流程）+ 家族硬规范单源 + 24 条合规硬约束门④自检 + 门③路由回流强制 + 四点版本一致性校验 + 四平台安装。
@@ -178,6 +178,22 @@ python scripts/check_registry.py --apply     # 规则化回写可自动修正的
 校验位点见 `references/version-check-spec.md`（本仓库为 **5 处**：`SKILL.md` frontmatter /
 `CHANGELOG.md` 首条 / `_meta.json` / 平台注册表 / `README.md` 版本声明）。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 处理流程
 
 > 三种模式共享同一套判据（`family-spec.md` + `compliance-checklist.md`），差别在**门数**与**是否落盘**；C 模式走完整五门，B 模式跳过门③。

@@ -1,6 +1,6 @@
 # 需求文档审核（tri-req-audit）
 
-![version](https://img.shields.io/badge/version-1.1.1-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-1.1.2-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 
 > 面向 tri-xxx 家族的**内部专用工具**：对 `tri-prototype` 产出的 `requirements.md` 做**开工前审核**——
 > 先做家族专有的三重前置本地校验，再**二跳委派**市面 PRD 审核 skill，最后聚合为 P0/P1/P2 问题清单与修订清单。

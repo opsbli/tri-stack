@@ -4,6 +4,22 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.14.5] - 2026-09-28
+
+### 新增
+
+- **家族横切第 10 节「宿主兼容与提问呈现」**：紧跟「版本检查与更新机制」追加 `host-compat-stub v1` 自包含瘦节——
+  在提供交互式提问工具的宿主（如 Proma 的 `AskUserQuestion`）中，🔴 STOP 用户确认检查点与 clarify-gate
+  MUST 以**普通 Markdown 文本**呈现为聊天问题，**NEVER 调用交互式提问工具**
+  （`AskUserQuestion` / `ask_user_question` / `request_user_input` / `clarify` 及等价物）；
+  用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）保持不变。
+  **只管呈现形式，不改任何门控的判定条件、触发时机与处置动作**；在无交互式提问工具的宿主中本条自然空转。
+  细则真源 `tri-intent/references/host-compat.md`；家族规范登记于 `tri-forge/references/family-spec.md`
+  §四（第 10 节注）+ §五（待登记项）。
+
+- **新增 `references/host-compat.md`**：上述横切约束的细则唯一真源——成因（呈现形式由宿主决定）、家族约定、契约失真对照表、六条边界与例外、瘦节模板。家族内 35 个 skill 的 `AskUserQuestion` 等工具名零引用，本次仍以宿主中立形态落地，NEVER 引入跨宿主耦合。
+- **目录结构树补列**：`references/` 由 3 项补为 6 项（新增 `host-compat.md`，并补登此前遗漏的 `version-check-spec.md` / `version-gate.md`）。
+
 ## [1.14.4] - 2026-09-28
 
 ### 变更

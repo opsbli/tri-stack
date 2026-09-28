@@ -1,7 +1,7 @@
 ---
 name: tri-grill
 slug: tri-grill
-version: 1.0.4
+version: 1.0.5
 displayName: tri-grill
 description: "内部专用工具 skill（不注册为 tri-intent 下游路由项，由用户直接调用）。对 requirements.md / design.md / plan.md 等规划文档进行逐条质询，直到 PM 和 Dev 对每一句话有相同理解。质询过程产出的新决策由 tri-domain 记录为 ADR / 术语表条目。产出精化后的文档 + 对齐记录。NEVER 在仍有未解决歧义时宣布对齐完成。支持独立安装，含上游依赖检测两态逻辑（独立模式 / 引导安装）。"
 summary: 逐条质询直到共识：挑战模糊术语 → 发明边界场景 → 记录 ADR → 精化文档 → 确认对齐完成。
@@ -164,6 +164,22 @@ python scripts/check_update.py --slug tri-grill --json
 
 - 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 目录结构
 
 ```

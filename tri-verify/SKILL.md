@@ -1,7 +1,7 @@
 ---
 name: tri-verify
 slug: tri-verify
-version: 1.1.0
+version: 1.1.1
 displayName: tri-verify
 description: 横向验证型 skill，为 tri-xxx 家族提供「驱动运行中应用的真实功能验证」能力——把交付物真的跑起来、按行为契约驱动用户路径、取同源失败证据，并在失败时驱动「三类归因 → 修复 → 复验」有界循环，直到功能真正可用或明确升级人审。不认领 tri-intent 下游路由，由 tri-coding（交付前）／tri-fix（修复后）／tri-sdlc（P6-P7）委派激活，亦可由用户直接调用。引擎可插拔：默认本地引擎（Playwright/pytest，零外部依赖、可离线、零成本），可选云端引擎（TestSprite CLI，语义定位 + 同源失败证据包）。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 横向验证型 skill。补上家族唯一缺口——「没有任何环节真的驱动运行中的应用」。引擎可插拔（本地 Playwright/pytest 默认，TestSprite CLI 可选）；三类归因（产品/契约/环境，C 类由退出码机械判定）；有界循环 ≤2 轮后升级人审；风险预筛式的确定性触发规则 V1–V5；单一门禁权威纪律；降级不阻断交付。
@@ -252,6 +252,22 @@ python scripts/check_update.py --slug tri-verify --json
 
 - 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 处理流程
 
 ```

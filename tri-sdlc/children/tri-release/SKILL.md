@@ -1,7 +1,7 @@
 ---
 name: 构建与发布
 slug: tri-release
-version: 1.1.6
+version: 1.1.7
 displayName: 构建与发布
 description: SDLC P7 构建与发布子SKILL。读取 tri-sdlc 转交的阶段任务（P6 测试结论 + P4 实现清单 + P2 设计 + P7 门禁条目清单），完成 SemVer 版本定级、构建产物清单与校验、CI/CD 三段流水线定义、预发布部署与冒烟测试、四要素回滚方案、灰度或全量发布策略、发布后核心链路巡检，并向用户工作区更新 Keep a Changelog 格式 CHANGELOG.md，产出 release-plan.md / release-report.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P7 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 构建发布专家，产出版本定级、流水线、冒烟、回滚与灰度策略及发布报告，面向 P7 门禁 9 条必检项交付。
@@ -222,6 +222,22 @@ python scripts/check_update.py --slug tri-release --json
 
 - 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 处理流程
 
 > 执行顺序固定：§版本检查与更新机制（第零步）→ 上游依赖检测 → 读取快照 §三 → 核心执行。版本检查未通过前 NEVER 进入以下任一执行步骤。

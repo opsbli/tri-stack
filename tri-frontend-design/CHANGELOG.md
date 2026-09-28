@@ -6,6 +6,19 @@
 
 > 来源与归属：动效/多变体知识蒸馏自 emilkowalski/skills（MIT License, Copyright (c) 2026 Emil Kowalski），去产品化改写，保留法律归属声明，不建 LICENSE 文件。
 
+## [1.1.8] - 2026-09-28
+
+### 新增
+
+- **家族横切第 10 节「宿主兼容与提问呈现」**：紧跟「版本检查与更新机制」追加 `host-compat-stub v1` 自包含瘦节——
+  在提供交互式提问工具的宿主（如 Proma 的 `AskUserQuestion`）中，🔴 STOP 用户确认检查点与 clarify-gate
+  MUST 以**普通 Markdown 文本**呈现为聊天问题，**NEVER 调用交互式提问工具**
+  （`AskUserQuestion` / `ask_user_question` / `request_user_input` / `clarify` 及等价物）；
+  用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）保持不变。
+  **只管呈现形式，不改任何门控的判定条件、触发时机与处置动作**；在无交互式提问工具的宿主中本条自然空转。
+  细则真源 `tri-intent/references/host-compat.md`；家族规范登记于 `tri-forge/references/family-spec.md`
+  §四（第 10 节注）+ §五（待登记项）。
+
 ## [1.1.7] - 2026-09-27
 
 ### 修复

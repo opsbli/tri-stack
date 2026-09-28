@@ -2,7 +2,7 @@
 
 蒸馏元 skill（造物主·蒸馏元技能）。作为路由分发器识别蒸馏对象类型（human / workflow / skill / thing / general），从 `methodologies/registry.md` 加载对应方法论，把「一个人的思维方式、一套工作流、一门专业技能、一本书/一门课等长内容」蒸馏提炼为可被 Agent 独立调用的 skill。它是 tri-intent 的下游执行 skill，当 tri-intent 快照下游路由建议指向本 skill 时激活；支持独立安装，含上游依赖检测三态逻辑。
 
-![version](https://img.shields.io/badge/version-1.2.5-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-1.2.6-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 
 ## 特性
 

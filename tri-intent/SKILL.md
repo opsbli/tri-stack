@@ -1,7 +1,7 @@
 ---
 name: tri-intent
 slug: tri-intent
-version: 1.14.4
+version: 1.14.5
 displayName: tri-intent
 description: 用户提问意图识别总路由。任何用户新提问在正式作答/执行前都必须先经此 skill 处理——完成第一层三分法（Asking/Doing/Expressing/Meta）判定，下钻二级意图（I01–I21/CR/M01–M05），标注正交维度（D1–D5），给出识别置信度自评，产出快照（snapshot.md）与 LATEST.md 指针作为交付产物，交接下游 skill 精准执行。产出快照后检测下游 skill 是否已安装，未安装时提示用户安装。遵循 MECE 原则，确保任一提问有且仅有一个落点。本 skill 仅负责识别和结构化输出用户真实意图，不产出需求文档、设计文档、任务清单、实现报告或最终回答——那些由下游 skill 依据快照自行产出。**本分支为编程工作流专线**：仅 I10 四子类 / I11 / I12 / CR / I13 / I14 / I21 / M01–M04 有下游 skill，其余落点分类保留但无下游（全量版见归档分支 archive-full-skills-20260924）。
 summary: 基于 MECE 三分法的意图识别总路由，产出 snapshot.md + LATEST.md 指针作为交接产物，覆盖 27 个落点（I01–I21 + CR + M01–M05）的 L1/L2 两级判定，含三档置信度门控与快照定位契约；本分支为编程工作流专线，仅 17 个下游 skill 可用。
@@ -118,8 +118,11 @@ tri-intent/
 ├── hooks/        intent-gate.py（识别结果呈现器，可选轻量复述）
 ├── references/   静态参考资料（非流程逻辑）
 │   ├── confidence-mechanism.md   置信度机制完整参考（四维权重 + 三档阈值）
+│   ├── host-compat.md            宿主兼容与提问呈现（家族横切；各 skill 瘦节真源）
+│   ├── intent-confirm-card.md    意图确认卡 v2 完整 YAML 模板与填充规则
 │   ├── snapshot-contract.md      快照定位契约与异常处置表（下游必读）
-│   └── intent-confirm-card.md    意图确认卡 v2 完整 YAML 模板与填充规则
+│   ├── version-check-spec.md     版本检查与更新机制细则（version-stub 真源）
+│   └── version-gate.md           版本门规范（§六 版本号五处一致性）
 ├── templates/    snapshot.md（唯一交付产物模板）
 └── tests/        测试用例
 ```
@@ -145,6 +148,22 @@ python scripts/check_update.py --slug tri-intent --json
 
 - 处置：按脚本输出放行或阻断（判据与 `block_code` 语义见真源）；NEVER 因版本门自身故障阻断 skill 启动。
 
+## 宿主兼容与提问呈现（横切硬约束 · 呈现纪律）
+
+<!-- host-compat-stub v1 · 自包含瘦节；细则唯一真源见 tri-intent/references/host-compat.md（本节点文本自洽，独立安装时不依赖该文件可达） -->
+
+> 本 skill 的「需要用户决策」时机全部以宿主中立自然语言书写（如「是否…？（是 / 否）」、clarify-gate 的
+> 「逐条补充 / 按默认 / 继续」）。在**提供交互式提问工具**的宿主中（如 Proma 的 `AskUserQuestion`），
+> 运行时会自动把这类句式升级为交互式问答横幅——**呈现形式由宿主决定，不由本 skill 决定**。
+>
+> **家族约定（MUST）**：凡触发 🔴 STOP 用户确认检查点或 clarify-gate 的时机，MUST 以**普通 Markdown 文本**
+> 呈现为聊天问题，**NEVER 调用交互式提问工具**（`AskUserQuestion` / `ask_user_question` /
+> `request_user_input` / `clarify` 及等价物）；用户回复契约（逐条补充 / 按默认 / 继续 / 是·否）
+> **保持不变**。
+>
+> **边界**：本条只管呈现形式，MUST NOT 改动任何门控的判定条件、触发时机与处置动作；
+> 在无交互式提问工具的宿主中本条自然空转；用户明确要求交互式提问时优先用户指令；
+> 跨宿主判据只认「🔴 STOP 用户确认检查点」这一形态，NEVER 在 skill 内硬编码宿主工具名。
 ## 意图确认卡（通用主模板 · 识别结果结构化呈现）
 
 > **用法**：意图识别完成后，用识别结果填充意图确认卡 v2 模板，作为快照 §三 结构化结论区的内容。

@@ -1,6 +1,6 @@
 # 原型解析（tri-prototype）
 
-![version](https://img.shields.io/badge/version-1.1.3-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-1.1.4-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 
 > **PM→Dev 桥接 skill**：解析产品原型链接与 PRD 文档，产出 tri-coding 门② 可直接消费的 `requirements.md`——无缝衔接 tri 家族开发流程。
 
