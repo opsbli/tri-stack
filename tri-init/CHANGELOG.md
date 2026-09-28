@@ -2,6 +2,12 @@
 
 格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [1.1.0] - 2026-09-28
+
+### 变更
+
+- **AGENTS.md 模板 ⭐ 强制规则区补两条**：① 每完成一个里程碑（功能可用 + 测试通过）MUST `git commit`，禁止把大量变更长期悬空在工作区；② 沙箱/环境降级（如 bun 缺失、electron postinstall 跳过）MUST 在 `delivery-manifest.md` 中列明并提示用户复验，NEVER 静默降级（审计 #8）。
+
 ## [1.0.4] - 2026-09-26
 
 ### 变更

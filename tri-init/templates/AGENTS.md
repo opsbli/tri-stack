@@ -15,6 +15,8 @@
 - **NEVER 跳过 tri-intent 直接调用下游 skill**（tri-coding / tri-fix / tri-review / tri-plan 等）
 - 如果下游 skill 检测到快照缺失（上游依赖检测 A0/B 态），MUST 引导用户先走 tri-intent
 - **NEVER 在无快照的情况下按空上下文静默执行**
+- **每完成一个里程碑（功能可用 + 测试通过）MUST `git commit`**：commit 前先跑构建/测试命令确认绿；禁止把大量变更长期悬空在工作区（断连/崩溃即丢工作成果）
+- **沙箱/环境降级 MUST 随交付提示**：探测到依赖缺失、安装跳过等环境差异（如 bun 缺失、electron postinstall 跳过），MUST 在 `delivery-manifest.md`（落 `.tribro/coding/<命名>/`）中列明并提示用户复验，NEVER 静默降级
 
 > **为什么需要这条规则**：没有它，AI 会绕过 tri-intent 的意图识别直接写代码——导致需求不清、规范不一致、产物散落。这一条规则是 tri-stack 整个流程的入口守门人。
 

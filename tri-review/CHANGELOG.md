@@ -12,6 +12,12 @@
 
 
 
+## [1.8.0] - 2026-09-28
+
+### 变更
+
+- **§一 工作流集成模式追加 checklist 加载硬门**：落盘报告前 MUST 自检 `references/review-checklists.md` 已完整读取，未读取 NEVER 出具 `[PHASE1-PASS]` / `[PHASE1-PASS-WITH-CONDITIONS]` 类通过结论；Phase 1/2 每维度 MUST 至少 1 条证据锚（含 `file:line` 及其 L2/L3 等价降级）或显式登记 skip，三级锚全失败走 `[LOC-FAILED]` 视同 skip；零锚零 skip 的维度按审查缩水处理（审计 #7）。
+
 ## [1.7.2] - 2026-09-26
 
 ### 变更

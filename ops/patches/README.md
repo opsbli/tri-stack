@@ -1255,6 +1255,21 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 | 项 | 原值 | 现值 | 依据 |
 |---|---|---|---|
 | 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |
+| `tt-coding-commit-skill` | replace_text | `tri-coding/SKILL.md` 门③ 任务执行段追加 **commit 硬门**（审计 #4）（tt 批） |
+| `tt-coding-commit-tasks` | replace_text | `tri-coding/templates/tasks.md` §8 尾部同步 commit 硬门（审计 #4）（tt 批） |
+| `tt-coding-commit-implements` | replace_text | `tri-coding/templates/implements.md` §8 补 commit hash 回填位 + 表增列（审计 #4）（tt 批） |
+| `tt-coding-at-tasks` | replace_text | `tri-coding/templates/tasks.md` §3.3 AT 硬化规则（审计 #5）（tt 批） |
+| `tt-coding-at-implements` | replace_text | `tri-coding/templates/implements.md` §3.3 同步 AT 硬化（审计 #5）（tt 批） |
+| `tt-verify-degrade-row` | replace_text | `tri-verify/SKILL.md` 降级矩阵追加「V1 无法真机驱动」行（审计 #6）（tt 批） |
+| `tt-verify-verdict-evidence` | replace_text | `tri-verify/SKILL.md` verdict 四态追加证据锚定条款（审计 #6）（tt 批） |
+| `tt-review-checklist-gate` | replace_text | `tri-review/SKILL.md` §一 尾部追加 checklist 加载硬门（审计 #7）（tt 批） |
+| `tt-init-agents-git` | replace_text | `tri-init/templates/AGENTS.md` ⭐ 区补 git 纪律 + 环境降级提示（审计 #8）（tt 批） |
+| `tt-counts-note` | replace_text | `ops/patches/README.md` 追加「计数（tt 批增量）」小节（含批中补正说明）（tt 批） |
+| `tt-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.9.0] 条目（P2 补齐）（tt 批） |
+| `tt-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.1.0] 条目（P2 补齐）（tt 批） |
+| `tt-cl-review` | replace_text | `tri-review/CHANGELOG.md` 追加 [1.8.0] 条目（P2 补齐）（tt 批） |
+| `tt-cl-init` | replace_text | `tri-init/CHANGELOG.md` 追加 [1.1.0] 条目（P2 补齐）（tt 批） |
+| `tt-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt 批 15 行（本行自身在内）（tt 批） |
 | `ops/README.md` / 根 `README.md` op 计数 | 336 | **353** | 当前态账本同批回写 |
 | 顶层 skill 数 / 校验覆盖 | 26 / 35 | **26 / 35** | 不变——`code-design-doc` 落平台用户级，**不进源码树**，故不入 `tri-*` 计数 |
 | `tri-intent` §四 路由型下游计数 | 16 | **17** | §一路由映射表新增 `code-design-doc`（该集合首次含非 `tri-*` 前缀成员） |
@@ -1285,4 +1300,26 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 > **未新增任何 op**（含纠错 op）：补丁层 op 数保持 **353**。`tri-forge` **无内容变更、无行为变更**，仅版本声明位点对齐。
 > 二轮重放 `dw2` 报「应用 0｜已应用 1」——幂等成立。
 > 注：§当前补丁清单中 `dw2` 的登记行仍显示 1.0.5 —— 与本表既有 **4 例同型**（`f43-req-audit-version-1-1-0` 登记 1.1.0 / 实为 1.1.1；`f85-ver-lottie` 登记 1.0.4 / 实为 1.0.6；`f93-ver-html` 登记 1.3.4 / 实为 1.3.8；`f94-ver-intent` 登记 1.14.2 / 实为 1.14.4）：**家族惯例 = 登记行只记首次注册值，就地 retarget 由日期增量小节 + 该 op 的 `label` 承载**，故不chase、不新增纠错 op。
+
+### 计数（2026-09-28 · tt 批增量 · tri-train 审计修补 #4-#8）
+
+> 本批 = tri-stack-train 会话审计（`reports/TRI-TRAIN-USAGE-AUDIT-20260928.md`）建议 #4-#8 落地：
+> **#4** tri-coding commit 硬门（SKILL.md 门③执行段 + tasks.md §8 + implements.md §8 三点）；
+> **#5** AT 清单硬化（tasks.md §3.3 + implements.md §3.3）；
+> **#6** tri-verify 降级收紧（降级矩阵「V1 无法真机驱动」行 + verdict 证据锚定条款）；
+> **#7** tri-review checklist 加载硬门（§一 尾部）；
+> **#8** tri-init AGENTS.md 模板补 git 纪律 + 环境降级提示。
+>
+> **批中补正（judge 评审后，未 commit 范式）**：3 judge paired 评审抓出 1 项 BLOCKER —— 版本线只改 P1、漏补 4 条 CHANGELOG（P2），`version-lint` 包内层实测 4 项漂移，而本小节初稿回执误写「0 漂移」（失实回执）。已按「回滚 + 就地改 op」补 4 条 CHANGELOG op 并把回执改为实测值；另就地补正 6 项 MINOR/MAJOR（commit hash 落点列 / AT 开口收紧 / 降级判定信号机械化 / 证据锚三级降级兼容 / `delivery-manifest.md` 落点 / 本表列数）。
+>
+> 版本线：`tri-coding` **1.9.0** / `tri-verify` **1.1.0** / `tri-review` **1.8.0** / `tri-init` **1.1.0**（既有 settle op **就地 retarget**：`f90-ver-coding` / `dw2-tri-verify-version` / `f96-ver-review` / `f16-tri-init-version`，不新增版本 op、防 settle 互搏；CHANGELOG 由新增 `tt-cl-*` 四 op 补齐）。
+> 计数：353 → **368**（+15：10 内容 op + 4 条 CHANGELOG + 1 清单登记；2 个计数 settle 与 4 个版本 settle 均就地更新，不新增 op）。
+
+| 项 | 原值 | 现值 | 依据 |
+|---|---|---|---|
+| 补丁层 op 总数 | 353 | **368** | +15 新 op（10 内容 + 4 CHANGELOG + 1 清单登记）；6 个既有 op 就地更新，不计增量 |
+| 顶层 skill 数 / 校验覆盖 | 26 / 35 | 26 / 35（不变） | 本批不新增 skill，仅改 4 个 skill 的 SKILL.md / 模板 |
+
+回执（实测，非预期值）：`apply.py` 首轮 15/15 新建 op「应用 1」+ 6 个就地更新「应用 1」，二轮 0 真应用；
+`version-lint` 包内层 + 文档层 **0 漂移**（4 条 CHANGELOG 补齐后实测）；历史遗留 `not_found` 4 项（f3-clause-* 3 项 + `dw-test-contract-fix`），经 `git show HEAD` 比对确认锚点在 HEAD 时已缺失，与本批无关。
 

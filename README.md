@@ -70,9 +70,9 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-coding](tri-coding/) | 1.8.3 | 编码开发，三门流程：需求审批 → 设计审批 → 执行确认（I11） |
+| [tri-coding](tri-coding/) | 1.9.0 | 编码开发，三门流程：需求审批 → 设计审批 → 执行确认（I11） |
 | [tri-fix](tri-fix/) | 1.5.4 | 调试修复：先造出一条能变红的反馈循环，再定位根因（I12） |
-| [tri-review](tri-review/) | 1.7.2 | 代码审查：三模式 + Fowler 12 坏味 + 审查执行纪律八则（CR） |
+| [tri-review](tri-review/) | 1.8.0 | 代码审查：三模式 + Fowler 12 坏味 + 审查执行纪律八则（CR） |
 
 ### 编码子类（I11 一跳覆写）
 
@@ -104,7 +104,7 @@
 
 | 名称 | 版本 | 描述 |
 |---|---|---|
-| [tri-init](tri-init/) | 1.0.4 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
+| [tri-init](tri-init/) | 1.1.0 | 项目初始化：扫描技术栈 → 生成 AGENTS.md + project-profile → 创建 .tribro/（自建） |
 | [tri-forge](tri-forge/) | 1.2.0 | 技能锻造：三模式 + 五门流程 + 22 条合规门④ + 五点版本校验（自建） |
 | [tri-god](tri-god/) | 1.2.5 | 蒸馏造物（I21）：把人 / 工作流 / 方法论蒸馏成可复用的新 skill |
 
@@ -123,7 +123,7 @@
 |---|---|---|
 | [tri-evolve](tri-evolve/) | 1.1.8 | 自进化 / 用户画像：OODA 闭环 + 经验条目库 + A/B 验证门 + 回滚（不认领 L2、不进路由） |
 | [tri-true](tri-true/) | 1.1.7 | 四道防线消除幻觉：置信度 → 事实源（T1–T4）→ 多模型交叉 → 自反思修正（不认领 L2、不进路由） |
-| [tri-verify](tri-verify/) | 1.0.1 | 运行中应用验证：V1–V5 触发 + 三类归因 + 有界循环 + 五态印章；引擎可插拔（本地 / TestSprite） |
+| [tri-verify](tri-verify/) | 1.1.0 | 运行中应用验证：V1–V5 触发 + 三类归因 + 有界循环 + 五态印章；引擎可插拔（本地 / TestSprite） |
 
 ---
 
@@ -135,7 +135,7 @@ ops/
 ├── install-skills.py        junction 安装到 AI 工具（--target / --dry-run / --remove）
 ├── version-lint.py          版本一致性校验（P1–P5 + 文档层 D1–D4）
 ├── versions.json            自主版本线基线（35 skill 快照：顶层 26 + tri-sdlc 子 skill 9）
-└── patches/                 本地补丁层（353 个 op，幂等重放）
+└── patches/                 本地补丁层（368 个 op，幂等重放）
     ├── README.md            机制说明 + 踩坑 + 校准记录
     ├── manifest.json        补丁清单（声明式唯一事实源）
     ├── apply.py             幂等重放器

@@ -36,11 +36,11 @@
     {
       "id": "f16-tri-init-version",
       "type": "replace_regex",
-      "label": "tri-init 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；P3 由规则化 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.3→1.0.4）",
+      "label": "tri-init 版本线 1.0.2 → 1.0.3（SKILL.md frontmatter；P3 由规则化 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.0.3→1.0.4）；tt 批 2026-09-28 就地 retarget 1.0.4 → 1.1.0（登记值 1.0.4 = 首次注册值）",
       "glob": "tri-init/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.4",
-      "already_marker": "version: 1.0.4"
+      "replacement": "version: 1.1.0",
+      "already_marker": "version: 1.1.0"
     },
     {
       "id": "f17-tri-init-changelog",
@@ -445,11 +445,11 @@
     {
       "id": "f90-ver-coding",
       "type": "replace_regex",
-      "label": "tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.8.2→1.8.3）",
+      "label": "tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.8.2→1.8.3）；tt 批 2026-09-28 就地 retarget 1.8.3 → 1.9.0（登记值 1.8.3 = 首次注册值）",
       "glob": "tri-coding/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.8.3",
-      "already_marker": "version: 1.8.3"
+      "replacement": "version: 1.9.0",
+      "already_marker": "version: 1.9.0"
     },
     {
       "id": "f108-cl-coding",
@@ -553,11 +553,11 @@
     {
       "id": "f96-ver-review",
       "type": "replace_regex",
-      "label": "tri-review 版本线 1.7.0 → 1.7.1（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.7.1→1.7.2）",
+      "label": "tri-review 版本线 1.7.0 → 1.7.1（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.7.1→1.7.2）；tt 批 2026-09-28 就地 retarget 1.7.2 → 1.8.0（登记值 1.7.2 = 首次注册值）",
       "glob": "tri-review/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.7.2",
-      "already_marker": "version: 1.7.2"
+      "replacement": "version: 1.8.0",
+      "already_marker": "version: 1.8.0"
     },
     {
       "id": "f114-cl-review",
@@ -1421,11 +1421,11 @@
     {
       "id": "dw2-tri-verify-version",
       "type": "replace_regex",
-      "label": "`tri-verify` 版本线 settle → 1.0.1（darwin P1 批；settle 形式，任意旧版收敛）",
+      "label": "`tri-verify` 版本线 settle → 1.0.1（darwin P1 批；settle 形式，任意旧版收敛）；tt 批 2026-09-28 就地 retarget 1.0.1 → 1.1.0（登记值 1.0.1 = 首次注册值）",
       "glob": "tri-verify/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.0.1",
-      "already_marker": "version: 1.0.1"
+      "replacement": "version: 1.1.0",
+      "already_marker": "version: 1.1.0"
     },
     {
       "id": "dw2-tri-charter-version",
@@ -3161,20 +3161,20 @@
     {
       "id": "cdd-doc-opsreadme-count",
       "type": "replace_regex",
-      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）",
+      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368",
       "glob": "ops/README.md",
       "pattern": "唯一事实源，当前 \\d+ 个 op）",
-      "replacement": "唯一事实源，当前 353 个 op）",
-      "already_marker": "唯一事实源，当前 353 个 op）"
+      "replacement": "唯一事实源，当前 368 个 op）",
+      "already_marker": "唯一事实源，当前 368 个 op）"
     },
     {
       "id": "cdd-doc-rootreadme-count",
       "type": "replace_regex",
-      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）",
+      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368",
       "glob": "README.md",
       "pattern": "本地补丁层（\\d+ 个 op，幂等重放）",
-      "replacement": "本地补丁层（353 个 op，幂等重放）",
-      "already_marker": "本地补丁层（353 个 op，幂等重放）"
+      "replacement": "本地补丁层（368 个 op，幂等重放）",
+      "already_marker": "本地补丁层（368 个 op，幂等重放）"
     },
     {
       "id": "cdd-doc-registry-rows",
@@ -3193,6 +3193,141 @@
       "old": "回执：`apply.py` 首轮 3/3「应用 1」（1 settle + 2 新 op）、二轮 0 真应用；`version-lint` 文档层 0 漂移\n（残留 `tri-forge` P2 为并发会话在途项，本批未触碰）。",
       "new": "回执：`apply.py` 首轮 3/3「应用 1」（1 settle + 2 新 op）、二轮 0 真应用；`version-lint` 文档层 0 漂移\n（残留 `tri-forge` P2 为并发会话在途项，本批未触碰）。\n\n### 计数（2026-09-28 · cdd 批增量 · code-design-doc 锻造 + I10 第四子类路由回填）\n\n> 上节计数为时点快照，**冻结**。本批 = tri-forge C 模式锻造 `code-design-doc`（详细设计说明书模板填充）\n> 后的门③ 路由回填：L2=I10 新增第四 L3 子类 `design-doc`，一跳覆写至**平台用户级** skill\n> `~/.workbuddy/skills/code-design-doc/`（非 `tri-*` 前缀，不进源码树）。\n> `tri-intent` 1.14.3 → **1.14.4**，由**既有 settle op `f94-ver-intent` 就地更新**（不占新行；\n> 「settle 目标就地更新、NEVER 追加链式 op」——本批首轮曾误新增 `cdd-ti-ver`，与 `f94` 同 glob 同 pattern\n> 形成两个 settle op 互搏：每次重放 `f94` 先写回 1.14.3、`cdd-ti-ver` 再写 1.14.4，二者各报「应用 1」，\n> 且 `sync-version-meta` 排在两者之间 ⇒ `_meta.json` 停在 1.14.3。按未 commit 范式**回滚 + 就地改 `f94`**，\n> 未新增任何纠错 op）。`tri-forge/references/family-spec.md` §五 同步登记。\n>\n> **批中补正（同批，未 commit）**：门④ 复核发现两处**由本批引入**的残留计数——`doing/I10-analyze.md` 子类路由引言「现有三个 L3 子类」与 `hooks/intent-gate.py` 的 `SUBTYPE_SLUGS` 上方注释「三个子类」——两者均未随第四子类联动（原 `cdd-ti-i10-mece` 只覆盖 MECE 段同义句，漏了引言）。补 2 个 `cdd-*` op（`cdd-ti-i10-intro` / `cdd-ti-hook-comment`）后，cdd 批共 **17** 个新 op。\n> 同时按仓库「未 commit 就地改 op」范式，**把 2 个文档计数 op 由字面 `replace_text` 改为 settle 形式 `replace_regex`**（pattern 收敛任意旧值）——否则「计数随 op 数联动」每批都要再追加一条纠错 op，即 f86/f97 同款永动。\n\n| 项 | 原值 | 现值 | 依据 |\n|---|---|---|---|\n| 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |\n| `ops/README.md` / 根 `README.md` op 计数 | 336 | **353** | 当前态账本同批回写 |\n| 顶层 skill 数 / 校验覆盖 | 26 / 35 | **26 / 35** | 不变——`code-design-doc` 落平台用户级，**不进源码树**，故不入 `tri-*` 计数 |\n| `tri-intent` §四 路由型下游计数 | 16 | **17** | §一路由映射表新增 `code-design-doc`（该集合首次含非 `tri-*` 前缀成员） |\n\n回执：`apply.py` 首轮 17/17 新建 op「应用 1」（含 2 个文档计数 op）+ `f94` 就地更新「应用 1」；\n二轮全部「应用 0｜已应用 1」零真应用；`compliance_check.py --dir ~/.workbuddy/skills/code-design-doc`\n= **FAIL 0**（24 条，1 项 MANUAL 已人工核实）；`version-lint` 文档层 0 漂移，包内漂移 **1**（=`tri-forge` P2≠P1，**非本批引入**）——该漂移已于同日按下方 §版本线修正 对齐，最终 **包内漂移 0**。本批由单会话完成，无并发写入。\n\n### 版本线修正（2026-09-28 · 非 cdd 项）：`tri-forge` P1 对齐 1.0.5 → 1.2.0\n\n> **触发**：cdd 批收尾跑 `version-lint` 报「包内漂移 1」——`tri-forge` **P2（CHANGELOG 首条 1.2.0）≠ P1（SKILL.md 1.0.5）**。\n> **一手取证（非凭记忆）**：1.0.6 → 1.1.0 → 1.1.1 → 1.2.0 四轮均有 `Approved: yes` proposal，且声明变更**逐条在树内可核验** ——\n> `compliance_check.py` 的四处 `add(24, …)` 全部 `advisory=False`（第 607/615/621/626 行）+ 第 628 行注释「已于 2026-09-27 升为必检」；\n> `references/compliance-checklist.md` 含 `24/24`、「两条均为必检」，第 24 条已去〔建议项〕并含二次校准记录；\n> `tests/battery/battery.json` 含 `M-24-a…f`（12 处引用）、`_sealed/eval-expect.json` 含 `FAIL:24`、用测试档含 T27/T35–T37；\n> `references/change-acceptance-gate.md` / `case-battery-spec.md` / `scripts/acceptance_diff.py` / `battery_run.py` / `tests/mutation-gate.py` 均在。\n> ⇒ **真值 = 1.2.0**；P1/P3/P5 三处滞后，成因是 `dw2-tri-forge-version` 于 2026-09-26 写入 1.0.5 后，\n> 1.0.6→1.2.0 的 gate 工作**漏同步版本位点**（非「1.2.0 被回退」，故非内容问题）。\n\n| 处置 | 实测回执 |\n|---|---|\n| `dw2-tri-forge-version` 目标**就地更新** 1.0.5 → 1.2.0 | 应用 1｜已应用 0；该 glob 上**唯一**版本线 op（写前枚举断言，防 settle 互搏） |\n| P3 `_meta.json` | `sync-version-meta` 写入 1 → 1.2.0 |\n| P5 `README.md` 徽章 | `sync-readme-version` 写入 1 → 1.2.0 |\n| 文档层 D1/D2/D4 | `version-lint.py --apply-docs` 幂等修正 **3** 处（`WORKFLOW-GUIDE.html` D1 + D2、根 `README.md` D4） |\n| 终局 | `version-lint` → **检查 35 个 skill；存在漂移 0 个**（全表 ✅），文档层无漂移 |\n\n> **未新增任何 op**（含纠错 op）：补丁层 op 数保持 **353**。`tri-forge` **无内容变更、无行为变更**，仅版本声明位点对齐。\n> 二轮重放 `dw2` 报「应用 0｜已应用 1」——幂等成立。\n> 注：§当前补丁清单中 `dw2` 的登记行仍显示 1.0.5 —— 与本表既有 **4 例同型**（`f43-req-audit-version-1-1-0` 登记 1.1.0 / 实为 1.1.1；`f85-ver-lottie` 登记 1.0.4 / 实为 1.0.6；`f93-ver-html` 登记 1.3.4 / 实为 1.3.8；`f94-ver-intent` 登记 1.14.2 / 实为 1.14.4）：**家族惯例 = 登记行只记首次注册值，就地 retarget 由日期增量小节 + 该 op 的 `label` 承载**，故不chase、不新增纠错 op。\n",
       "already_marker": "### 计数（2026-09-28 · cdd 批增量 · code-design-doc 锻造 + I10 第四子类路由回填）"
+    },
+    {
+      "id": "tt-coding-commit-skill",
+      "type": "replace_text",
+      "label": "「tri-coding/SKILL.md」门③ 任务执行段追加 **commit 硬门**（审计 #4；含「两道自动门后/回炉修复后须再次 commit」的时序补正）（tt 批）",
+      "glob": "tri-coding/SKILL.md",
+      "old": "复选框状态与「状态明细」字段同步更新，与 §7 执行记录同步回填。",
+      "new": "复选框状态与「状态明细」字段同步更新，与 §7 执行记录同步回填。\n   - **commit 硬门（回滚基线纪律）**：`implements.md` 产出后 MUST 立即 `git commit`（至少包含 tasks.md、implements.md 与全部代码变更），并将 commit hash 回填 implements.md §8。**commit 未完成 = 交付未完成**，NEVER 在未 commit 状态下向用户宣告交付或开始下一里程碑；两道自动门（tri-verify 功能验证 / tri-true 风险预筛）执行完毕或回炉修复后 MUST **再次 commit**（回滚基线先行，后续修补/回炉全靠它兜底）。",
+      "already_marker": "commit 硬门（回滚基线纪律）"
+    },
+    {
+      "id": "tt-coding-commit-tasks",
+      "type": "replace_text",
+      "label": "「tri-coding/templates/tasks.md」§8 完成判定尾部同步 commit 硬门（审计 #4）（tt 批）",
+      "glob": "tri-coding/templates/tasks.md",
+      "old": "> 全部勾选后，据本文件 §7 执行记录产出 `implements.md`（编码实现清单报告）。",
+      "new": "> 全部勾选后，据本文件 §7 执行记录产出 `implements.md`（编码实现清单报告）。\n> **commit 硬门**：产出 implements.md 后 MUST 立即 `git commit`（含本文件、implements.md 与代码变更）；commit 未完成不得向用户宣告交付，commit hash 回填 implements.md §8。",
+      "already_marker": "commit 未完成不得向用户宣告交付"
+    },
+    {
+      "id": "tt-coding-commit-implements",
+      "type": "replace_text",
+      "label": "「tri-coding/templates/implements.md」§8 审计记录补 commit hash 回填位（含 §8 表增 `commit hash` 列，使回填要求有落点）（审计 #4）（tt 批）",
+      "glob": "tri-coding/templates/implements.md",
+      "old": "> 落盘类执行完成后回填，记录用户对本报告的验收结果。",
+      "new": "> 落盘类执行完成后回填，记录用户对本报告的验收结果。\n> **commit 回填（硬门）**：本报告落盘后 MUST 立即 `git commit`，并将 commit hash 填入下表 `commit hash` 列；未完成 commit 视为交付未完成，NEVER 宣告交付。\n\n| 轮次 | 时间 | 验收结果 | 用户反馈/调整 | commit hash |\n|---|---|---|---|---|\n| 1 | <时间> | <通过 / 不通过> | <不通过时的反馈，触发回炉> | <40 位 hash> |",
+      "already_marker": "commit 回填（硬门）"
+    },
+    {
+      "id": "tt-coding-at-tasks",
+      "type": "replace_text",
+      "label": "「tri-coding/templates/tasks.md」§3.3 追加 AT 硬化规则（审计 #5；收紧「确无自动化条件」的开口，要求登记具体技术理由）（tt 批）",
+      "glob": "tri-coding/templates/tasks.md",
+      "old": "> 对应 requirements.md §6 验收标准，逐条覆盖。",
+      "new": "> 对应 requirements.md §6 验收标准，逐条覆盖。\n> **AT 硬化规则**：验收点涉及 UI/renderer 交互时，对应 AT 条目 MUST 落为组件测试或 E2E 冒烟等**可执行断言**任务项，NEVER 用「留用户冒烟」替代自动化验证；自动化确实不可行时 MUST 登记**具体技术理由**（无测试框架 / 无渲染环境）与降级证据形式（结构化手测清单 + 用户实测输出引用），NEVER 把「留用户冒烟」写成任务项本身。",
+      "already_marker": "AT 硬化规则"
+    },
+    {
+      "id": "tt-coding-at-implements",
+      "type": "replace_text",
+      "label": "「tri-coding/templates/implements.md」§3.3 同步 AT 硬化（审计 #5）（tt 批）",
+      "glob": "tri-coding/templates/implements.md",
+      "old": "> 对应 requirements.md §6 验收标准。",
+      "new": "> 对应 requirements.md §6 验收标准。\n> **AT 硬化**：涉及 UI/renderer 交互的验收点 MUST 有组件测试 / E2E 等可执行断言佐证；仅手测的条目 MUST 附用户实测证据（输出粘贴 / 截图路径），NEVER 以「留用户冒烟」替代自动化断言。",
+      "already_marker": "仅手测的条目 MUST 附用户实测证据"
+    },
+    {
+      "id": "tt-verify-degrade-row",
+      "type": "replace_text",
+      "label": "「tri-verify/SKILL.md」§五 降级矩阵追加「V1 命中但无法真机驱动」行（审计 #6；判定信号改为机械信号 + 与「本地引擎缺依赖」行互补说明）（tt 批）",
+      "glob": "tri-verify/SKILL.md",
+      "old": "| 引擎官方排除路径（OAuth/SSO/2FA、原生文件对话框、iframe、多标签页） | 契约层标注「不适用」，MUST NOT 声称为已验证 | 契约层静态判定 |",
+      "new": "| 引擎官方排除路径（OAuth/SSO/2FA、原生文件对话框、iframe、多标签页） | 契约层标注「不适用」，MUST NOT 声称为已验证 | 契约层静态判定 |\n| **V1 命中但无法真机驱动**（引擎可用，但运行环境不可驱动：起服探测失败 / 引擎 `drive()` 返回 non-zero） | 降级产物 MUST 是可执行冒烟脚本（如 `npm run e2e` 级别）或结构化手测清单（步骤 + 期望 + 判据逐条可勾选），NEVER 以口头指导替代降级产物 | 起服探测失败 或 `drive()` 退出码 ≠0（与上行「本地引擎缺依赖」互补：上行 = 引擎不可用，本行 = 引擎可用而目标不可驱动） |",
+      "already_marker": "V1 命中但无法真机驱动"
+    },
+    {
+      "id": "tt-verify-verdict-evidence",
+      "type": "replace_text",
+      "label": "「tri-verify/SKILL.md」§二 verdict 四态封闭判据追加证据锚定条款（审计 #6：verdict 无证据要求）（tt 批）",
+      "glob": "tri-verify/SKILL.md",
+      "old": "> **反规避**：`未执行` 与 `未触发` MUST NOT 被调用方当作 `通过` 消费。调用方消费 `verdict.md` 时\n> MUST 按上表区分，NEVER 只判断「有没有红」。",
+      "new": "> **反规避**：`未执行` 与 `未触发` MUST NOT 被调用方当作 `通过` 消费。调用方消费 `verdict.md` 时\n> MUST 按上表区分，NEVER 只判断「有没有红」。\n>\n> **证据锚定（真机实证）**：`通过（engine=<id>…）` 与 `修复后通过` 两态 MUST 引用同源证据（runId / 用例输出粘贴 / 用户提供的截图路径）。真机/手测场景中，用户的实测结论 ONLY 在附具体证据时才可采信为「通过」——NEVER 凭「成功了」一句话盖章。",
+      "already_marker": "证据锚定（真机实证）"
+    },
+    {
+      "id": "tt-review-checklist-gate",
+      "type": "replace_text",
+      "label": "「tri-review/SKILL.md」§一 工作流集成模式尾部追加 checklist 加载硬门（审计 #7；兼容既有证据锚三级降级与 `[LOC-FAILED]`，印章名用家族 `[PHASE1-*]`）（tt 批）",
+      "glob": "tri-review/SKILL.md",
+      "old": "| tri-fix | `.tribro/fixes/<命名>/fix-report.md` | 修复报告（代码变更说明） |",
+      "new": "| tri-fix | `.tribro/fixes/<命名>/fix-report.md` | 修复报告（代码变更说明） |\n\n> **checklist 加载硬门（落盘报告前自检）**：① 落盘审查报告前 MUST 自检 `references/review-checklists.md` 已完整读取（自检项「checklist 加载 = 是」）——未读取该文件 NEVER 出具 `[PHASE1-PASS]` / `[PHASE1-PASS-WITH-CONDITIONS]` 类通过结论；② Phase 1 / Phase 2 每个审查维度 MUST 至少给出 1 条证据锚（含 `file:line` 行锚及其 L2 邻近锚 / L3 内容锚等价降级），或显式登记 skip（维度不适用 + 一句话理由）；三级锚全部失败走 `[LOC-FAILED]` 并视同显式 skip 登记——零证据锚且零 skip 登记的维度按审查缩水处理，报告无效。",
+      "already_marker": "checklist 加载硬门"
+    },
+    {
+      "id": "tt-init-agents-git",
+      "type": "replace_text",
+      "label": "「tri-init/templates/AGENTS.md」⭐ 强制规则区补 git 纪律 + 环境降级提示（审计 #8；`delivery-manifest` 补家族落点与扩展名）（tt 批）",
+      "glob": "tri-init/templates/AGENTS.md",
+      "old": "- **NEVER 在无快照的情况下按空上下文静默执行**",
+      "new": "- **NEVER 在无快照的情况下按空上下文静默执行**\n- **每完成一个里程碑（功能可用 + 测试通过）MUST `git commit`**：commit 前先跑构建/测试命令确认绿；禁止把大量变更长期悬空在工作区（断连/崩溃即丢工作成果）\n- **沙箱/环境降级 MUST 随交付提示**：探测到依赖缺失、安装跳过等环境差异（如 bun 缺失、electron postinstall 跳过），MUST 在 `delivery-manifest.md`（落 `.tribro/coding/<命名>/`）中列明并提示用户复验，NEVER 静默降级",
+      "already_marker": "沙箱/环境降级 MUST 随交付提示"
+    },
+    {
+      "id": "tt-counts-note",
+      "type": "replace_text",
+      "label": "「ops/patches/README.md」追加「计数（2026-09-28 · tt 批增量）」小节（含 judge 评审后的批中补正说明与实测回执）（tt 批）",
+      "glob": "ops/patches/README.md",
+      "old": "**家族惯例 = 登记行只记首次注册值，就地 retarget 由日期增量小节 + 该 op 的 `label` 承载**，故不chase、不新增纠错 op。",
+      "new": "**家族惯例 = 登记行只记首次注册值，就地 retarget 由日期增量小节 + 该 op 的 `label` 承载**，故不chase、不新增纠错 op。\n\n### 计数（2026-09-28 · tt 批增量 · tri-train 审计修补 #4-#8）\n\n> 本批 = tri-stack-train 会话审计（`reports/TRI-TRAIN-USAGE-AUDIT-20260928.md`）建议 #4-#8 落地：\n> **#4** tri-coding commit 硬门（SKILL.md 门③执行段 + tasks.md §8 + implements.md §8 三点）；\n> **#5** AT 清单硬化（tasks.md §3.3 + implements.md §3.3）；\n> **#6** tri-verify 降级收紧（降级矩阵「V1 无法真机驱动」行 + verdict 证据锚定条款）；\n> **#7** tri-review checklist 加载硬门（§一 尾部）；\n> **#8** tri-init AGENTS.md 模板补 git 纪律 + 环境降级提示。\n>\n> **批中补正（judge 评审后，未 commit 范式）**：3 judge paired 评审抓出 1 项 BLOCKER —— 版本线只改 P1、漏补 4 条 CHANGELOG（P2），`version-lint` 包内层实测 4 项漂移，而本小节初稿回执误写「0 漂移」（失实回执）。已按「回滚 + 就地改 op」补 4 条 CHANGELOG op 并把回执改为实测值；另就地补正 6 项 MINOR/MAJOR（commit hash 落点列 / AT 开口收紧 / 降级判定信号机械化 / 证据锚三级降级兼容 / `delivery-manifest.md` 落点 / 本表列数）。\n>\n> 版本线：`tri-coding` **1.9.0** / `tri-verify` **1.1.0** / `tri-review` **1.8.0** / `tri-init` **1.1.0**（既有 settle op **就地 retarget**：`f90-ver-coding` / `dw2-tri-verify-version` / `f96-ver-review` / `f16-tri-init-version`，不新增版本 op、防 settle 互搏；CHANGELOG 由新增 `tt-cl-*` 四 op 补齐）。\n> 计数：353 → **368**（+15：10 内容 op + 4 条 CHANGELOG + 1 清单登记；2 个计数 settle 与 4 个版本 settle 均就地更新，不新增 op）。\n\n| 项 | 原值 | 现值 | 依据 |\n|---|---|---|---|\n| 补丁层 op 总数 | 353 | **368** | +15 新 op（10 内容 + 4 CHANGELOG + 1 清单登记）；6 个既有 op 就地更新，不计增量 |\n| 顶层 skill 数 / 校验覆盖 | 26 / 35 | 26 / 35（不变） | 本批不新增 skill，仅改 4 个 skill 的 SKILL.md / 模板 |\n\n回执（实测，非预期值）：`apply.py` 首轮 15/15 新建 op「应用 1」+ 6 个就地更新「应用 1」，二轮 0 真应用；\n`version-lint` 包内层 + 文档层 **0 漂移**（4 条 CHANGELOG 补齐后实测）；历史遗留 `not_found` 4 项（f3-clause-* 3 项 + `dw-test-contract-fix`），经 `git show HEAD` 比对确认锚点在 HEAD 时已缺失，与本批无关。",
+      "already_marker": "tt 批增量"
+    },
+    {
+      "id": "tt-cl-coding",
+      "type": "replace_text",
+      "label": "`tri-coding/CHANGELOG.md` CHANGELOG 追加 [1.9.0] 条目（P2 属人工内容，由 op 表达；tt 批版本线补齐）",
+      "glob": "tri-coding/CHANGELOG.md",
+      "old": "## [1.8.3] - 2026-09-26",
+      "new": "## [1.9.0] - 2026-09-28\n\n### 变更\n\n- **新增 commit 硬门（回滚基线纪律）**：门③ 任务执行段要求 `implements.md` 产出后 MUST 立即 `git commit`（含 tasks.md / implements.md / 代码变更），commit hash 回填 implements.md §8；两道自动门（tri-verify 功能验证 / tri-true 风险预筛）执行完毕或回炉修复后 MUST **再次 commit**，NEVER 在未 commit 状态宣告交付或进入下一里程碑。\n- **AT 清单硬化（模板层）**：tasks.md §3.3 与 implements.md §3.3 要求涉及 UI/renderer 交互的验收点 MUST 落为组件测试 / E2E 等可执行断言任务项，NEVER 用「留用户冒烟」替代自动化断言；自动化确实不可行时 MUST 登记具体技术理由与降级证据形式（审计 #4 / #5）。\n\n## [1.8.3] - 2026-09-26",
+      "already_marker": "## [1.9.0] - 2026-09-28"
+    },
+    {
+      "id": "tt-cl-verify",
+      "type": "replace_text",
+      "label": "`tri-verify/CHANGELOG.md` CHANGELOG 追加 [1.1.0] 条目（P2 属人工内容，由 op 表达；tt 批版本线补齐）",
+      "glob": "tri-verify/CHANGELOG.md",
+      "old": "## [1.0.1] - 2026-09-26",
+      "new": "## [1.1.0] - 2026-09-28\n\n### 变更\n\n- **降级矩阵追加「V1 命中但无法真机驱动」行**：引擎可用而目标不可驱动（起服探测失败 / `drive()` 退出码 ≠0）时，降级产物 MUST 是可执行冒烟脚本或结构化手测清单，NEVER 以口头指导替代（审计 #6 前半）。\n- **verdict 四态封闭判据追加证据锚定条款**：`通过（engine=<id>…）` 与 `修复后通过` 两态 MUST 引用同源证据（runId / 用例输出粘贴 / 用户提供的截图路径）；真机/手测结论 ONLY 在附具体证据时才可采信为「通过」，NEVER 凭「成功了」一句话盖章（审计 #6 后半）。\n\n## [1.0.1] - 2026-09-26",
+      "already_marker": "## [1.1.0] - 2026-09-28"
+    },
+    {
+      "id": "tt-cl-review",
+      "type": "replace_text",
+      "label": "`tri-review/CHANGELOG.md` CHANGELOG 追加 [1.8.0] 条目（P2 属人工内容，由 op 表达；tt 批版本线补齐）",
+      "glob": "tri-review/CHANGELOG.md",
+      "old": "## [1.7.2] - 2026-09-26",
+      "new": "## [1.8.0] - 2026-09-28\n\n### 变更\n\n- **§一 工作流集成模式追加 checklist 加载硬门**：落盘报告前 MUST 自检 `references/review-checklists.md` 已完整读取，未读取 NEVER 出具 `[PHASE1-PASS]` / `[PHASE1-PASS-WITH-CONDITIONS]` 类通过结论；Phase 1/2 每维度 MUST 至少 1 条证据锚（含 `file:line` 及其 L2/L3 等价降级）或显式登记 skip，三级锚全失败走 `[LOC-FAILED]` 视同 skip；零锚零 skip 的维度按审查缩水处理（审计 #7）。\n\n## [1.7.2] - 2026-09-26",
+      "already_marker": "## [1.8.0] - 2026-09-28"
+    },
+    {
+      "id": "tt-cl-init",
+      "type": "replace_text",
+      "label": "`tri-init/CHANGELOG.md` CHANGELOG 追加 [1.1.0] 条目（P2 属人工内容，由 op 表达；tt 批版本线补齐）",
+      "glob": "tri-init/CHANGELOG.md",
+      "old": "## [1.0.4] - 2026-09-26",
+      "new": "## [1.1.0] - 2026-09-28\n\n### 变更\n\n- **AGENTS.md 模板 ⭐ 强制规则区补两条**：① 每完成一个里程碑（功能可用 + 测试通过）MUST `git commit`，禁止把大量变更长期悬空在工作区；② 沙箱/环境降级（如 bun 缺失、electron postinstall 跳过）MUST 在 `delivery-manifest.md` 中列明并提示用户复验，NEVER 静默降级（审计 #8）。\n\n## [1.0.4] - 2026-09-26",
+      "already_marker": "## [1.1.0] - 2026-09-28"
+    },
+    {
+      "id": "tt-doc-registry-rows",
+      "type": "replace_text",
+      "label": "`ops/patches/README.md` §当前补丁清单补登 tt 批 15 行（tt 批）",
+      "glob": "ops/patches/README.md",
+      "old": "| 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |",
+      "new": "| 补丁层 op 数（`manifest.json`） | 336 | **353** | +17（`cdd-*`：路由回填 13 + 文档计数 4）；`f94-ver-intent` 目标**就地更新**（1.14.3→1.14.4，不占新行）；`dw2-tri-forge-version` 于同日版本线修正中**就地更新**（1.0.5→1.2.0，见下） |\n| `tt-coding-commit-skill` | replace_text | `tri-coding/SKILL.md` 门③ 任务执行段追加 **commit 硬门**（审计 #4）（tt 批） |\n| `tt-coding-commit-tasks` | replace_text | `tri-coding/templates/tasks.md` §8 尾部同步 commit 硬门（审计 #4）（tt 批） |\n| `tt-coding-commit-implements` | replace_text | `tri-coding/templates/implements.md` §8 补 commit hash 回填位 + 表增列（审计 #4）（tt 批） |\n| `tt-coding-at-tasks` | replace_text | `tri-coding/templates/tasks.md` §3.3 AT 硬化规则（审计 #5）（tt 批） |\n| `tt-coding-at-implements` | replace_text | `tri-coding/templates/implements.md` §3.3 同步 AT 硬化（审计 #5）（tt 批） |\n| `tt-verify-degrade-row` | replace_text | `tri-verify/SKILL.md` 降级矩阵追加「V1 无法真机驱动」行（审计 #6）（tt 批） |\n| `tt-verify-verdict-evidence` | replace_text | `tri-verify/SKILL.md` verdict 四态追加证据锚定条款（审计 #6）（tt 批） |\n| `tt-review-checklist-gate` | replace_text | `tri-review/SKILL.md` §一 尾部追加 checklist 加载硬门（审计 #7）（tt 批） |\n| `tt-init-agents-git` | replace_text | `tri-init/templates/AGENTS.md` ⭐ 区补 git 纪律 + 环境降级提示（审计 #8）（tt 批） |\n| `tt-counts-note` | replace_text | `ops/patches/README.md` 追加「计数（tt 批增量）」小节（含批中补正说明）（tt 批） |\n| `tt-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.9.0] 条目（P2 补齐）（tt 批） |\n| `tt-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.1.0] 条目（P2 补齐）（tt 批） |\n| `tt-cl-review` | replace_text | `tri-review/CHANGELOG.md` 追加 [1.8.0] 条目（P2 补齐）（tt 批） |\n| `tt-cl-init` | replace_text | `tri-init/CHANGELOG.md` 追加 [1.1.0] 条目（P2 补齐）（tt 批） |\n| `tt-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt 批 15 行（本行自身在内）（tt 批） |",
+      "already_marker": "| `tt-coding-commit-skill` |"
     }
   ]
 }

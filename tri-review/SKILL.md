@@ -1,7 +1,7 @@
 ---
 name: tri-review
 slug: tri-review
-version: 1.7.2
+version: 1.8.0
 displayName: tri-review
 description: 代码审查下游执行 skill。支持三模式：① 工作流集成模式——由 tri-coding/tri-fix 在门③执行前确认时调用；② 独立调用模式——读取 tri-intent 快照 §三；③ 增量审计模式——以系统架构设计师视角，文档驱动学习设计意图，对增量改动进行三维审计（代码设计改动/架构设计实现/功能设计实现），产出审计结果+修复建议+优先级。自主管理「Phase 0 架构师增量审计（可选）→ Phase 1 规格合规 → Phase 2 代码质量 → 审查/审计报告」完整链路，含双审批门。当 tri-intent 快照下游路由建议指向本 skill，或由 tri-coding/tri-fix 在门③确认时调用，或用户直接要求增量审计即激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 三模式代码审查（工作流集成/独立调用/增量审计）+ precision-first（宁可少报不可误报，recall 由覆盖度账本兜底）+ Phase 0 架构师增量审计（文档驱动4级降级+三维审计+修复建议优先级）+ Phase 1 规格合规 + Phase 2 代码质量 + Fowler 坏味基线 + 覆盖度账本（双源分离+gaps+skipped 封闭判据）+ 反证据关闭门 + 严重度校准 rubric + 反规避机制 + 审查执行纪律十则（确定性验证/非对称复核/证据锚降级/语义捆绑分桶/预分析/注入防线/发现定位分类与提交前反思/项目级评审规则/覆盖收尾/超限恢复）+ 双审批门。
@@ -73,6 +73,8 @@ license: MIT
 | tri-fix | `.tribro/fixes/<命名>/diagnosis.md` | 根因判定 + 修复方案（规格来源） |
 | tri-fix | `.tribro/fixes/<命名>/fix-tasks.md` | 修复任务 + 回归测试清单（规格来源） |
 | tri-fix | `.tribro/fixes/<命名>/fix-report.md` | 修复报告（代码变更说明） |
+
+> **checklist 加载硬门（落盘报告前自检）**：① 落盘审查报告前 MUST 自检 `references/review-checklists.md` 已完整读取（自检项「checklist 加载 = 是」）——未读取该文件 NEVER 出具 `[PHASE1-PASS]` / `[PHASE1-PASS-WITH-CONDITIONS]` 类通过结论；② Phase 1 / Phase 2 每个审查维度 MUST 至少给出 1 条证据锚（含 `file:line` 行锚及其 L2 邻近锚 / L3 内容锚等价降级），或显式登记 skip（维度不适用 + 一句话理由）；三级锚全部失败走 `[LOC-FAILED]` 并视同显式 skip 登记——零证据锚且零 skip 登记的维度按审查缩水处理，报告无效。
 
 ### 二、独立调用模式
 

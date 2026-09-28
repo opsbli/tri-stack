@@ -4,6 +4,13 @@
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.9.0] - 2026-09-28
+
+### 变更
+
+- **新增 commit 硬门（回滚基线纪律）**：门③ 任务执行段要求 `implements.md` 产出后 MUST 立即 `git commit`（含 tasks.md / implements.md / 代码变更），commit hash 回填 implements.md §8；两道自动门（tri-verify 功能验证 / tri-true 风险预筛）执行完毕或回炉修复后 MUST **再次 commit**，NEVER 在未 commit 状态宣告交付或进入下一里程碑。
+- **AT 清单硬化（模板层）**：tasks.md §3.3 与 implements.md §3.3 要求涉及 UI/renderer 交互的验收点 MUST 落为组件测试 / E2E 等可执行断言任务项，NEVER 用「留用户冒烟」替代自动化断言；自动化确实不可行时 MUST 登记具体技术理由与降级证据形式（审计 #4 / #5）。
+
 ## [1.8.3] - 2026-09-26
 
 ### 变更
