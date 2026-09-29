@@ -2,6 +2,21 @@
 
 本文件记录 tri-test（tri-sdlc P6 测试验证子SKILL）的版本变更历史。
 
+## [1.2.1] - 2026-09-29
+
+### 变更
+
+- **维度 3 判据 ②「反同源静态检查」落地为可执行载体**：由
+  `tri-coding/scripts/gate_lint.py mock --file <test.ts>` 承担。脚本抽取测试文件中被 stub
+  的符号与被测源码的直接调用依赖求交集，命中返回码 1 并回显符号名；登记技术理由
+  （`// gate-lint: same-origin-ok <理由>`）后命中降为 `acknowledged` 并回显理由，
+  与本节「降级兼容」的登记要求对齐。脚本落在 `tri-coding` 下——实际写测试的路径是
+  `tri-coding` I11 直调，本 skill 是 SDLC 流程的家，条文在此、载体在 `tri-coding`。
+  **动机**：本条判据 tt3 批登记为「prompt 层约束，无校验器实现」的诚实边界，本批关掉。
+  **边界**：纯正则、无 TS 解析器，只识别 `vi.fn()` / `vi.mocked()` / `jest.spyOn()` /
+  `mock*.mockX()` 四种惯用法；`vi.importActual` 不作豁免；判据 ①③ 仍为 prompt 层约束。
+  判据原文与召回边界详见 `tri-coding` 1.11.1 变更条目。
+
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
 ## [1.2.0] - 2026-09-29

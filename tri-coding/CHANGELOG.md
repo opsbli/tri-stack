@@ -2,6 +2,41 @@
 
 本文件记录 tri-coding skill 的版本变更历史。
 
+## [1.11.1] - 2026-09-29
+
+### 变更
+
+- **§质量标准「反同源假设」判据 ② + requirements §6 两条硬约束落地为可执行载体**：新增
+  `scripts/gate_lint.py`（子命令 `ac` / `mock` / `self-test`），与
+  `tri-verify/scripts/verify_gate.py` 同一模式——判据写成常量、逐条对应条文、
+  `--self-test` 内置正反夹具、返回码 0 合规 / 1 违规。
+  - `mock --file <test.ts>`：抽取测试文件里被 stub 的符号（`vi.fn()` / `vi.mocked()` /
+    `jest.spyOn()` / `mock*.mockX()` 四种惯用法），与被测源码的**直接调用依赖**
+    （调用标识符 − 文件内声明 − JS 关键字）求交集，命中即返回码 1 并回显符号名。
+    被测源码按 `<base>.test.ts → <base>.ts` 约定自动发现，也可 `--src` 显式指定；
+    找不到则 `skipped=True` 且不报违规——判不了必须可见，NEVER 静默计入通过。
+    目标依赖确实不可替换时按 §质量标准「降级兼容」在测试文件内写
+    `// gate-lint: same-origin-ok <理由>`（理由 ≥10 字符），命中降为 `acknowledged`
+    ——仍回显符号与理由，**不静默放行**。
+  - `ac --file <requirements.md>`：把 `templates/requirements.md` §6 两条硬约束可执行化
+    ——禁词报 `ac-forbidden-word`、缺可观测断言报 `ac-missing-assertion`、
+    无验收标准节报 `ac-missing-section`。扫描跳过 blockquote 与代码围栏，
+    故模板自身的禁词引用不算违规。
+  **动机**：这两个判据此前**只写在 prompt 条文里、无任何可执行载体**——`requirements.md`
+  可以把 AC 期望结果写成「本机冒烟通过」、`shell-probe.test.ts` 可以把 `existsSync` 的
+  实现缺陷固化成期望行为，而没有任何东西拦下。本批关掉 tt2 #2 与 tt3 判据 ② 各留一条的
+  「无校验器」诚实边界。
+  **召回边界（诚实声明）**：`mock` 纯正则、无 TS 解析器、不解析作用域，只识别上述四种
+  stubbing 惯用法；`vi.importActual` **不作豁免**——M4a 实证文件里它恰好存在（partial mock），
+  拿它当豁免会直接漏掉实证案例；是否已补「走真实实现的对照用例」由人判，脚本只报命中。
+  `ac` 的「可观测断言」只认判据原文列举的五类形态（DOM / IPC / 退出码 / 哈希 / 阈值），
+  真实但非此五类的断言方式不会被识别，属预期的召回下限（与 tt4 批
+  `missing-evidence-anchor` 同一「宁缺勿滥」策略）。**判据 ①③ 仍为 prompt 层约束**。
+  **实证**：对 tri-stack-train 真实文件实测——`shell-probe.test.ts` 报 `existsSync`
+  （外加 `atomicWrite` / `exists` / `readText` 三处同类命中）退出码 1；
+  M4b `requirements.md` 精确报出 AC4/AC5/AC6 三处「本机冒烟通过」退出码 1。
+  此前这两处只有人读才能发现。
+
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
 ## [1.11.0] - 2026-09-29

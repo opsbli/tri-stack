@@ -445,11 +445,11 @@
     {
       "id": "f90-ver-coding",
       "type": "replace_regex",
-      "label": "tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.8.2→1.8.3）；tt 批 2026-09-28 就地 retarget 1.8.3 → 1.9.0（登记值 1.8.3 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.10.0：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）（2026-09-29 tt3 批就地 retarget → 1.11.0：反同源假设）",
+      "label": "tri-coding 版本线 1.8.1 → 1.8.2（SKILL.md frontmatter；P3/P5 由 sync op 同轮跟随）（**settle 形式**：任意旧版本收敛至该目标；目标就地更新，NEVER 追加链式 op）（2026-09-26 darwin P1 批目标就地更新 1.8.2→1.8.3）；tt 批 2026-09-28 就地 retarget 1.8.3 → 1.9.0（登记值 1.8.3 = 首次注册值）（2026-09-29 tt2 批就地 retarget → 1.10.0：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）（2026-09-29 tt3 批就地 retarget → 1.11.0：反同源假设）（2026-09-29 tt5 批就地 retarget → 1.11.1：反同源假设判据 ② + requirements §6 落地为可执行载体）",
       "glob": "tri-coding/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.11.0",
-      "already_marker": "version: 1.11.0"
+      "replacement": "version: 1.11.1",
+      "already_marker": "version: 1.11.1"
     },
     {
       "id": "f108-cl-coding",
@@ -714,11 +714,11 @@
     {
       "id": "dw-tri-test-version",
       "type": "replace_regex",
-      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）（2026-09-29 tt2 批就地 retarget → 1.1.9：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）（2026-09-29 tt3 批就地 retarget → 1.2.0：反同源假设）",
+      "label": "`tri-test` 版本线 settle → 1.1.3（darwin P0 批；settle 形式，任意旧版收敛）（2026-09-26 darwin P1 批目标就地更新 1.1.3→1.1.4）（2026-09-26 darwin P2 批目标就地更新 1.1.4→1.1.5）（2026-09-26 dw5 批目标就地更新 1.1.5→1.1.6）（2026-09-26 dw8 批目标就地更新 1.1.6→1.1.7）（2026-09-26 dw10 批目标就地更新 1.1.7→1.1.8）（2026-09-29 tt2 批就地 retarget → 1.1.9：对齐 host-compat 批 e659978 漏同步的 settle 目标，消除 apply.py 静默降级）（2026-09-29 tt3 批就地 retarget → 1.2.0：反同源假设）（2026-09-29 tt5 批就地 retarget → 1.2.1：维度 3 判据 ② 落地为可执行载体）",
       "glob": "tri-sdlc/children/tri-test/SKILL.md",
       "pattern": "^version: \\d+\\.\\d+\\.\\d+$",
-      "replacement": "version: 1.2.0",
-      "already_marker": "version: 1.2.0"
+      "replacement": "version: 1.2.1",
+      "already_marker": "version: 1.2.1"
     },
     {
       "id": "dw-test-changelog",
@@ -3161,20 +3161,20 @@
     {
       "id": "cdd-doc-opsreadme-count",
       "type": "replace_regex",
-      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382；tt4 批 2026-09-29 就地 retarget 382 → 391",
+      "label": "`ops/README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正：原字面 replace_text 改 replace_regex，消除「计数随 op 数联动」的链式追加）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382；tt4 批 2026-09-29 就地 retarget 382 → 391；tt5 批 2026-09-29 就地 retarget 391 → 400",
       "glob": "ops/README.md",
       "pattern": "唯一事实源，当前 \\d+ 个 op）",
-      "replacement": "唯一事实源，当前 391 个 op）",
-      "already_marker": "唯一事实源，当前 391 个 op）"
+      "replacement": "唯一事实源，当前 400 个 op）",
+      "already_marker": "唯一事实源，当前 400 个 op）"
     },
     {
       "id": "cdd-doc-rootreadme-count",
       "type": "replace_regex",
-      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382；tt4 批 2026-09-29 就地 retarget 382 → 391",
+      "label": "根 `README.md` 目录树 op 计数 **settle 形式** → 353（pattern 收敛任意旧值；批中补正同上）（cdd 批）；tt 批 2026-09-28 就地 retarget 353 → 368；tt2 批 2026-09-29 就地 retarget 368 → 377；tt3 批 2026-09-29 就地 retarget 377 → 382；tt4 批 2026-09-29 就地 retarget 382 → 391；tt5 批 2026-09-29 就地 retarget 391 → 400",
       "glob": "README.md",
       "pattern": "本地补丁层（\\d+ 个 op，幂等重放）",
-      "replacement": "本地补丁层（391 个 op，幂等重放）",
-      "already_marker": "本地补丁层（391 个 op，幂等重放）"
+      "replacement": "本地补丁层（400 个 op，幂等重放）",
+      "already_marker": "本地补丁层（400 个 op，幂等重放）"
     },
     {
       "id": "cdd-doc-registry-rows",
@@ -3535,6 +3535,78 @@
       "new": "| `tt3-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt3 批 5 行（本行自身在内）+ 补登报告与 tt2 计数小节 |\n| `tt4-vg-usage` | replace_text | `verify_gate.py` docstring 用法补 `verdict` 子命令（tt4 批） |\n| `tt4-vg-stamp-regex` | replace_text | `verify_gate.py` 新增印章语法正则派生：`STAMP_REGEXES` 从 `STAMP_STATES` 单一真源派生（tt4 批） |\n| `tt4-vg-audit` | replace_text | `verify_gate.py` 新增 `audit_verdict_text` / `audit_verdict`：标签封闭 / commit 链 / 证据锚定三条判据可执行化（tt4 批） |\n| `tt4-vg-selftest` | replace_text | `verify_gate.py` self-test 补 verdict 反例夹具（M4a/M4b 实证 5 例 + 防误报 + mutation 断言）（tt4 批） |\n| `tt4-vg-cli` | replace_text | `verify_gate.py` 新增 `verdict --file <path>/verdict.md [--json]` 子命令（tt4 批） |\n| `tt4-vg-dispatch` | replace_text | `verify_gate.py` 分发 `verdict` 子命令 + 返回码扩展（命中违规返回 1）（tt4 批） |\n| `tt4-verify-verdict-audit-carrier` | replace_text | `tri-verify/SKILL.md` §二 追加「可执行载体」注：三条 prompt 层 MUST 落到脚本 + 单一真源声明（tt4 批） |\n| `tt4-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.2.1] 条目（P2 补齐）（tt4 批） |\n| `tt4-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行（本行自身在内）+ 计数小节 |\n\n### 计数（2026-09-29 · tt4 批增量 · 门④ 判据从 prompt 层落成可执行断言）\n\n> 本批关掉 `reports/TRI-TRAIN-AUDIT-M4-M4B-20260929.md` §五 点名的两个「无校验器」诚实边界**之一**：\n> 门④ 的 verdict 标签此前**只写在 prompt 条文里，无任何可执行载体**，所以 M4a/M4b 能把判据写成\n> 表外的「✅ 完全通过」而没有任何东西拦下。\n> 另一个（tt3 的「反同源静态检查」）**仍未脚本化**——判据是「被 mock 的函数是否等于被测对象直接调用的\n> 那个依赖」，需要调用图分析，做不出可靠实现，仍为 prompt 层约束。\n>\n> 版本线：`tri-verify` **1.2.1**（PATCH——为既有已记录的 MUST 补可执行载体，**未新增规则**；\n> `dw2-tri-verify-version` 就地 retarget 1.2.0 → 1.2.1）。\n> 计数：382 → **391**（+9：6 脚本 + 1 SKILL.md + 1 CHANGELOG + 1 清单登记；\n> 1 个版本 settle 与 2 个文档计数 settle 均就地更新）。\n>\n> **边界**：三条判据中的「证据锚定」是**启发式**——只认 runId 关键字、代码围栏、图片扩展名、\n> 7-40 位 hex 四类形态；真实证据（人工截图描述、口头确认）不会被识别，属预期的召回下限而非缺陷。",
       "already_marker": "`tt4-vg-usage` | replace_text",
       "label": "`ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行 + 「计数（tt4 批增量）」小节（含仍未脚本化的反同源假设 + 证据锚定启发式的诚实边界）（tt4 批）"
+    },
+    {
+      "id": "tt5-coding-carrier",
+      "type": "replace_text",
+      "glob": "tri-coding/SKILL.md",
+      "old": "> ② **反同源静态检查**——mock 目标是被测对象直接调用的那个依赖函数 ⇒ MUST 补一条走真实实现的对照用例；\n> ③ **「分支覆盖」不等于「正确」**——覆盖了某个失败分支不代表没测错对象，\n> 分支覆盖统计 NEVER 计入功能正确性证据。",
+      "new": "> ② **反同源静态检查**——mock 目标是被测对象直接调用的那个依赖函数 ⇒ MUST 补一条走真实实现的对照用例；\n> ③ **「分支覆盖」不等于「正确」**——覆盖了某个失败分支不代表没测错对象，\n> 分支覆盖统计 NEVER 计入功能正确性证据。\n>\n> **可执行载体（tt5 批）**：判据 ② 由 `scripts/gate_lint.py mock --file <test.ts>` 承担——\n> 脚本抽取测试文件里被 stub 的符号（`vi.fn()` / `vi.mocked()` / `jest.spyOn()` /\n> `mock*.mockX()`），与被测源码的**直接调用依赖**求交集，命中即返回码 1 并回显符号名；\n> 被测源码按 `<base>.test.ts → <base>.ts` 约定自动发现，也可 `--src` 显式指定，\n> 找不到则 `skipped` 且不报违规（判不了必须可见，NEVER 静默计入通过）。\n> 目标依赖确实不可替换时按「降级兼容」在测试文件内写\n> `// gate-lint: same-origin-ok <理由>`（理由 ≥10 字符），命中降为 `acknowledged`\n> ——仍回显符号与理由，**不静默放行**。\n> 判据 ①③ 仍为 prompt 层约束（① 需跨文件追溯 AC、③ 是统计口径，均不做启发式猜测）。\n> **召回边界**：纯正则、无 TS 解析器、不解析作用域，只识别上述四种 stubbing 惯用法；\n> `vi.importActual` **不作豁免**——M4a 实证文件里它恰好存在（partial mock），\n> 拿它当豁免会直接漏掉实证案例。",
+      "label": "tri-coding §质量标准「反同源假设」追加可执行载体注：判据 ② 落到 gate_lint.py mock + 降级登记机制 + 召回边界（tt5 批）"
+    },
+    {
+      "id": "tt5-test-carrier",
+      "type": "replace_text",
+      "glob": "tri-sdlc/children/tri-test/SKILL.md",
+      "old": "> **与「真实执行」（P6-M3）的关系**：P6-M3 约束**执行侧**（结果必须真跑出来），\n> 本条约束**编写侧**（期望值必须独立产生）。两侧缺一，绿灯都不算证据。",
+      "new": "> **与「真实执行」（P6-M3）的关系**：P6-M3 约束**执行侧**（结果必须真跑出来），\n> 本条约束**编写侧**（期望值必须独立产生）。两侧缺一，绿灯都不算证据。\n>\n> **可执行载体（tt5 批）**：判据 ② 由 `tri-coding/scripts/gate_lint.py mock --file <test.ts>`\n> 承担。脚本落在 `tri-coding` 下，因为实际写测试的路径是 `tri-coding` I11 直调、\n> 根本不经过 `tri-sdlc`（tt3 批已就这一点做过双重论证）；本 skill 是 SDLC 流程的家，\n> 条文在此，载体在 `tri-coding`。抽取被 stub 的符号与被测源码的直接调用依赖求交集，\n> 命中返回码 1；降级登记用 `// gate-lint: same-origin-ok <理由>`，命中降为 `acknowledged`\n> 并回显理由，与本节「降级兼容」的登记要求对齐。判据 ①③ 仍为 prompt 层约束。\n> 判据原文与召回边界见 tri-coding §质量标准「反同源假设（夹具独立）」的载体注。",
+      "label": "tri-test 维度 3 追加可执行载体注：判据 ② 落到 tri-coding/scripts/gate_lint.py mock（含脚本落点原因说明）（tt5 批）"
+    },
+    {
+      "id": "tt5-req-ac-carrier",
+      "type": "replace_text",
+      "glob": "tri-coding/templates/requirements.md",
+      "old": "> **每条验收点 MUST 附一句可观测断言**：DOM 选择器+断言 / IPC 事件名+期望 payload / 进程退出码 / 文件哈希 /\n> 可测阈值，至少其一。**来源**：tri-stack-train M4b 实证——AC 期望结果直接写「本机冒烟通过」，\n> 导致 112/112 全绿却 **0** 个缺陷被自动化捕获。",
+      "new": "> **每条验收点 MUST 附一句可观测断言**：DOM 选择器+断言 / IPC 事件名+期望 payload / 进程退出码 / 文件哈希 /\n> 可测阈值，至少其一。**来源**：tri-stack-train M4b 实证——AC 期望结果直接写「本机冒烟通过」，\n> 导致 112/112 全绿却 **0** 个缺陷被自动化捕获。\n>\n> **可执行载体（tt5 批）**：本节两条硬约束由 `tri-coding/scripts/gate_lint.py ac --file <requirements.md>`\n> 校验——禁词报 `ac-forbidden-word`、缺可观测断言报 `ac-missing-assertion`、\n> 整份文件无验收标准节报 `ac-missing-section`；返回码非 0 即本节不合格。\n> 扫描跳过 blockquote 与代码围栏，故本说明自身的禁词引用不算违规。",
+      "label": "tri-coding/templates/requirements.md §6 追加可执行载体注：两条硬约束落到 gate_lint.py ac（tt5 批）"
+    },
+    {
+      "id": "tt5-req-ac-placeholders",
+      "type": "replace_text",
+      "glob": "tri-coding/templates/requirements.md",
+      "old": "- [ ] <验收点 2>\n      断言：<…>\n- [ ] <验收点 3>\n      断言：<…>",
+      "new": "- [ ] <验收点 2：如「面板宽度可拖拽调节」>\n      断言：<如「拖动后 `document.querySelector('.term-panel').style.width` 为 `720px`」>\n- [ ] <验收点 3：如「探测进程退出码正确」>\n      断言：<如「退出码 = 0 且 `payload.shell` 为 `pwsh.exe`」>",
+      "label": "tri-coding/templates/requirements.md §6 补全验收点 2/3 的断言示例：原占位符 `断言：<…>` 会被 tt5 自身门禁判为 ac-missing-assertion，模板必须是能通过的示例（tt5 批）"
+    },
+    {
+      "id": "tt5-cl-coding",
+      "type": "replace_text",
+      "glob": "tri-coding/CHANGELOG.md",
+      "old": "# Changelog\n\n本文件记录 tri-coding skill 的版本变更历史。",
+      "new": "# Changelog\n\n本文件记录 tri-coding skill 的版本变更历史。\n\n## [1.11.1] - 2026-09-29\n\n### 变更\n\n- **§质量标准「反同源假设」判据 ② + requirements §6 两条硬约束落地为可执行载体**：新增\n  `scripts/gate_lint.py`（子命令 `ac` / `mock` / `self-test`），与\n  `tri-verify/scripts/verify_gate.py` 同一模式——判据写成常量、逐条对应条文、\n  `--self-test` 内置正反夹具、返回码 0 合规 / 1 违规。\n  - `mock --file <test.ts>`：抽取测试文件里被 stub 的符号（`vi.fn()` / `vi.mocked()` /\n    `jest.spyOn()` / `mock*.mockX()` 四种惯用法），与被测源码的**直接调用依赖**\n    （调用标识符 − 文件内声明 − JS 关键字）求交集，命中即返回码 1 并回显符号名。\n    被测源码按 `<base>.test.ts → <base>.ts` 约定自动发现，也可 `--src` 显式指定；\n    找不到则 `skipped=True` 且不报违规——判不了必须可见，NEVER 静默计入通过。\n    目标依赖确实不可替换时按 §质量标准「降级兼容」在测试文件内写\n    `// gate-lint: same-origin-ok <理由>`（理由 ≥10 字符），命中降为 `acknowledged`\n    ——仍回显符号与理由，**不静默放行**。\n  - `ac --file <requirements.md>`：把 `templates/requirements.md` §6 两条硬约束可执行化\n    ——禁词报 `ac-forbidden-word`、缺可观测断言报 `ac-missing-assertion`、\n    无验收标准节报 `ac-missing-section`。扫描跳过 blockquote 与代码围栏，\n    故模板自身的禁词引用不算违规。\n  **动机**：这两个判据此前**只写在 prompt 条文里、无任何可执行载体**——`requirements.md`\n  可以把 AC 期望结果写成「本机冒烟通过」、`shell-probe.test.ts` 可以把 `existsSync` 的\n  实现缺陷固化成期望行为，而没有任何东西拦下。本批关掉 tt2 #2 与 tt3 判据 ② 各留一条的\n  「无校验器」诚实边界。\n  **召回边界（诚实声明）**：`mock` 纯正则、无 TS 解析器、不解析作用域，只识别上述四种\n  stubbing 惯用法；`vi.importActual` **不作豁免**——M4a 实证文件里它恰好存在（partial mock），\n  拿它当豁免会直接漏掉实证案例；是否已补「走真实实现的对照用例」由人判，脚本只报命中。\n  `ac` 的「可观测断言」只认判据原文列举的五类形态（DOM / IPC / 退出码 / 哈希 / 阈值），\n  真实但非此五类的断言方式不会被识别，属预期的召回下限（与 tt4 批\n  `missing-evidence-anchor` 同一「宁缺勿滥」策略）。**判据 ①③ 仍为 prompt 层约束**。\n  **实证**：对 tri-stack-train 真实文件实测——`shell-probe.test.ts` 报 `existsSync`\n  （外加 `atomicWrite` / `exists` / `readText` 三处同类命中）退出码 1；\n  M4b `requirements.md` 精确报出 AC4/AC5/AC6 三处「本机冒烟通过」退出码 1。\n  此前这两处只有人读才能发现。",
+      "label": "tri-coding/CHANGELOG.md 追加 [1.11.1] 条目（P2 补齐）（tt5 批）"
+    },
+    {
+      "id": "tt5-cl-test",
+      "type": "replace_text",
+      "glob": "tri-sdlc/children/tri-test/CHANGELOG.md",
+      "old": "# Changelog\n\n本文件记录 tri-test（tri-sdlc P6 测试验证子SKILL）的版本变更历史。",
+      "new": "# Changelog\n\n本文件记录 tri-test（tri-sdlc P6 测试验证子SKILL）的版本变更历史。\n\n## [1.2.1] - 2026-09-29\n\n### 变更\n\n- **维度 3 判据 ②「反同源静态检查」落地为可执行载体**：由\n  `tri-coding/scripts/gate_lint.py mock --file <test.ts>` 承担。脚本抽取测试文件中被 stub\n  的符号与被测源码的直接调用依赖求交集，命中返回码 1 并回显符号名；登记技术理由\n  （`// gate-lint: same-origin-ok <理由>`）后命中降为 `acknowledged` 并回显理由，\n  与本节「降级兼容」的登记要求对齐。脚本落在 `tri-coding` 下——实际写测试的路径是\n  `tri-coding` I11 直调，本 skill 是 SDLC 流程的家，条文在此、载体在 `tri-coding`。\n  **动机**：本条判据 tt3 批登记为「prompt 层约束，无校验器实现」的诚实边界，本批关掉。\n  **边界**：纯正则、无 TS 解析器，只识别 `vi.fn()` / `vi.mocked()` / `jest.spyOn()` /\n  `mock*.mockX()` 四种惯用法；`vi.importActual` 不作豁免；判据 ①③ 仍为 prompt 层约束。\n  判据原文与召回边界详见 `tri-coding` 1.11.1 变更条目。",
+      "label": "tri-sdlc/children/tri-test/CHANGELOG.md 追加 [1.2.1] 条目（P2 补齐）（tt5 批）"
+    },
+    {
+      "id": "tt5-doc-tt4-boundary",
+      "type": "replace_text",
+      "glob": "ops/patches/README.md",
+      "old": "> 另一个（tt3 的「反同源静态检查」）**仍未脚本化**——判据是「被 mock 的函数是否等于被测对象直接调用的\n> 那个依赖」，需要调用图分析，做不出可靠实现，仍为 prompt 层约束。",
+      "new": "> 另一个（tt3 的「反同源静态检查」）**仍未脚本化**——判据是「被 mock 的函数是否等于被测对象直接调用的\n> 那个依赖」，需要调用图分析，做不出可靠实现，仍为 prompt 层约束。\n> （2026-09-29 tt5 批补充：已做成启发式可执行载体 `tri-coding/scripts/gate_lint.py mock`，\n> 纯正则实现、不做调用图分析。原文保留不删——「做不出可靠实现」的判断仍成立，\n> 落地的是保守启发式；召回边界见下方 tt5 计数小节。）",
+      "label": "ops/patches/README.md tt4 批计数小节：为「反同源静态检查仍未脚本化」补 tt5 批关闭说明（原文保留，判断仍成立）（tt5 批）"
+    },
+    {
+      "id": "tt5-doc-tt3-boundary",
+      "type": "replace_text",
+      "glob": "ops/patches/README.md",
+      "old": "> **诚实边界**：`tri-coding` 与 `tri-test` 两处条文仍均为 **prompt 层约束，无校验器实现**——\n> 「mock 目标是被测对象直接调用的依赖函数」这条静态检查目前要求 Agent 人工执行，\n> 后续若做成脚本需落在 `tri-test/scripts/` 或 `tri-coding/scripts/`。",
+      "new": "> **诚实边界**：`tri-coding` 与 `tri-test` 两处条文仍均为 **prompt 层约束，无校验器实现**——\n> 「mock 目标是被测对象直接调用的依赖函数」这条静态检查目前要求 Agent 人工执行，\n> 后续若做成脚本需落在 `tri-test/scripts/` 或 `tri-coding/scripts/`。\n> （2026-09-29 tt5 批关闭：判据 ② 由 `tri-coding/scripts/gate_lint.py mock` 落地，\n> 落点 `tri-coding/scripts/`，与当时预判一致；判据 ①③ 仍为 prompt 层约束，\n> 详见 tt5 计数小节。）",
+      "label": "ops/patches/README.md tt3 批计数小节：为「两处条文无校验器实现」补 tt5 批关闭说明（tt5 批）"
+    },
+    {
+      "id": "tt5-doc-registry-rows",
+      "type": "replace_text",
+      "glob": "ops/patches/README.md",
+      "old": "| `tt4-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行（本行自身在内）+ 计数小节 |",
+      "new": "| `tt4-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行（本行自身在内）+ 计数小节 |\n| `tt5-coding-carrier` | replace_text | `tri-coding/SKILL.md` §质量标准「反同源假设」追加可执行载体注：判据 ② 落到 `gate_lint.py mock` + 降级登记 + 召回边界（tt5 批） |\n| `tt5-test-carrier` | replace_text | `tri-sdlc/children/tri-test/SKILL.md` 维度 3 追加可执行载体注（脚本落点 `tri-coding` 的原因说明）（tt5 批） |\n| `tt5-req-ac-carrier` | replace_text | `tri-coding/templates/requirements.md` §6 追加可执行载体注：两条硬约束落到 `gate_lint.py ac`（tt5 批） |\n| `tt5-req-ac-placeholders` | replace_text | `tri-coding/templates/requirements.md` §6 补全验收点 2/3 的断言示例（原 `断言：<…>` 会被 tt5 自身门禁判为 `ac-missing-assertion`）（tt5 批） |\n| `tt5-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.11.1] 条目（P2 补齐）（tt5 批） |\n| `tt5-cl-test` | replace_text | `tri-sdlc/children/tri-test/CHANGELOG.md` 追加 [1.2.1] 条目（P2 补齐）（tt5 批） |\n| `tt5-doc-tt4-boundary` | replace_text | `ops/patches/README.md` tt4 批「反同源仍未脚本化」补 tt5 关闭说明（原文保留）（tt5 批） |\n| `tt5-doc-tt3-boundary` | replace_text | `ops/patches/README.md` tt3 批「两处条文无校验器」补 tt5 关闭说明（tt5 批） |\n| `tt5-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt5 批 9 行（本行自身在内）+ 计数小节 |\n\n### 计数（2026-09-29 · tt5 批增量 · tt2 #2 / tt3 判据 ② 两个「无校验器」诚实边界关闭）\n\n> 本批关掉 tt2 与 tt3 各留一条的「**无校验器实现**」诚实边界，是本系列最后一次\n> 把 prompt 层 MUST 落成可执行断言（tt4 关的是门④ verdict 标签封闭）。\n> 新增 `tri-coding/scripts/gate_lint.py`（`ac` / `mock` / `self-test` 三个子命令），\n> 与 `tri-verify/scripts/verify_gate.py` 同一模式。\n>\n> **`ac`（治 tt2 #2）**：`templates/requirements.md` §6 两条硬约束——禁词\n> （`ac-forbidden-word`）与可观测断言（`ac-missing-assertion`），\n> 无验收标准节报 `ac-missing-section`。扫描跳过 blockquote 与代码围栏：\n> 模板自身用 blockquote 引用禁词清单，一并扫会误报。\n> **`mock`（治 tt3 判据 ②）**：测试文件中被 stub 的符号 ∩ 被测源码的直接调用依赖 = 命中。\n> 被测源码按 `<base>.test.ts → <base>.ts` 约定自动发现；找不到则 `skipped` 不报违规\n> （判不了必须可见，NEVER 静默计入通过）。降级登记机制：\n> `// gate-lint: same-origin-ok <理由>` 使命中降为 `acknowledged`——回显符号与理由，\n> **不静默放行**，与 tri-test「降级兼容」的登记要求对齐。\n>\n> 版本线：`tri-coding` **1.11.1** / `tri-test` **1.2.1**（均 PATCH——为既有已记录的 MUST\n> 补可执行载体，**未新增规则**；`f90-ver-coding` / `dw-tri-test-version` 就地 retarget，\n> 不新增版本 op、防 settle 互搏）。\n> 计数：391 → **400**（+9：4 内容 + 2 CHANGELOG + 3 清单登记；\n> 2 个版本 settle 与 2 个文档计数 settle 均就地更新）。\n>\n> **诚实边界（本批自身）**：`mock` 用正则而非 TS 解析器，不做类型推导、不解析作用域，\n> 只识别 `vi.fn()` / `vi.mocked()` / `jest.spyOn()` / `mock*.mockX()` 四种 stubbing 惯用法；\n> `vi.importActual` **不作豁免**——M4a 实证文件里它恰好存在（partial mock），\n> 拿它当豁免会直接漏掉实证案例。是否已补「走真实实现的对照用例」由人判，脚本只报命中。\n> `ac` 的「可观测断言」只认判据原文列举的五类形态（DOM / IPC / 退出码 / 哈希 / 阈值），\n> 真实但非此五类的断言方式不会被识别。与 tt4 批 `missing-evidence-anchor`\n> 同一「宁缺勿滥」策略。\n> **判据 ①③ 仍为 prompt 层约束**（① 需跨文件追溯 AC、③ 是统计口径，均不做启发式猜测）。\n>\n> **实证**：对 tri-stack-train 真实文件实测——`shell-probe.test.ts` 报 `existsSync`\n> （外加 `atomicWrite` / `exists` / `readText` 三处同类命中）退出码 1；\n> M4b `requirements.md` 精确报出 AC4/AC5/AC6 三处「本机冒烟通过」退出码 1。\n> 此前这两处只有人读才能发现。",
+      "label": "ops/patches/README.md §当前补丁清单补登 tt5 批 9 行（本行自身在内）+ tt5 计数小节 + tt4/tt3 两条诚实边界改写（tt5 批）"
     }
   ]
 }

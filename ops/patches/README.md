@@ -1293,6 +1293,52 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 | `tt4-verify-verdict-audit-carrier` | replace_text | `tri-verify/SKILL.md` §二 追加「可执行载体」注：三条 prompt 层 MUST 落到脚本 + 单一真源声明（tt4 批） |
 | `tt4-cl-verify` | replace_text | `tri-verify/CHANGELOG.md` 追加 [1.2.1] 条目（P2 补齐）（tt4 批） |
 | `tt4-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt4 批 9 行（本行自身在内）+ 计数小节 |
+| `tt5-coding-carrier` | replace_text | `tri-coding/SKILL.md` §质量标准「反同源假设」追加可执行载体注：判据 ② 落到 `gate_lint.py mock` + 降级登记 + 召回边界（tt5 批） |
+| `tt5-test-carrier` | replace_text | `tri-sdlc/children/tri-test/SKILL.md` 维度 3 追加可执行载体注（脚本落点 `tri-coding` 的原因说明）（tt5 批） |
+| `tt5-req-ac-carrier` | replace_text | `tri-coding/templates/requirements.md` §6 追加可执行载体注：两条硬约束落到 `gate_lint.py ac`（tt5 批） |
+| `tt5-req-ac-placeholders` | replace_text | `tri-coding/templates/requirements.md` §6 补全验收点 2/3 的断言示例（原 `断言：<…>` 会被 tt5 自身门禁判为 `ac-missing-assertion`）（tt5 批） |
+| `tt5-cl-coding` | replace_text | `tri-coding/CHANGELOG.md` 追加 [1.11.1] 条目（P2 补齐）（tt5 批） |
+| `tt5-cl-test` | replace_text | `tri-sdlc/children/tri-test/CHANGELOG.md` 追加 [1.2.1] 条目（P2 补齐）（tt5 批） |
+| `tt5-doc-tt4-boundary` | replace_text | `ops/patches/README.md` tt4 批「反同源仍未脚本化」补 tt5 关闭说明（原文保留）（tt5 批） |
+| `tt5-doc-tt3-boundary` | replace_text | `ops/patches/README.md` tt3 批「两处条文无校验器」补 tt5 关闭说明（tt5 批） |
+| `tt5-doc-registry-rows` | replace_text | `ops/patches/README.md` §当前补丁清单补登 tt5 批 9 行（本行自身在内）+ 计数小节 |
+
+### 计数（2026-09-29 · tt5 批增量 · tt2 #2 / tt3 判据 ② 两个「无校验器」诚实边界关闭）
+
+> 本批关掉 tt2 与 tt3 各留一条的「**无校验器实现**」诚实边界，是本系列最后一次
+> 把 prompt 层 MUST 落成可执行断言（tt4 关的是门④ verdict 标签封闭）。
+> 新增 `tri-coding/scripts/gate_lint.py`（`ac` / `mock` / `self-test` 三个子命令），
+> 与 `tri-verify/scripts/verify_gate.py` 同一模式。
+>
+> **`ac`（治 tt2 #2）**：`templates/requirements.md` §6 两条硬约束——禁词
+> （`ac-forbidden-word`）与可观测断言（`ac-missing-assertion`），
+> 无验收标准节报 `ac-missing-section`。扫描跳过 blockquote 与代码围栏：
+> 模板自身用 blockquote 引用禁词清单，一并扫会误报。
+> **`mock`（治 tt3 判据 ②）**：测试文件中被 stub 的符号 ∩ 被测源码的直接调用依赖 = 命中。
+> 被测源码按 `<base>.test.ts → <base>.ts` 约定自动发现；找不到则 `skipped` 不报违规
+> （判不了必须可见，NEVER 静默计入通过）。降级登记机制：
+> `// gate-lint: same-origin-ok <理由>` 使命中降为 `acknowledged`——回显符号与理由，
+> **不静默放行**，与 tri-test「降级兼容」的登记要求对齐。
+>
+> 版本线：`tri-coding` **1.11.1** / `tri-test` **1.2.1**（均 PATCH——为既有已记录的 MUST
+> 补可执行载体，**未新增规则**；`f90-ver-coding` / `dw-tri-test-version` 就地 retarget，
+> 不新增版本 op、防 settle 互搏）。
+> 计数：391 → **400**（+9：4 内容 + 2 CHANGELOG + 3 清单登记；
+> 2 个版本 settle 与 2 个文档计数 settle 均就地更新）。
+>
+> **诚实边界（本批自身）**：`mock` 用正则而非 TS 解析器，不做类型推导、不解析作用域，
+> 只识别 `vi.fn()` / `vi.mocked()` / `jest.spyOn()` / `mock*.mockX()` 四种 stubbing 惯用法；
+> `vi.importActual` **不作豁免**——M4a 实证文件里它恰好存在（partial mock），
+> 拿它当豁免会直接漏掉实证案例。是否已补「走真实实现的对照用例」由人判，脚本只报命中。
+> `ac` 的「可观测断言」只认判据原文列举的五类形态（DOM / IPC / 退出码 / 哈希 / 阈值），
+> 真实但非此五类的断言方式不会被识别。与 tt4 批 `missing-evidence-anchor`
+> 同一「宁缺勿滥」策略。
+> **判据 ①③ 仍为 prompt 层约束**（① 需跨文件追溯 AC、③ 是统计口径，均不做启发式猜测）。
+>
+> **实证**：对 tri-stack-train 真实文件实测——`shell-probe.test.ts` 报 `existsSync`
+> （外加 `atomicWrite` / `exists` / `readText` 三处同类命中）退出码 1；
+> M4b `requirements.md` 精确报出 AC4/AC5/AC6 三处「本机冒烟通过」退出码 1。
+> 此前这两处只有人读才能发现。
 
 ### 计数（2026-09-29 · tt4 批增量 · 门④ 判据从 prompt 层落成可执行断言）
 
@@ -1301,6 +1347,9 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 > 表外的「✅ 完全通过」而没有任何东西拦下。
 > 另一个（tt3 的「反同源静态检查」）**仍未脚本化**——判据是「被 mock 的函数是否等于被测对象直接调用的
 > 那个依赖」，需要调用图分析，做不出可靠实现，仍为 prompt 层约束。
+> （2026-09-29 tt5 批补充：已做成启发式可执行载体 `tri-coding/scripts/gate_lint.py mock`，
+> 纯正则实现、不做调用图分析。原文保留不删——「做不出可靠实现」的判断仍成立，
+> 落地的是保守启发式；召回边界见下方 tt5 计数小节。）
 >
 > 版本线：`tri-verify` **1.2.1**（PATCH——为既有已记录的 MUST 补可执行载体，**未新增规则**；
 > `dw2-tri-verify-version` 就地 retarget 1.2.0 → 1.2.1）。
@@ -1326,6 +1375,9 @@ ghost regex op 拆为 3 个上下文精确的 replace_text op（-1/+3），回�
 > **诚实边界**：`tri-coding` 与 `tri-test` 两处条文仍均为 **prompt 层约束，无校验器实现**——
 > 「mock 目标是被测对象直接调用的依赖函数」这条静态检查目前要求 Agent 人工执行，
 > 后续若做成脚本需落在 `tri-test/scripts/` 或 `tri-coding/scripts/`。
+> （2026-09-29 tt5 批关闭：判据 ② 由 `tri-coding/scripts/gate_lint.py mock` 落地，
+> 落点 `tri-coding/scripts/`，与当时预判一致；判据 ①③ 仍为 prompt 层约束，
+> 详见 tt5 计数小节。）
 
 ### 计数（2026-09-29 · tt2 批增量 · tri-train 审计 M4a/M4b 复测修补）
 

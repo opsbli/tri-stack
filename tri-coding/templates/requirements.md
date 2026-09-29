@@ -64,13 +64,18 @@ dimensions:
 > **每条验收点 MUST 附一句可观测断言**：DOM 选择器+断言 / IPC 事件名+期望 payload / 进程退出码 / 文件哈希 /
 > 可测阈值，至少其一。**来源**：tri-stack-train M4b 实证——AC 期望结果直接写「本机冒烟通过」，
 > 导致 112/112 全绿却 **0** 个缺陷被自动化捕获。
+>
+> **可执行载体（tt5 批）**：本节两条硬约束由 `tri-coding/scripts/gate_lint.py ac --file <requirements.md>`
+> 校验——禁词报 `ac-forbidden-word`、缺可观测断言报 `ac-missing-assertion`、
+> 整份文件无验收标准节报 `ac-missing-section`；返回码非 0 即本节不合格。
+> 扫描跳过 blockquote 与代码围栏，故本说明自身的禁词引用不算违规。
 
 - [ ] <验收点 1：可观测、可判定，如「可编译、含单测、覆盖率 ≥80%」>
       断言：<如「`document.querySelector('.term-panel')` 非空且高度 >0」>
-- [ ] <验收点 2>
-      断言：<…>
-- [ ] <验收点 3>
-      断言：<…>
+- [ ] <验收点 2：如「面板宽度可拖拽调节」>
+      断言：<如「拖动后 `document.querySelector('.term-panel').style.width` 为 `720px`」>
+- [ ] <验收点 3：如「探测进程退出码正确」>
+      断言：<如「退出码 = 0 且 `payload.shell` 为 `pwsh.exe`」>
 
 ## 7. 分流说明
 

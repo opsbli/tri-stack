@@ -1,7 +1,7 @@
 ---
 name: 测试验证
 slug: tri-test
-version: 1.2.0
+version: 1.2.1
 displayName: 测试验证
 description: SDLC P6 测试验证子SKILL。读取 tri-sdlc 转交的阶段任务（P1 验收标准 + P4 实现与单测报告 + P5 评审报告 + P6 门禁条目清单），编制覆盖全部验收标准的测试计划，执行单元/集成/用户验收三层测试，统计通过率并按四要素登记缺陷、跟踪复测闭环，产出 test-plan.md / test-report.md / defects.md 供 tri-sdlc 门禁审计。当 tri-sdlc 派发 P6 阶段任务时激活。作为 tri-sdlc 子SKILL 随包安装，支持独立安装，含上游依赖检测两态逻辑（编排模式/引导安装）。
 summary: SDLC 测试验证专家，产出验收标准 100% 覆盖的测试计划、三层执行报告与四要素缺陷台账，面向 P6 门禁 7 条必检项交付。
@@ -154,6 +154,14 @@ license: MIT
 >
 > **与「真实执行」（P6-M3）的关系**：P6-M3 约束**执行侧**（结果必须真跑出来），
 > 本条约束**编写侧**（期望值必须独立产生）。两侧缺一，绿灯都不算证据。
+>
+> **可执行载体（tt5 批）**：判据 ② 由 `tri-coding/scripts/gate_lint.py mock --file <test.ts>`
+> 承担。脚本落在 `tri-coding` 下，因为实际写测试的路径是 `tri-coding` I11 直调、
+> 根本不经过 `tri-sdlc`（tt3 批已就这一点做过双重论证）；本 skill 是 SDLC 流程的家，
+> 条文在此，载体在 `tri-coding`。抽取被 stub 的符号与被测源码的直接调用依赖求交集，
+> 命中返回码 1；降级登记用 `// gate-lint: same-origin-ok <理由>`，命中降为 `acknowledged`
+> 并回显理由，与本节「降级兼容」的登记要求对齐。判据 ①③ 仍为 prompt 层约束。
+> 判据原文与召回边界见 tri-coding §质量标准「反同源假设（夹具独立）」的载体注。
 
 ### 维度 4：缺陷四要素与分级
 

@@ -1,7 +1,7 @@
 ---
 name: tri-coding
 slug: tri-coding
-version: 1.11.0
+version: 1.11.1
 displayName: tri-coding
 description: 编码开发下游执行 skill。读取 tri-intent 快照 §三，处理 I11（编码开发）意图，自主管理「需求→设计→任务→执行→实现报告」完整编码工作流，含双审批门+执行前确认。当 tri-intent 快照下游路由建议指向本 skill 时激活。支持独立安装，含上游依赖检测三态逻辑（快照模式/引导安装/降级模式）。
 summary: 依据 tri-intent 快照自主管理编码全链路（需求→设计→任务→执行→实现报告），含双审批门+执行前确认+可扩展技术栈加载方法论+工具结果治理六条纪律，专注 I11 编码开发。
@@ -429,6 +429,19 @@ tri-intent 快照 §三
 > ② **反同源静态检查**——mock 目标是被测对象直接调用的那个依赖函数 ⇒ MUST 补一条走真实实现的对照用例；
 > ③ **「分支覆盖」不等于「正确」**——覆盖了某个失败分支不代表没测错对象，
 > 分支覆盖统计 NEVER 计入功能正确性证据。
+>
+> **可执行载体（tt5 批）**：判据 ② 由 `scripts/gate_lint.py mock --file <test.ts>` 承担——
+> 脚本抽取测试文件里被 stub 的符号（`vi.fn()` / `vi.mocked()` / `jest.spyOn()` /
+> `mock*.mockX()`），与被测源码的**直接调用依赖**求交集，命中即返回码 1 并回显符号名；
+> 被测源码按 `<base>.test.ts → <base>.ts` 约定自动发现，也可 `--src` 显式指定，
+> 找不到则 `skipped` 且不报违规（判不了必须可见，NEVER 静默计入通过）。
+> 目标依赖确实不可替换时按「降级兼容」在测试文件内写
+> `// gate-lint: same-origin-ok <理由>`（理由 ≥10 字符），命中降为 `acknowledged`
+> ——仍回显符号与理由，**不静默放行**。
+> 判据 ①③ 仍为 prompt 层约束（① 需跨文件追溯 AC、③ 是统计口径，均不做启发式猜测）。
+> **召回边界**：纯正则、无 TS 解析器、不解析作用域，只识别上述四种 stubbing 惯用法；
+> `vi.importActual` **不作豁免**——M4a 实证文件里它恰好存在（partial mock），
+> 拿它当豁免会直接漏掉实证案例。
 
 > **模板约束上移（tt2 批 · 实例化丢失防线）**：tri-stack-train M4a/M4b 实测的对照实验——AT 硬化规则
 > **只**写在 `templates/tasks.md` 时，实例化后的 `tasks.md` 中该规则出现 **0 次**，AT 项全部写成
